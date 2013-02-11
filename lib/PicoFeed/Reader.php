@@ -19,7 +19,7 @@ class Reader
     public function download($url)
     {
         $this->url = $url;
-        $this->content = file_get_contents($this->url);
+        $this->content = @file_get_contents($this->url);
 
         return $this;
     }
@@ -42,11 +42,11 @@ class Reader
         else if (strpos($first_lines, '<rss ') !== false && strpos($first_lines, 'version="2.0"') !== false) {
 
             return new Rss20($this->content);
-        }
+        }/*
         else if (strpos($first_lines, '<rdf') !== false && strpos($first_lines, 'xmlns="http://purl.org/rss/1.0/"') !== false) {
 
             return new Rss10($this->content);
-        }
+        }*/
 
         return false;
     }

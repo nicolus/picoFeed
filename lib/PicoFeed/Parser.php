@@ -2,6 +2,9 @@
 
 namespace PicoFeed;
 
+require_once __DIR__.'/Filter.php';
+
+
 abstract class Parser
 {
     protected $content = '';
@@ -29,6 +32,8 @@ class Atom extends Parser
     {
         try {
 
+            \libxml_use_internal_errors(true);
+
             $xml = new \SimpleXMLElement($this->content);
 
             $this->url = $this->getUrl($xml);
@@ -49,8 +54,8 @@ class Atom extends Parser
                 $item->title = (string) $entry->title;
                 $item->url = $this->getUrl($entry);
                 $item->updated = strtotime((string) $entry->updated);
-                $item->content = isset($entry->content) ? (string) $entry->content : (string) $entry->summary;
                 $item->author = $author;
+                $item->content = $this->getContent($entry);
 
                 $this->items[] = $item;
             }
@@ -60,6 +65,33 @@ class Atom extends Parser
         }
 
         return $this;
+    }
+
+
+    public function getContent($entry)
+    {
+        if (isset($entry->content)) {
+
+            if ((string) $entry->content['type'] == 'html') {
+
+                $filter = new Filter((string) $entry->content);
+                $content = $filter->execute();
+
+                //print_r($filter->ignored_tags);
+
+                return $content;
+            }
+            else {
+
+                return strip_tags((string) $entry->content);
+            }
+        }
+        else if (isset($entry->summary)) {
+
+            return strip_tags((string) $entry->summary);
+        }
+
+        return '';
     }
 
 
@@ -83,6 +115,8 @@ class Rss20 extends Parser
     public function execute()
     {
         try {
+
+            \libxml_use_internal_errors(true);
 
             $xml = new \SimpleXMLElement($this->content);
             $ns = $xml->getNamespaces(true);
@@ -120,7 +154,7 @@ class Rss20 extends Parser
                 $item->title = (string) $entry->title;
                 $item->url = (string) $entry->link;
                 $item->updated = strtotime((string) $entry->pubDate);
-                $item->content = $content;
+                $item->content = $this->getContent($content);
                 $item->author = $author ?: (string) $xml->channel->webMaster;
 
                 $this->items[] = $item;
@@ -131,5 +165,16 @@ class Rss20 extends Parser
         }
 
         return $this;
+    }
+
+
+    public function getContent($content)
+    {
+        $filter = new Filter($content);
+        $content = $filter->execute();
+
+        //print_r($filter->ignored_tags);
+
+        return $content;
     }
 }
