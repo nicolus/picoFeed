@@ -23,6 +23,15 @@ abstract class Parser
     {
         $this->content = $content;
     }
+
+
+    public function filterHtml($str)
+    {
+        $filter = new Filter($str);
+        $content = $filter->execute();
+
+        return $content;
+    }
 }
 
 
@@ -72,23 +81,11 @@ class Atom extends Parser
     {
         if (isset($entry->content)) {
 
-            if ((string) $entry->content['type'] == 'html') {
-
-                $filter = new Filter((string) $entry->content);
-                $content = $filter->execute();
-
-                //print_r($filter->ignored_tags);
-
-                return $content;
-            }
-            else {
-
-                return strip_tags((string) $entry->content);
-            }
+            return $this->filterHtml((string) $entry->content);
         }
         else if (isset($entry->summary)) {
 
-            return strip_tags((string) $entry->summary);
+            return $this->filterHtml((string) $entry->summary);
         }
 
         return '';
@@ -154,7 +151,7 @@ class Rss20 extends Parser
                 $item->title = (string) $entry->title;
                 $item->url = (string) $entry->link;
                 $item->updated = strtotime((string) $entry->pubDate);
-                $item->content = $this->getContent($content);
+                $item->content = $this->filterHtml($content);
                 $item->author = $author ?: (string) $xml->channel->webMaster;
 
                 $this->items[] = $item;
@@ -165,16 +162,5 @@ class Rss20 extends Parser
         }
 
         return $this;
-    }
-
-
-    public function getContent($content)
-    {
-        $filter = new Filter($content);
-        $content = $filter->execute();
-
-        //print_r($filter->ignored_tags);
-
-        return $content;
     }
 }
