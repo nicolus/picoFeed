@@ -18,6 +18,11 @@ class Reader
 
     public function download($url)
     {
+        if (strpos($url, 'http') !== 0) {
+
+            $url = 'http://'.$url;
+        }
+
         $this->url = $url;
         $this->content = @file_get_contents($this->url);
 
@@ -31,9 +36,21 @@ class Reader
     }
 
 
+    public function getUrl()
+    {
+        return $this->url;
+    }
+
+
     public function getParser()
     {
         $first_lines = substr($this->content, 0, 512);
+
+        if (stripos($first_lines, 'html') !== false) {
+
+            $this->discover();
+            $first_lines = substr($this->content, 0, 512);
+        }
 
         if (strpos($first_lines, '<feed ') !== false) {
 
@@ -47,6 +64,47 @@ class Reader
 
             return new Rss10($this->content);
         }*/
+
+        return false;
+    }
+
+
+    public function discover()
+    {
+        \libxml_use_internal_errors(true);
+
+        $dom = new \DOMDocument;
+        $dom->loadHTML($this->content);
+
+        $xpath = new \DOMXPath($dom);
+
+        $queries = array(
+            "//link[@type='application/atom+xml']",
+            "//link[@type='application/rss+xml']"
+        );
+
+        foreach ($queries as $query) {
+
+            $nodes = $xpath->query($query);
+
+            if ($nodes->length !== 0) {
+
+                $link = $nodes->item(0)->getAttribute('href');
+
+                // Relative links
+                if (strpos($link, 'http') !== 0) {
+
+                    if ($link{0} === '/') $link = substr($link, 1);
+                    if ($this->url{strlen($this->url) - 1} !== '/') $this->url .= '/';
+
+                    $link = $this->url.$link;
+                }
+
+                $this->download($link);
+
+                return true;
+            }
+        }
 
         return false;
     }
