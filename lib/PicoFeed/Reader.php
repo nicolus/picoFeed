@@ -48,8 +48,14 @@ class Reader
 
         if (stripos($first_lines, 'html') !== false) {
 
-            $this->discover();
-            $first_lines = substr($this->content, 0, 512);
+            if ($this->discover()) {
+
+                $first_lines = substr($this->content, 0, 512);
+            }
+            else {
+
+                return false;
+            }
         }
 
         if (strpos($first_lines, '<feed ') !== false) {
