@@ -40,7 +40,8 @@ class Filter
         'http',
         'https',
         'ftp',
-        'mailto'
+        'mailto',
+        '//'
     );
 
     public $protocol_attributes = array(
@@ -166,9 +167,9 @@ class Filter
     }
 
 
-    public function dataTag($parser, $name)
+    public function dataTag($parser, $content)
     {
-        if (! $this->strip_content) $this->data .= $name;
+        if (! $this->strip_content) $this->data .= htmlspecialchars($content, ENT_QUOTES, 'UTF-8', false);
     }
 
 
