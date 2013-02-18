@@ -16,7 +16,6 @@ Todo
 ----
 
 - Feed writer
-- Export OPML
 - Unit tests
 
 Usage
