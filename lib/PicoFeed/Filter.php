@@ -5,6 +5,7 @@ namespace PicoFeed;
 class Filter
 {
     private $data = '';
+    private $url = '';
     private $input = '';
     private $empty_tag = false;
     private $strip_content = false;
@@ -37,10 +38,10 @@ class Filter
     );
 
     public $allowed_protocols = array(
-        'http',
-        'https',
-        'ftp',
-        'mailto',
+        'http://',
+        'https://',
+        'ftp://',
+        'mailto://',
         '//'
     );
 
@@ -63,8 +64,9 @@ class Filter
     );
 
 
-    public function __construct($data = '')
+    public function __construct($data, $url)
     {
+        $this->url = $url;
         $data = iconv("UTF-8", "ISO-8859-15//IGNORE", $data);
 
         $dom = new \DOMDocument();
@@ -113,7 +115,12 @@ class Filter
 
                     if ($this->isResource($attribute)) {
 
-                        if ($this->isAllowedProtocol($value) && ! $this->isBlacklistMedia($value)) {
+                        if ($this->isRelativePath($value)) {
+
+                            $attr_data .= ' '.$attribute.'="'.$this->getAbsoluteUrl($value, $this->url).'"';
+                            $used_attributes[] = $attribute;
+                        }
+                        else if ($this->isAllowedProtocol($value) && ! $this->isBlacklistMedia($value)) {
 
                             $attr_data .= ' '.$attribute.'="'.$value.'"';
                             $used_attributes[] = $attribute;
@@ -170,6 +177,42 @@ class Filter
     public function dataTag($parser, $content)
     {
         if (! $this->strip_content) $this->data .= htmlspecialchars($content, ENT_QUOTES, 'UTF-8', false);
+    }
+
+
+    public function getAbsoluteUrl($path, $url)
+    {
+        $components = parse_url($url);
+
+        if ($path{0} === '/') {
+
+            // Absolute path
+            return $components['scheme'].'://'.$components['host'].$path;
+        }
+        else {
+
+            // Relative path
+
+            $url_path = $components['path'];
+
+            if ($url_path{strlen($url_path) - 1} !== '/') {
+
+                $url_path = dirname($url_path).'/';
+            }
+
+            if (substr($path, 0, 2) === './') {
+
+                $path = substr($path, 2);
+            }
+
+            return $components['scheme'].'://'.$components['host'].$url_path.$path;
+        }
+    }
+
+
+    public function isRelativePath($value)
+    {
+        return strpos($value, '://') === false && strpos($value, '//') !== 0;
     }
 
 

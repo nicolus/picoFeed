@@ -25,13 +25,13 @@ abstract class Parser
     }
 
 
-    public function filterHtml($str)
+    public function filterHtml($str, $item_url)
     {
         $content = '';
 
         if ($str) {
 
-            $filter = new Filter($str);
+            $filter = new Filter($str, $item_url);
             $content = $filter->execute();
         }
 
@@ -69,7 +69,7 @@ class Atom extends Parser
                 $item->url = $this->getUrl($entry);
                 $item->updated = strtotime((string) $entry->updated);
                 $item->author = $author;
-                $item->content = $this->getContent($entry);
+                $item->content = $this->filterHtml($this->getContent($entry), $item->url);
 
                 $this->items[] = $item;
             }
@@ -88,18 +88,16 @@ class Atom extends Parser
 
             if (count($entry->content->children())) {
 
-                $content = (string) $entry->content->asXML();
+                return (string) $entry->content->asXML();
             }
             else {
 
-                $content = (string) $entry->content;
+                return (string) $entry->content;
             }
-
-            return $this->filterHtml($content);
         }
         else if (isset($entry->summary) && ! empty($entry->summary)) {
 
-            return $this->filterHtml((string) $entry->summary);
+            return (string) $entry->summary;
         }
 
         return '';
@@ -169,7 +167,7 @@ class Rss20 extends Parser
                 $item->title = (string) $entry->title;
                 $item->url = (string) $entry->link;
                 $item->updated = strtotime((string) $entry->pubDate);
-                $item->content = $this->filterHtml($content);
+                $item->content = $this->filterHtml($content, $item->url);
                 $item->author = $author ?: (string) $xml->channel->webMaster;
 
                 $this->items[] = $item;
