@@ -27,8 +27,13 @@ abstract class Parser
 
     public function filterHtml($str)
     {
-        $filter = new Filter($str);
-        $content = $filter->execute();
+        $content = '';
+
+        if ($str) {
+
+            $filter = new Filter($str);
+            $content = $filter->execute();
+        }
 
         return $content;
     }
@@ -79,11 +84,20 @@ class Atom extends Parser
 
     public function getContent($entry)
     {
-        if (isset($entry->content)) {
+        if (isset($entry->content) && ! empty($entry->content)) {
 
-            return $this->filterHtml((string) $entry->content);
+            if (count($entry->content->children())) {
+
+                $content = (string) $entry->content->asXML();
+            }
+            else {
+
+                $content = (string) $entry->content;
+            }
+
+            return $this->filterHtml($content);
         }
-        else if (isset($entry->summary)) {
+        else if (isset($entry->summary) && ! empty($entry->summary)) {
 
             return $this->filterHtml((string) $entry->summary);
         }
@@ -138,7 +152,11 @@ class Rss20 extends Parser
                 if (isset($ns['content'])) {
 
                     $ns_content = $entry->children($ns['content']);
-                    $content = (string) $ns_content->encoded;
+
+                    if (! empty($entry->content)) {
+
+                        $content = (string) $ns_content->encoded;
+                    }
                 }
 
                 if (! $content) {
