@@ -70,7 +70,7 @@ class Reader
 
             return new Rss20($this->content);
         }
-        else if (strpos($first_tag, '<rdf:') !== false) {
+        else if (strpos($first_tag, '<rdf:') !== false && strpos($first_tag, 'xmlns="http://purl.org/rss/1.0/"') !== false) {
 
             return new Rss10($this->content);
         }
