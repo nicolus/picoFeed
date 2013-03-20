@@ -22,7 +22,7 @@ class AtomParserTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('urn:uuid:1225c695-cfb8-4ebb-aaaa-80da344efa6a', $r->items[0]->id);
         $this->assertEquals('1071340202', $r->items[0]->updated);
         $this->assertEquals('John Doe', $r->items[0]->author);
-        $this->assertEquals('Some text.', $r->items[0]->content);
+        $this->assertEquals('<p>Some text.</p>', $r->items[0]->content);
 
 
         $parser = new Atom(file_get_contents('tests/fixtures/atom.xml'));
