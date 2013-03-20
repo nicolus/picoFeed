@@ -70,6 +70,10 @@ class Reader
 
             return new Rss20($this->content);
         }
+        else if (strpos($first_tag, '<rdf:') !== false) {
+
+            return new Rss10($this->content);
+        }
         else if ($discover === true) {
 
             return false;
