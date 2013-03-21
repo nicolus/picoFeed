@@ -44,4 +44,13 @@ class ReaderTest extends PHPUnit_Framework_TestCase
 
         $this->assertTrue($reader->discover());
     }
+
+
+    public function testFeedsReportedAsNotWorking()
+    {
+        $reader = new Reader;
+        $reader->download('http://www.trictrac.net/rss/TricTracRss.php');
+
+        $this->assertInstanceOf('PicoFeed\Rss20', $reader->getParser());
+    }
 }
