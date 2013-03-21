@@ -40,4 +40,16 @@ class ImportTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('http://feeds.feedburner.com/PlaneteJqueryFr', $entries[1]->feed_url);
         $this->assertEquals('http://planete-jquery.fr', $entries[1]->site_url);
     }
+
+
+    public function testNewsBeuter()
+    {
+        $import = new Import(file_get_contents('tests/fixtures/newsbeuter.opml'));
+        $entries = $import->execute();
+
+        $this->assertEquals(35, count($entries));
+        $this->assertEquals('code.flickr.com', $entries[1]->title);
+        $this->assertEquals('http://code.flickr.net/feed/', $entries[1]->feed_url);
+        $this->assertEquals('http://code.flickr.net', $entries[1]->site_url);
+    }
 }
