@@ -18,6 +18,12 @@ class ReaderTest extends PHPUnit_Framework_TestCase
 
     public function testDetectFormat()
     {
+        $reader = new Reader(file_get_contents('tests/fixtures/rss_0.92.xml'));
+        $this->assertInstanceOf('PicoFeed\Rss92', $reader->getParser());
+
+        $reader = new Reader(file_get_contents('tests/fixtures/rss_0.91.xml'));
+        $this->assertInstanceOf('PicoFeed\Rss91', $reader->getParser());
+
         $reader = new Reader(file_get_contents('tests/fixtures/planete-jquery.xml'));
         $this->assertInstanceOf('PicoFeed\Rss10', $reader->getParser());
 
