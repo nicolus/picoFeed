@@ -1,6 +1,7 @@
 <?php
 
 require_once 'lib/PicoFeed/Parser.php';
+require_once 'lib/PicoFeed/Parsers/Rss91.php';
 
 use PicoFeed\Rss91;
 

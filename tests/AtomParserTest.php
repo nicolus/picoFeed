@@ -1,6 +1,7 @@
 <?php
 
 require_once 'lib/PicoFeed/Parser.php';
+require_once 'lib/PicoFeed/Parsers/Atom.php';
 
 use PicoFeed\Atom;
 
@@ -48,8 +49,6 @@ class AtomParserTest extends PHPUnit_Framework_TestCase
     public function testBadInput()
     {
         $parser = new Atom('ffhhghg');
-        $r = $parser->execute();
-
-        $this->assertEquals('', $r->title);
+        $this->assertFalse($parser->execute());
     }
 }

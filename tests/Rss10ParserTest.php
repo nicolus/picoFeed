@@ -1,6 +1,7 @@
 <?php
 
 require_once 'lib/PicoFeed/Parser.php';
+require_once 'lib/PicoFeed/Parsers/Rss10.php';
 
 use PicoFeed\Rss10;
 
@@ -29,8 +30,6 @@ class Rss10ParserTest extends PHPUnit_Framework_TestCase
     public function testBadInput()
     {
         $parser = new Rss10('ffhhghg');
-        $r = $parser->execute();
-
-        $this->assertEquals('', $r->title);
+        $this->assertFalse($parser->execute());
     }
 }
