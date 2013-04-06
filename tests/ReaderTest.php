@@ -11,7 +11,6 @@ class ReaderTest extends PHPUnit_Framework_TestCase
     {
         $reader = new Reader;
         $feed = $reader->download('http://wordpress.org/news/feed/')->getContent();
-
         $this->assertNotEmpty($feed);
     }
 
