@@ -15,6 +15,21 @@ class ReaderTest extends PHPUnit_Framework_TestCase
     }
 
 
+    public function testDownloadWithCache()
+    {
+        $reader = new Reader;
+        $resource = $reader->download('http://petitcodeur.fr/feed.xml');
+        $this->assertTrue($resource->isModified());
+
+        $lastModified = $resource->getLastModified();
+        $etag = $resource->getEtag();
+
+        $reader = new Reader;
+        $resource = $reader->download('http://petitcodeur.fr/feed.xml', $lastModified, $etag);
+        $this->assertFalse($resource->isModified());
+    }
+
+
     public function testDetectFormat()
     {
         $reader = new Reader(file_get_contents('tests/fixtures/rss_0.92.xml'));
