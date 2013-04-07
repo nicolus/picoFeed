@@ -55,16 +55,12 @@ Usage
 
 ### Download and parse a feed
 
-    require 'vendor/PicoFeed/Parser.php';
     require 'vendor/PicoFeed/Reader.php';
 
     $reader = new Reader;
 
     // Try to discover the XML feed automatically
     $reader->download('http://petitcodeur.fr/');
-
-    // Download directly the feed
-    // $reader->download('http://petitcodeur.fr/feed.xml');
 
     $parser = $reader->getParser();
 
@@ -77,6 +73,37 @@ Usage
         print_r($feed->items);
     }
 
+### Handle HTTP cache
+
+    require 'vendor/PicoFeed/Reader.php';
+
+    $reader = new Reader;
+
+    // Get last modified infos from previous requests
+    $lastModified = '...';
+    $etag = '...';
+
+    // Download directly the feed
+    $resource = $reader->download('http://petitcodeur.fr/feed.xml', $lastModified, $etag);
+
+    if ($resource->isModified()) {
+
+        $parser = $reader->getParser();
+
+        if ($parser !== false) {
+
+            $feed = $parser->execute();
+
+            echo $feed->title;
+            echo $feed->url;
+            print_r($feed->items);
+
+            // Save cache infos for the next request
+            $lastModified = $resource->getLastModified();
+            $etag = $resource->getEtag();
+        }
+    }
+
 ### Modify the user-agent and connection timeout
 
-    $reader->download('http://petitcodeur.fr/', 10, 'My RSS reader');
+    $reader->download('http://petitcodeur.fr/', 'last modified date', 'etag value',  10, 'My RSS reader');
