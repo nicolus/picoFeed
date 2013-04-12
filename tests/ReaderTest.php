@@ -69,6 +69,10 @@ class ReaderTest extends PHPUnit_Framework_TestCase
     public function testFeedsReportedAsNotWorking()
     {
         $reader = new Reader;
+        $reader->download('http://fulltextrssfeed.com/www.numerama.com/rss/news.rss');
+        $this->assertInstanceOf('PicoFeed\Rss20', $reader->getParser());
+
+        $reader = new Reader;
         $reader->download('http://www.trictrac.net/rss/TricTracRss.php');
         $this->assertInstanceOf('PicoFeed\Rss20', $reader->getParser());
 

@@ -8,6 +8,19 @@ use PicoFeed\Reader;
 
 class FilterTest extends PHPUnit_Framework_TestCase
 {
+    public function testIsRelativePath()
+    {
+        $f = new Filter('<a href="/bla/bla">link</a>', 'http://blabla');
+        $this->assertTrue($f->isRelativePath('/bbla'));
+        $this->assertTrue($f->isRelativePath('../../bbla'));
+        $this->assertFalse($f->isRelativePath('http://google.fr'));
+        $this->assertFalse($f->isRelativePath('//superurl'));
+        $this->assertFalse($f->isRelativePath('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUA
+AAAFCAYAAACNbyblAAAAHElEQVQI12P4//8/w38GIAXDIBKE0DHxgljNBAAO
+9TXL0Y4OHwAAAABJRU5ErkJggg=='));
+    }
+
+
     public function testEmptyTags()
     {
         $data = <<<EOD

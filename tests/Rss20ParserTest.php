@@ -55,6 +55,21 @@ class Rss20ParserTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('http://www.pcinpact.com/breve/78872-la-dcri-purge-wikipedia-par-menace-bel-effet-streisand-a-cle.htm?utm_source=PCi_RSS_Feed&utm_medium=news&utm_campaign=pcinpact', $r->items[0]->id);
         $this->assertEquals('1365289860', $r->items[0]->updated);
         $this->assertEquals('', $r->items[0]->author);
+
+        $parser = new Rss20(file_get_contents('tests/fixtures/fulltextrss.xml'));
+        $r = $parser->execute();
+
+        $this->assertEquals('Numerama.com - Magazine', $r->title);
+        $this->assertEquals('http://www.numerama.com/', $r->url);
+        $this->assertEquals('http://www.numerama.com/', $r->id);
+        $this->assertEquals(time(), $r->updated);
+        $this->assertEquals(6, count($r->items));
+
+        $this->assertEquals('Brevets : un juge doute de la bonne volonté de Google et Apple', $r->items[0]->title);
+        $this->assertEquals('http://www.numerama.com/magazine/25669-brevets-un-juge-doute-de-la-bonne-volonte-de-google-et-apple.html', $r->items[0]->url);
+        $this->assertEquals('http://www.numerama.com/magazine/25669-brevets-un-juge-doute-de-la-bonne-volonte-de-google-et-apple.html', $r->items[0]->id);
+        $this->assertEquals('1365781095', $r->items[0]->updated);
+        $this->assertEquals('', $r->items[0]->author);
     }
 
 
