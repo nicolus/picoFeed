@@ -51,4 +51,18 @@ class AtomParserTest extends PHPUnit_Framework_TestCase
         $parser = new Atom('ffhhghg');
         $this->assertFalse($parser->execute());
     }
+
+
+    public function testMultipleLink()
+    {
+        $parser = new Atom(file_get_contents('tests/fixtures/lagrange.xml'));
+        $r = $parser->execute();
+
+        $this->assertEquals('http://www.la-grange.net/', $r->url);
+
+        $parser = new Atom(file_get_contents('tests/fixtures/atom.xml'));
+        $r = $parser->execute();
+
+        $this->assertEquals('http://googleblog.blogspot.com/', $r->url);
+    }
 }
