@@ -1,5 +1,5 @@
 {
-    "name": "fguillot/picoFeed",
+    "name": "fguillot/picofeed",
     "description": "Feeds writer/reader (alternative to SimplePie)",
     "homepage": "https://github.com/fguillot/picoFeed",
     "type": "library",
