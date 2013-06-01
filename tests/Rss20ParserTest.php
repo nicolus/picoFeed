@@ -7,10 +7,19 @@ use PicoFeed\Rss20;
 
 class Rss20ParserTest extends PHPUnit_Framework_TestCase
 {
+    public function testFeedsReportedAsNotWorking()
+    {
+        $parser = new Rss20(file_get_contents('tests/fixtures/cercle.psy.xml'));
+        $this->assertNotEquals(false, $parser->execute());
+    }
+
+
     public function testFormatOk()
     {
         $parser = new Rss20(file_get_contents('tests/fixtures/rss2sample.xml'));
         $r = $parser->execute();
+
+        $this->assertNotEquals(false, $r);
 
         $this->assertEquals('Liftoff News', $r->title);
         $this->assertEquals('http://liftoff.msfc.nasa.gov/', $r->url);
