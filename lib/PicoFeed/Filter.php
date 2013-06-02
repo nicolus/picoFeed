@@ -112,6 +112,18 @@ class Filter
     {
         $this->url = $site_url;
 
+        // Workaround for old libxml2 (Debian Lenny)
+        if (LIBXML_DOTTED_VERSION === '2.6.32') {
+
+            $entities = get_html_translation_table(HTML_ENTITIES, ENT_NOQUOTES|ENT_XHTML, 'UTF-8');
+
+            unset($entities['&']);
+            unset($entities['>']);
+            unset($entities['<']);
+
+            $data = str_replace(array_values($entities), array_keys($entities), $data);
+        }
+
         // Convert bad formatted documents to XML
         $dom = new \DOMDocument;
         $dom->loadHTML('<?xml version="1.0" encoding="UTF-8">'.$data);

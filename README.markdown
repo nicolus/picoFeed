@@ -21,6 +21,7 @@ Limitations
 -----------
 
 - OPML import/export don't support categories
+- There is some hacks for **libxml2 version 2.6.32** (Debian Lenny) but **it's not supported** (please upgrade)
 
 Usage
 -----
