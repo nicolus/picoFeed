@@ -41,9 +41,7 @@ class Rss20 extends Parser
         $this->updated = $this->updated ? strtotime($this->updated) : time();
 
         // RSS feed might be empty
-        if( ! $xml->channel->item) {
-            return $this;
-        }
+        if (! $xml->channel->item) return $this;
 
         foreach ($xml->channel->item as $entry) {
 
