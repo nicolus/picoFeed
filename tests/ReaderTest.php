@@ -77,10 +77,6 @@ class ReaderTest extends PHPUnit_Framework_TestCase
         $reader = new Reader(file_get_contents('tests/fixtures/ezrss.it'));
         $this->assertInstanceOf('PicoFeed\Rss20', $reader->getParser());
 
-        $reader = new Reader;
-        $reader->download('http://www.trictrac.net/rss/TricTracRss.php');
-        $this->assertInstanceOf('PicoFeed\Rss20', $reader->getParser());
-
         $reader = new Reader(file_get_contents('tests/fixtures/grotte_barbu.xml'));
         $this->assertInstanceOf('PicoFeed\Rss20', $reader->getParser());
     }
