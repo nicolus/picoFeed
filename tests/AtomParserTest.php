@@ -3,7 +3,7 @@
 require_once 'lib/PicoFeed/Parser.php';
 require_once 'lib/PicoFeed/Parsers/Atom.php';
 
-use PicoFeed\Atom;
+use PicoFeed\Parsers\Atom;
 
 class AtomParserTest extends PHPUnit_Framework_TestCase
 {

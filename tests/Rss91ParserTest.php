@@ -3,7 +3,7 @@
 require_once 'lib/PicoFeed/Parser.php';
 require_once 'lib/PicoFeed/Parsers/Rss91.php';
 
-use PicoFeed\Rss91;
+use PicoFeed\Parsers\Rss91;
 
 class Rss91ParserTest extends PHPUnit_Framework_TestCase
 {
