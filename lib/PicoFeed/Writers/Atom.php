@@ -6,13 +6,13 @@ require_once __DIR__.'/../Writer.php';
 
 class Atom extends \PicoFeed\Writer
 {
-    protected $required_feed_properties = array(
+    private $required_feed_properties = array(
         'title',
         'site_url',
         'feed_url',
     );
 
-    protected $required_item_properties = array(
+    private $required_item_properties = array(
         'title',
         'url',
     );
