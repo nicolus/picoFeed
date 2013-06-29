@@ -149,18 +149,21 @@ class Reader
 
                 $link = $nodes->item(0)->getAttribute('href');
 
-                // Relative links
-                if (strpos($link, 'http') !== 0) {
+                if (! empty($link)) {
 
-                    if ($link{0} === '/') $link = substr($link, 1);
-                    if ($this->url{strlen($this->url) - 1} !== '/') $this->url .= '/';
+                    // Relative links
+                    if (strpos($link, 'http') !== 0) {
 
-                    $link = $this->url.$link;
+                        if ($link{0} === '/') $link = substr($link, 1);
+                        if ($this->url{strlen($this->url) - 1} !== '/') $this->url .= '/';
+
+                        $link = $this->url.$link;
+                    }
+
+                    $this->download($link);
+
+                    return true;
                 }
-
-                $this->download($link);
-
-                return true;
             }
         }
 
