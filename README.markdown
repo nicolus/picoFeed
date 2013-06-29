@@ -1,26 +1,26 @@
 PicoFeed - PHP Library to manage Feeds
 ======================================
 
-Features
---------
+PicoFeed was originally developed for [Miniflux](http://miniflux.net), a minimalist and open source news reader.
 
-- No dependency (use only SimpleXML/Dom)
+However, this library can be used inside any project.
+PicoFeed is tested with a lot of different feeds, it's simple and easy to use.
+
+Features and requirements
+-------------------------
+
 - Simple and fast
-- Supported formats: Atom and RSS (0.91, 0.92, 1.0 and 2.0)
-- Writer and reader
+- Dependencies: PHP >= 5.3, libxml >= 2.7, DOM, SimpleXML, cURL
+- Feed parsers for Atom 1.0 and RSS (0.91, 0.92, 1.0 and 2.0)
+- Feed writers for Atom 1.0 and RSS 2.0
 - Import/Export OPML subscriptions
-- Filter: HTML cleanup, remove pixel trackers, Feedburner Ads
+- Content filter: HTML cleanup, remove pixel trackers and Ads
 - License: Unlicense <http://unlicense.org/>
-
-Todo
-----
-
-- Feed writer
 
 Limitations
 -----------
 
-- OPML import/export don't support categories
+- OPML import/export don't support categories (TODO)
 - There is some hacks for **libxml2 version 2.6.32** (Debian Lenny) but **it's not supported** (please upgrade)
 
 Usage
@@ -29,6 +29,8 @@ Usage
 ### Import OPML file
 
     require 'vendor/PicoFeed/Import.php';
+
+    use PicoFeed\Import;
 
     $opml = file_get_contents('mySubscriptions.opml');
     $import = new Import($opml);
@@ -39,6 +41,8 @@ Usage
 ### Export to OPML
 
     require 'vendor/PicoFeed/Export.php';
+
+    use PicoFeed\Export;
 
     $feeds = array(
         array(
@@ -57,6 +61,8 @@ Usage
 ### Download and parse a feed
 
     require 'vendor/PicoFeed/Reader.php';
+
+    use PicoFeed\Reader;
 
     $reader = new Reader;
 
@@ -77,6 +83,8 @@ Usage
 ### Handle HTTP cache
 
     require 'vendor/PicoFeed/Reader.php';
+
+    use PicoFeed\Reader;
 
     $reader = new Reader;
 
@@ -107,4 +115,78 @@ Usage
 
 ### Modify the user-agent and connection timeout
 
-    $reader->download('http://petitcodeur.fr/', 'last modified date', 'etag value',  10, 'My RSS reader');
+    $reader->download(
+        'http://petitcodeur.fr/',
+        'last modified date',
+        'etag value',
+        10,
+        'My RSS reader user agent'
+    );
+
+### Generate RSS 2.0 feed
+
+    require_once 'lib/PicoFeed/Writers/Rss20.php';
+
+    use PicoFeed\Writers\Rss20;
+
+    $writer = new Rss20();
+    $writer->title = 'My site';
+    $writer->site_url = 'http://boo/';
+    $writer->feed_url = 'http://boo/feed.atom';
+    $writer->author = array(
+        'name' => 'Me',
+        'url' => 'http://me',
+        'email' => 'me@here'
+    );
+
+    $writer->items[] = array(
+        'title' => 'My article 1',
+        'updated' => strtotime('-2 days'),
+        'url' => 'http://foo/bar',
+        'summary' => 'Super summary',
+        'content' => '<p>content</p>'
+    );
+
+    $writer->items[] = array(
+        'title' => 'My article 2',
+        'updated' => strtotime('-1 day'),
+        'url' => 'http://foo/bar2',
+        'summary' => 'Super summary 2',
+        'content' => '<p>content 2 &nbsp; &copy; 2015</p>',
+        'author' => array(
+            'name' => 'Me too',
+        )
+    );
+
+    $writer->items[] = array(
+        'title' => 'My article 3',
+        'url' => 'http://foo/bar3'
+    );
+
+    echo $writer->execute();
+
+### Generate Atom feed
+
+    require_once 'lib/PicoFeed/Writers/Atom.php';
+
+    use PicoFeed\Writers\Atom;
+
+    $writer = new Atom();
+    $writer->title = 'My site';
+    $writer->site_url = 'http://boo/';
+    $writer->feed_url = 'http://boo/feed.atom';
+    $writer->author = array(
+        'name' => 'Me',
+        'url' => 'http://me',
+        'email' => 'me@here'
+    );
+
+    $writer->items[] = array(
+        'title' => 'My article 1',
+        'updated' => strtotime('-2 days'),
+        'url' => 'http://foo/bar',
+        'summary' => 'Super summary',
+        'content' => '<p>content</p>'
+    );
+
+    echo $writer->execute();
