@@ -9,6 +9,14 @@ class Rss20ParserTest extends PHPUnit_Framework_TestCase
 {
     public function testFeedsReportedAsNotWorking()
     {
+        $parser = new Rss20(file_get_contents('tests/fixtures/resorts.xml'));
+        $this->assertNotEquals(false, $parser->execute());
+        $this->assertEquals('Hyatt  Rates', $parser->title);
+        $this->assertEquals('http://www.hyatt.com/rss/edeals/.jhtml', $parser->url);
+        $this->assertEquals(1, count($parser->items));
+        $this->assertEquals('Tuesday Jul 07,2009-Sunday Jul 19,2009', $parser->items[0]->title);
+        $this->assertEquals('http://www.hyatt.com/rss/edeals/.jhtml?19Jul09', $parser->items[0]->url);
+
         $parser = new Rss20(file_get_contents('tests/fixtures/cercle.psy.xml'));
         $this->assertNotEquals(false, $parser->execute());
     }
