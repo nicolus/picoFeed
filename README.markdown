@@ -190,3 +190,9 @@ Usage
     );
 
     echo $writer->execute();
+
+### Get log messages
+
+You can got all debug output by calling this code:
+
+    print_r(PicoFeed\Logging::$logs);

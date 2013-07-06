@@ -8,7 +8,7 @@ class RemoteResourceTest extends PHPUnit_Framework_TestCase
 {
     public function testDownload()
     {
-        $resource = new RemoteResource('http://websites/petitcodeur/output/feed.xml');
+        $resource = new RemoteResource('http://petitcodeur.fr/feed.xml');
         $resource->execute();
 
         $this->assertTrue($resource->isModified());
@@ -20,11 +20,11 @@ class RemoteResourceTest extends PHPUnit_Framework_TestCase
 
     public function testCacheEtag()
     {
-        $resource = new RemoteResource('http://websites/petitcodeur/output/feed.xml');
+        $resource = new RemoteResource('http://petitcodeur.fr/feed.xml');
         $resource->execute();
         $etag = $resource->getEtag();
 
-        $resource = new RemoteResource('http://websites/petitcodeur/output/feed.xml');
+        $resource = new RemoteResource('http://petitcodeur.fr/feed.xml');
         $resource->setEtag($etag);
         $resource->execute();
 
@@ -34,11 +34,11 @@ class RemoteResourceTest extends PHPUnit_Framework_TestCase
 
     public function testCacheLastModified()
     {
-        $resource = new RemoteResource('http://websites/petitcodeur/output/feed.xml');
+        $resource = new RemoteResource('http://petitcodeur.fr/feed.xml');
         $resource->execute();
         $lastmod = $resource->getLastModified();
 
-        $resource = new RemoteResource('http://websites/petitcodeur/output/feed.xml');
+        $resource = new RemoteResource('http://petitcodeur.fr/feed.xml');
         $resource->setLastModified($lastmod);
         $resource->execute();
 
@@ -48,12 +48,12 @@ class RemoteResourceTest extends PHPUnit_Framework_TestCase
 
     public function testCacheBoth()
     {
-        $resource = new RemoteResource('http://websites/petitcodeur/output/feed.xml');
+        $resource = new RemoteResource('http://petitcodeur.fr/feed.xml');
         $resource->execute();
         $lastmod = $resource->getLastModified();
         $etag = $resource->getEtag();
 
-        $resource = new RemoteResource('http://websites/petitcodeur/output/feed.xml');
+        $resource = new RemoteResource('http://petitcodeur.fr/feed.xml');
         $resource->setLastModified($lastmod);
         $resource->setEtag($etag);
         $resource->execute();
