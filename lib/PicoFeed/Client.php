@@ -11,7 +11,7 @@ abstract class Client
     public $is_modified = true;
     public $content = '';
     public $url = '';
-    public $timeout = 5;
+    public $timeout = 10;
     public $max_redirects = 5;
     public $user_agent = 'PicoFeed (https://github.com/fguillot/picoFeed)';
 
@@ -24,15 +24,15 @@ abstract class Client
 
     public static function chooseAdapter()
     {
-        if (ini_get('allow_url_fopen')) {
-
-            require_once __DIR__.'/Clients/Stream.php';
-            return new Clients\Stream;
-        }
-        else if (function_exists('curl_init')) {
+        if (function_exists('curl_init')) {
 
             require_once __DIR__.'/Clients/Curl.php';
             return new Clients\Curl;
+    
+        } else if (ini_get('allow_url_fopen')) {
+
+            require_once __DIR__.'/Clients/Stream.php';
+            return new Clients\Stream;
         }
 
         throw new \LogicException('You must have "allow_url_fopen=1" or curl extension installed');

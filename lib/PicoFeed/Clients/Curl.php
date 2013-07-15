@@ -18,19 +18,6 @@ class Curl extends \PicoFeed\Client
 
             $this->is_modified = false;
         }
-        else if ($response['status'] == 301 || $response['status'] == 302) {
-
-            if (isset($response['headers']['Location'])) {
-
-                $this->url = $response['headers']['Location'];
-            }
-            else if (isset($response['headers']['location'])) {
-
-                $this->url = $response['headers']['location'];
-            }
-
-            $this->execute();
-        }
         else {
             $this->etag = isset($response['headers']['ETag']) ? $response['headers']['ETag'] : '';
             $this->last_modified = isset($response['headers']['Last-Modified']) ? $response['headers']['Last-Modified'] : '';
@@ -63,13 +50,22 @@ class Curl extends \PicoFeed\Client
         curl_setopt($ch, CURLOPT_TIMEOUT, $this->timeout);
         curl_setopt($ch, CURLOPT_USERAGENT, $this->user_agent);
         curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
-        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, false);
+        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+        curl_setopt($ch, CURLOPT_MAXREDIRS, $this->max_redirects);
         curl_setopt($ch, CURLOPT_ENCODING, '');
 
         // Don't check SSL certificates (for auto-signed certificates...)
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
 
         $http_response = curl_exec($ch);
+
+        $curl_info = curl_getinfo($ch);
+        $http_code = $curl_info['http_code'];
+
+        Logging::log('cURL total time: '.curl_getinfo($ch, CURLINFO_TOTAL_TIME));
+        Logging::log('cURL dns lookup time: '.curl_getinfo($ch, CURLINFO_NAMELOOKUP_TIME));
+        Logging::log('cURL connect time: '.curl_getinfo($ch, CURLINFO_CONNECT_TIME));
+        Logging::log('cURL speed download: '.curl_getinfo($ch, CURLINFO_SPEED_DOWNLOAD));
 
         if (curl_errno($ch)) {
 
@@ -84,17 +80,9 @@ class Curl extends \PicoFeed\Client
             );
         }
 
-        Logging::log('cURL total time: '.curl_getinfo($ch, CURLINFO_TOTAL_TIME));
-        Logging::log('cURL dns lookup time: '.curl_getinfo($ch, CURLINFO_NAMELOOKUP_TIME));
-        Logging::log('cURL connect time: '.curl_getinfo($ch, CURLINFO_CONNECT_TIME));
-        Logging::log('cURL speed download: '.curl_getinfo($ch, CURLINFO_SPEED_DOWNLOAD));
-
-        $http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-        $http_body = '';
-        $http_headers = array();
-
         curl_close($ch);
 
+        // @todo replace this with list($headers, $body) = explode("\r\n\r\n", $http_response, 2);
         $lines = explode("\r\n", $http_response);
         $body_start = 0;
         $i = 0;
