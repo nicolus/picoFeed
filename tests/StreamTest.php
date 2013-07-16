@@ -51,4 +51,14 @@ class StreamTest extends PHPUnit_Framework_TestCase
 
         $this->assertFalse($result);
     }
+
+
+    public function testAbortOnLargeBody()
+    {
+        $client = new Stream;
+        $client->url = 'http://duga.jp/ror.xml';
+        $result = $client->doRequest();
+
+        $this->assertFalse($result);
+    }
 }

@@ -13,7 +13,7 @@ abstract class Client
     public $url = '';
     public $timeout = 10;
     public $max_redirects = 5;
-    public $max_body_size = 10485760; // 10MB
+    public $max_body_size = 2097152; // 2MB
     public $user_agent = 'PicoFeed (https://github.com/fguillot/picoFeed)';
 
 

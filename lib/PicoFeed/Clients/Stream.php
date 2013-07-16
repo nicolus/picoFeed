@@ -30,13 +30,15 @@ class Stream extends \PicoFeed\Client
 
         $context = stream_context_create($context_options);
 
-        // Make HTTP request, TODO: more robust data fetching
+        // Make HTTP request
         $stream = @fopen($this->url, 'r', false, $context);
         if (! is_resource($stream)) return false;
 
-        // Get the entire body
-        // TODO: Fetch until max_body_size...
-        $body = stream_get_contents($stream);
+        // Get the entire body until the max size
+        $body = stream_get_contents($stream, $this->max_body_size + 1);
+
+        // If the body size is too large abort everything
+        if (strlen($body) > $this->max_body_size) return false;
 
         // Get HTTP headers response
         $metadata = stream_get_meta_data($stream);
