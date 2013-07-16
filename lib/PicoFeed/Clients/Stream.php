@@ -6,27 +6,6 @@ use \PicoFeed\Logging;
 
 class Stream extends \PicoFeed\Client
 {
-    public function execute()
-    {
-        if ($this->url === '') {
-            throw new \LogicException('The URL is missing');
-        }
-
-        $response = $this->doRequest();
-
-        if ($response['status'] == 304) {
-
-            $this->is_modified = false;
-        }
-        else {
-
-            $this->etag = isset($response['headers']['ETag']) ? $response['headers']['ETag'] : '';
-            $this->last_modified = isset($response['headers']['Last-Modified']) ? $response['headers']['Last-Modified'] : '';
-            $this->content = $response['body'];
-        }
-    }
-
-
     public function doRequest()
     {
         $http_code = 200;
@@ -61,32 +40,21 @@ class Stream extends \PicoFeed\Client
 
         // Make HTTP request, TODO: more robust data fetching
         $stream = fopen($this->url, 'r', false, $context);
-        $http_body = stream_get_contents($stream);
+        $body = stream_get_contents($stream);
 
         // @todo add error_get_last() here to check for errors
-        
+
         // Get HTTP headers response
         $metadata = stream_get_meta_data($stream);
 
-        foreach ($metadata['wrapper_data'] as $line) {
-
-            if (strpos($line, 'HTTP') === 0 && strpos($line, '301') === false && strpos($line, '302') === false) {
-
-                $http_code = (int) substr($line, 9, 3);
-            }
-            else if (strpos($line, ':') !== false) {
-
-                list($name, $value) = explode(': ', $line);
-                $http_headers[trim($name)] = trim($value);
-            }
-        }
+        list($status, $headers) = $this->parseHeaders($metadata['wrapper_data']);
 
         fclose($stream);
 
         return array(
-            'status' => $http_code,
-            'body' => $http_body,
-            'headers' => $http_headers
+            'status' => $status,
+            'body' => $body,
+            'headers' => $headers
         );
     }
 }

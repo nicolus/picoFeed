@@ -6,40 +6,16 @@ use \PicoFeed\Logging;
 
 class Curl extends \PicoFeed\Client
 {
-    public function execute()
-    {
-        if ($this->url === '') {
-            throw new \LogicException('The URL is missing');
-        }
-
-        $response = $this->doRequest();
-
-        if ($response['status'] == 304) {
-
-            $this->is_modified = false;
-        }
-        else {
-            $this->etag = isset($response['headers']['ETag']) ? $response['headers']['ETag'] : '';
-            $this->last_modified = isset($response['headers']['Last-Modified']) ? $response['headers']['Last-Modified'] : '';
-            $this->content = $response['body'];
-        }
-    }
-
-
     public function doRequest()
     {
-        $http_code = 200;
-        $http_body = '';
-        $http_headers = array();
-
         Logging::log('Fetch URL: '.$this->url);
         Logging::log('Etag: '.$this->etag);
         Logging::log('Last-Modified: '.$this->last_modified);
 
-        $headers = array('Connection: close');
+        $request_headers = array('Connection: close');
 
-        if ($this->etag) $headers[] = 'If-None-Match: '.$this->etag;
-        if ($this->last_modified) $headers[] = 'If-Modified-Since: '.$this->last_modified;
+        if ($this->etag) $request_headers[] = 'If-None-Match: '.$this->etag;
+        if ($this->last_modified) $request_headers[] = 'If-Modified-Since: '.$this->last_modified;
 
         $ch = curl_init();
 
@@ -49,18 +25,13 @@ class Curl extends \PicoFeed\Client
         curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, $this->timeout);
         curl_setopt($ch, CURLOPT_TIMEOUT, $this->timeout);
         curl_setopt($ch, CURLOPT_USERAGENT, $this->user_agent);
-        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $request_headers);
         curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
         curl_setopt($ch, CURLOPT_MAXREDIRS, $this->max_redirects);
         curl_setopt($ch, CURLOPT_ENCODING, '');
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false); // For auto-signed certificates...
 
-        // Don't check SSL certificates (for auto-signed certificates...)
-        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-
-        $http_response = curl_exec($ch);
-
-        $curl_info = curl_getinfo($ch);
-        $http_code = $curl_info['http_code'];
+        $response = curl_exec($ch);
 
         Logging::log('cURL total time: '.curl_getinfo($ch, CURLINFO_TOTAL_TIME));
         Logging::log('cURL dns lookup time: '.curl_getinfo($ch, CURLINFO_NAMELOOKUP_TIME));
@@ -72,52 +43,29 @@ class Curl extends \PicoFeed\Client
             Logging::log('cURL error: '.curl_error($ch));
 
             curl_close($ch);
-
-            return array(
-                'status' => $http_code,
-                'body' => $http_body,
-                'headers' => $http_headers
-            );
+            return false;
         }
 
         curl_close($ch);
 
-        // @todo replace this with list($headers, $body) = explode("\r\n\r\n", $http_response, 2);
-        $lines = explode("\r\n", $http_response);
-        $body_start = 0;
-        $i = 0;
+        $status = (int) substr($response, 9, 3);
 
-        foreach ($lines as $line) {
+        if ($status === 301 || $status === 302) {
 
-            if ($line === '') {
+            // If there is a redirect, all headers are merged
+            list(,$response_headers, $body) = explode("\r\n\r\n", $response, 3);
+        }
+        else {
 
-                $body_start = $i;
-                break;
-            }
-            else if (($p = strpos($line, ':')) !== false) {
-
-                $key = substr($line, 0, $p);
-                $value = substr($line, $p + 1);
-
-                $http_headers[trim($key)] = trim($value);
-            }
-
-            $i++;
+            list($response_headers, $body) = explode("\r\n\r\n", $response, 2);
         }
 
-        $http_body = implode("\r\n", array_splice($lines, $i + 1));
-
-        Logging::log('HTTP status code: '.$http_code);
-
-        foreach ($http_headers as $header_name => $header_value) {
-
-            Logging::log('HTTP headers: '.$header_name.' => '.$header_value);
-        }
+        list($status, $headers) = $this->parseHeaders(explode("\r\n", $response_headers));
 
         return array(
-            'status' => $http_code,
-            'body' => $http_body,
-            'headers' => $http_headers
+            'status' => $status,
+            'body' => $body,
+            'headers' => $headers
         );
     }
 }

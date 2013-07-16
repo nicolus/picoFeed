@@ -28,7 +28,7 @@ abstract class Client
 
             require_once __DIR__.'/Clients/Curl.php';
             return new Clients\Curl;
-    
+
         } else if (ini_get('allow_url_fopen')) {
 
             require_once __DIR__.'/Clients/Stream.php';
@@ -36,6 +36,56 @@ abstract class Client
         }
 
         throw new \LogicException('You must have "allow_url_fopen=1" or curl extension installed');
+    }
+
+
+    public function execute()
+    {
+        if ($this->url === '') {
+            throw new \LogicException('The URL is missing');
+        }
+
+        $response = $this->doRequest();
+
+        if (is_array($response)) {
+
+            if ($response['status'] == 304) {
+                $this->is_modified = false;
+            }
+            else {
+                $this->etag = isset($response['headers']['ETag']) ? $response['headers']['ETag'] : '';
+                $this->last_modified = isset($response['headers']['Last-Modified']) ? $response['headers']['Last-Modified'] : '';
+                $this->content = $response['body'];
+            }
+        }
+    }
+
+
+    public function parseHeaders(array $lines)
+    {
+        $status = 200;
+        $headers = array();
+
+        foreach ($lines as $line) {
+
+            if (strpos($line, 'HTTP') === 0 && strpos($line, '301') === false && strpos($line, '302') === false) {
+
+                $status = (int) substr($line, 9, 3);
+            }
+            else if (strpos($line, ':') !== false) {
+
+                list($name, $value) = explode(': ', $line);
+                $headers[trim($name)] = trim($value);
+            }
+        }
+
+        Logging::log('HTTP status code: '.$status);
+
+        foreach ($headers as $name => $value) {
+            Logging::log('HTTP headers: '.$name.' => '.$value);
+        }
+
+        return array($status, $headers);
     }
 
 
