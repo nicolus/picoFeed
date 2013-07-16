@@ -63,6 +63,8 @@ class Stream extends \PicoFeed\Client
         $stream = fopen($this->url, 'r', false, $context);
         $http_body = stream_get_contents($stream);
 
+        // @todo add error_get_last() here to check for errors
+        
         // Get HTTP headers response
         $metadata = stream_get_meta_data($stream);
 
