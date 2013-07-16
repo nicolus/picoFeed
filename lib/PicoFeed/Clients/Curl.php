@@ -47,10 +47,6 @@ class Curl extends \PicoFeed\Client
 
     public function doRequest()
     {
-        Logging::log('Fetch URL: '.$this->url);
-        Logging::log('Etag: '.$this->etag);
-        Logging::log('Last-Modified: '.$this->last_modified);
-
         $request_headers = array('Connection: close');
 
         if ($this->etag) $request_headers[] = 'If-None-Match: '.$this->etag;

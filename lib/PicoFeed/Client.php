@@ -46,6 +46,10 @@ abstract class Client
             throw new \LogicException('The URL is missing');
         }
 
+        Logging::log('Fetch URL: '.$this->url);
+        Logging::log('Etag: '.$this->etag);
+        Logging::log('Last-Modified: '.$this->last_modified);
+
         $response = $this->doRequest();
 
         if (is_array($response)) {

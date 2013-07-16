@@ -8,14 +8,6 @@ class Stream extends \PicoFeed\Client
 {
     public function doRequest()
     {
-        $http_code = 200;
-        $http_body = '';
-        $http_headers = array();
-
-        Logging::log('Fetch URL: '.$this->url);
-        Logging::log('Etag: '.$this->etag);
-        Logging::log('Last-Modified: '.$this->last_modified);
-
         // Prepare HTTP headers for the request
         $headers = array(
             'Connection: close',
