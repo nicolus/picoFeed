@@ -6,6 +6,45 @@ use \PicoFeed\Logging;
 
 class Curl extends \PicoFeed\Client
 {
+    private $body = '';
+    private $body_length = 0;
+    private $headers = array();
+    private $headers_counter = 0;
+
+
+    public function readBody($ch, $buffer)
+    {
+        $length = strlen($buffer);
+        $this->body_length += $length;
+
+        if ($this->body_length > $this->max_body_size) return -1;
+
+        $this->body .= $buffer;
+
+        return $length;
+    }
+
+
+    public function readHeaders($ch, $buffer)
+    {
+        $length = strlen($buffer);
+
+        if ($buffer === "\r\n") {
+            $this->headers_counter++;
+        }
+        else {
+
+            if (! isset($this->headers[$this->headers_counter])) {
+                $this->headers[$this->headers_counter] = '';
+            }
+
+            $this->headers[$this->headers_counter] .= $buffer;
+        }
+
+        return $length;
+    }
+
+
     public function doRequest()
     {
         Logging::log('Fetch URL: '.$this->url);
@@ -20,8 +59,6 @@ class Curl extends \PicoFeed\Client
         $ch = curl_init();
 
         curl_setopt($ch, CURLOPT_URL, $this->url);
-        curl_setopt($ch, CURLOPT_HEADER, true);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, $this->timeout);
         curl_setopt($ch, CURLOPT_TIMEOUT, $this->timeout);
         curl_setopt($ch, CURLOPT_USERAGENT, $this->user_agent);
@@ -30,8 +67,9 @@ class Curl extends \PicoFeed\Client
         curl_setopt($ch, CURLOPT_MAXREDIRS, $this->max_redirects);
         curl_setopt($ch, CURLOPT_ENCODING, '');
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false); // For auto-signed certificates...
-
-        $response = curl_exec($ch);
+        curl_setopt($ch, CURLOPT_WRITEFUNCTION, array($this, 'readBody'));
+        curl_setopt($ch, CURLOPT_HEADERFUNCTION, array($this, 'readHeaders'));
+        curl_exec($ch);
 
         Logging::log('cURL total time: '.curl_getinfo($ch, CURLINFO_TOTAL_TIME));
         Logging::log('cURL dns lookup time: '.curl_getinfo($ch, CURLINFO_NAMELOOKUP_TIME));
@@ -48,23 +86,11 @@ class Curl extends \PicoFeed\Client
 
         curl_close($ch);
 
-        $status = (int) substr($response, 9, 3);
-
-        if ($status === 301 || $status === 302) {
-
-            // If there is a redirect, all headers are merged
-            list(,$response_headers, $body) = explode("\r\n\r\n", $response, 3);
-        }
-        else {
-
-            list($response_headers, $body) = explode("\r\n\r\n", $response, 2);
-        }
-
-        list($status, $headers) = $this->parseHeaders(explode("\r\n", $response_headers));
+        list($status, $headers) = $this->parseHeaders(explode("\r\n", $this->headers[$this->headers_counter - 1]));
 
         return array(
             'status' => $status,
-            'body' => $body,
+            'body' => $this->body,
             'headers' => $headers
         );
     }
