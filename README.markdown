@@ -10,12 +10,20 @@ Features and requirements
 -------------------------
 
 - Simple and fast
-- Dependencies: PHP >= 5.3, libxml >= 2.7, DOM, SimpleXML, cURL
-- Feed parsers for Atom 1.0 and RSS (0.91, 0.92, 1.0 and 2.0)
-- Feed writers for Atom 1.0 and RSS 2.0
+- Feed parser for Atom 1.0 and RSS (0.91, 0.92, 1.0 and 2.0)
+- Feed writer for Atom 1.0 and RSS 2.0
 - Import/Export OPML subscriptions
 - Content filter: HTML cleanup, remove pixel trackers and Ads
+- Many HTTP client adapters: cURL or Stream Context
 - License: Unlicense <http://unlicense.org/>
+
+Requirements
+------------
+
+- PHP >= 5.3
+- libxml >= 2.7
+- XML PHP extensions: DOM and SimpleXML
+- cURL or Stream Context (`allow_url_fopen=On`)
 
 Limitations
 -----------
