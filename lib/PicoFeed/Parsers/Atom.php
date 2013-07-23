@@ -25,7 +25,7 @@ class Atom extends \PicoFeed\Parser
 
             if (isset($entry->author->name)) {
 
-                $author = $entry->author->name;
+                $author = (string) $entry->author->name;
             }
 
             $item = new \StdClass;
