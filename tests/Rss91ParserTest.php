@@ -20,7 +20,7 @@ class Rss91ParserTest extends PHPUnit_Framework_TestCase
 
         $this->assertEquals('Giving the world a pluggable Gnutella', $r->items[0]->title);
         $this->assertEquals('http://writetheweb.com/read.php?item=24', $r->items[0]->url);
-        $this->assertEquals('http://writetheweb.com/read.php?item=24', $r->items[0]->id);
+        $this->assertEquals('5f9fc1c2', $r->items[0]->id);
         $this->assertEquals(time(), $r->items[0]->updated);
         $this->assertEquals('webmaster@writetheweb.com', $r->items[0]->author);
     }

@@ -20,7 +20,7 @@ class Rss92ParserTest extends PHPUnit_Framework_TestCase
 
         $this->assertEquals('Retour de Xavier Niel sur Twitter, « sans initiative privée, pas de révolution #Born2code »', $r->items[0]->title);
         $this->assertEquals('http://www.universfreebox.com/article20302.html', $r->items[0]->url);
-        $this->assertEquals('http://www.universfreebox.com/article20302.html', $r->items[0]->id);
+        $this->assertEquals('4e8596dc', $r->items[0]->id);
         $this->assertEquals('1364240600', $r->items[0]->updated);
         $this->assertEquals('', $r->items[0]->author);
     }

@@ -1,5 +1,6 @@
 <?php
 
+require_once 'lib/PicoFeed/Logging.php';
 require_once 'lib/PicoFeed/Client.php';
 
 use PicoFeed\Client;
@@ -11,13 +12,13 @@ class ClientTest extends PHPUnit_Framework_TestCase
         $client = Client::create();
         $client->url = 'http://petitcodeur.fr/feed.xml';
         $client->execute();
-
+var_dump(\PicoFeed\Logging::$messages);
         $this->assertTrue($client->isModified());
         $this->assertNotEmpty($client->getContent());
         $this->assertNotEmpty($client->getEtag());
         $this->assertNotEmpty($client->getLastModified());
     }
-
+/*
 
     public function testCacheEtag()
     {
@@ -66,5 +67,5 @@ class ClientTest extends PHPUnit_Framework_TestCase
         $client->execute();
 
         $this->assertFalse($client->isModified());
-    }
+    }*/
 }

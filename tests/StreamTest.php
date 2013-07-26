@@ -16,7 +16,7 @@ class StreamTest extends PHPUnit_Framework_TestCase
         $this->assertTrue(is_array($result));
         $this->assertEquals(200, $result['status']);
         $this->assertEquals('Sitemap: http://petitcodeur.fr/sitemap.xml', $result['body']);
-        $this->assertEquals('text/plain', $result['headers']['Content-Type']);
+        $this->assertEquals('text/plain; charset=utf-8', $result['headers']['Content-Type']);
     }
 
 
