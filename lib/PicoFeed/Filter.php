@@ -11,6 +11,7 @@ class Filter
     private $strip_content = false;
 
     public $allowed_tags = array(
+        'audio' => array('controls', 'src'),
         'video' => array('poster', 'controls', 'height', 'width', 'src'),
         'source' => array('src', 'type'),
         'dt' => array(),
