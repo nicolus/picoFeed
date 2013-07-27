@@ -28,10 +28,12 @@ class Atom extends \PicoFeed\Parser
                 $author = (string) $entry->author->name;
             }
 
+            $id = (string) $entry->id;
+
             $item = new \StdClass;
-            $item->id = $this->generateId((string) $entry->id, $this->url);
-            $item->title = $this->stripWhiteSpace((string) $entry->title);
             $item->url = $this->getUrl($entry);
+            $item->id = $this->generateId($id !== $item->url ? $id : $item->$url, $this->url);
+            $item->title = $this->stripWhiteSpace((string) $entry->title);
             $item->updated = strtotime((string) $entry->updated);
             $item->author = $author;
             $item->content = $this->filterHtml($this->getContent($entry), $item->url);

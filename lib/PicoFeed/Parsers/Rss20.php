@@ -94,7 +94,8 @@ class Rss20 extends \PicoFeed\Parser
 
             if (isset($entry->guid) && isset($entry->guid['isPermaLink']) && (string) $entry->guid['isPermaLink'] != 'false') {
 
-                $item->id = $this->generateId((string) $entry->guid, $this->url);
+                $id = (string) $entry->guid;
+                $item->id = $this->generateId($id !== '' && $id !== $item->url ? $id : $item->url, $this->url);
             }
             else {
 
