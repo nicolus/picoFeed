@@ -227,3 +227,43 @@ You will got an output like that:
         [15] => HTTP headers: ETag => "393e79c-cfed-4e07ee78b2680"
         [16] => HTTP headers: Accept-Ranges => bytes
     )
+
+### Override blacklist/whitelist of the content filter
+
+These variables are static arrays, extends the actual array or replace it.
+
+By example to add a new iframe whitelist:
+
+    Filter::$iframe_whitelist[] = 'http://www.kickstarter.com';
+
+Or to replace the entire whitelist:
+
+    Filter::$iframe_whitelist = array('http://www.kickstarter.com');
+
+Available variables:
+
+    // Allow only specified tags and attributes
+    Filter::$allowed_tags
+
+    // Strip content of these tags
+    Filter::$strip_tags_content
+
+    // Allow only specified URI scheme
+    Filter::$allowed_protocols
+
+    // List of attributes used for external resources: src and href
+    Filter::$media_attributes
+
+    // Blacklist of external resources
+    Filter::$media_blacklist
+
+    // Required attributes for tags, if the attribute is missing the tag is dropped
+    Filter::$required_attributes
+
+    // Add attribute to specified tags
+    Filter::$add_attributes
+
+    // Iframe allowed source
+    Filter::$iframe_whitelist
+
+For more details, have a look to the class `Filter`.
