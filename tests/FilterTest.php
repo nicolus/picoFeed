@@ -62,4 +62,29 @@ EOD;
         $f = new Filter($data, 'http://blabla');
         $this->assertEquals($data, $f->execute());
     }
+
+
+    public function testOverrideFilters()
+    {
+        // Add a new whitelist
+        Filter::$iframe_whitelist[] = 'http://www.kickstarter.com';
+
+        $data = '<iframe src="http://www.kickstarter.com/projects/lefnire/habitrpg-mobile/widget/video.html" height="480" width="640" frameborder="0"></iframe>';
+
+        $f = new Filter($data, 'http://blabla');
+        $this->assertEquals($data, $f->execute());
+
+        // Reset the entire array
+        Filter::$iframe_whitelist = array('http://www.kickstarter.com');
+
+        $data = '<iframe src="http://www.kickstarter.com/projects/lefnire/habitrpg-mobile/widget/video.html" height="480" width="640" frameborder="0"></iframe>';
+
+        $f = new Filter($data, 'http://blabla');
+        $this->assertEquals($data, $f->execute());
+
+        $data = '<iframe src="http://www.youtube.com/bla" height="480" width="640" frameborder="0"></iframe>';
+
+        $f = new Filter($data, 'http://blabla');
+        $this->assertEmpty($f->execute());
+    }
 }
