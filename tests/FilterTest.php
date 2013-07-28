@@ -8,6 +8,15 @@ use PicoFeed\Reader;
 
 class FilterTest extends PHPUnit_Framework_TestCase
 {
+    public function testBadAttributes()
+    {
+        $data = '<iframe src="http://www.youtube.com/bla" height="480px" width="100%" frameborder="0"></iframe>';
+
+        $f = new Filter($data, 'http://blabla');
+        $this->assertEquals('<iframe src="http://www.youtube.com/bla" frameborder="0"></iframe>', $f->execute());
+    }
+
+
     public function testGetAbsoluteUrl()
     {
         $f = new Filter('', '');

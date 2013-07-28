@@ -11,7 +11,7 @@ class Filter
     private $strip_content = false;
 
     // Allow only these tags and attributes
-    public static $allowed_tags = array(
+    public static $whitelist_tags = array(
         'audio' => array('controls', 'src'),
         'video' => array('poster', 'controls', 'height', 'width', 'src'),
         'source' => array('src', 'type'),
@@ -53,13 +53,13 @@ class Filter
     );
 
     // Strip content of these tags
-    public static $strip_tags_content = array(
+    public static $blacklist_tags = array(
         'script'
     );
 
     // Allowed URI scheme
     // For a complete list go to http://en.wikipedia.org/wiki/URI_scheme
-    public static $allowed_protocols = array(
+    public static $scheme_whitelist = array(
         '//',
         'data:image/png;base64,',
         'data:image/gif;base64,',
@@ -99,6 +99,7 @@ class Filter
     public static $media_attributes = array(
         'src',
         'href',
+        'poster',
     );
 
     // Blacklisted resources
@@ -139,6 +140,13 @@ class Filter
     // Add attributes to specified tags
     public static $add_attributes = array(
         'a' => 'rel="noreferrer" target="_blank"'
+    );
+
+    // Attributes that must be integer
+    public static $integer_attributes = array(
+        'width',
+        'height',
+        'frameborder',
     );
 
     // Iframe source whitelist, everything else is ignored
@@ -242,7 +250,7 @@ class Filter
                             $used_attributes[] = $attribute;
                         }
                     }
-                    else {
+                    else if ($this->validateAttributeValue($attribute, $value)) {
 
                         $attr_data .= ' '.$attribute.'="'.$value.'"';
                         $used_attributes[] = $attribute;
@@ -278,7 +286,7 @@ class Filter
             }
         }
 
-        if (in_array($name, self::$strip_tags_content)) {
+        if (in_array($name, self::$blacklist_tags)) {
 
             $this->strip_content = true;
         }
@@ -333,12 +341,10 @@ class Filter
             $length = strlen($url_path);
 
             if ($length > 1 && $url_path{$length - 1} !== '/') {
-
                 $url_path = dirname($url_path).'/';
             }
 
             if (substr($path, 0, 2) === './') {
-
                 $path = substr($path, 2);
             }
 
@@ -350,20 +356,19 @@ class Filter
     public function isRelativePath($value)
     {
         if (strpos($value, 'data:') === 0) return false;
-
         return strpos($value, '://') === false && strpos($value, '//') !== 0;
     }
 
 
     public function isAllowedTag($name)
     {
-        return isset(self::$allowed_tags[$name]);
+        return isset(self::$whitelist_tags[$name]);
     }
 
 
     public function isAllowedAttribute($tag, $attribute)
     {
-        return in_array($attribute, self::$allowed_tags[$tag]);
+        return in_array($attribute, self::$whitelist_tags[$tag]);
     }
 
 
@@ -378,7 +383,6 @@ class Filter
         foreach (self::$iframe_whitelist as $url) {
 
             if (strpos($value, $url) === 0) {
-
                 return true;
             }
         }
@@ -389,10 +393,9 @@ class Filter
 
     public function isAllowedProtocol($value)
     {
-        foreach (self::$allowed_protocols as $protocol) {
+        foreach (self::$scheme_whitelist as $protocol) {
 
             if (strpos($value, $protocol) === 0) {
-
                 return true;
             }
         }
@@ -406,7 +409,6 @@ class Filter
         foreach (self::$media_blacklist as $name) {
 
             if (strpos($resource, $name) !== false) {
-
                 return true;
             }
         }
@@ -420,5 +422,15 @@ class Filter
         return $tag === 'img' &&
                 isset($attributes['height']) && isset($attributes['width']) &&
                 $attributes['height'] == 1 && $attributes['width'] == 1;
+    }
+
+
+    public function validateAttributeValue($attribute, $value)
+    {
+        if (in_array($attribute, self::$integer_attributes)) {
+            return ctype_digit($value);
+        }
+
+        return true;
     }
 }

@@ -243,13 +243,13 @@ Or to replace the entire whitelist:
 Available variables:
 
     // Allow only specified tags and attributes
-    Filter::$allowed_tags
+    Filter::$whitelist_tags
 
     // Strip content of these tags
-    Filter::$strip_tags_content
+    Filter::$blacklist_tags
 
     // Allow only specified URI scheme
-    Filter::$allowed_protocols
+    Filter::$whitelist_scheme
 
     // List of attributes used for external resources: src and href
     Filter::$media_attributes
@@ -262,6 +262,9 @@ Available variables:
 
     // Add attribute to specified tags
     Filter::$add_attributes
+
+    // Integer Attributes
+    Filter::$integer_attributes
 
     // Iframe allowed source
     Filter::$iframe_whitelist
