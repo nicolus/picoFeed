@@ -8,6 +8,72 @@ use PicoFeed\Reader;
 
 class FilterTest extends PHPUnit_Framework_TestCase
 {
+    public function testCode()
+    {
+        $data = '<pre><code>HEAD / HTTP/1.1
+Accept: text/html
+Accept-Encoding: gzip, deflate, compress
+Host: www.amazon.com
+User-Agent: HTTPie/0.6.0
+
+
+
+<strong>HTTP/1.1 405 MethodNotAllowed</strong>
+Content-Encoding: gzip
+Content-Type: text/html; charset=ISO-8859-1
+Date: Mon, 15 Jul 2013 02:05:59 GMT
+Server: Server
+Set-Cookie: skin=noskin; path=/; domain=.amazon.com; expires=Mon, 15-Jul-2013 02:05:59 GMT
+Vary: Accept-Encoding,User-Agent
+<strong>allow: POST, GET</strong>
+x-amz-id-1: 11WD3K15FC268R5GBJY5
+x-amz-id-2: DDjqfqz2ZJufzqRAcj1mh+9XvSogrPohKHwXlo8IlkzH67G6w4wnjn9HYgbs4uI0
+</code></pre>';
+
+        $f = new Filter($data, 'http://blabla');
+        $this->assertEquals($data, $f->execute());
+    }
+
+
+    public function testRemoveEmptyTags()
+    {
+        $data = '<p>toto</p><p></p><br/>';
+        $f = new Filter($data, 'http://blabla');
+        $this->assertEquals('<p>toto</p><br/>', $f->removeEmptyTags($data));
+
+        $data = '<p> </p>';
+        $f = new Filter($data, 'http://blabla');
+        $this->assertEquals('', $f->execute());
+
+        $data = '<p>&nbsp;</p>';
+        $f = new Filter($data, 'http://blabla');
+        $this->assertEquals('', $f->execute());
+    }
+
+
+    public function testRemoveEmptyTable()
+    {
+        $data = '<table><tr><td>    </td></tr></table>';
+
+        $f = new Filter($data, 'http://blabla');
+        $this->assertEquals('', $f->execute());
+
+        $data = '<table><tr></tr></table>';
+
+        $f = new Filter($data, 'http://blabla');
+        $this->assertEquals('', $f->execute());
+    }
+
+
+    public function testRemoveNoBreakingSpace()
+    {
+        $data = '<p>&nbsp;&nbsp;truc</p>';
+
+        $f = new Filter($data, 'http://blabla');
+        $this->assertEquals('<p> truc</p>', $f->execute());
+    }
+
+
     public function testBadAttributes()
     {
         $data = '<iframe src="http://www.youtube.com/bla" height="480px" width="100%" frameborder="0"></iframe>';
