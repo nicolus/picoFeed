@@ -1,0 +1,4 @@
+<?php
+return array(
+    'test_url' => 'http://www.laprensagrafica.com/opinion/editorial/229252-reflexiones-sobre-la-educacion-que-necesitamos.html',
+);

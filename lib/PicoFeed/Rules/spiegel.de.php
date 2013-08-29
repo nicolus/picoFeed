@@ -1,0 +1,41 @@
+<?php
+return array(
+    'title' => '//div[@id=\'spArticleContent\']/h2',
+    'title' => '//div[@class=\'spBigaHeadline\']',
+    'test_url' => 'http://www.spiegel.de/politik/deutschland/0,1518,787602,00.html',
+    'body' => array(
+         '//div[@id=\"spArticleContent\"]',
+         '//div[@id=\"spArticleSection\"]',
+         '//div[@id=\"spBigaContent\"]',
+    ),
+    'strip' => array(
+         '//div[@id=\"spArticleContent\"]/h3',
+         '//div[@id=\'spArticleContent\']/h1',
+         '//div[@id=\'spArticleContent\']/h2',
+         '//p[@class=\'spAuthor\']',
+         '//*/span[@class=\'spPicLayerText\']',
+         '//*/div[@class=\'spPanoPlayerPaneControl\']',
+         '//*/div[@class=\'spCredit\']',
+         '//*/div[@class=\'spCredit\']/following-sibling::p',
+         '//div[@class=\'spMInline\']',
+         '//div[@class=\'spPhotoGallery\']',
+         '//div[@class=\'spPhotoGallery\']/following-sibling::br',
+         '//div[@class=\'spAssetAlignleft\']',
+         '//div[contains(@class,\'spAsset\')]',
+         '//br[@clear=\'all\']',
+         '//div[@id=\'spSocialBookmark\']',
+         '//div[contains(@class, \'spCommunityBox\')]',
+         '//div[contains(@class, \'spArticleNewsfeedBox\')]',
+         '//div[@class=\'spArticleCredit\']',
+         '//div[@id=\'spBreadcrumb\']',
+         '//div[@id=\'spBigaLatestEntries\']',
+         '//div[contains(@class, \'spBigaNavi\')]',
+         '//div[@class=\'spDottedLine\']',
+    ),
+    'single_page_link' => array(
+         '//a[contains(@href, \'-druck\')]',
+    ),
+    'next_page_link' => array(
+         '//a[@class=\'spBigaControlForw\']',
+    ),
+);
