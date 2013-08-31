@@ -15,6 +15,7 @@ abstract class Parser
     public $title = '';
     public $updated = '';
     public $items = array();
+    public $grabber = false;
 
 
     abstract public function execute();
@@ -23,7 +24,7 @@ abstract class Parser
     public function __construct($content)
     {
         // Strip XML tag to avoid multiple encoding/decoding in next XML processing
-        $this->content = $this->stripXmlTag($content);
+        $this->content = Filter::stripXmlTag($content);
 
         // Encode everything in UTF-8
         $this->content = Encoding::toUTF8($this->content);
@@ -33,13 +34,18 @@ abstract class Parser
     }
 
 
-    public function filterHtml($str, $item_url)
+    public function filterHtml($item_content, $item_url)
     {
         $content = '';
 
-        if ($str) {
+        if ($this->grabber) {
+            $grabber = new Grabber($item_url);
+            $grabber->download();
+            if ($grabber->content) $item_content = $grabber->content;
+        }
 
-            $filter = new Filter($str, $item_url);
+        if ($item_content) {
+            $filter = new Filter($item_content, $item_url);
             $content = $filter->execute();
         }
 
@@ -69,17 +75,6 @@ abstract class Parser
     public function normalizeData($data)
     {
         return str_replace("\xc3\x20", '', $data);
-    }
-
-
-    public function stripXmlTag($data)
-    {
-        if (strpos($data, '<?xml') !== false) {
-
-            $data = substr($data, strrpos($data, '?>') + 2);
-        }
-
-        return $data;
     }
 
 
