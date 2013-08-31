@@ -5,6 +5,7 @@ namespace PicoFeed;
 require_once __DIR__.'/Client.php';
 require_once __DIR__.'/Encoding.php';
 require_once __DIR__.'/Logging.php';
+require_once __DIR__.'/Filter.php';
 
 class Grabber
 {
@@ -58,34 +59,23 @@ class Grabber
     {
         if ($this->html) {
 
-            Logging::log(\get_called_class().' HTML fetched');
+            Logging::log(\get_called_class().' Fix encoding');
+            $this->html = Filter::stripMetaTags($this->html);
+            $this->html = Encoding::toUtf8($this->html);
 
+            Logging::log(\get_called_class().' Try to find rules');
             $rules = $this->getRules();
-
-            \libxml_use_internal_errors(true);
-            $dom = new \DOMDocument;
-            $dom->loadHTML($this->html);
 
             if (is_array($rules)) {
                 Logging::log(\get_called_class().' Parse content with rules');
-                $this->parseContentWithRules($dom, $rules);
+                $this->parseContentWithRules($rules);
             }
             else {
-
                 Logging::log(\get_called_class().' Parse content with candidates');
-                $this->parseContentWithCandidates($dom);
-
-                if (strlen($this->content) < 50) {
-                    Logging::log(\get_called_class().' No enought content fetched, get the full body');
-                    $this->content = $dom->saveXML($dom->firstChild);
-                }
-
-                Logging::log(\get_called_class().' Strip garbage');
-                $this->stripGarbage();
+                $this->parseContentWithCandidates();
             }
         }
         else {
-
             Logging::log(\get_called_class().' No content fetched');
         }
 
@@ -129,8 +119,11 @@ class Grabber
     }
 
 
-    public function parseContentWithRules($dom, array $rules)
+    public function parseContentWithRules(array $rules)
     {
+        \libxml_use_internal_errors(true);
+        $dom = new \DOMDocument;
+        $dom->loadHTML('<?xml version="1.0" encoding="UTF-8">'.$this->html);
         $xpath = new \DOMXPath($dom);
 
         if (isset($rules['strip']) && is_array($rules['strip'])) {
@@ -138,21 +131,6 @@ class Grabber
             foreach ($rules['strip'] as $pattern) {
 
                 $nodes = $xpath->query($pattern);
-
-                if ($nodes !== false && $nodes->length > 0) {
-                    foreach ($nodes as $node) {
-                        $node->parentNode->removeChild($node);
-                    }
-                }
-            }
-        }
-
-        if (isset($rules['strip_id_or_class']) && is_array($rules['strip_id_or_class'])) {
-
-            foreach ($rules['strip_id_or_class'] as $pattern) {
-
-                $pattern = strtr($pattern, array("'" => '', '"' => ''));
-                $nodes = $xpath->query("//*[contains(@class, '$pattern') or contains(@id, '$pattern')]");
 
                 if ($nodes !== false && $nodes->length > 0) {
                     foreach ($nodes as $node) {
@@ -178,8 +156,11 @@ class Grabber
     }
 
 
-    public function parseContentWithCandidates($dom)
+    public function parseContentWithCandidates()
     {
+        \libxml_use_internal_errors(true);
+        $dom = new \DOMDocument;
+        $dom->loadHTML('<?xml version="1.0" encoding="UTF-8">'.$this->html);
         $xpath = new \DOMXPath($dom);
 
         // Try to fetch <article/>
@@ -200,6 +181,14 @@ class Grabber
                 return;
             }
         }
+
+        if (strlen($this->content) < 50) {
+            Logging::log(\get_called_class().' No enought content fetched, get the full body');
+            $this->content = $dom->saveXML($dom->firstChild);
+        }
+
+        Logging::log(\get_called_class().' Strip garbage');
+        $this->stripGarbage();
     }
 
 
@@ -207,7 +196,7 @@ class Grabber
     {
         \libxml_use_internal_errors(true);
         $dom = new \DOMDocument;
-        $dom->loadXML($this->content);
+        $dom->loadXML('<?xml version="1.0" encoding="UTF-8">'.$this->content);
         $xpath = new \DOMXPath($dom);
 
         foreach ($this->stripTags as $tag) {

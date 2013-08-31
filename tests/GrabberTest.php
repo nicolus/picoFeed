@@ -10,15 +10,15 @@ class GrabberTest extends PHPUnit_Framework_TestCase
 {
     public function testGrabContentWithCandidates()
     {
+        $grabber = new Grabber('http://www.cnn.com/2013/08/31/world/meast/syria-civil-war/index.html?hpt=hp_t1');
+        $grabber->download();
+        $this->assertTrue($grabber->parse());
+
         $grabber = new Grabber('http://www.lemonde.fr/proche-orient/article/2013/08/30/la-france-nouvelle-plus-ancienne-alliee-des-etats-unis_3469218_3218.html');
         $grabber->download();
         $this->assertTrue($grabber->parse());
 
         $grabber = new Grabber('http://www.rue89.com/2013/08/30/faisait-boris-boillon-ex-sarko-boy-350-000-euros-gare-nord-245315');
-        $grabber->download();
-        $this->assertTrue($grabber->parse());
-
-        $grabber = new Grabber('http://montreal.ctvnews.ca/quebec-premier-has-positive-words-for-enbridge-pipeline-project-1.1432695');
         $grabber->download();
         $this->assertTrue($grabber->parse());
 
@@ -81,7 +81,7 @@ class GrabberTest extends PHPUnit_Framework_TestCase
 
                     if (! $r) {
                         var_dump($rule);
-                        //var_dump($grabber->content);
+                        var_dump($grabber->content);
                     }
 
                     $this->assertTrue($r);
