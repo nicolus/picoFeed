@@ -5,6 +5,7 @@ namespace PicoFeed;
 require_once __DIR__.'/Logging.php';
 require_once __DIR__.'/Filter.php';
 require_once __DIR__.'/Encoding.php';
+require_once __DIR__.'/Grabber.php';
 
 abstract class Parser
 {
@@ -16,6 +17,9 @@ abstract class Parser
     public $updated = '';
     public $items = array();
     public $grabber = false;
+    public $grabber_ignore_urls = array();
+    public $grabber_timeout = null;
+    public $grabber_user_agent = null;
 
 
     abstract public function execute();
@@ -38,10 +42,10 @@ abstract class Parser
     {
         $content = '';
 
-        if ($this->grabber) {
+        if ($this->grabber && ! in_array($item_url, $this->grabber_ignore_urls)) {
             $grabber = new Grabber($item_url);
-            $grabber->download();
-            if ($grabber->content) $item_content = $grabber->content;
+            $grabber->download($this->grabber_timeout, $this->grabber_user_agent);
+            if ($grabber->parse()) $item_content = $grabber->content;
         }
 
         if ($item_content) {

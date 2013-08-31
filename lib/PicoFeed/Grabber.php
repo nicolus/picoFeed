@@ -4,6 +4,7 @@ namespace PicoFeed;
 
 require_once __DIR__.'/Client.php';
 require_once __DIR__.'/Encoding.php';
+require_once __DIR__.'/Logging.php';
 
 class Grabber
 {
@@ -17,6 +18,7 @@ class Grabber
         'articlebody',
         'articleContent',
         'articlecontent',
+        'articlePage',
         'post-content',
         'content',
         'main',
@@ -52,20 +54,12 @@ class Grabber
     }
 
 
-    public function download($timeout = 5, $user_agent = 'PicoFeed (https://github.com/fguillot/picoFeed)')
+    public function parse()
     {
-        $client = Client::create();
-        $client->url = $this->url;
-        $client->timeout = $timeout;
-        $client->user_agent = $user_agent;
-        $client->execute();
-
-        $this->html = $client->getContent();
-        $this->url = $client->getUrl();
-
         if ($this->html) {
 
-            $this->html = Encoding::toUTF8($this->html);
+            Logging::log(\get_called_class().' HTML fetched');
+
             $rules = $this->getRules();
 
             \libxml_use_internal_errors(true);
@@ -73,21 +67,44 @@ class Grabber
             $dom->loadHTML($this->html);
 
             if (is_array($rules)) {
+                Logging::log(\get_called_class().' Parse content with rules');
                 $this->parseContentWithRules($dom, $rules);
             }
             else {
 
+                Logging::log(\get_called_class().' Parse content with candidates');
                 $this->parseContentWithCandidates($dom);
 
                 if (strlen($this->content) < 50) {
+                    Logging::log(\get_called_class().' No enought content fetched, get the full body');
                     $this->content = $dom->saveXML($dom->firstChild);
                 }
 
+                Logging::log(\get_called_class().' Strip garbage');
                 $this->stripGarbage();
             }
         }
+        else {
+
+            Logging::log(\get_called_class().' No content fetched');
+        }
+
+        Logging::log(\get_called_class().' Grabber done');
 
         return $this->content !== '';
+    }
+
+
+    public function download($timeout = 5, $user_agent = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_8_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/29.0.1547.62 Safari/537.36')
+    {
+        $client = Client::create();
+        $client->url = $this->url;
+        $client->timeout = $timeout;
+        $client->user_agent = $user_agent;
+        $client->execute();
+        $this->html = $client->getContent();
+
+        return $this->html;
     }
 
 
