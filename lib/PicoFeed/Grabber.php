@@ -21,6 +21,7 @@ class Grabber
         'articlecontent',
         'articlePage',
         'post-content',
+        'entry-content',
         'content',
         'main',
     );
@@ -37,6 +38,7 @@ class Grabber
         'nav',
         'header',
         'social',
+        'entry-utility',
     );
 
     public $stripTags = array(
@@ -168,17 +170,18 @@ class Grabber
 
         if ($nodes !== false && $nodes->length > 0) {
             $this->content = $dom->saveXML($nodes->item(0));
-            return;
         }
 
         // Try to lookup in each <div/>
-        foreach ($this->candidatesAttributes as $candidate) {
+        if (! $this->content) {
 
-            $nodes = $xpath->query('//div[(contains(@class, "'.$candidate.'") or @id="'.$candidate.'") and not (contains(@class, "nav") or contains(@class, "page"))]');
+            foreach ($this->candidatesAttributes as $candidate) {
 
-            if ($nodes !== false && $nodes->length > 0) {
-                $this->content = $dom->saveXML($nodes->item(0));
-                return;
+                $nodes = $xpath->query('//div[(contains(@class, "'.$candidate.'") or @id="'.$candidate.'") and not (contains(@class, "nav") or contains(@class, "page"))]');
+
+                if ($nodes !== false && $nodes->length > 0) {
+                    $this->content = $dom->saveXML($nodes->item(0));
+                }
             }
         }
 
