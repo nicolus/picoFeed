@@ -1,4 +1,0 @@
-<?php
-return array(
-    'test_url' => 'http://jalopnik.com/5892124/1955-porsche-550-spyder-sells-for-record-3685-million/',
-);

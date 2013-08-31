@@ -7,13 +7,50 @@ require_once __DIR__.'/Encoding.php';
 
 class Grabber
 {
-    public $title = '';
     public $content = '';
+    public $html = '';
+
+    // Order is important
+    public $candidatesAttributes = array(
+        'article',
+        'articleBody',
+        'articlebody',
+        'articleContent',
+        'articlecontent',
+        'post-content',
+        'content',
+        'main',
+    );
+
+    public $stripAttributes = array(
+        'comment',
+        'share',
+        'links',
+        'toolbar',
+        'fb',
+        'footer',
+        'credit',
+        'bottom',
+        'nav',
+        'header',
+        'social',
+    );
+
+    public $stripTags = array(
+        'script',
+        'style',
+        'nav',
+        'header',
+        'footer',
+        'aside',
+    );
+
 
     public function __construct($url)
     {
         $this->url = $url;
     }
+
 
     public function download($timeout = 5, $user_agent = 'PicoFeed (https://github.com/fguillot/picoFeed)')
     {
@@ -23,21 +60,36 @@ class Grabber
         $client->user_agent = $user_agent;
         $client->execute();
 
-        $html = $client->getContent();
+        $this->html = $client->getContent();
         $this->url = $client->getUrl();
 
-        if ($html) {
+        if ($this->html) {
 
-            $html = Encoding::toUTF8($html);
+            $this->html = Encoding::toUTF8($this->html);
             $rules = $this->getRules();
 
+            \libxml_use_internal_errors(true);
+            $dom = new \DOMDocument;
+            $dom->loadHTML($this->html);
+
             if (is_array($rules)) {
-                $this->parseContentWithRules($html, $rules);
+                $this->parseContentWithRules($dom, $rules);
+            }
+            else {
+
+                $this->parseContentWithCandidates($dom);
+
+                if (strlen($this->content) < 50) {
+                    $this->content = $dom->saveXML($dom->firstChild);
+                }
+
+                $this->stripGarbage();
             }
         }
 
-        return $this->title && $this->content;
+        return $this->content !== '';
     }
+
 
     public function getRules()
     {
@@ -59,22 +111,10 @@ class Grabber
         return false;
     }
 
-    public function parseContentWithRules($html, array $rules)
+
+    public function parseContentWithRules($dom, array $rules)
     {
-        \libxml_use_internal_errors(true);
-
-        $dom = new \DOMDocument;
-        $dom->loadHTML($html);
-
         $xpath = new \DOMXPath($dom);
-
-        if (isset($rules['title'])) {
-            $nodes = $xpath->query($rules['title']);
-
-            if ($nodes !== false && $nodes->length >= 1) {
-                $this->title = $nodes->item(0)->textContent;
-            }
-        }
 
         if (isset($rules['strip']) && is_array($rules['strip'])) {
 
@@ -110,13 +150,75 @@ class Grabber
             foreach ($rules['body'] as $pattern) {
 
                 $nodes = $xpath->query($pattern);
-var_dump($pattern, $nodes);
+
                 if ($nodes !== false && $nodes->length > 0) {
                     foreach ($nodes as $node) {
                         $this->content .= $dom->saveXML($node);
                     }
                 }
             }
+        }
+    }
+
+
+    public function parseContentWithCandidates($dom)
+    {
+        $xpath = new \DOMXPath($dom);
+
+        // Try to fetch <article/>
+        $nodes = $xpath->query('//article');
+
+        if ($nodes !== false && $nodes->length > 0) {
+            $this->content = $dom->saveXML($nodes->item(0));
+            return;
+        }
+
+        // Try to lookup in each <div/>
+        foreach ($this->candidatesAttributes as $candidate) {
+
+            $nodes = $xpath->query('//div[(contains(@class, "'.$candidate.'") or @id="'.$candidate.'") and not (contains(@class, "nav") or contains(@class, "page"))]');
+
+            if ($nodes !== false && $nodes->length > 0) {
+                $this->content = $dom->saveXML($nodes->item(0));
+                return;
+            }
+        }
+    }
+
+
+    public function stripGarbage()
+    {
+        \libxml_use_internal_errors(true);
+        $dom = new \DOMDocument;
+        $dom->loadXML($this->content);
+        $xpath = new \DOMXPath($dom);
+
+        foreach ($this->stripTags as $tag) {
+
+            $nodes = $xpath->query('//'.$tag);
+
+            if ($nodes !== false && $nodes->length > 0) {
+                foreach ($nodes as $node) {
+                    $node->parentNode->removeChild($node);
+                }
+            }
+        }
+
+        foreach ($this->stripAttributes as $attribute) {
+
+            $nodes = $xpath->query('//*[contains(@class, "'.$attribute.'") or contains(@id, "'.$attribute.'")]');
+
+            if ($nodes !== false && $nodes->length > 0) {
+                foreach ($nodes as $node) {
+                    $node->parentNode->removeChild($node);
+                }
+            }
+        }
+
+        $this->content = '';
+
+        foreach($dom->childNodes as $node) {
+            $this->content .= $dom->saveXML($node);
         }
     }
 }

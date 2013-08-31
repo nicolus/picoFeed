@@ -7,7 +7,27 @@ use PicoFeed\Reader;
 use PicoFeed\Grabber;
 
 class GrabberTest extends PHPUnit_Framework_TestCase
-{/*
+{
+    public function testGrabContentWithCandidates()
+    {
+        $grabber = new Grabber('http://www.lemonde.fr/proche-orient/article/2013/08/30/la-france-nouvelle-plus-ancienne-alliee-des-etats-unis_3469218_3218.html');
+        $this->assertTrue($grabber->download());
+
+        $grabber = new Grabber('http://www.rue89.com/2013/08/30/faisait-boris-boillon-ex-sarko-boy-350-000-euros-gare-nord-245315');
+        $this->assertTrue($grabber->download());
+
+        $grabber = new Grabber('http://montreal.ctvnews.ca/quebec-premier-has-positive-words-for-enbridge-pipeline-project-1.1432695');
+        $this->assertTrue($grabber->download());
+
+        $grabber = new Grabber('http://www.inc.com/suzanne-lucas/why-employee-turnover-is-so-costly.html');
+        $this->assertTrue($grabber->download());
+
+        $grabber = new Grabber('http://arstechnica.com/information-technology/2013/08/sysadmin-security-fail-nsa-finds-snowden-hijacked-officials-logins/');
+        $this->assertTrue($grabber->download());
+
+        //var_dump($grabber->content);
+    }
+
     public function testGetRules()
     {
         $grabber = new Grabber('http://www.egscomics.com/index.php?id=1690');
@@ -17,11 +37,9 @@ class GrabberTest extends PHPUnit_Framework_TestCase
     public function testGrabContent()
     {
         $grabber = new Grabber('http://www.egscomics.com/index.php?id=1690');
-        $grabber->download();
-
-        $this->assertEquals('El Goonish Shive - 2013-08-22', $grabber->title);
-        $this->assertEquals('<img title="2013-08-22" src="comics/../comics/1377151029-2013-08-22.png" id="comic" border="0" />', $grabber->content);
         $this->assertTrue($grabber->download());
+
+        $this->assertEquals('<img title="2013-08-22" src="comics/../comics/1377151029-2013-08-22.png" id="comic" border="0" />', $grabber->content);
     }
 
     public function testRssGrabContent()
@@ -37,7 +55,7 @@ class GrabberTest extends PHPUnit_Framework_TestCase
 
         $this->assertTrue(is_array($feed->items));
         $this->assertTrue(strpos($feed->items[0]->content, '<img') >= 0);
-    }*/
+    }
 
     public function testAllFilters()
     {
@@ -51,11 +69,15 @@ class GrabberTest extends PHPUnit_Framework_TestCase
 
                 if (isset($rule['test_url'])) {
 
-                    print_r($rule);
-
                     $grabber = new Grabber($rule['test_url']);
-                    $this->assertTrue($grabber->download());
-                    var_dump($grabber->title, strlen($grabber->content));
+                    $r = $grabber->download();
+
+                    if (! $r) {
+                        var_dump($rule);
+                        var_dump($grabber->content);
+                    }
+
+                    $this->assertTrue($r);
                 }
             }
         }

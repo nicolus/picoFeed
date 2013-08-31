@@ -1,4 +1,0 @@
-<?php
-return array(
-    'test_url' => 'http://www.hs.fi/kotimaa/Teollisuushallin%20palo%20levitt%C3%A4%C3%A4%20vaarallista%20savua%20Tuusulassa/a1305571582405',
-);

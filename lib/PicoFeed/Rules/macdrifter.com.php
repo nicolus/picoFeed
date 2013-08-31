@@ -1,5 +1,0 @@
-<?php
-return array(
-    'title' => 'substring-before(//title,\' « Macdrifter\')',
-    'test_url' => 'http://www.macdrifter.com/2012/03/instacast-on-my-mac/',
-);
