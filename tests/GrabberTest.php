@@ -10,6 +10,10 @@ class GrabberTest extends PHPUnit_Framework_TestCase
 {
     public function testGrabContentWithCandidates()
     {
+        $grabber = new Grabber('http://theonion.com.feedsportal.com/c/34529/f/632231/s/309a7fe4/sc/20/l/0L0Stheonion0N0Carticles0Cobama0Ethrows0Eup0Eright0Ethere0Eduring0Esyria0Emeeting0H336850C/story01.htm');
+        $grabber->download();
+        $this->assertTrue($grabber->parse());
+
         $grabber = new Grabber('http://www.cnn.com/2013/08/31/world/meast/syria-civil-war/index.html?hpt=hp_t1');
         $grabber->download();
         $this->assertTrue($grabber->parse());
