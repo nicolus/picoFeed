@@ -15,6 +15,7 @@ Features and requirements
 - Import/Export OPML subscriptions
 - Content filter: HTML cleanup, remove pixel trackers and Ads
 - Many HTTP client adapters: cURL or Stream Context
+- Content grabber: download from the original website the full content
 - License: Unlicense <http://unlicense.org/>
 
 Requirements
@@ -24,12 +25,6 @@ Requirements
 - libxml >= 2.7
 - XML PHP extensions: DOM and SimpleXML
 - cURL or Stream Context (`allow_url_fopen=On`)
-
-Limitations
------------
-
-- OPML import/export don't support categories (TODO)
-- There is some hacks for **libxml2 version 2.6.32** (Debian Lenny) but **it's not supported** (please upgrade)
 
 Usage
 -----
@@ -203,7 +198,7 @@ Usage
 
 You can got all debug output by calling this code:
 
-    print_r(PicoFeed\Logging::$logs);
+    print_r(PicoFeed\Logging::$messages);
 
 You will got an output like that:
 
@@ -270,3 +265,90 @@ Available variables:
     Filter::$iframe_whitelist
 
 For more details, have a look to the class `Filter`.
+
+### How the content grabber works?
+
+1. Try with rules first (xpath patterns) for the domain name (see `PicoFeed\Rules\`)
+2. Try to find the text content by using common attributes for class and id
+3. Finally, if nothing is found, the feed content is displayed
+
+The content downloader use a fake user agent, actually Google Chrome under Mac Os X.
+
+**The best results are obtained with Xpath rules file.**
+
+There is a PHP script inside PicoFeed to import Fivefilters rules, but I dont' use it because almost of these patterns are not up to date.
+
+### How to write a grabber rules file?
+
+Add a PHP file to the directory `PicoFeed\Rules`, the filename must be the domain name:
+
+Example with the BBC website, `www.bbc.co.uk.php`:
+
+    <?php
+    return array(
+        'test_url' => 'http://www.bbc.co.uk/news/world-middle-east-23911833',
+        'body' => array(
+            '//div[@class="story-body"]',
+        ),
+        'strip' => array(
+            '//script',
+            '//form',
+            '//style',
+            '//*[@class="story-date"]',
+            '//*[@class="story-header"]',
+            '//*[@class="story-related"]',
+            '//*[contains(@class, "byline")]',
+            '//*[contains(@class, "story-feature")]',
+            '//*[@id="video-carousel-container"]',
+            '//*[@id="also-related-links"]',
+            '//*[contains(@class, "share") or contains(@class, "hidden") or contains(@class, "hyper")]',
+        )
+    );
+
+Actually, only `body`, `strip` and `test_url` are supported.
+
+Don't forget to send a pull request or a ticket to share your contribution with everybody,
+
+### How to use the content scraper?
+
+    require 'vendor/PicoFeed/Reader.php';
+
+    use PicoFeed\Reader;
+
+    $reader = new Reader;
+    $reader->download('http://www.egscomics.com/rss.php');
+
+    $parser = $reader->getParser();
+
+    if ($parser !== false) {
+
+        $parser->grabber = true; // <= Enable the content grabber
+        $feed = $parser->execute();
+        // ...
+    }
+
+When the content scraper is enabled, everything will be slower because for each item a new HTTP request is made and the HTML downloaded is parsed with XML/Xpath.
+
+### List of content grabber rules
+
+**If you want to add new rules, just open a ticket and I will do it.**
+
+- *.blog.lemonde.fr
+- *.blog.nytimes.com
+- *.nytimes.php
+- *.slate.com
+- *.wikipedia.org
+- *.wsj.com
+- github.com
+- lifehacker.com
+- rue89.com
+- smallhousebliss.com
+- techcrunch.com
+- www.bbc.co.uk
+- www.cnn.com
+- www.egscomics.com
+- www.forbes.com
+- www.lemonde.fr
+- www.numerama.com
+- www.slate.fr
+- www.theguardian.com
