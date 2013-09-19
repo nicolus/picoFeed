@@ -335,20 +335,25 @@ When the content scraper is enabled, everything will be slower because for each 
 
 - *.blog.lemonde.fr
 - *.blog.nytimes.com
-- *.nytimes.php
+- *.nytimes.com
 - *.slate.com
+- *.theguardian.com
 - *.wikipedia.org
+- *.wired.com
 - *.wsj.com
 - github.com
 - lifehacker.com
+- plus.google.com
 - rue89.com
 - smallhousebliss.com
 - techcrunch.com
 - www.bbc.co.uk
+- www.businessweek.com
 - www.cnn.com
 - www.egscomics.com
 - www.forbes.com
 - www.lemonde.fr
+- www.lepoint.fr
+- www.npr.org
 - www.numerama.com
 - www.slate.fr
-- www.theguardian.com
