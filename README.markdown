@@ -126,6 +126,16 @@ Usage
         'My RSS reader user agent'
     );
 
+### Use a HTTP proxy
+
+Just call the static method `proxy()` before everything else:
+
+    PicoFeed\Client::proxy($hostname, $port);
+
+If your proxy is protected with a login/password:
+
+    PicoFeed\Client::proxy($hostname, $port, $username, $password);
+
 ### Generate RSS 2.0 feed
 
     require_once 'lib/PicoFeed/Writers/Rss20.php';
