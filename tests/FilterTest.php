@@ -8,6 +8,14 @@ use PicoFeed\Reader;
 
 class FilterTest extends PHPUnit_Framework_TestCase
 {
+    public function testGetEncodingFromXmlTag()
+    {
+        $this->assertEquals('utf-8', Filter::getEncodingFromXmlTag("<?xml version='1.0' encoding='UTF-8'?><?xml-stylesheet"));
+        $this->assertEquals('utf-8', Filter::getEncodingFromXmlTag('<?xml version="1.0" encoding="UTF-8"?><feed xml:'));
+        $this->assertEquals('windows-1251', Filter::getEncodingFromXmlTag('<?xml version="1.0" encoding="Windows-1251"?><rss version="2.0">'));
+    }
+
+
     public function testCode()
     {
         $data = '<pre><code>HEAD / HTTP/1.1
@@ -70,7 +78,7 @@ x-amz-id-2: DDjqfqz2ZJufzqRAcj1mh+9XvSogrPohKHwXlo8IlkzH67G6w4wnjn9HYgbs4uI0
         $data = '<p>&nbsp;&nbsp;truc</p>';
 
         $f = new Filter($data, 'http://blabla');
-        $this->assertEquals('<p> truc</p>', $f->execute());
+        $this->assertEquals('<p>  truc</p>', $f->execute());
     }
 
 
