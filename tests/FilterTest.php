@@ -8,6 +8,13 @@ use PicoFeed\Reader;
 
 class FilterTest extends PHPUnit_Framework_TestCase
 {
+    public function testRelativeScheme()
+    {
+        $f = new Filter('<a href="//linuxfr.org">link</a>', 'http://blabla');
+        $this->assertEquals('<a href="http://linuxfr.org" rel="noreferrer" target="_blank" >link</a>', $f->execute());
+    }
+
+
     public function testGetEncodingFromXmlTag()
     {
         $this->assertEquals('utf-8', Filter::getEncodingFromXmlTag("<?xml version='1.0' encoding='UTF-8'?><?xml-stylesheet"));
