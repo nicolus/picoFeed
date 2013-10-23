@@ -33,14 +33,14 @@ class CurlTest extends PHPUnit_Framework_TestCase
     }
 
 
-    public function testInfiniteRedirect()
-    {
-        $client = new Curl;
-        $client->url = 'http://www.accupass.com/home/rss/%E8%AA%B2%E7%A8%8B%E8%AC%9B%E5%BA%A7';
-        $result = $client->doRequest();
+    // public function testInfiniteRedirect()
+    // {
+    //     $client = new Curl;
+    //     $client->url = 'http://www.accupass.com/home/rss/%E8%AA%B2%E7%A8%8B%E8%AC%9B%E5%BA%A7';
+    //     $result = $client->doRequest();
 
-        $this->assertFalse($result);
-    }
+    //     $this->assertFalse($result);
+    // }
 
 
     public function testBadUrl()

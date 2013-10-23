@@ -40,7 +40,7 @@ class Rss20 extends \PicoFeed\Parser
         $this->title = $this->stripWhiteSpace((string) $xml->channel->title);
         $this->id = $this->url;
         $this->updated = isset($xml->channel->pubDate) ? (string) $xml->channel->pubDate : (string) $xml->channel->lastBuildDate;
-        $this->updated = $this->updated ? strtotime($this->updated) : time();
+        $this->updated = $this->updated ? $this->parseDate($this->updated) : time();
 
         // RSS feed might be empty
         if (! $xml->channel->item) {
@@ -63,8 +63,8 @@ class Rss20 extends \PicoFeed\Parser
 
                 if (! $item->url && ! empty($namespace->origLink)) $item->url = (string) $namespace->origLink;
                 if (! $item->author && ! empty($namespace->creator)) $item->author = (string) $namespace->creator;
-                if (! $item->updated && ! empty($namespace->date)) $item->updated = strtotime((string) $namespace->date);
-                if (! $item->updated && ! empty($namespace->updated)) $item->updated = strtotime((string) $namespace->updated);
+                if (! $item->updated && ! empty($namespace->date)) $item->updated = $this->parsedate((string) $namespace->date);
+                if (! $item->updated && ! empty($namespace->updated)) $item->updated = $this->parsedate((string) $namespace->updated);
                 if (! $item->content && ! empty($namespace->encoded)) $item->content = (string) $namespace->encoded;
             }
 
@@ -78,7 +78,7 @@ class Rss20 extends \PicoFeed\Parser
                 }
             }
 
-            if (empty($item->updated)) $item->updated = strtotime((string) $entry->pubDate) ?: $this->updated;
+            if (empty($item->updated)) $item->updated = $this->parsedate((string) $entry->pubDate) ?: $this->updated;
 
             if (empty($item->content)) {
                 $item->content = isset($entry->description) ? (string) $entry->description : '';
