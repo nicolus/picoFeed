@@ -20,6 +20,9 @@ class ParserTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(1071358202, $parser->parseDate('2003-12-13T18:30:02Z'));
         $this->assertEquals(1364252797, $parser->parseDate('Mon, 25 Mar 2013 19:06:37 +0100'));
         $this->assertEquals(1360072941, $parser->parseDate('2013-02-05T09:02:21.880-08:00'));
+        $this->assertEquals(1286856000, $parser->parseDate('Tue, 12 Oct 2010 00:00:00 IST'));
+        $this->assertEquals('2012-05-15', date('Y-m-d', $parser->parseDate('Tue, 15 May 2012 24:05:00 UTC')));
+        $this->assertEquals('2013-09-12', date('Y-m-d', $parser->parseDate('Thu, 12 Sep 2013 7:00:00 UTC')));
         $this->assertEquals('2012-01-31', date('Y-m-d', $parser->parseDate('01.31.2012')));
         $this->assertEquals('2012-01-31', date('Y-m-d', $parser->parseDate('01/31/2012')));
         $this->assertEquals('2012-01-31', date('Y-m-d', $parser->parseDate('2012-01-31')));

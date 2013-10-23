@@ -122,6 +122,7 @@ abstract class Parser
             DATE_RFC2822 => null,
             DATE_RFC3339 => null,
             'D, d M Y H:i:s' => 25,
+            'D, d M Y h:i:s' => 25,
             'D M d Y H:i:s' => 24,
             'Y-m-d H:i:s' => 19,
             'Y-m-d\TH:i:s' => 19,
@@ -135,6 +136,8 @@ abstract class Parser
             'd/m/Y' => 10,
             'm/d/Y' => 10,
         );
+
+        $value = trim($value);
 
         foreach ($formats as $format => $length) {
             $timestamp = $this->getValidDate($format, substr($value, 0, $length));
