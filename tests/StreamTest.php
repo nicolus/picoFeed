@@ -7,6 +7,16 @@ use PicoFeed\Clients\Stream;
 
 class StreamTest extends PHPUnit_Framework_TestCase
 {
+    // public function testChunkedResponse()
+    // {
+    //     $client = new Stream;
+    //     $client->url = 'http://www.reddit.com/r/dwarffortress/.rss';
+    //     $result = $client->doRequest();
+
+    //     var_dump($result);
+    // }
+
+
     public function testDownload()
     {
         $client = new Stream;
