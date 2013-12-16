@@ -32,6 +32,9 @@ class ReaderTest extends PHPUnit_Framework_TestCase
 
     public function testDetectFormat()
     {
+        $reader = new Reader(file_get_contents('tests/fixtures/sametmax.xml'));
+        $this->assertInstanceOf('PicoFeed\Parsers\Rss20', $reader->getParser());
+
         $reader = new Reader(file_get_contents('tests/fixtures/rss_0.92.xml'));
         $this->assertInstanceOf('PicoFeed\Parsers\Rss92', $reader->getParser());
 

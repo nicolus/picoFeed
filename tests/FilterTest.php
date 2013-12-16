@@ -8,6 +8,49 @@ use PicoFeed\Reader;
 
 class FilterTest extends PHPUnit_Framework_TestCase
 {
+    public function testStripXmlTag()
+    {
+        $data = file_get_contents('tests/fixtures/ezrss.it');
+        $this->assertEquals('<!DOC', substr(Filter::stripXmlTag($data), 0, 5));
+
+        $data = file_get_contents('tests/fixtures/fulltextrss.xml');
+        $this->assertEquals('<rss', substr(Filter::stripXmlTag($data), 0, 4));
+
+        $data = file_get_contents('tests/fixtures/sametmax.xml');
+        $this->assertEquals('<rss', substr(Filter::stripXmlTag($data), 0, 4));
+
+        $data = file_get_contents('tests/fixtures/grotte_barbu.xml');
+        $this->assertEquals('<rss', substr(Filter::stripXmlTag($data), 0, 4));
+
+        $data = file_get_contents('tests/fixtures/ibash.ru.xml');
+        $this->assertEquals('<rss', substr(Filter::stripXmlTag($data), 0, 4));
+
+        $data = file_get_contents('tests/fixtures/pcinpact.xml');
+        $this->assertEquals('<rss', substr(Filter::stripXmlTag($data), 0, 4));
+
+        $data = file_get_contents('tests/fixtures/resorts.xml');
+        $this->assertEquals('<rss', substr(Filter::stripXmlTag($data), 0, 4));
+
+        $data = file_get_contents('tests/fixtures/rue89.xml');
+        $this->assertEquals('<rss', substr(Filter::stripXmlTag($data), 0, 4));
+
+        $data = file_get_contents('tests/fixtures/cercle.psy.xml');
+        $this->assertEquals('<rss', substr(Filter::stripXmlTag($data), 0, 4));
+
+        $data = file_get_contents('tests/fixtures/lagrange.xml');
+        $this->assertEquals('<feed', substr(Filter::stripXmlTag($data), 0, 5));
+
+        $data = file_get_contents('tests/fixtures/atom.xml');
+        $this->assertEquals('<feed', substr(trim(Filter::stripXmlTag($data)), 0, 5));
+
+        $data = file_get_contents('tests/fixtures/atomsample.xml');
+        $this->assertEquals('<feed', substr(trim(Filter::stripXmlTag($data)), 0, 5));
+
+        $data = file_get_contents('tests/fixtures/planete-jquery.xml');
+        $this->assertEquals('<rdf:RDF', trim(substr(trim(Filter::stripXmlTag($data)), 0, 8)));
+    }
+
+
     public function testRelativeScheme()
     {
         $f = new Filter('<a href="//linuxfr.org">link</a>', 'http://blabla');
