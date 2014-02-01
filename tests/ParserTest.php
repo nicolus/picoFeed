@@ -45,4 +45,24 @@ class ParserTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(1377412225, $parser->parseDate('25/08/2013 06:30:25 م'));
         $this->assertEquals(time(), $parser->parseDate('+0400'));
     }
+
+
+    public function testNormalizeData()
+    {
+        $parser = new Rss20('');
+
+        $data = '<title> Police &#039;Like&#039; Wanted Suspect&#039;s Facebook Post</title>
+            <link rel="alternate" type="text/html" href="http://www.huffingtonpost.com/huff-wires/20140121/us-odd--police-like-facebook-post/?utm_hp_ref=travel&ir=travel" />
+        <id>http://www.huffingtonpost.com/2014/01/22/anthony-lescowitch-facebook_n_4643239.html</id>
+        <truc href="blabla &amp;"/>';
+
+        $result = $parser->replaceEntityAttribute($data);
+
+        $expected = '<title> Police &#039;Like&#039; Wanted Suspect&#039;s Facebook Post</title>
+            <link rel="alternate" type="text/html" href="http://www.huffingtonpost.com/huff-wires/20140121/us-odd--police-like-facebook-post/?utm_hp_ref=travel&amp;ir=travel" />
+        <id>http://www.huffingtonpost.com/2014/01/22/anthony-lescowitch-facebook_n_4643239.html</id>
+        <truc href="blabla &amp;"/>';
+
+        $this->assertEquals($expected, $result);
+    }
 }
