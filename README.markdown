@@ -356,6 +356,7 @@ When the content scraper is enabled, everything will be slower because for each 
 - golem.de
 - ing.dk
 - karriere.jobfinder.dk
+- lesjoiesducode.fr
 - lifehacker.com
 - lists.*
 - medium.com
