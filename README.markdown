@@ -372,8 +372,11 @@ When the content scraper is enabled, everything will be slower because for each 
 - www.cnn.com
 - www.egscomics.com
 - www.forbes.com
+- www.futura-sciences.com
 - www.lemonde.fr
 - www.lepoint.fr
+- www.mac4ever.com
 - www.npr.org
 - www.numerama.com
+- www.pcinpact.com
 - www.slate.fr
