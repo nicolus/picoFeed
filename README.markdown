@@ -345,6 +345,7 @@ When the content scraper is enabled, everything will be slower because for each 
 
 - *.blog.lemonde.fr
 - *.blog.nytimes.com
+- *.igen.fr
 - *.nytimes.com
 - *.phoronix.com
 - *.slate.com
@@ -352,6 +353,7 @@ When the content scraper is enabled, everything will be slower because for each 
 - *.wikipedia.org
 - *.wired.com
 - *.wsj.com
+- consomac.fr
 - github.com
 - golem.de
 - ing.dk
@@ -368,6 +370,7 @@ When the content scraper is enabled, everything will be slower because for each 
 - techcrunch.com
 - version2.dk
 - www.bbc.co.uk
+- www.bdgest.com
 - www.businessweek.com
 - www.cnn.com
 - www.egscomics.com
@@ -380,3 +383,4 @@ When the content scraper is enabled, everything will be slower because for each 
 - www.numerama.com
 - www.pcinpact.com
 - www.slate.fr
+- www.universfreebox.com
