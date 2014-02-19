@@ -58,16 +58,21 @@ class Rss20 extends \PicoFeed\Parser
             $item->author= '';
             $item->updated = '';
             $item->content = '';
+            $item->enclosure = '';
+            $item->enclosure_type = '';
 
             foreach ($namespaces as $name => $url) {
 
                 $namespace = $entry->children($namespaces[$name]);
 
-                if (! $item->url && ! empty($namespace->origLink)) $item->url = (string) $namespace->origLink;
                 if (! $item->author && ! empty($namespace->creator)) $item->author = (string) $namespace->creator;
                 if (! $item->updated && ! empty($namespace->date)) $item->updated = $this->parseDate((string) $namespace->date);
                 if (! $item->updated && ! empty($namespace->updated)) $item->updated = $this->parseDate((string) $namespace->updated);
                 if (! $item->content && ! empty($namespace->encoded)) $item->content = (string) $namespace->encoded;
+
+                // Get FeedBurner original links
+                if (! $item->url && ! empty($namespace->origLink)) $item->url = (string) $namespace->origLink;
+                if (! $item->enclosure && ! empty($namespace->origEnclosureLink)) $item->enclosure = (string) $namespace->origEnclosureLink;
             }
 
             if (empty($item->url)) {
@@ -109,6 +114,20 @@ class Rss20 extends \PicoFeed\Parser
             }
 
             if (empty($item->title)) $item->title = $item->url;
+
+            // if optional enclosure tag with multimedia provided, capture here
+            if (isset($entry->enclosure)) {
+
+                if (! $item->enclosure) {
+                    $item->enclosure = isset($entry->enclosure['url']) ? (string) $entry->enclosure['url'] : '';
+                }
+
+                $item->enclosure_type = isset($entry->enclosure['type']) ? (string) $entry->enclosure['type'] : '';
+
+                if (\PicoFeed\Filter::isRelativePath($item->enclosure)) {
+                    $item->enclosure = \PicoFeed\Filter::getAbsoluteUrl($item->enclosure, $this->url);
+                }
+            }
 
             $item->content = $this->filterHtml($item->content, $item->url);
             $this->items[] = $item;
