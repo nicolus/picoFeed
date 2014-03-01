@@ -8,6 +8,19 @@ use PicoFeed\Reader;
 
 class FilterTest extends PHPUnit_Framework_TestCase
 {
+    public function testAttributes()
+    {
+        $f = new Filter('<img src="foo" title="\'quote" alt="\'quote" data-src="bar" data-truc="boo"/>', 'http://blabla');
+        $this->assertEquals('<img src="http://blabla/foo" title="&#039;quote" alt="&#039;quote"/>', $f->execute());
+
+        $f = new Filter('<img src="foo&bar=\'quote"/>', 'http://blabla');
+        $this->assertEquals('<img src="http://blabla/foo&amp;bar=&#039;quote"/>', $f->execute());
+
+        $f = new Filter("<time datetime='quote\"here'>bla</time>", 'http://blabla');
+        $this->assertEquals('<time datetime="quote&quot;here">bla</time>', $f->execute());
+    }
+
+
     public function testStripXmlTag()
     {
         $data = file_get_contents('tests/fixtures/ezrss.it');
