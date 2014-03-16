@@ -65,4 +65,13 @@ class ParserTest extends PHPUnit_Framework_TestCase
 
         $this->assertEquals($expected, $result);
     }
+
+    public function testChangeHashAlgo()
+    {
+        $parser = new Rss20('');
+        $this->assertEquals('9e83486d', $parser->generateId('a', 'b'));
+
+        Parser::$hashAlgo = 'sha1';
+        $this->assertEquals('da23614e02469a0d7c7bd1bdab5c9c474b1904dc', $parser->generateId('a', 'b'));
+    }
 }

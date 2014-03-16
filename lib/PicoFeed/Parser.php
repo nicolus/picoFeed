@@ -9,6 +9,15 @@ require_once __DIR__.'/Grabber.php';
 
 abstract class Parser
 {
+    /**
+     * Hash algorithm used to generate id, any value supported by PHP, see hash_algos()
+     *
+     * @access public
+     * @static
+     * @var string
+     */
+    public static $hashAlgo = 'crc32b'; // crc32b seems to be faster and shorter than other hash algorithms
+
     protected $content = '';
 
     public $id = '';
@@ -115,8 +124,7 @@ abstract class Parser
 
     public function generateId()
     {
-        // crc32b seems to be faster and shorter than other hash algorithms
-        return hash('crc32b', implode(func_get_args()));
+        return hash(self::$hashAlgo, implode(func_get_args()));
     }
 
 
