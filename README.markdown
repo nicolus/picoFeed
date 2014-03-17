@@ -16,6 +16,8 @@ Features and requirements
 - Content filter: HTML cleanup, remove pixel trackers and Ads
 - Many HTTP client adapters: cURL or Stream Context
 - Content grabber: download from the original website the full content
+- Enclosure detection
+- RTL languages support
 - License: Unlicense <http://unlicense.org/>
 
 Requirements
