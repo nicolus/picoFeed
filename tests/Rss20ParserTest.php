@@ -7,6 +7,19 @@ use PicoFeed\Parsers\Rss20;
 
 class Rss20ParserTest extends PHPUnit_Framework_TestCase
 {
+    public function testLanguageDetection()
+    {
+        $parser = new Rss20(file_get_contents('tests/fixtures/zoot_egkty.xml'));
+        $this->assertNotFalse($parser->execute());
+        $this->assertEquals('ur', $parser->language);
+        $this->assertEquals('ur', $parser->items[0]->language);
+
+        $parser = new Rss20(file_get_contents('tests/fixtures/ibash.ru.xml'));
+        $this->assertNotFalse($parser->execute());
+        $this->assertEquals('ru', $parser->language);
+        $this->assertEquals('ru', $parser->items[0]->language);
+    }
+
     public function testFeedsReportedAsNotWorking()
     {
         $parser = new Rss20(file_get_contents('tests/fixtures/ibash.ru.xml'));
@@ -30,7 +43,6 @@ class Rss20ParserTest extends PHPUnit_Framework_TestCase
         $this->assertNotEquals(false, $parser->execute());
     }
 
-
     public function testFormatOk()
     {
         $parser = new Rss20(file_get_contents('tests/fixtures/rss2sample.xml'));
@@ -41,13 +53,11 @@ class Rss20ParserTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('Liftoff News', $r->title);
         $this->assertEquals('http://liftoff.msfc.nasa.gov/', $r->url);
         $this->assertEquals('http://liftoff.msfc.nasa.gov/', $r->id);
-        $this->assertEquals(1055232000, $r->updated);
         $this->assertEquals(4, count($r->items));
 
         $this->assertEquals('Star City', $r->items[0]->title);
         $this->assertEquals('http://liftoff.msfc.nasa.gov/news/2003/news-starcity.asp', $r->items[0]->url);
         $this->assertEquals('3fa53b0b', $r->items[0]->id);
-        $this->assertEquals(1054647561, $r->items[0]->updated);
         $this->assertEquals('webmaster@example.com', $r->items[0]->author);
         //$this->assertEquals(224, strlen($r->items[0]->content));
 
@@ -57,13 +67,11 @@ class Rss20ParserTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('WordPress News', $r->title);
         $this->assertEquals('http://wordpress.org/news', $r->url);
         $this->assertEquals('http://wordpress.org/news', $r->id);
-        $this->assertEquals(1359084183, $r->updated);
         $this->assertEquals(10, count($r->items));
 
         $this->assertEquals('WordPress 3.4.2 Maintenance and Security Release', $r->items[9]->title);
         $this->assertEquals('http://wordpress.org/news/2012/09/wordpress-3-4-2/', $r->items[9]->url);
         $this->assertEquals('875b87ca', $r->items[9]->id);
-        $this->assertEquals(1346976441, $r->items[9]->updated);
         $this->assertEquals('Andrew Nacin', $r->items[9]->author);
         //$this->assertEquals(1443, strlen($r->items[9]->content));
 
@@ -73,13 +81,11 @@ class Rss20ParserTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('PC INpact', $r->title);
         $this->assertEquals('http://www.pcinpact.com/', $r->url);
         $this->assertEquals('http://www.pcinpact.com/', $r->id);
-        $this->assertEquals(1365363597, $r->updated);
         $this->assertEquals(30, count($r->items));
 
         $this->assertEquals('La DCRI purge Wikipedia par la menace, un bel effet Streisand à la clé', $r->items[0]->title);
         $this->assertEquals('http://www.pcinpact.com/breve/78872-la-dcri-purge-wikipedia-par-menace-bel-effet-streisand-a-cle.htm?utm_source=PCi_RSS_Feed&utm_medium=news&utm_campaign=pcinpact', $r->items[0]->url);
         $this->assertEquals('bcc94f39', $r->items[0]->id);
-        $this->assertEquals(1365304260, $r->items[0]->updated);
         $this->assertEquals('', $r->items[0]->author);
 
         $parser = new Rss20(file_get_contents('tests/fixtures/fulltextrss.xml'));
@@ -94,10 +100,8 @@ class Rss20ParserTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('Brevets : un juge doute de la bonne volonté de Google et Apple', $r->items[0]->title);
         $this->assertEquals('http://www.numerama.com/magazine/25669-brevets-un-juge-doute-de-la-bonne-volonte-de-google-et-apple.html', $r->items[0]->url);
         $this->assertEquals('11aba651', $r->items[0]->id);
-        $this->assertEquals(1365795495, $r->items[0]->updated);
         $this->assertEquals('', $r->items[0]->author);
     }
-
 
     public function testBadInput()
     {

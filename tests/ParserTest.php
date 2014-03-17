@@ -74,4 +74,11 @@ class ParserTest extends PHPUnit_Framework_TestCase
         Parser::$hashAlgo = 'sha1';
         $this->assertEquals('da23614e02469a0d7c7bd1bdab5c9c474b1904dc', $parser->generateId('a', 'b'));
     }
+
+    public function testLangRTL()
+    {
+        $this->assertFalse(Parser::isLanguageRTL('fr-FR'));
+        $this->assertTrue(Parser::isLanguageRTL('ur'));
+        $this->assertFalse(Parser::isLanguageRTL('ru'));
+    }
 }

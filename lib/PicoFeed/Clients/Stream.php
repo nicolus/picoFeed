@@ -8,7 +8,7 @@ use \PicoFeed\Logging;
  * Stream context HTTP client
  *
  * @author  Frederic Guillot
- * @package clients
+ * @package client
  */
 class Stream extends \PicoFeed\Client
 {
