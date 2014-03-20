@@ -343,46 +343,4 @@ When the content scraper is enabled, everything will be slower because for each 
 
 ### List of content grabber rules
 
-**If you want to add new rules, just open a ticket and I will do it.**
-
-- *.blog.lemonde.fr
-- *.blog.nytimes.com
-- *.igen.fr
-- *.nytimes.com
-- *.phoronix.com
-- *.slate.com
-- *.theguardian.com
-- *.wikipedia.org
-- *.wired.com
-- *.wsj.com
-- consomac.fr
-- github.com
-- golem.de
-- ing.dk
-- karriere.jobfinder.dk
-- lesjoiesducode.fr
-- lifehacker.com
-- lists.*
-- medium.com
-- pastebin.com
-- plus.google.com
-- rue89.com
-- smallhousebliss.com
-- spiegel.de
-- techcrunch.com
-- version2.dk
-- www.bbc.co.uk
-- www.bdgest.com
-- www.businessweek.com
-- www.cnn.com
-- www.egscomics.com
-- www.forbes.com
-- www.futura-sciences.com
-- www.lemonde.fr
-- www.lepoint.fr
-- www.mac4ever.com
-- www.npr.org
-- www.numerama.com
-- www.pcinpact.com
-- www.slate.fr
-- www.universfreebox.com
+Rules are stored inside the directory [lib/PicoFeed/Rules](https://github.com/fguillot/picoFeed/tree/master/lib/PicoFeed/Rules)
