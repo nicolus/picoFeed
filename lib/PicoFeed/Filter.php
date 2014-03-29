@@ -2,16 +2,69 @@
 
 namespace PicoFeed;
 
+/**
+ * Filter class
+ *
+ * @author  Frederic Guillot
+ * @package parser
+ */
 class Filter
 {
+    /**
+     * Filtered XML data
+     *
+     * @access private
+     * @var string
+     */
     private $data = '';
+
+    /**
+     * Site URL (used to build absolute URL)
+     *
+     * @access private
+     * @var string
+     */
     private $url = '';
+
+    /**
+     * Unfiltered XML data
+     *
+     * @access private
+     * @var string
+     */
     private $input = '';
+
+    /**
+     * List of empty tags
+     *
+     * @access private
+     * @var array
+     */
     private $empty_tags = array();
+
+    /**
+     * Flag to remove the content of a tag
+     *
+     * @access private
+     * @var boolean
+     */
     private $strip_content = false;
+
+    /**
+     * Flag to remember if the current payload is a source code <pre/>
+     *
+     * @access private
+     * @var boolean
+     */
     private $is_code = false;
 
-    // Allow only these tags and attributes
+    /**
+     * Tags and attribute whitelist
+     *
+     * @static
+     * @access public
+     * @var array
+     */
     public static $whitelist_tags = array(
         'audio' => array('controls', 'src'),
         'video' => array('poster', 'controls', 'height', 'width', 'src'),
@@ -53,13 +106,25 @@ class Filter
         'q' => array('cite')
     );
 
-    // Strip content of these tags
+    /**
+     * Tags blacklist, strip the content of those tags
+     *
+     * @static
+     * @access public
+     * @var array
+     */
     public static $blacklist_tags = array(
         'script'
     );
 
-    // Allowed URI scheme
-    // For a complete list go to http://en.wikipedia.org/wiki/URI_scheme
+    /**
+     * Scheme whitelist
+     * For a complete list go to http://en.wikipedia.org/wiki/URI_scheme
+     *
+     * @static
+     * @access public
+     * @var array
+     */
     public static $scheme_whitelist = array(
         '//',
         'data:image/png;base64,',
@@ -96,14 +161,26 @@ class Filter
         'tel:',
     );
 
-    // Attributes used for external resources
+    /**
+     * Attributes used for external resources
+     *
+     * @static
+     * @access public
+     * @var array
+     */
     public static $media_attributes = array(
         'src',
         'href',
         'poster',
     );
 
-    // Blacklisted resources
+    /**
+     * Blacklisted resources
+     *
+     * @static
+     * @access public
+     * @var array
+     */
     public static $media_blacklist = array(
         'feeds.feedburner.com',
         'share.feedsportal.com',
@@ -129,7 +206,13 @@ class Filter
         'www.gstatic.com/images/icons/gplus-64.png',
     );
 
-    // Mandatory attributes for specified tags
+    /**
+     * Mandatory attributes for specified tags
+     *
+     * @static
+     * @access public
+     * @var array
+     */
     public static $required_attributes = array(
         'a' => array('href'),
         'img' => array('src'),
@@ -138,19 +221,37 @@ class Filter
         'source' => array('src'),
     );
 
-    // Add attributes to specified tags
+    /**
+     * Add attributes to specified tags
+     *
+     * @static
+     * @access public
+     * @var array
+     */
     public static $add_attributes = array(
         'a' => 'rel="noreferrer" target="_blank"'
     );
 
-    // Attributes that must be integer
+    /**
+     * Attributes that must be integer
+     *
+     * @static
+     * @access public
+     * @var array
+     */
     public static $integer_attributes = array(
         'width',
         'height',
         'frameborder',
     );
 
-    // Iframe source whitelist, everything else is ignored
+    /**
+     * Iframe source whitelist, everything else is ignored
+     *
+     * @static
+     * @access public
+     * @var array
+     */
     public static $iframe_whitelist = array(
         '//www.youtube.com',
         'http://www.youtube.com',
@@ -161,8 +262,13 @@ class Filter
         'https://www.dailymotion.com',
     );
 
-
-    // All inputs data must be encoded in UTF-8 before
+    /**
+     * Initialize the filter, all inputs data must be encoded in UTF-8 before
+     *
+     * @access public
+     * @param  string  $data      XML content
+     * @param  string  $site_url  Site URL (used to build absolute URL)
+     */
     public function __construct($data, $site_url)
     {
         $this->url = $site_url;
@@ -175,7 +281,12 @@ class Filter
         $this->input = $dom->saveXML($dom->getElementsByTagName('body')->item(0));
     }
 
-
+    /**
+     * Run tags/attributes filtering
+     *
+     * @access public
+     * @return string
+     */
     public function execute()
     {
         $parser = xml_parser_create();
@@ -192,7 +303,14 @@ class Filter
         return $this->data;
     }
 
-
+    /**
+     * Parse opening tag
+     *
+     * @access public
+     * @param  resource  $parser       XML parser
+     * @param  string    $name         Tag name
+     * @param  array     $attributes   Tag attributes
+     */
     public function startTag($parser, $name, $attributes)
     {
         $empty_tag = false;
@@ -288,7 +406,13 @@ class Filter
         $this->empty_tags[] = $empty_tag;
     }
 
-
+    /**
+     * Parse closing tag
+     *
+     * @access public
+     * @param  resource  $parser    XML parser
+     * @param  string    $name      Tag name
+     */
     public function endTag($parser, $name)
     {
         if (! array_pop($this->empty_tags) && $this->isAllowedTag($name)) {
@@ -298,7 +422,13 @@ class Filter
         if ($this->is_code && $name === 'pre') $this->is_code = false;
     }
 
-
+    /**
+     * Parse tag content
+     *
+     * @access public
+     * @param  resource  $parser    XML parser
+     * @param  string    $content   Tag content
+     */
     public function dataTag($parser, $content)
     {
         $content = str_replace("\xc2\xa0", ' ', $content); // Replace &nbsp; with normal space
@@ -314,13 +444,26 @@ class Filter
         }
     }
 
-
+    /**
+     * Escape HTML content
+     *
+     * @static
+     * @access public
+     * @return string
+     */
     public static function escape($content)
     {
         return htmlspecialchars($content, ENT_QUOTES, 'UTF-8', false);
     }
 
-
+    /**
+     * Get the absolute url for a relative link
+     *
+     * @access public
+     * @param  string  $path   Relative path
+     * @param  string  $url    Site base url
+     * @return string
+     */
     public static function getAbsoluteUrl($path, $url)
     {
         $components = parse_url($url);
@@ -365,32 +508,63 @@ class Filter
         }
     }
 
-
+    /**
+     * Check if an url is relative
+     *
+     * @access public
+     * @param  string  $value   Attribute value
+     * @return boolean
+     */
     public static function isRelativePath($value)
     {
         if (strpos($value, 'data:') === 0) return false;
         return strpos($value, '://') === false && strpos($value, '//') !== 0;
     }
 
-
+    /**
+     * Check if a tag is on the whitelist
+     *
+     * @access public
+     * @param  string  $name   Tag name
+     * @return boolean
+     */
     public function isAllowedTag($name)
     {
         return isset(self::$whitelist_tags[$name]);
     }
 
-
+    /**
+     * Check if an attribute is allowed for a given tag
+     *
+     * @access public
+     * @param  string  $tag        Tag name
+     * @param  array   $attribute  Attribute name
+     * @return boolean
+     */
     public function isAllowedAttribute($tag, $attribute)
     {
         return in_array($attribute, self::$whitelist_tags[$tag]);
     }
 
-
+    /**
+     * Check if an attribute name is an external resource
+     *
+     * @access public
+     * @param  string  $data  Attribute name
+     * @return boolean
+     */
     public function isResource($attribute)
     {
         return in_array($attribute, self::$media_attributes);
     }
 
-
+    /**
+     * Check if an iframe url is allowed
+     *
+     * @access public
+     * @param  string  $value  Attribute value
+     * @return boolean
+     */
     public function isAllowedIframeResource($value)
     {
         foreach (self::$iframe_whitelist as $url) {
@@ -403,7 +577,13 @@ class Filter
         return false;
     }
 
-
+    /**
+     * Detect if the protocol is allowed or not
+     *
+     * @access public
+     * @param  string  $value  Attribute value
+     * @return boolean
+     */
     public function isAllowedProtocol($value)
     {
         foreach (self::$scheme_whitelist as $protocol) {
@@ -416,7 +596,13 @@ class Filter
         return false;
     }
 
-
+    /**
+     * Detect if an url is blacklisted
+     *
+     * @access public
+     * @param  string  $resouce  Attribute value (URL)
+     * @return boolean
+     */
     public function isBlacklistedMedia($resource)
     {
         foreach (self::$media_blacklist as $name) {
@@ -429,7 +615,14 @@ class Filter
         return false;
     }
 
-
+    /**
+     * Detect if an image tag is a pixel tracker
+     *
+     * @access public
+     * @param  string  $tag         Tag name
+     * @param  array   $attributes  Tag attributes
+     * @return boolean
+     */
     public function isPixelTracker($tag, array $attributes)
     {
         return $tag === 'img' &&
@@ -437,7 +630,14 @@ class Filter
                 $attributes['height'] == 1 && $attributes['width'] == 1;
     }
 
-
+    /**
+     * Check if an attribute value is integer
+     *
+     * @access public
+     * @param  string  $attribute   Attribute name
+     * @param  string  $value       Attribute value
+     * @return boolean
+     */
     public function validateAttributeValue($attribute, $value)
     {
         if (in_array($attribute, self::$integer_attributes)) {
@@ -447,29 +647,53 @@ class Filter
         return true;
     }
 
-
+    /**
+     * Replace <br/><br/> by only one
+     *
+     * @access public
+     * @param  string  $data  Input data
+     * @return string
+     */
     public function removeMultipleTags($data)
     {
-        // Replace <br/><br/> by only one
         return preg_replace("/(<br\s*\/?>\s*)+/", "<br/>", $data);
     }
 
-
+    /**
+     * Remove empty tags
+     *
+     * @access public
+     * @param  string  $data  Input data
+     * @return string
+     */
     public function removeEmptyTags($data)
     {
         return preg_replace('/<([^<\/>]*)>([\s]*?|(?R))<\/\1>/imsU', '', $data);
     }
 
-
+    /**
+     * Remove HTML tags
+     *
+     * @access public
+     * @param  string  $data  Input data
+     * @return string
+     */
     public function removeHTMLTags($data)
     {
         return preg_replace('~<(?:!DOCTYPE|/?(?:html|head|body))[^>]*>\s*~i', '', $data);
     }
 
-
+    /**
+     * Remove the XML tag from a document
+     *
+     * @static
+     * @access public
+     * @param  string  $data  Input data
+     * @return string
+     */
     public static function stripXmlTag($data)
     {
-        if (strpos($data, '<?xml ') !== false) {
+        if (strpos($data, '<?xml') !== false) {
             $data = ltrim(substr($data, strpos($data, '?>') + 2));
         }
 
@@ -486,13 +710,27 @@ class Filter
         return $data;
     }
 
-
+    /**
+     * Strip meta tags from the HTML content
+     *
+     * @static
+     * @access public
+     * @param  string  $data  Input data
+     * @return string
+     */
     public static function stripMetaTags($data)
     {
         return preg_replace('/<meta\s.*?\/>/is', '', $data);
     }
 
-
+    /**
+     * Get the encoding from a xml tag
+     *
+     * @static
+     * @access public
+     * @param  string  $data  Input data
+     * @return string
+     */
     public static function getEncodingFromXmlTag($data)
     {
         $encoding = '';

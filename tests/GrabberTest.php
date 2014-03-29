@@ -66,7 +66,7 @@ class GrabberTest extends PHPUnit_Framework_TestCase
         $this->assertTrue(is_array($feed->items));
         $this->assertTrue(strpos($feed->items[0]->content, '<img') >= 0);
     }
-
+/*
     public function testAllFilters()
     {
         $dir = new DirectoryIterator('lib/PicoFeed/Rules/');
@@ -92,5 +92,5 @@ class GrabberTest extends PHPUnit_Framework_TestCase
                 }
             }
         }
-    }
+    }*/
 }

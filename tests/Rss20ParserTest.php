@@ -22,6 +22,9 @@ class Rss20ParserTest extends PHPUnit_Framework_TestCase
 
     public function testFeedsReportedAsNotWorking()
     {
+        $parser = new Rss20(file_get_contents('tests/fixtures/jeux-linux.fr.xml'));
+        $this->assertNotEquals(true, $parser->execute());
+
         $parser = new Rss20(file_get_contents('tests/fixtures/ibash.ru.xml'));
         $this->assertNotEquals(true, $parser->execute());
         $this->assertEquals('<p>Хабр, обсуждение фейлов на работе: reaferon: Интернет-магазин с оборотом более 1 млн. в месяц. При округлении цены до двух знаков после запятой: $price = round($price,2); была допущена досадная опечатка $price = rand($price,2);</p>', $parser->items[0]->content);

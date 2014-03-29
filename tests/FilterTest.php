@@ -23,6 +23,9 @@ class FilterTest extends PHPUnit_Framework_TestCase
 
     public function testStripXmlTag()
     {
+        $data = file_get_contents('tests/fixtures/jeux-linux.fr.xml');
+        $this->assertEquals('<rss', substr(Filter::stripXmlTag($data), 0, 4));
+
         $data = file_get_contents('tests/fixtures/ezrss.it');
         $this->assertEquals('<!DOC', substr(Filter::stripXmlTag($data), 0, 5));
 

@@ -7,13 +7,46 @@ require_once __DIR__.'/Parser.php';
 require_once __DIR__.'/Client.php';
 require_once __DIR__.'/Filter.php';
 
+/**
+ * Reader class
+ *
+ * @author  Frederic Guillot
+ * @package parser
+ */
 class Reader
 {
+    /**
+     * Feed or site URL
+     *
+     * @access private
+     * @var string
+     */
     private $url = '';
+
+    /**
+     * Feed content
+     *
+     * @access private
+     * @var string
+     */
     private $content = '';
+
+    /**
+     * HTTP encoding
+     *
+     * @access private
+     * @var string
+     */
     private $encoding = '';
 
-
+    /**
+     * Constructor
+     *
+     * @access public
+     * @param  string  $content        Feed content
+     * @param  string  $encoding       Feed encoding
+     * @return Reader
+     */
     public function __construct($content = '', $encoding = '')
     {
         $this->content = $content;
@@ -21,7 +54,17 @@ class Reader
         return $this;
     }
 
-
+    /**
+     * Download a feed
+     *
+     * @access public
+     * @param  string  $url            Feed content
+     * @param  string  $last_modified  Last modified HTTP header
+     * @param  string  $etag           Etag HTTP header
+     * @param  string  $timeout        Client connection timeout
+     * @param  string  $user_agent     HTTP user-agent
+     * @return Client
+     */
     public function download($url, $last_modified = '', $etag = '', $timeout = 5, $user_agent = 'PicoFeed (https://github.com/fguillot/picoFeed)')
     {
         if (strpos($url, 'http') !== 0) {
@@ -44,19 +87,35 @@ class Reader
         return $client;
     }
 
-
+    /**
+     * Get the download content
+     *
+     * @access public
+     * @return string
+     */
     public function getContent()
     {
         return $this->content;
     }
 
-
+    /**
+     * Get finale URL
+     *
+     * @access public
+     * @return string
+     */
     public function getUrl()
     {
         return $this->url;
     }
 
-
+    /**
+     * Get the first XML tag
+     *
+     * @access public
+     * @param  string  $data        Feed content
+     * @return string
+     */
     public function getFirstTag($data)
     {
         // Strip HTML comments (max of 5,000 characters long to prevent crashing)
@@ -79,7 +138,13 @@ class Reader
         return substr($data, $open_tag, $close_tag);
     }
 
-
+    /**
+     * Discover feed format and return a parser instance
+     *
+     * @access public
+     * @param  boolean  $discover      Enable feed autodiscovery in HTML document
+     * @return mixed                   False on failure or Parser instance
+     */
     public function getParser($discover = false)
     {
         $first_tag = $this->getFirstTag($this->content);
@@ -140,7 +205,12 @@ class Reader
         return false;
     }
 
-
+    /**
+     * Discover feed url inside a HTML document and download the feed
+     *
+     * @access public
+     * @return boolean
+     */
     public function discover()
     {
         if (! $this->content) {
