@@ -5,5 +5,8 @@ return array(
         '//div[@id="art_main"]',
     ),
     'strip' => array(
+        '//div[@id="art_print"]',
+        '//div[@id="art_chapo"]',
+        '//img[@class="puce"]',
     ),
 );

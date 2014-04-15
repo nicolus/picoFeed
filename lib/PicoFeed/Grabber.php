@@ -83,7 +83,7 @@ class Grabber
             Logging::log(\get_called_class().' Fix encoding');
             Logging::log(\get_called_class().': HTTP Encoding "'.$this->encoding.'"');
 
-            $this->html = Filter::stripMetaTags($this->html);
+            $this->html = Filter::stripHeadTags($this->html);
 
             if ($this->encoding == 'windows-1251') {
                 $this->html = Encoding::cp1251ToUtf8($this->html);

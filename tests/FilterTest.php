@@ -8,6 +8,18 @@ use PicoFeed\Reader;
 
 class FilterTest extends PHPUnit_Framework_TestCase
 {
+    public function testStripHeadTag()
+    {
+        $input = '<html><head><title>test</title></head><body><h1>boo</h1></body>';
+        $expected = '<html><body><h1>boo</h1></body>';
+        $this->assertEquals($expected, Filter::stripHeadTags($input));
+
+        $input = file_get_contents('tests/fixtures/html_page.html');
+        $expected = file_get_contents('tests/fixtures/html_head_stripped_page.html');
+        $this->assertEquals($expected, Filter::stripHeadTags($input));
+    }
+
+
     public function testAttributes()
     {
         $f = new Filter('<img src="foo" title="\'quote" alt="\'quote" data-src="bar" data-truc="boo"/>', 'http://blabla');

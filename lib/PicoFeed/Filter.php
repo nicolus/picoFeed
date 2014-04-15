@@ -711,16 +711,25 @@ class Filter
     }
 
     /**
-     * Strip meta tags from the HTML content
+     * Strip head tag from the HTML content
      *
      * @static
      * @access public
      * @param  string  $data  Input data
      * @return string
      */
-    public static function stripMetaTags($data)
+    public static function stripHeadTags($data)
     {
-        return preg_replace('/<meta\s.*?\/>/is', '', $data);
+        $start = strpos($data, '<head>');
+        $end = strpos($data, '</head>');
+
+        if ($start !== false && $end !== false) {
+            $before = substr($data, 0, $start);
+            $after = substr($data, $end + 7);
+            $data = $before.$after;
+        }
+
+        return $data;
     }
 
     /**
