@@ -6,6 +6,12 @@ use PicoFeed\Import;
 
 class ImportTest extends PHPUnit_Framework_TestCase
 {
+    public function testMalFormedFormat()
+    {
+        $import = new Import('boo');
+        $this->assertFalse($import->execute());
+    }
+
     public function testFormat()
     {
         $import = new Import(file_get_contents('tests/fixtures/subscriptionList.opml'));
@@ -16,7 +22,6 @@ class ImportTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('http://news.com.com/2547-1_3-0-5.xml', $entries[0]->feed_url);
         $this->assertEquals('http://news.com.com/', $entries[0]->site_url);
     }
-
 
     public function testGoogleReader()
     {
@@ -30,7 +35,6 @@ class ImportTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('http://vimeo.com/cocoaheadsrns/videos', $entries[21]->site_url);
     }
 
-
     public function testTinyTinyRss()
     {
         $import = new Import(file_get_contents('tests/fixtures/tinytinyrss.opml'));
@@ -42,7 +46,6 @@ class ImportTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('http://feeds.feedburner.com/PlaneteJqueryFr', $entries[1]->feed_url);
         $this->assertEquals('http://planete-jquery.fr', $entries[1]->site_url);
     }
-
 
     public function testNewsBeuter()
     {

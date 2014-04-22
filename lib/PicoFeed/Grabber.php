@@ -6,6 +6,9 @@ require_once __DIR__.'/Client.php';
 require_once __DIR__.'/Encoding.php';
 require_once __DIR__.'/Logging.php';
 require_once __DIR__.'/Filter.php';
+require_once __DIR__.'/XmlParser.php';
+
+use DOMXPath;
 
 class Grabber
 {
@@ -158,10 +161,8 @@ class Grabber
 
     public function parseContentWithRules(array $rules)
     {
-        \libxml_use_internal_errors(true);
-        $dom = new \DOMDocument;
-        $dom->loadHTML('<?xml version="1.0" encoding="UTF-8">'.$this->html);
-        $xpath = new \DOMXPath($dom);
+        $dom = XmlParser::getHtmlDocument('<?xml version="1.0" encoding="UTF-8">'.$this->html);
+        $xpath = new DOMXPath($dom);
 
         if (isset($rules['strip']) && is_array($rules['strip'])) {
 
@@ -195,10 +196,8 @@ class Grabber
 
     public function parseContentWithCandidates()
     {
-        \libxml_use_internal_errors(true);
-        $dom = new \DOMDocument;
-        $dom->loadHTML('<?xml version="1.0" encoding="UTF-8">'.$this->html);
-        $xpath = new \DOMXPath($dom);
+        $dom = XmlParser::getHtmlDocument('<?xml version="1.0" encoding="UTF-8">'.$this->html);
+        $xpath = new DOMXPath($dom);
 
         // Try to lookup in each tag
         foreach ($this->candidatesAttributes as $candidate) {
@@ -237,10 +236,8 @@ class Grabber
 
     public function stripGarbage()
     {
-        \libxml_use_internal_errors(true);
-        $dom = new \DOMDocument;
-        $dom->loadXML($this->content);
-        $xpath = new \DOMXPath($dom);
+        $dom = XmlParser::getDomDocument($this->content);
+        $xpath = new DOMXPath($dom);
 
         foreach ($this->stripTags as $tag) {
 

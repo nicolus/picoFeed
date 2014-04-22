@@ -2,18 +2,27 @@
 
 namespace PicoFeed\Parsers;
 
-class Rss10 extends \PicoFeed\Parser
+use PicoFeed\Parser;
+use PicoFeed\XmlParser;
+use PicoFeed\Logging;
+
+/**
+ * RSS 1.0 parser
+ *
+ * @author  Frederic Guillot
+ * @package parser
+ */
+class Rss10 extends Parser
 {
     public function execute()
     {
-        \PicoFeed\Logging::log(\get_called_class().': begin parsing');
+        Logging::log(get_called_class().': begin parsing');
 
-        \libxml_use_internal_errors(true);
-        $xml = \simplexml_load_string($this->content);
+        $xml = XmlParser::getSimpleXml($this->content);
 
         if ($xml === false) {
-            \PicoFeed\Logging::log(\get_called_class().': XML parsing error');
-            \PicoFeed\Logging::log($this->getXmlErrors());
+            Logging::log(get_called_class().': XML parsing error');
+            Logging::log(XmlParser::getErrors());
             return false;
         }
 
@@ -24,8 +33,8 @@ class Rss10 extends \PicoFeed\Parser
         $this->id = $this->url;
         $this->language = '';
 
-        \PicoFeed\Logging::log(\get_called_class().': Title => '.$this->title);
-        \PicoFeed\Logging::log(\get_called_class().': Url => '.$this->url);
+        Logging::log(get_called_class().': Title => '.$this->title);
+        Logging::log(get_called_class().': Url => '.$this->url);
 
         if (isset($namespaces['dc'])) {
             $ns_dc = $xml->channel->children($namespaces['dc']);
@@ -80,7 +89,7 @@ class Rss10 extends \PicoFeed\Parser
             $this->items[] = $item;
         }
 
-        \PicoFeed\Logging::log(\get_called_class().': parsing finished ('.count($this->items).' items)');
+        Logging::log(get_called_class().': parsing finished ('.count($this->items).' items)');
 
         return $this;
     }

@@ -2,13 +2,18 @@
 
 namespace PicoFeed\Parsers;
 
+use PicoFeed\Parser;
+use PicoFeed\XmlParser;
+use PicoFeed\Logging;
+use PicoFeed\Filter;
+
 /**
  * RSS 2.0 Parser
  *
  * @author  Frederic Guillot
  * @package parser
  */
-class Rss20 extends \PicoFeed\Parser
+class Rss20 extends Parser
 {
     /**
      * Parse the document
@@ -18,14 +23,13 @@ class Rss20 extends \PicoFeed\Parser
      */
     public function execute()
     {
-        \PicoFeed\Logging::log(\get_called_class().': begin parsing');
+        Logging::log(get_called_class().': begin parsing');
 
-        \libxml_use_internal_errors(true);
-        $xml = \simplexml_load_string($this->content);
+        $xml = XmlParser::getSimpleXml($this->content);
 
         if ($xml === false) {
-            \PicoFeed\Logging::log(\get_called_class().': XML parsing error');
-            \PicoFeed\Logging::log($this->getXmlErrors());
+            Logging::log(get_called_class().': XML parsing error');
+            Logging::log(XmlParser::getErrors());
             return false;
         }
 
@@ -53,12 +57,12 @@ class Rss20 extends \PicoFeed\Parser
         $this->id = $this->url;
         $this->updated = $this->parseDate(isset($xml->channel->pubDate) ? (string) $xml->channel->pubDate : (string) $xml->channel->lastBuildDate);
 
-        \PicoFeed\Logging::log(\get_called_class().': Title => '.$this->title);
-        \PicoFeed\Logging::log(\get_called_class().': Url => '.$this->url);
+        Logging::log(get_called_class().': Title => '.$this->title);
+        Logging::log(get_called_class().': Url => '.$this->url);
 
         // RSS feed might be empty
         if (! $xml->channel->item) {
-            \PicoFeed\Logging::log(\get_called_class().': feed empty or malformed');
+            Logging::log(get_called_class().': feed empty or malformed');
             return $this;
         }
 
@@ -133,8 +137,8 @@ class Rss20 extends \PicoFeed\Parser
 
                 $item->enclosure_type = isset($entry->enclosure['type']) ? (string) $entry->enclosure['type'] : '';
 
-                if (\PicoFeed\Filter::isRelativePath($item->enclosure)) {
-                    $item->enclosure = \PicoFeed\Filter::getAbsoluteUrl($item->enclosure, $this->url);
+                if (Filter::isRelativePath($item->enclosure)) {
+                    $item->enclosure = Filter::getAbsoluteUrl($item->enclosure, $this->url);
                 }
             }
 
@@ -142,7 +146,7 @@ class Rss20 extends \PicoFeed\Parser
             $this->items[] = $item;
         }
 
-        \PicoFeed\Logging::log(\get_called_class().': parsing finished ('.count($this->items).' items)');
+        Logging::log(get_called_class().': parsing finished ('.count($this->items).' items)');
 
         return $this;
     }

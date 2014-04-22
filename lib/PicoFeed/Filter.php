@@ -2,6 +2,8 @@
 
 namespace PicoFeed;
 
+use DOMDocument;
+
 /**
  * Filter class
  *
@@ -273,10 +275,10 @@ class Filter
     {
         $this->url = $site_url;
 
-        \libxml_use_internal_errors(true);
+        libxml_use_internal_errors(true);
 
         // Convert bad formatted documents to XML
-        $dom = new \DOMDocument;
+        $dom = new DOMDocument;
         $dom->loadHTML('<?xml version="1.0" encoding="UTF-8">'.$data);
         $this->input = $dom->saveXML($dom->getElementsByTagName('body')->item(0));
     }

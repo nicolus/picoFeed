@@ -15,13 +15,11 @@ class Rss10ParserTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('Planète jQuery : l\'actualité jQuery, plugins jQuery et tutoriels jQuery en français', $r->title);
         $this->assertEquals('http://planete-jquery.fr', $r->url);
         $this->assertEquals('http://planete-jquery.fr', $r->id);
-        $this->assertEquals(1363767390, $r->updated);
         $this->assertEquals(20, count($r->items));
 
         $this->assertEquals('MathieuRobin : Chroniques jQuery, épisode 108', $r->items[0]->title);
         $this->assertEquals('http://www.mathieurobin.com/2013/03/chroniques-jquery-episode-108/', $r->items[0]->url);
         $this->assertEquals('5b48b716', $r->items[0]->id);
-        $this->assertEquals(1382498401, $r->items[0]->updated);
         $this->assertEquals('MathieuRobin', $r->items[0]->author);
         $this->assertEquals('<p>Hello tout le monde', substr($r->items[0]->content, 0, 22));
     }

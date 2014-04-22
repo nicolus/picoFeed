@@ -2,6 +2,7 @@
 
 namespace PicoFeed;
 
+require_once __DIR__.'/XmlParser.php';
 require_once __DIR__.'/Logging.php';
 require_once __DIR__.'/Filter.php';
 require_once __DIR__.'/Encoding.php';
@@ -114,29 +115,6 @@ abstract class Parser
         }
 
         return $content;
-    }
-
-    /**
-     * Get XML parser errors
-     *
-     * @access public
-     * @return string
-     */
-    public function getXmlErrors()
-    {
-        $errors = array();
-
-        foreach(\libxml_get_errors() as $error) {
-
-            $errors[] = sprintf('XML error: %s (Line: %d - Column: %d - Code: %d)',
-                $error->message,
-                $error->line,
-                $error->column,
-                $error->code
-            );
-        }
-
-        return implode(', ', $errors);
     }
 
     /**

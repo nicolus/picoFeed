@@ -3,6 +3,10 @@
 namespace PicoFeed;
 
 require_once __DIR__.'/Logging.php';
+require_once __DIR__.'/XmlParser.php';
+
+use PicoFeed\Logging;
+use PicoFeed\XmlParser;
 
 class Import
 {
@@ -18,27 +22,17 @@ class Import
 
     public function execute()
     {
-        \PicoFeed\Logging::log(\get_called_class().': start importation');
+        Logging::log(get_called_class().': start importation');
 
-        try {
+        $xml = XmlParser::getSimpleXml(trim($this->content));
 
-            \libxml_use_internal_errors(true);
-
-            $xml = new \SimpleXMLElement(trim($this->content));
-
-            if ($xml->getName() !== 'opml' || ! isset($xml->body)) {
-                \PicoFeed\Logging::log(\get_called_class().': OPML tag not found');
-                return false;
-            }
-
-            $this->parseEntries($xml->body);
-
-            \PicoFeed\Logging::log(\get_called_class().': '.count($this->items).' subscriptions found');
-        }
-        catch (\Exception $e) {
-            \PicoFeed\Logging::log(\get_called_class().': '.$e->getMessage());
+        if ($xml === false || $xml->getName() !== 'opml' || ! isset($xml->body)) {
+            Logging::log(\get_called_class().': OPML tag not found or malformed XML document');
             return false;
         }
+
+        $this->parseEntries($xml->body);
+        Logging::log(get_called_class().': '.count($this->items).' subscriptions found');
 
         return $this->items;
     }

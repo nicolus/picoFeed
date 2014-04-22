@@ -68,7 +68,7 @@ class StreamTest extends PHPUnit_Framework_TestCase
 
         $this->assertFalse($result);
     }*/
-
+/*
     public function testDecodeGzip()
     {
         $client = new Stream;
@@ -78,5 +78,5 @@ class StreamTest extends PHPUnit_Framework_TestCase
         $this->assertNotFalse($result);
         $this->assertEquals('gzip', $result['headers']['Content-Encoding']);
         $this->assertEquals('<?xml', substr(trim($result['body']), 0, 5));
-    }
+    }*/
 }
