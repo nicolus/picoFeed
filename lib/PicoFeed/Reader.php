@@ -51,7 +51,6 @@ class Reader
     {
         $this->content = $content;
         $this->encoding = '';
-        return $this;
     }
 
     /**
