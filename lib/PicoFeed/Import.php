@@ -8,18 +8,47 @@ require_once __DIR__.'/XmlParser.php';
 use PicoFeed\Logging;
 use PicoFeed\XmlParser;
 
+/**
+ * OPML Import
+ *
+ * @author  Frederic Guillot
+ * @package picofeed
+ */
 class Import
 {
+    /**
+     * OPML file content
+     *
+     * @access private
+     * @var string
+     */
     private $content = '';
+
+    /**
+     * Subscriptions
+     *
+     * @access private
+     * @var array
+     */
     private $items = array();
 
-
+    /**
+     * Constructor
+     *
+     * @access public
+     * @param  string  $content   OPML file content
+     */
     public function __construct($content)
     {
         $this->content = $content;
     }
 
-
+    /**
+     * Parse the OPML file
+     *
+     * @access public
+     * @return array|false
+     */
     public function execute()
     {
         Logging::log(get_called_class().': start importation');
@@ -37,7 +66,12 @@ class Import
         return $this->items;
     }
 
-
+    /**
+     * Parse each entries of the subscription list
+     *
+     * @access public
+     * @param  SimpleXMLElement   $tree   XML node
+     */
     public function parseEntries($tree)
     {
         if (isset($tree->outline)) {

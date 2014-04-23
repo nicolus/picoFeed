@@ -8,7 +8,7 @@ use DOMDocument;
  * Filter class
  *
  * @author  Frederic Guillot
- * @package parser
+ * @package picofeed
  */
 class Filter
 {

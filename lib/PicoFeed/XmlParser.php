@@ -11,7 +11,7 @@ use SimpleXmlElement;
  * Checks for XML eXternal Entity (XXE) and XML Entity Expansion (XEE) attacks on XML documents
  *
  * @author  Frederic Guillot
- * @package parser
+ * @package picofeed
  */
 class XmlParser
 {

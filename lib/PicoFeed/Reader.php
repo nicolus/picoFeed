@@ -15,7 +15,7 @@ use DOMXPath;
  * Reader class
  *
  * @author  Frederic Guillot
- * @package parser
+ * @package picofeed
  */
 class Reader
 {
@@ -49,7 +49,6 @@ class Reader
      * @access public
      * @param  string  $content        Feed content
      * @param  string  $encoding       Feed encoding
-     * @return Reader
      */
     public function __construct($content = '', $encoding = '')
     {
