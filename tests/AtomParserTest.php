@@ -1,6 +1,6 @@
 <?php
 
-require_once 'lib/PicoFeed/Parser.php';
+require_once 'lib/PicoFeed/PicoFeed.php';
 require_once 'lib/PicoFeed/Parsers/Atom.php';
 
 use PicoFeed\Parsers\Atom;

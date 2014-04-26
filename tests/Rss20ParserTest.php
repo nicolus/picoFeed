@@ -1,6 +1,6 @@
 <?php
 
-require_once 'lib/PicoFeed/Parser.php';
+require_once 'lib/PicoFeed/PicoFeed.php';
 require_once 'lib/PicoFeed/Parsers/Rss20.php';
 
 use PicoFeed\Parsers\Rss20;

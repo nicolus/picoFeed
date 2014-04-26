@@ -1,6 +1,6 @@
 <?php
 
-require_once 'lib/PicoFeed/Parser.php';
+require_once 'lib/PicoFeed/PicoFeed.php';
 require_once 'lib/PicoFeed/Parsers/Rss20.php';
 
 use PicoFeed\Parser;
@@ -66,15 +66,14 @@ class ParserTest extends PHPUnit_Framework_TestCase
         $this->assertEquals($expected, $result);
     }
 
+
     public function testChangeHashAlgo()
     {
         $parser = new Rss20('');
         $this->assertEquals('9e83486d', $parser->generateId('a', 'b'));
 
-        Parser::$hashAlgo = 'sha1';
+        $parser->setHashAlgo('sha1');
         $this->assertEquals('da23614e02469a0d7c7bd1bdab5c9c474b1904dc', $parser->generateId('a', 'b'));
-
-        Parser::$hashAlgo = 'crc32b';
     }
 
     public function testLangRTL()

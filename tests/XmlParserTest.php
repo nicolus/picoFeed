@@ -1,6 +1,6 @@
 <?php
 
-require_once 'lib/PicoFeed/XmlParser.php';
+require_once 'lib/PicoFeed/PicoFeed.php';
 
 use PicoFeed\XmlParser;
 

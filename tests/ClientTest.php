@@ -1,6 +1,6 @@
 <?php
 
-require_once 'lib/PicoFeed/Client.php';
+require_once 'lib/PicoFeed/PicoFeed.php';
 
 use PicoFeed\Client;
 
@@ -8,8 +8,8 @@ class ClientTest extends PHPUnit_Framework_TestCase
 {
     public function testDownload()
     {
-        $client = Client::create();
-        $client->url = 'http://petitcodeur.fr/robots.txt';
+        $client = Client::getInstance();
+        $client->setUrl('http://php.net/robots.txt');
         $client->execute();
 
         $this->assertTrue($client->isModified());
@@ -21,13 +21,13 @@ class ClientTest extends PHPUnit_Framework_TestCase
 
     public function testCacheEtag()
     {
-        $client = Client::create();
-        $client->url = 'http://petitcodeur.fr/robots.txt';
+        $client = Client::getInstance();
+        $client->setUrl('http://php.net/robots.txt');
         $client->execute();
         $etag = $client->getEtag();
 
-        $client = Client::create();
-        $client->url = 'http://petitcodeur.fr/robots.txt';
+        $client = Client::getInstance();
+        $client->setUrl('http://php.net/robots.txt');
         $client->setEtag($etag);
         $client->execute();
 
@@ -37,13 +37,13 @@ class ClientTest extends PHPUnit_Framework_TestCase
 
     public function testCacheLastModified()
     {
-        $client = Client::create();
-        $client->url = 'http://petitcodeur.fr/feed.xml';
+        $client = Client::getInstance();
+        $client->setUrl('http://miniflux.net/humans.txt');
         $client->execute();
         $lastmod = $client->getLastModified();
 
-        $client = Client::create();
-        $client->url = 'http://petitcodeur.fr/robots.txt';
+        $client = Client::getInstance();
+        $client->setUrl('http://miniflux.net/humans.txt');
         $client->setLastModified($lastmod);
         $client->execute();
 
@@ -53,14 +53,14 @@ class ClientTest extends PHPUnit_Framework_TestCase
 
     public function testCacheBoth()
     {
-        $client = Client::create();
-        $client->url = 'http://petitcodeur.fr/robots.txt';
+        $client = Client::getInstance();
+        $client->setUrl('http://miniflux.net/humans.txt');
         $client->execute();
         $lastmod = $client->getLastModified();
         $etag = $client->getEtag();
 
-        $client = Client::create();
-        $client->url = 'http://petitcodeur.fr/robots.txt';
+        $client = Client::getInstance();
+        $client->setUrl('http://miniflux.net/humans.txt');
         $client->setLastModified($lastmod);
         $client->setEtag($etag);
         $client->execute();

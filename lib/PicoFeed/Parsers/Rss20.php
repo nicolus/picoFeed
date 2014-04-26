@@ -23,13 +23,13 @@ class Rss20 extends Parser
      */
     public function execute()
     {
-        Logging::log(get_called_class().': begin parsing');
+        Logging::setMessage(get_called_class().': begin parsing');
 
         $xml = XmlParser::getSimpleXml($this->content);
 
         if ($xml === false) {
-            Logging::log(get_called_class().': XML parsing error');
-            Logging::log(XmlParser::getErrors());
+            Logging::setMessage(get_called_class().': XML parsing error');
+            Logging::setMessage(XmlParser::getErrors());
             return false;
         }
 
@@ -57,12 +57,12 @@ class Rss20 extends Parser
         $this->id = $this->url;
         $this->updated = $this->parseDate(isset($xml->channel->pubDate) ? (string) $xml->channel->pubDate : (string) $xml->channel->lastBuildDate);
 
-        Logging::log(get_called_class().': Title => '.$this->title);
-        Logging::log(get_called_class().': Url => '.$this->url);
+        Logging::setMessage(get_called_class().': Title => '.$this->title);
+        Logging::setMessage(get_called_class().': Url => '.$this->url);
 
         // RSS feed might be empty
         if (! $xml->channel->item) {
-            Logging::log(get_called_class().': feed empty or malformed');
+            Logging::setMessage(get_called_class().': feed empty or malformed');
             return $this;
         }
 
@@ -146,7 +146,7 @@ class Rss20 extends Parser
             $this->items[] = $item;
         }
 
-        Logging::log(get_called_class().': parsing finished ('.count($this->items).' items)');
+        Logging::setMessage(get_called_class().': parsing finished ('.count($this->items).' items)');
 
         return $this;
     }

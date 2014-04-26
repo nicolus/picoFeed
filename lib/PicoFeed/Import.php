@@ -51,17 +51,17 @@ class Import
      */
     public function execute()
     {
-        Logging::log(get_called_class().': start importation');
+        Logging::setMessage(get_called_class().': start importation');
 
         $xml = XmlParser::getSimpleXml(trim($this->content));
 
         if ($xml === false || $xml->getName() !== 'opml' || ! isset($xml->body)) {
-            Logging::log(\get_called_class().': OPML tag not found or malformed XML document');
+            Logging::setMessage(get_called_class().': OPML tag not found or malformed XML document');
             return false;
         }
 
         $this->parseEntries($xml->body);
-        Logging::log(get_called_class().': '.count($this->items).' subscriptions found');
+        Logging::setMessage(get_called_class().': '.count($this->items).' subscriptions found');
 
         return $this->items;
     }

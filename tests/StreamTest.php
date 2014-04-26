@@ -1,6 +1,6 @@
 <?php
 
-require_once 'lib/PicoFeed/Client.php';
+require_once 'lib/PicoFeed/PicoFeed.php';
 require_once 'lib/PicoFeed/Clients/Stream.php';
 
 use PicoFeed\Clients\Stream;
@@ -10,7 +10,7 @@ class StreamTest extends PHPUnit_Framework_TestCase
     public function testChunkedResponse()
     {
         $client = new Stream;
-        $client->url = 'http://www.reddit.com/r/dwarffortress/.rss';
+        $client->setUrl('http://www.reddit.com/r/dwarffortress/.rss');
         $result = $client->doRequest();
 
         $this->assertNotFalse($result);
@@ -20,7 +20,7 @@ class StreamTest extends PHPUnit_Framework_TestCase
     public function testDownload()
     {
         $client = new Stream;
-        $client->url = 'https://github.com/fguillot/picoFeed';
+        $client->setUrl('https://github.com/fguillot/picoFeed');
         $result = $client->doRequest();
 
         $this->assertNotFalse($result);
@@ -33,7 +33,7 @@ class StreamTest extends PHPUnit_Framework_TestCase
     public function testRedirect()
     {
         $client = new Stream;
-        $client->url = 'http://github.com/fguillot/picoFeed';
+        $client->setUrl('http://github.com/fguillot/picoFeed');
         $result = $client->doRequest();
 
         $this->assertNotFalse($result);
@@ -54,7 +54,7 @@ class StreamTest extends PHPUnit_Framework_TestCase
     public function testBadUrl()
     {
         $client = new Stream;
-        $client->url = 'http://12345gfgfgf';
+        $client->setUrl('http://12345gfgfgf');
         $result = $client->doRequest();
 
         $this->assertFalse($result);

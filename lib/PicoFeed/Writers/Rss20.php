@@ -2,9 +2,11 @@
 
 namespace PicoFeed\Writers;
 
-require_once __DIR__.'/../Writer.php';
+use DomDocument;
+use DomAttr;
+use PicoFeed\Writer;
 
-class Rss20 extends \PicoFeed\Writer
+class Rss20 extends Writer
 {
     private $required_feed_properties = array(
         'title',
@@ -22,14 +24,14 @@ class Rss20 extends \PicoFeed\Writer
     {
         $this->checkRequiredProperties($this->required_feed_properties, $this);
 
-        $this->dom = new \DomDocument('1.0', 'UTF-8');
+        $this->dom = new DomDocument('1.0', 'UTF-8');
         $this->dom->formatOutput = true;
 
         // <rss/>
         $rss = $this->dom->createElement('rss');
         $rss->setAttribute('version', '2.0');
-        $rss->setAttributeNodeNS(new \DomAttr('xmlns:content', 'http://purl.org/rss/1.0/modules/content/'));
-        $rss->setAttributeNodeNS(new \DomAttr('xmlns:atom', 'http://www.w3.org/2005/Atom'));
+        $rss->setAttributeNodeNS(new DomAttr('xmlns:content', 'http://purl.org/rss/1.0/modules/content/'));
+        $rss->setAttributeNodeNS(new DomAttr('xmlns:atom', 'http://www.w3.org/2005/Atom'));
 
         $channel = $this->dom->createElement('channel');
 

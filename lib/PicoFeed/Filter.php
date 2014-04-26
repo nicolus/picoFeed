@@ -13,6 +13,14 @@ use DOMDocument;
 class Filter
 {
     /**
+     * Config object
+     *
+     * @access private
+     * @var \PicoFeed\Config
+     */
+    private $config = null;
+
+    /**
      * Filtered XML data
      *
      * @access private
@@ -63,11 +71,10 @@ class Filter
     /**
      * Tags and attribute whitelist
      *
-     * @static
-     * @access public
+     * @access private
      * @var array
      */
-    public static $whitelist_tags = array(
+    private $whitelist_tags = array(
         'audio' => array('controls', 'src'),
         'video' => array('poster', 'controls', 'height', 'width', 'src'),
         'source' => array('src', 'type'),
@@ -111,11 +118,10 @@ class Filter
     /**
      * Tags blacklist, strip the content of those tags
      *
-     * @static
-     * @access public
+     * @access private
      * @var array
      */
-    public static $blacklist_tags = array(
+    private $blacklisted_tags = array(
         'script'
     );
 
@@ -123,11 +129,10 @@ class Filter
      * Scheme whitelist
      * For a complete list go to http://en.wikipedia.org/wiki/URI_scheme
      *
-     * @static
-     * @access public
+     * @access private
      * @var array
      */
-    public static $scheme_whitelist = array(
+    private $scheme_whitelist = array(
         '//',
         'data:image/png;base64,',
         'data:image/gif;base64,',
@@ -166,11 +171,10 @@ class Filter
     /**
      * Attributes used for external resources
      *
-     * @static
-     * @access public
+     * @access private
      * @var array
      */
-    public static $media_attributes = array(
+    private $media_attributes = array(
         'src',
         'href',
         'poster',
@@ -179,11 +183,10 @@ class Filter
     /**
      * Blacklisted resources
      *
-     * @static
-     * @access public
+     * @access private
      * @var array
      */
-    public static $media_blacklist = array(
+    private $media_blacklist = array(
         'feeds.feedburner.com',
         'share.feedsportal.com',
         'da.feedsportal.com',
@@ -211,11 +214,10 @@ class Filter
     /**
      * Mandatory attributes for specified tags
      *
-     * @static
-     * @access public
+     * @access private
      * @var array
      */
-    public static $required_attributes = array(
+    private $required_attributes = array(
         'a' => array('href'),
         'img' => array('src'),
         'iframe' => array('src'),
@@ -226,22 +228,20 @@ class Filter
     /**
      * Add attributes to specified tags
      *
-     * @static
-     * @access public
+     * @access private
      * @var array
      */
-    public static $add_attributes = array(
+    private $add_attributes = array(
         'a' => 'rel="noreferrer" target="_blank"'
     );
 
     /**
      * Attributes that must be integer
      *
-     * @static
-     * @access public
+     * @access private
      * @var array
      */
-    public static $integer_attributes = array(
+    private $integer_attributes = array(
         'width',
         'height',
         'frameborder',
@@ -250,11 +250,10 @@ class Filter
     /**
      * Iframe source whitelist, everything else is ignored
      *
-     * @static
-     * @access public
+     * @access private
      * @var array
      */
-    public static $iframe_whitelist = array(
+    private $iframe_whitelist = array(
         '//www.youtube.com',
         'http://www.youtube.com',
         'https://www.youtube.com',
@@ -374,9 +373,9 @@ class Filter
             }
 
             // Check for required attributes
-            if (isset(self::$required_attributes[$name])) {
+            if (isset($this->required_attributes[$name])) {
 
-                foreach (self::$required_attributes[$name] as $required_attribute) {
+                foreach ($this->required_attributes[$name] as $required_attribute) {
 
                     if (! in_array($required_attribute, $used_attributes)) {
 
@@ -391,9 +390,9 @@ class Filter
                 $this->data .= '<'.$name.$attr_data;
 
                 // Add custom attributes
-                if (isset(self::$add_attributes[$name])) {
+                if (isset($this->add_attributes[$name])) {
 
-                    $this->data .= ' '.self::$add_attributes[$name].' ';
+                    $this->data .= ' '.$this->add_attributes[$name].' ';
                 }
 
                 // If img or br, we don't close it here
@@ -401,7 +400,7 @@ class Filter
             }
         }
 
-        if (in_array($name, self::$blacklist_tags)) {
+        if (in_array($name, $this->blacklisted_tags)) {
             $this->strip_content = true;
         }
 
@@ -532,7 +531,7 @@ class Filter
      */
     public function isAllowedTag($name)
     {
-        return isset(self::$whitelist_tags[$name]);
+        return isset($this->whitelist_tags[$name]);
     }
 
     /**
@@ -545,7 +544,7 @@ class Filter
      */
     public function isAllowedAttribute($tag, $attribute)
     {
-        return in_array($attribute, self::$whitelist_tags[$tag]);
+        return in_array($attribute, $this->whitelist_tags[$tag]);
     }
 
     /**
@@ -557,7 +556,7 @@ class Filter
      */
     public function isResource($attribute)
     {
-        return in_array($attribute, self::$media_attributes);
+        return in_array($attribute, $this->media_attributes);
     }
 
     /**
@@ -569,7 +568,7 @@ class Filter
      */
     public function isAllowedIframeResource($value)
     {
-        foreach (self::$iframe_whitelist as $url) {
+        foreach ($this->iframe_whitelist as $url) {
 
             if (strpos($value, $url) === 0) {
                 return true;
@@ -588,7 +587,7 @@ class Filter
      */
     public function isAllowedProtocol($value)
     {
-        foreach (self::$scheme_whitelist as $protocol) {
+        foreach ($this->scheme_whitelist as $protocol) {
 
             if (strpos($value, $protocol) === 0) {
                 return true;
@@ -607,7 +606,7 @@ class Filter
      */
     public function isBlacklistedMedia($resource)
     {
-        foreach (self::$media_blacklist as $name) {
+        foreach ($this->media_blacklist as $name) {
 
             if (strpos($resource, $name) !== false) {
                 return true;
@@ -642,7 +641,7 @@ class Filter
      */
     public function validateAttributeValue($attribute, $value)
     {
-        if (in_array($attribute, self::$integer_attributes)) {
+        if (in_array($attribute, $this->integer_attributes)) {
             return ctype_digit($value);
         }
 
@@ -759,5 +758,148 @@ class Filter
         }
 
         return $encoding;
+    }
+
+    /**
+     * Set whitelisted tags adn attributes for each tag
+     *
+     * @access public
+     * @param  array   $values   List of tags: ['video' => ['src', 'cover'], 'img' => ['src']]
+     * @return \PicoFeed\Filter
+     */
+    public function setWhitelistedTags(array $values)
+    {
+        $this->whitelist_tags = $values ?: $this->whitelist_tags;
+        return $this;
+    }
+
+    /**
+     * Set blacklisted tags
+     *
+     * @access public
+     * @param  array   $values   List of tags: ['video', 'img']
+     * @return \PicoFeed\Filter
+     */
+    public function setBlacklistedTags(array $values)
+    {
+        $this->blacklisted_tags = $values ?: $this->blacklisted_tags;
+        return $this;
+    }
+
+    /**
+     * Set scheme whitelist
+     *
+     * @access public
+     * @param  array   $values   List of scheme: ['http://', 'ftp://']
+     * @return \PicoFeed\Filter
+     */
+    public function setSchemeWhitelist(array $values)
+    {
+        $this->scheme_whitelist = $values ?: $this->scheme_whitelist;
+        return $this;
+    }
+
+    /**
+     * Set media attributes (used to load external resources)
+     *
+     * @access public
+     * @param  array   $values   List of values: ['src', 'href']
+     * @return \PicoFeed\Filter
+     */
+    public function setMediaAttributes(array $values)
+    {
+        $this->media_attributes = $values ?: $this->media_attributes;
+        return $this;
+    }
+
+    /**
+     * Set blacklisted external resources
+     *
+     * @access public
+     * @param  array   $values   List of tags: ['http://google.com/', '...']
+     * @return \PicoFeed\Filter
+     */
+    public function setMediaBlacklist(array $values)
+    {
+        $this->media_blacklist = $values ?: $this->media_blacklist;
+        return $this;
+    }
+
+    /**
+     * Set mandatory attributes for whitelisted tags
+     *
+     * @access public
+     * @param  array   $values   List of tags: ['img' => 'src']
+     * @return \PicoFeed\Filter
+     */
+    public function setRequiredAttributes(array $values)
+    {
+        $this->required_attributes = $values ?: $this->required_attributes;
+        return $this;
+    }
+
+    /**
+     * Set attributes to automatically to specific tags
+     *
+     * @access public
+     * @param  array   $values   List of tags: ['a' => 'target="_blank"']
+     * @return \PicoFeed\Filter
+     */
+    public function setAttributeOverrides(array $values)
+    {
+        $this->add_attributes = $values ?: $this->add_attributes;
+        return $this;
+    }
+
+    /**
+     * Set attributes that must be an integer
+     *
+     * @access public
+     * @param  array   $values   List of tags: ['width', 'height']
+     * @return \PicoFeed\Filter
+     */
+    public function setIntegerAttributes(array $values)
+    {
+        $this->integer_attributes = $values ?: $this->integer_attributes;
+        return $this;
+    }
+
+    /**
+     * Set allowed iframe resources
+     *
+     * @access public
+     * @param  array   $values   List of tags: ['http://www.youtube.com']
+     * @return \PicoFeed\Filter
+     */
+    public function setIframeWhitelist(array $values)
+    {
+        $this->iframe_whitelist = $values ?: $this->iframe_whitelist;
+        return $this;
+    }
+
+    /**
+     * Set config object
+     *
+     * @access public
+     * @param  \PicoFeed\Config  $config   Config instance
+     * @return \PicoFeed\Parse
+     */
+    public function setConfig($config)
+    {
+        $this->config = $config;
+
+        if ($this->config !== null) {
+            $this->setIframeWhitelist($this->config->getFilterIframeWhitelist(array()));
+            $this->setIntegerAttributes($this->config->getFilterIntegerAttributes(array()));
+            $this->setAttributeOverrides($this->config->getFilterAttributeOverrides(array()));
+            $this->setRequiredAttributes($this->config->getFilterRequiredAttributes(array()));
+            $this->setMediaBlacklist($this->config->getFilterMediaBlacklist(array()));
+            $this->setMediaAttributes($this->config->getFilterMediaAttributes(array()));
+            $this->setSchemeWhitelist($this->config->getFilterSchemeWhitelist(array()));
+            $this->setBlacklistedTags($this->config->getFilterBlacklistedTags(array()));
+            $this->setWhitelistedTags($this->config->getFilterWhitelistedTags(array()));
+        }
+
+        return $this;
     }
 }

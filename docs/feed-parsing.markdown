@@ -73,32 +73,37 @@ if ($resource->isModified()) {
 }
 ```
 
-Modify the user-agent and connection timeout
---------------------------------------------
+Use a custom user agent
+-----------------------
 
-Here an example how to set a timeout of 10 seconds and a custom user agent:
-
-```php
-$reader->download(
-    'http://petitcodeur.fr/',
-    'last modified date',
-    'etag value',
-    10,
-    'My RSS reader user agent'
-);
-```
-
-HTTP proxy
-----------
-
-Just call the static method `proxy()` before everything else:
+You have to define a custom configuration for that:
 
 ```php
-PicoFeed\Client::proxy($hostname, $port);
+use PicoFeed\Reader;
+use PicoFeed\Config;
+
+$config = new Config;
+$config->setClientUserAgent('My RSS Reader');
+
+$reader = new Reader($config);
+...
 ```
 
-If your proxy is protected by a login and a password:
+The complete config parameters are [described here](config.markdown).
+
+Set a custom timezone
+---------------------
+
+By default, the timezone used is UTC but you can define a custom timezone for the logging and item parsing.
 
 ```php
-PicoFeed\Client::proxy($hostname, $port, $username, $password);
+use PicoFeed\Reader;
+use PicoFeed\Config;
+
+$config = new Config;
+$config->setTimezone('Europe/Paris');
+
+$reader = new Reader($config);
+...
 ```
+[List of supported TimeZones](http://php.net/manual/en/timezones.php)

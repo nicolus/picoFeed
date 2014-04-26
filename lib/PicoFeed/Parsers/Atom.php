@@ -23,13 +23,13 @@ class Atom extends Parser
      */
     public function execute()
     {
-        Logging::log(get_called_class().': begin parsing');
+        Logging::setMessage(get_called_class().': begin parsing');
 
         $xml = XmlParser::getSimpleXml($this->content);
 
         if ($xml === false) {
-            Logging::log(get_called_class().': XML parsing error');
-            Logging::log(XmlParser::getErrors());
+            Logging::setMessage(get_called_class().': XML parsing error');
+            Logging::setMessage(XmlParser::getErrors());
             return false;
         }
 
@@ -40,8 +40,8 @@ class Atom extends Parser
         $this->updated = $this->parseDate((string) $xml->updated);
         $author = (string) $xml->author->name;
 
-        Logging::log(\get_called_class().': Title => '.$this->title);
-        Logging::log(\get_called_class().': Url => '.$this->url);
+        Logging::setMessage(get_called_class().': Title => '.$this->title);
+        Logging::setMessage(get_called_class().': Url => '.$this->url);
 
         foreach ($xml->entry as $entry) {
 
@@ -78,7 +78,7 @@ class Atom extends Parser
             $this->items[] = $item;
         }
 
-        Logging::log(get_called_class().': parsing finished ('.count($this->items).' items)');
+        Logging::setMessage(get_called_class().': parsing finished ('.count($this->items).' items)');
 
         return $this;
     }

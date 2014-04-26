@@ -1,7 +1,6 @@
 <?php
 
-require_once 'lib/PicoFeed/Reader.php';
-require_once 'lib/PicoFeed/Filter.php';
+require_once 'lib/PicoFeed/PicoFeed.php';
 
 use PicoFeed\Filter;
 use PicoFeed\Reader;
@@ -227,25 +226,16 @@ EOD;
 
     public function testOverrideFilters()
     {
-        // Add a new whitelist
-        Filter::$iframe_whitelist[] = 'http://www.kickstarter.com';
-
         $data = '<iframe src="http://www.kickstarter.com/projects/lefnire/habitrpg-mobile/widget/video.html" height="480" width="640" frameborder="0"></iframe>';
 
         $f = new Filter($data, 'http://blabla');
-        $this->assertEquals($data, $f->execute());
-
-        // Reset the entire array
-        Filter::$iframe_whitelist = array('http://www.kickstarter.com');
-
-        $data = '<iframe src="http://www.kickstarter.com/projects/lefnire/habitrpg-mobile/widget/video.html" height="480" width="640" frameborder="0"></iframe>';
-
-        $f = new Filter($data, 'http://blabla');
+        $f->setIframeWhitelist(array('http://www.kickstarter.com'));
         $this->assertEquals($data, $f->execute());
 
         $data = '<iframe src="http://www.youtube.com/bla" height="480" width="640" frameborder="0"></iframe>';
 
         $f = new Filter($data, 'http://blabla');
+        $f->setIframeWhitelist(array('http://www.kickstarter.com'));
         $this->assertEmpty($f->execute());
     }
 }

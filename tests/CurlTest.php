@@ -1,6 +1,6 @@
 <?php
 
-require_once 'lib/PicoFeed/Client.php';
+require_once 'lib/PicoFeed/PicoFeed.php';
 require_once 'lib/PicoFeed/Clients/Curl.php';
 
 use PicoFeed\Clients\Curl;
@@ -10,7 +10,7 @@ class CurlTest extends PHPUnit_Framework_TestCase
     public function testDownload()
     {
         $client = new Curl;
-        $client->url = 'http://miniflux.net/index.html';
+        $client->setUrl('http://miniflux.net/index.html');
         $result = $client->doRequest();
 
         $this->assertTrue(is_array($result));
@@ -23,7 +23,7 @@ class CurlTest extends PHPUnit_Framework_TestCase
     public function testRedirect()
     {
         $client = new Curl;
-        $client->url = 'http://www.miniflux.net/index.html';
+        $client->setUrl('http://www.miniflux.net/index.html');
         $result = $client->doRequest();
 
         $this->assertTrue(is_array($result));
@@ -46,7 +46,7 @@ class CurlTest extends PHPUnit_Framework_TestCase
     public function testBadUrl()
     {
         $client = new Curl;
-        $client->url = 'http://12345gfgfgf';
+        $client->setUrl('http://12345gfgfgf');
         $result = $client->doRequest();
 
         $this->assertFalse($result);
@@ -56,7 +56,7 @@ class CurlTest extends PHPUnit_Framework_TestCase
     public function testAbortOnLargeBody()
     {
         $client = new Curl;
-        $client->url = 'http://duga.jp/ror.xml';
+        $client->setUrl('http://duga.jp/ror.xml');
         $result = $client->doRequest();
 
         $this->assertFalse($result);

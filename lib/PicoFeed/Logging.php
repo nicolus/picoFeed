@@ -2,12 +2,71 @@
 
 namespace PicoFeed;
 
+use DateTime;
+use DateTimeZone;
+
+/**
+ * Logging class
+ *
+ * @author  Frederic Guillot
+ * @package picofeed
+ */
 class Logging
 {
-    public static $messages = array();
+    /**
+     * List of messages
+     *
+     * @static
+     * @access private
+     * @var array
+     */
+    private static $messages = array();
 
-    public static function log($message)
+    /**
+     * Default timezone
+     *
+     * @static
+     * @access private
+     * @var array
+     */
+    private static $timezone = 'UTC';
+
+    /**
+     * Add a new message
+     *
+     * @static
+     * @access public
+     * @param  string   $message   Message
+     */
+    public static function setMessage($message)
     {
-        self::$messages[] = '['.date('Y-m-d H:i:s').'] '.$message;
+        $date = new DateTime('now', new DateTimeZone(self::$timezone));
+
+        self::$messages[] = '['.$date->format('Y-m-d H:i:s').'] '.$message;
+    }
+
+    /**
+     * Get all logged messages
+     *
+     * @static
+     * @access public
+     * @return array
+     */
+    public static function getMessages()
+    {
+        return self::$messages;
+    }
+
+    /**
+     * Set a different timezone
+     *
+     * @static
+     * @see    http://php.net/manual/en/timezones.php
+     * @access public
+     * @param  string   $timezone   Timezone
+     */
+    public static function setTimeZone($timezone)
+    {
+        self::$timezone = $timezone ?: self::$timezone;
     }
 }

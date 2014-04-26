@@ -2,9 +2,11 @@
 
 namespace PicoFeed\Writers;
 
-require_once __DIR__.'/../Writer.php';
+use DomDocument;
+use DomAttr;
+use PicoFeed\Writer;
 
-class Atom extends \PicoFeed\Writer
+class Atom extends Writer
 {
     private $required_feed_properties = array(
         'title',
@@ -22,12 +24,12 @@ class Atom extends \PicoFeed\Writer
     {
         $this->checkRequiredProperties($this->required_feed_properties, $this);
 
-        $this->dom = new \DomDocument('1.0', 'UTF-8');
+        $this->dom = new DomDocument('1.0', 'UTF-8');
         $this->dom->formatOutput = true;
 
         // <feed/>
         $feed = $this->dom->createElement('feed');
-        $feed->setAttributeNodeNS(new \DomAttr('xmlns', 'http://www.w3.org/2005/Atom'));
+        $feed->setAttributeNodeNS(new DomAttr('xmlns', 'http://www.w3.org/2005/Atom'));
 
         // <generator/>
         $generator = $this->dom->createElement('generator', 'PicoFeed');

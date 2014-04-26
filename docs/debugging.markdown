@@ -4,10 +4,10 @@ Debugging
 Get log messages
 ----------------
 
-You can got all debug output by calling this code:
+PicoFeed log in memory the execution flow, if a feed doesn't work correctly it's easy to see what is wrong.
 
 ```php
-print_r(PicoFeed\Logging::$messages);
+print_r(PicoFeed\Logging::getMessages());
 ```
 
 You will got an output like that:
@@ -32,5 +32,6 @@ Array
     [14] => HTTP headers: Last-Modified => Tue, 02 Jul 2013 03:26:02 GMT
     [15] => HTTP headers: ETag => "393e79c-cfed-4e07ee78b2680"
     [16] => HTTP headers: Accept-Ranges => bytes
+    ....
 )
 ```

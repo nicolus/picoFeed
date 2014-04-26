@@ -1,5 +1,5 @@
-PicoFeed - PHP Library to manage Feeds
-======================================
+PicoFeed
+========
 
 PicoFeed was originally developed for [Miniflux](http://miniflux.net), a minimalist and open source news reader.
 
@@ -14,7 +14,7 @@ Features and requirements
 - Feed writer for Atom 1.0 and RSS 2.0
 - Import/Export OPML subscriptions
 - Content filter: HTML cleanup, remove pixel trackers and Ads
-- Many HTTP client adapters: cURL or Stream Context
+- Multiple HTTP client adapters: cURL or Stream Context
 - Content grabber: download from the original website the full content
 - Enclosure detection
 - RTL languages support

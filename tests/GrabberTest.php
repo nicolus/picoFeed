@@ -1,10 +1,11 @@
 <?php
 
-require_once 'lib/PicoFeed/Reader.php';
+require_once 'lib/PicoFeed/PicoFeed.php';
 require_once 'lib/PicoFeed/Grabber.php';
 
 use PicoFeed\Reader;
 use PicoFeed\Grabber;
+use PicoFeed\Logging;
 
 class GrabberTest extends PHPUnit_Framework_TestCase
 {
@@ -33,8 +34,6 @@ class GrabberTest extends PHPUnit_Framework_TestCase
         $grabber = new Grabber('http://arstechnica.com/information-technology/2013/08/sysadmin-security-fail-nsa-finds-snowden-hijacked-officials-logins/');
         $grabber->download();
         $this->assertTrue($grabber->parse());
-
-        //var_dump($grabber->content);
     }
 
     public function testGetRules()
@@ -49,7 +48,7 @@ class GrabberTest extends PHPUnit_Framework_TestCase
         $grabber->download();
         $this->assertTrue($grabber->parse());
 
-        $this->assertEquals('<img title="2013-08-22" src="comics/../comics/1377151029-2013-08-22.png" id="comic" border="0" />', $grabber->content);
+        $this->assertEquals('<img title="2013-08-22" src="comics/../comics/1377151029-2013-08-22.png" id="comic" border="0" />', $grabber->getContent());
     }
 
     public function testRssGrabContent()

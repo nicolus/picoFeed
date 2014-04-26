@@ -2,11 +2,13 @@
 
 namespace PicoFeed;
 
-require_once __DIR__.'/XmlParser.php';
-require_once __DIR__.'/Logging.php';
-require_once __DIR__.'/Filter.php';
-require_once __DIR__.'/Encoding.php';
-require_once __DIR__.'/Grabber.php';
+use DateTime;
+use DateTimeZone;
+use PicoFeed\Config;
+use PicoFeed\Encoding;
+use PicoFeed\Filter;
+use PicoFeed\Grabber;
+use PicoFeed\Logging;
 
 /**
  * Base parser class
@@ -17,13 +19,28 @@ require_once __DIR__.'/Grabber.php';
 abstract class Parser
 {
     /**
+     * Config object
+     *
+     * @access private
+     * @var \PicoFeed\Config
+     */
+    private $config = null;
+
+    /**
      * Hash algorithm used to generate item id, any value supported by PHP, see hash_algos()
      *
-     * @access public
-     * @static
+     * @access private
      * @var string
      */
-    public static $hashAlgo = 'crc32b'; // crc32b seems to be faster and shorter than other hash algorithms
+    private $hash_algo = 'crc32b'; // crc32b seems to be faster and shorter than other hash algorithms
+
+    /**
+     * Timezone used to parse feed dates
+     *
+     * @access private
+     * @var string
+     */
+    private $timezone = 'UTC';
 
     /**
      * Feed content (XML data)
@@ -46,14 +63,20 @@ abstract class Parser
     public $items = array();
 
     /**
-     * Content grabber parameters
+     * Enable the content grabber
      *
-     * @access public
+     * @access private
+     * @var bool
      */
-    public $grabber = false;
-    public $grabber_ignore_urls = array();
-    public $grabber_timeout = null;
-    public $grabber_user_agent = null;
+    public $enable_grabber = false;
+
+    /**
+     * Ignore those urls for the content scraper
+     *
+     * @access private
+     * @var array
+     */
+    private $grabber_ignore_urls = array();
 
     /**
      * Parse feed content
@@ -74,7 +97,7 @@ abstract class Parser
     public function __construct($content, $http_encoding = '')
     {
         $xml_encoding = Filter::getEncodingFromXmlTag($content);
-        Logging::log(\get_called_class().': HTTP Encoding "'.$http_encoding.'" ; XML Encoding "'.$xml_encoding.'"');
+        Logging::setMessage(get_called_class().': HTTP Encoding "'.$http_encoding.'" ; XML Encoding "'.$xml_encoding.'"');
 
         // Strip XML tag to avoid multiple encoding/decoding in the next XML processing
         $this->content = Filter::stripXmlTag($content);
@@ -103,15 +126,39 @@ abstract class Parser
     {
         $content = '';
 
-        if ($this->grabber && ! in_array($item_url, $this->grabber_ignore_urls)) {
+        // Setup the content scraper
+        if ($this->enable_grabber && ! in_array($item_url, $this->grabber_ignore_urls)) {
+
             $grabber = new Grabber($item_url);
-            $grabber->download($this->grabber_timeout, $this->grabber_user_agent);
-            if ($grabber->parse()) $item_content = $grabber->content;
+            $grabber->setConfig($this->config);
+            $grabber->download();
+
+            if ($grabber->parse()) {
+                $item_content = $grabber->getContent();
+            }
         }
 
+        // Content filtering
         if ($item_content) {
-            $filter = new Filter($item_content, $item_url);
-            $content = $filter->execute();
+
+            if ($this->config !== null) {
+
+                $callback = $this->config->getContentFilteringCallback();
+
+                if (is_callable($callback)) {
+                    Logging::setMessage(get_called_class().': Custom filter callback applied');
+                    $content = $callback($item_content, $item_url);
+                }
+            }
+
+            if (! $content) {
+
+                Logging::setMessage(get_called_class().': Apply default content filter');
+
+                $filter = new Filter($item_content, $item_url);
+                $filter->setConfig($this->config);
+                $content = $filter->execute();
+            }
         }
 
         return $content;
@@ -171,7 +218,7 @@ abstract class Parser
      */
     public function generateId()
     {
-        return hash(self::$hashAlgo, implode(func_get_args()));
+        return hash($this->hash_algo, implode(func_get_args()));
     }
 
     /**
@@ -239,10 +286,10 @@ abstract class Parser
      */
     public function getValidDate($format, $value)
     {
-        $date = \DateTime::createFromFormat($format, $value);
+        $date = DateTime::createFromFormat($format, $value, new DateTimeZone($this->timezone));
 
         if ($date !== false) {
-            $errors = \DateTime::getLastErrors();
+            $errors = DateTime::getLastErrors();
             if ($errors['error_count'] === 0 && $errors['warning_count'] === 0) return $date->getTimestamp();
         }
 
@@ -320,5 +367,68 @@ abstract class Parser
         if (strpos($language, 'yi') === 0) return true;
 
         return false;
+    }
+
+    /**
+     * Set Hash algorithm used for id generation
+     *
+     * @access public
+     * @param  string   $algo   Algorithm name
+     * @return \PicoFeed\Parser
+     */
+    public function setHashAlgo($algo)
+    {
+        $this->hash_algo = $algo ?: $this->hash_algo;
+        return $this;
+    }
+
+    /**
+     * Set a different timezone
+     *
+     * @see    http://php.net/manual/en/timezones.php
+     * @access public
+     * @param  string   $timezone   Timezone
+     * @return \PicoFeed\Parser
+     */
+    public function setTimezone($timezone)
+    {
+        $this->timezone = $timezone ?: $this->timezone;
+        return $this;
+    }
+
+    /**
+     * Set config object
+     *
+     * @access public
+     * @param  \PicoFeed\Config  $config   Config instance
+     * @return \PicoFeed\Parser
+     */
+    public function setConfig($config)
+    {
+        $this->config = $config;
+        return $this;
+    }
+
+    /**
+     * Enable the content grabber
+     *
+     * @access public
+     * @return \PicoFeed\Parser
+     */
+    public function enableContentGrabber()
+    {
+        $this->enable_grabber = true;
+    }
+
+    /**
+     * Set ignored URLs for the content grabber
+     *
+     * @access public
+     * @param  array   $urls   URLs
+     * @return \PicoFeed\Parser
+     */
+    public function setGrabberIgnoreUrls(array $urls)
+    {
+        $this->grabber_ignore_urls = $urls;
     }
 }

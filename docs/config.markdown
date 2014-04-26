@@ -1,48 +1,280 @@
 Configuration
 =============
 
-**TODO: The config management will be rewritten to avoid static variables!**
+How to use the Config object
+----------------------------
 
-Override blacklist/whitelist of the content filter
----------------------------------------------------
+To change the default parameters, you have to use the Config class.
+Create a new instance and pass it to the Reader object like that:
 
-These variables are static arrays, extends the actual array or replace it.
+```php
+use PicoFeed\Reader;
+use PicoFeed\Config;
 
-By example to add a new iframe whitelist:
+$config = new Config;
+$config->setClientUserAgent('My custom RSS Reader')
+       ->setProxyHostname('127.0.0.1')
+       ->setProxyPort(8118);
 
-    Filter::$iframe_whitelist[] = 'http://www.kickstarter.com';
+$reader = new Reader($config);
+...
+```
 
-Or to replace the entire whitelist:
+HTTP Client parameters
+----------------------
 
-    Filter::$iframe_whitelist = array('http://www.kickstarter.com');
+### Connection timeout
 
-Available variables:
+- Method name: `setClientTimeout()`
+- Default value: 10 seconds
+- Argument value: number of seconds (integer)
 
-    // Allow only specified tags and attributes
-    Filter::$whitelist_tags
+```php
+$this->config->setClientTimeout(20); // 20 seconds
+```
 
-    // Strip content of these tags
-    Filter::$blacklist_tags
+### User Agent
 
-    // Allow only specified URI scheme
-    Filter::$whitelist_scheme
+- Method name: `setClientUserAgent()`
+- Default value: `PicoFeed (https://github.com/fguillot/picoFeed)`
+- Argument value: string
 
-    // List of attributes used for external resources: src and href
-    Filter::$media_attributes
+```php
+$this->config->setClientUserAgent('My RSS reader');
+```
 
-    // Blacklist of external resources
-    Filter::$media_blacklist
+### Maximum HTTP redirections
 
-    // Required attributes for tags, if the attribute is missing the tag is dropped
-    Filter::$required_attributes
+- Method name: `setMaxRedirections()`
+- Default value: 5
+- Argument value: integer
 
-    // Add attribute to specified tags
-    Filter::$add_attributes
+```php
+$this->config->setMaxRedirections(10);
+```
 
-    // Integer Attributes
-    Filter::$integer_attributes
+### Maximum HTTP body response size
 
-    // Iframe allowed source
-    Filter::$iframe_whitelist
+- Method name: `setMaxBodySize()`
+- Default value: 2097152 (2MB)
+- Argument value: value in bytes (integer)
 
-For more details, have a look to the class `Filter`.
+```php
+$this->config->setMaxBodySize(10485760); // 10MB
+```
+
+### Proxy hostname
+
+- Method name: `setProxyHostname()`
+- Default value: empty
+- Argument value: string
+
+```php
+$this->config->setProxyHostname('proxy.example.org');
+```
+
+### Proxy port
+
+- Method name: `setProxyPort()`
+- Default value: 3128
+- Argument value: port number (integer)
+
+```php
+$this->config->getProxyPort(8118);
+```
+
+### Proxy username
+
+- Method name: `setProxyUsername()`
+- Default value: empty
+- Argument value: string
+
+```php
+$this->config->setProxyUsername('myuser');
+```
+
+### Proxy password
+
+- Method name: `setProxyPassword()`
+- Default value: empty
+- Argument value: string
+
+```php
+$this->config->setProxyPassword('mysecret');
+```
+
+Content grabber
+---------------
+
+### Connection timeout
+
+- Method name: `setGrabberTimeout()`
+- Default value: 10 seconds
+- Argument value: number of seconds (integer)
+
+```php
+$this->config->setGrabberTimeout(20); // 20 seconds
+```
+
+### User Agent
+
+- Method name: `setGrabberUserAgent()`
+- Default value: `PicoFeed (https://github.com/fguillot/picoFeed)`
+- Argument value: string
+
+```php
+$this->config->setGrabberUserAgent('My content scraper');
+```
+
+Parser
+------
+
+### Hash algorithm used for item id generation
+
+- Method name: `setParserHashAlgo()`
+- Default value: `crc32b`
+- Argument value: any value returned by the function `hash_algos()` (string)
+- See: http://php.net/hash_algos
+
+```php
+$this->config->setParserHashAlgo('sha1');
+```
+
+### Set a custom filter
+
+- Method name: `setContentFilteringCallback()`
+- Default value: null
+- Argument value: callable
+- Note: if the callback return nothing, the default filtering is applied
+
+```php
+$this->config->setContentFilteringCallback(function($item_content, $item_url) {
+
+    // Do something here...
+
+    return $filtered_content;
+});
+```
+
+### Timezone
+
+- Method name: `setTimezone()`
+- Default value: UTC
+- Argument value: See https://php.net/manual/en/timezones.php (string)
+- Note: define the timezone for items/feeds
+
+```php
+$this->config->setTimezone('Europe/Paris');
+```
+
+Logging
+-------
+
+### Timezone
+
+- Method name: `setTimezone()`
+- Default value: UTC
+- Argument value: See https://php.net/manual/en/timezones.php (string)
+- Note: define the timezone for the logging class
+
+```php
+$this->config->setTimezone('Europe/Paris');
+```
+
+Filter
+------
+
+### Set the iframe whitelist (allowed iframe sources)
+
+- Method name: `setFilterIframeWhitelist()`
+- Default value: See the Filter class source code
+- Argument value: array
+
+```php
+$this->config->setFilterIframeWhitelist(['http://www.youtube.com', 'http://www.vimeo.com']);
+```
+
+### Define HTML integer attributes
+
+- Method name: `setFilterIntegerAttributes()`
+- Default value: See the Filter class source code
+- Argument value: array
+
+```php
+$this->config->setFilterIntegerAttributes(['width', 'height']);
+```
+
+### Add HTML attributes automatically
+
+- Method name: `setFilterAttributeOverrides()`
+- Default value: See the Filter class source code
+- Argument value: array
+
+```php
+$this->config->setFilterAttributeOverrides(['a' => 'target="_blank"']);
+```
+
+### Set the list of required attributes for tags
+
+- Method name: `setFilterRequiredAttributes()`
+- Default value: See the Filter class source code
+- Argument value: array
+- Note: If the required attributes are not there, the tag is stripped
+
+```php
+$this->config->setFilterRequiredAttributes(['a' => 'href', 'img' => 'src']);
+```
+
+### Set the resource blacklist (Ads blocker)
+
+- Method name: `setFilterMediaBlacklist()`
+- Default value: See the Filter class source code
+- Argument value: array
+- Note: Tags are stripped if they have those URLs
+
+```php
+$this->config->setFilterMediaBlacklist(['feeds.feedburner.com', 'share.feedsportal.com']);
+```
+
+### Define which attributes are used for external resources
+
+- Method name: `setFilterMediaAttributes()`
+- Default value: See the Filter class source code
+- Argument value: array
+
+```php
+$this->config->setFilterMediaAttributes(['src', 'href']);
+```
+
+### Define the scheme whitelist
+
+- Method name: `setFilterSchemeWhitelist()`
+- Default value: See the Filter class source code
+- Argument value: array
+- See: http://en.wikipedia.org/wiki/URI_scheme
+
+```php
+$this->config->setFilterSchemeWhitelist(['http://', 'ftp://']);
+```
+
+### Define the tags and attributes whitelist
+
+- Method name: `setFilterWhitelistedTags()`
+- Default value: See the Filter class source code
+- Argument value: array
+- Note: Only those tags are allowed everything else is stripped
+
+```php
+$this->config->setFilterWhitelistedTags(['a' => ['href'], 'img' => ['src', 'title']]);
+```
+
+### Define a tags blacklist (executed after the tags whitelist)
+
+- Method name: `setFilterBlacklistedTags()`
+- Default value: See the Filter class source code
+- Argument value: array
+- Note: useful if you don't want to redefine the tag whitelist
+
+```php
+$this->config->setFilterBlacklistedTags(['video', 'audio']);
+```

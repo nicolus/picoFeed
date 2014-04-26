@@ -10,14 +10,34 @@ How the content grabber works?
 2. Try to find the text content by using common attributes for class and id
 3. Finally, if nothing is found, the feed content is displayed
 
-The content downloader use a fake user agent, actually Google Chrome under Mac Os X.
-
 **The best results are obtained with Xpath rules file.**
+
+How to use the content scraper?
+-------------------------------
+
+```php
+use PicoFeed\Reader;
+
+$reader = new Reader;
+$reader->download('http://www.egscomics.com/rss.php');
+
+$parser = $reader->getParser();
+
+if ($parser !== false) {
+
+    $parser->enableContentGrabber(); // <= Enable the content grabber
+    $feed = $parser->execute();
+    // ...
+}
+```
+
+When the content scraper is enabled, everything will be slower.
+For each item a new HTTP request is made and the HTML downloaded is parsed with XML/Xpath.
 
 How to write a grabber rules file?
 ----------------------------------
 
-Add a PHP file to the directory `PicoFeed\Rules`, the filename must be the domain name:
+Add a PHP file to the directory `PicoFeed\Rules`, the filename must be the same as the domain name:
 
 Example with the BBC website, `www.bbc.co.uk.php`:
 
@@ -47,26 +67,6 @@ return array(
 Actually, only `body`, `strip` and `test_url` are supported.
 
 Don't forget to send a pull request or a ticket to share your contribution with everybody,
-
-### How to use the content scraper?
-
-```php
-use PicoFeed\Reader;
-
-$reader = new Reader;
-$reader->download('http://www.egscomics.com/rss.php');
-
-$parser = $reader->getParser();
-
-if ($parser !== false) {
-
-    $parser->grabber = true; // <= Enable the content grabber
-    $feed = $parser->execute();
-    // ...
-}
-```
-
-When the content scraper is enabled, everything will be slower because for each item a new HTTP request is made and the HTML downloaded is parsed with XML/Xpath.
 
 List of content grabber rules
 -----------------------------

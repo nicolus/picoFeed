@@ -2,22 +2,59 @@
 
 namespace PicoFeed;
 
-require_once __DIR__.'/Client.php';
-require_once __DIR__.'/Encoding.php';
-require_once __DIR__.'/Logging.php';
-require_once __DIR__.'/Filter.php';
-require_once __DIR__.'/XmlParser.php';
-
 use DOMXPath;
+use PicoFeed\Logging;
+use PicoFeed\Client;
+use PicoFeed\Encoding;
+use PicoFeed\Filter;
 
+/**
+ * Grabber class
+ *
+ * @author  Frederic Guillot
+ * @package picofeed
+ */
 class Grabber
 {
-    public $content = '';
-    public $html = '';
-    public $encoding = '';
+    /**
+     * URL
+     *
+     * @access private
+     * @var string
+     */
+    private $url = '';
 
-    // Order is important, generic terms at the end
-    public $candidatesAttributes = array(
+    /**
+     * Relevant content
+     *
+     * @access private
+     * @var string
+     */
+    private $content = '';
+
+    /**
+     * HTML content
+     *
+     * @access private
+     * @var string
+     */
+    private $html = '';
+
+    /**
+     * HTML content encoding
+     *
+     * @access private
+     * @var string
+     */
+    private $encoding = '';
+
+    /**
+     * List of attributes to try to get the content, order is important, generic terms at the end
+     *
+     * @access private
+     * @var array
+     */
+    private $candidatesAttributes = array(
         'articleBody',
         'articlebody',
         'article-body',
@@ -40,7 +77,13 @@ class Grabber
         'main',
     );
 
-    public $stripAttributes = array(
+    /**
+     * List of attributes to strip
+     *
+     * @access private
+     * @var array
+     */
+    private $stripAttributes = array(
         'comment',
         'share',
         'links',
@@ -60,7 +103,13 @@ class Grabber
         'categories',
     );
 
-    public $stripTags = array(
+    /**
+     * Tags to remove
+     *
+     * @access private
+     * @var array
+     */
+    private $stripTags = array(
         'script',
         'style',
         'nav',
@@ -70,7 +119,22 @@ class Grabber
         'form',
     );
 
+    /**
+     * Config object
+     *
+     * @access private
+     * @var \PicoFeed\Config
+     */
+    private $config = null;
 
+    /**
+     * Constructor
+     *
+     * @access public
+     * @param  string   $url       Url
+     * @param  string   $html      HTML content
+     * @param  string   $encoding  Charset
+     */
     public function __construct($url, $html = '', $encoding = 'utf-8')
     {
         $this->url = $url;
@@ -78,13 +142,42 @@ class Grabber
         $this->encoding = $encoding;
     }
 
+    /**
+     * Set config object
+     *
+     * @access public
+     * @param  \PicoFeed\Config  $config   Config instance
+     * @return \PicoFeed\Parse
+     */
+    public function setConfig($config)
+    {
+        $this->config = $config;
+        return $this;
+    }
 
+    /**
+     * Get relevant content
+     *
+     * @access public
+     * @return string
+     */
+    public function getContent()
+    {
+        return $this->content;
+    }
+
+    /**
+     * Parse the HTML content
+     *
+     * @access public
+     * @return bool
+     */
     public function parse()
     {
         if ($this->html) {
 
-            Logging::log(\get_called_class().' Fix encoding');
-            Logging::log(\get_called_class().': HTTP Encoding "'.$this->encoding.'"');
+            Logging::setMessage(get_called_class().' Fix encoding');
+            Logging::setMessage(get_called_class().': HTTP Encoding "'.$this->encoding.'"');
 
             $this->html = Filter::stripHeadTags($this->html);
 
@@ -95,42 +188,62 @@ class Grabber
                 $this->html = Encoding::toUTF8($this->html);
             }
 
-            Logging::log(\get_called_class().' Content length: '.strlen($this->html).' bytes');
+            Logging::setMessage(get_called_class().' Content length: '.strlen($this->html).' bytes');
             $rules = $this->getRules();
 
             if (is_array($rules)) {
-                Logging::log(\get_called_class().' Parse content with rules');
+                Logging::setMessage(get_called_class().' Parse content with rules');
                 $this->parseContentWithRules($rules);
             }
             else {
-                Logging::log(\get_called_class().' Parse content with candidates');
+                Logging::setMessage(get_called_class().' Parse content with candidates');
                 $this->parseContentWithCandidates();
             }
         }
         else {
-            Logging::log(\get_called_class().' No content fetched');
+            Logging::setMessage(get_called_class().' No content fetched');
         }
 
-        Logging::log(\get_called_class().' Content length: '.strlen($this->content).' bytes');
-        Logging::log(\get_called_class().' Grabber done');
+        Logging::setMessage(get_called_class().' Content length: '.strlen($this->content).' bytes');
+        Logging::setMessage(get_called_class().' Grabber done');
 
         return $this->content !== '';
     }
 
-
-    public function download($timeout = 5, $user_agent = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_8_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/29.0.1547.62 Safari/537.36')
+    /**
+     * Download the HTML content
+     *
+     * @access public
+     * @return HTML content
+     */
+    public function download()
     {
-        $client = Client::create();
-        $client->url = $this->url;
-        $client->timeout = $timeout;
-        $client->user_agent = $user_agent;
-        $client->execute();
+        $client = Client::getInstance();
+
+        if ($this->config !== null) {
+
+            $client->setTimeout($this->config->getGrabberTimeout())
+                   ->setUserAgent($this->config->getGrabberUserAgent())
+                   ->setMaxRedirections($this->config->getMaxRedirections())
+                   ->setMaxBodySize($this->config->getMaxBodySize())
+                   ->setProxyHostname($this->config->getProxyHostname())
+                   ->setProxyPort($this->config->getProxyPort())
+                   ->setProxyUsername($this->config->getProxyUsername())
+                   ->setProxyPassword($this->config->getProxyPassword());
+        }
+
+        $client->execute($this->url);
         $this->html = $client->getContent();
 
         return $this->html;
     }
 
-
+    /**
+     * Try to find a predefined rule
+     *
+     * @access public
+     * @return mixed
+     */
     public function getRules()
     {
         $hostname = parse_url($this->url, PHP_URL_HOST);
@@ -150,7 +263,7 @@ class Grabber
             $filename = __DIR__.'/Rules/'.$file.'.php';
 
             if (file_exists($filename)) {
-                Logging::log(\get_called_class().' Load rule: '.$file);
+                Logging::setMessage(get_called_class().' Load rule: '.$file);
                 return include $filename;
             }
         }
@@ -158,7 +271,12 @@ class Grabber
         return false;
     }
 
-
+    /**
+     * Get the relevant content with predefined rules
+     *
+     * @access public
+     * @param  array   $rules   Rules
+     */
     public function parseContentWithRules(array $rules)
     {
         $dom = XmlParser::getHtmlDocument('<?xml version="1.0" encoding="UTF-8">'.$this->html);
@@ -193,7 +311,11 @@ class Grabber
         }
     }
 
-
+    /**
+     * Get the relevant content with the list of potential attributes
+     *
+     * @access public
+     */
     public function parseContentWithCandidates()
     {
         $dom = XmlParser::getHtmlDocument('<?xml version="1.0" encoding="UTF-8">'.$this->html);
@@ -202,13 +324,13 @@ class Grabber
         // Try to lookup in each tag
         foreach ($this->candidatesAttributes as $candidate) {
 
-            Logging::log(\get_called_class().' Try this candidate: "'.$candidate.'"');
+            Logging::setMessage(get_called_class().' Try this candidate: "'.$candidate.'"');
 
             $nodes = $xpath->query('//*[(contains(@class, "'.$candidate.'") or @id="'.$candidate.'") and not (contains(@class, "nav") or contains(@class, "page"))]');
 
             if ($nodes !== false && $nodes->length > 0) {
                 $this->content = $dom->saveXML($nodes->item(0));
-                Logging::log(\get_called_class().' Find candidate "'.$candidate.'" ('.strlen($this->content).' bytes)');
+                Logging::setMessage(get_called_class().' Find candidate "'.$candidate.'" ('.strlen($this->content).' bytes)');
                 break;
             }
         }
@@ -220,20 +342,24 @@ class Grabber
 
             if ($nodes !== false && $nodes->length > 0) {
                 $this->content = $dom->saveXML($nodes->item(0));
-                Logging::log(\get_called_class().' Find <article/> tag ('.strlen($this->content).' bytes)');
+                Logging::setMessage(get_called_class().' Find <article/> tag ('.strlen($this->content).' bytes)');
             }
         }
 
         if (strlen($this->content) < 50) {
-            Logging::log(\get_called_class().' No enought content fetched, get the full body');
+            Logging::setMessage(get_called_class().' No enought content fetched, get the full body');
             $this->content = $dom->saveXML($dom->firstChild);
         }
 
-        Logging::log(\get_called_class().' Strip garbage');
+        Logging::setMessage(get_called_class().' Strip garbage');
         $this->stripGarbage();
     }
 
-
+    /**
+     * Strip useless tags
+     *
+     * @access public
+     */
     public function stripGarbage()
     {
         $dom = XmlParser::getDomDocument($this->content);
@@ -244,7 +370,7 @@ class Grabber
             $nodes = $xpath->query('//'.$tag);
 
             if ($nodes !== false && $nodes->length > 0) {
-                Logging::log(\get_called_class().' Strip tag: "'.$tag.'"');
+                Logging::setMessage(get_called_class().' Strip tag: "'.$tag.'"');
                 foreach ($nodes as $node) {
                     $node->parentNode->removeChild($node);
                 }
@@ -256,7 +382,7 @@ class Grabber
             $nodes = $xpath->query('//*[contains(@class, "'.$attribute.'") or contains(@id, "'.$attribute.'")]');
 
             if ($nodes !== false && $nodes->length > 0) {
-                Logging::log(\get_called_class().' Strip attribute: "'.$tag.'"');
+                Logging::setMessage(get_called_class().' Strip attribute: "'.$attribute.'"');
                 foreach ($nodes as $node) {
                     $node->parentNode->removeChild($node);
                 }
