@@ -45,3 +45,5 @@ Documentation
 - [Web scraping](docs/grabber.markdown)
 - [Debugging](docs/debugging.markdown)
 - [Configuration](docs/config.markdown)
+
+[![Build Status](https://travis-ci.org/fguillot/picoFeed.svg?branch=master)](https://travis-ci.org/fguillot/picoFeed)
