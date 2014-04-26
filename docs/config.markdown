@@ -30,7 +30,7 @@ HTTP Client parameters
 - Argument value: number of seconds (integer)
 
 ```php
-$this->config->setClientTimeout(20); // 20 seconds
+$config->setClientTimeout(20); // 20 seconds
 ```
 
 ### User Agent
@@ -40,7 +40,7 @@ $this->config->setClientTimeout(20); // 20 seconds
 - Argument value: string
 
 ```php
-$this->config->setClientUserAgent('My RSS reader');
+$config->setClientUserAgent('My RSS reader');
 ```
 
 ### Maximum HTTP redirections
@@ -50,7 +50,7 @@ $this->config->setClientUserAgent('My RSS reader');
 - Argument value: integer
 
 ```php
-$this->config->setMaxRedirections(10);
+$config->setMaxRedirections(10);
 ```
 
 ### Maximum HTTP body response size
@@ -60,7 +60,7 @@ $this->config->setMaxRedirections(10);
 - Argument value: value in bytes (integer)
 
 ```php
-$this->config->setMaxBodySize(10485760); // 10MB
+$config->setMaxBodySize(10485760); // 10MB
 ```
 
 ### Proxy hostname
@@ -70,7 +70,7 @@ $this->config->setMaxBodySize(10485760); // 10MB
 - Argument value: string
 
 ```php
-$this->config->setProxyHostname('proxy.example.org');
+$config->setProxyHostname('proxy.example.org');
 ```
 
 ### Proxy port
@@ -80,7 +80,7 @@ $this->config->setProxyHostname('proxy.example.org');
 - Argument value: port number (integer)
 
 ```php
-$this->config->getProxyPort(8118);
+$config->getProxyPort(8118);
 ```
 
 ### Proxy username
@@ -90,7 +90,7 @@ $this->config->getProxyPort(8118);
 - Argument value: string
 
 ```php
-$this->config->setProxyUsername('myuser');
+$config->setProxyUsername('myuser');
 ```
 
 ### Proxy password
@@ -100,7 +100,7 @@ $this->config->setProxyUsername('myuser');
 - Argument value: string
 
 ```php
-$this->config->setProxyPassword('mysecret');
+$config->setProxyPassword('mysecret');
 ```
 
 Content grabber
@@ -113,7 +113,7 @@ Content grabber
 - Argument value: number of seconds (integer)
 
 ```php
-$this->config->setGrabberTimeout(20); // 20 seconds
+$config->setGrabberTimeout(20); // 20 seconds
 ```
 
 ### User Agent
@@ -123,7 +123,7 @@ $this->config->setGrabberTimeout(20); // 20 seconds
 - Argument value: string
 
 ```php
-$this->config->setGrabberUserAgent('My content scraper');
+$config->setGrabberUserAgent('My content scraper');
 ```
 
 Parser
@@ -137,7 +137,7 @@ Parser
 - See: http://php.net/hash_algos
 
 ```php
-$this->config->setParserHashAlgo('sha1');
+$config->setParserHashAlgo('sha1');
 ```
 
 ### Set a custom filter
@@ -148,7 +148,7 @@ $this->config->setParserHashAlgo('sha1');
 - Note: if the callback return nothing, the default filtering is applied
 
 ```php
-$this->config->setContentFilteringCallback(function($item_content, $item_url) {
+$config->setContentFilteringCallback(function($item_content, $item_url) {
 
     // Do something here...
 
@@ -164,7 +164,7 @@ $this->config->setContentFilteringCallback(function($item_content, $item_url) {
 - Note: define the timezone for items/feeds
 
 ```php
-$this->config->setTimezone('Europe/Paris');
+$config->setTimezone('Europe/Paris');
 ```
 
 Logging
@@ -178,7 +178,7 @@ Logging
 - Note: define the timezone for the logging class
 
 ```php
-$this->config->setTimezone('Europe/Paris');
+$config->setTimezone('Europe/Paris');
 ```
 
 Filter
@@ -191,7 +191,7 @@ Filter
 - Argument value: array
 
 ```php
-$this->config->setFilterIframeWhitelist(['http://www.youtube.com', 'http://www.vimeo.com']);
+$config->setFilterIframeWhitelist(['http://www.youtube.com', 'http://www.vimeo.com']);
 ```
 
 ### Define HTML integer attributes
@@ -201,7 +201,7 @@ $this->config->setFilterIframeWhitelist(['http://www.youtube.com', 'http://www.v
 - Argument value: array
 
 ```php
-$this->config->setFilterIntegerAttributes(['width', 'height']);
+$config->setFilterIntegerAttributes(['width', 'height']);
 ```
 
 ### Add HTML attributes automatically
@@ -211,7 +211,7 @@ $this->config->setFilterIntegerAttributes(['width', 'height']);
 - Argument value: array
 
 ```php
-$this->config->setFilterAttributeOverrides(['a' => 'target="_blank"']);
+$config->setFilterAttributeOverrides(['a' => 'target="_blank"']);
 ```
 
 ### Set the list of required attributes for tags
@@ -222,7 +222,7 @@ $this->config->setFilterAttributeOverrides(['a' => 'target="_blank"']);
 - Note: If the required attributes are not there, the tag is stripped
 
 ```php
-$this->config->setFilterRequiredAttributes(['a' => 'href', 'img' => 'src']);
+$config->setFilterRequiredAttributes(['a' => 'href', 'img' => 'src']);
 ```
 
 ### Set the resource blacklist (Ads blocker)
@@ -233,7 +233,7 @@ $this->config->setFilterRequiredAttributes(['a' => 'href', 'img' => 'src']);
 - Note: Tags are stripped if they have those URLs
 
 ```php
-$this->config->setFilterMediaBlacklist(['feeds.feedburner.com', 'share.feedsportal.com']);
+$config->setFilterMediaBlacklist(['feeds.feedburner.com', 'share.feedsportal.com']);
 ```
 
 ### Define which attributes are used for external resources
@@ -243,7 +243,7 @@ $this->config->setFilterMediaBlacklist(['feeds.feedburner.com', 'share.feedsport
 - Argument value: array
 
 ```php
-$this->config->setFilterMediaAttributes(['src', 'href']);
+$config->setFilterMediaAttributes(['src', 'href']);
 ```
 
 ### Define the scheme whitelist
@@ -254,7 +254,7 @@ $this->config->setFilterMediaAttributes(['src', 'href']);
 - See: http://en.wikipedia.org/wiki/URI_scheme
 
 ```php
-$this->config->setFilterSchemeWhitelist(['http://', 'ftp://']);
+$config->setFilterSchemeWhitelist(['http://', 'ftp://']);
 ```
 
 ### Define the tags and attributes whitelist
@@ -265,7 +265,7 @@ $this->config->setFilterSchemeWhitelist(['http://', 'ftp://']);
 - Note: Only those tags are allowed everything else is stripped
 
 ```php
-$this->config->setFilterWhitelistedTags(['a' => ['href'], 'img' => ['src', 'title']]);
+$config->setFilterWhitelistedTags(['a' => ['href'], 'img' => ['src', 'title']]);
 ```
 
 ### Define a tags blacklist (executed after the tags whitelist)
@@ -276,5 +276,5 @@ $this->config->setFilterWhitelistedTags(['a' => ['href'], 'img' => ['src', 'titl
 - Note: useful if you don't want to redefine the tag whitelist
 
 ```php
-$this->config->setFilterBlacklistedTags(['video', 'audio']);
+$config->setFilterBlacklistedTags(['video', 'audio']);
 ```
