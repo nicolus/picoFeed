@@ -273,7 +273,8 @@ abstract class Parser
             }
         }
 
-        return time();
+        $date = new DateTime('now', new DateTimeZone($this->timezone));
+        return $date->getTimestamp();
     }
 
     /**
