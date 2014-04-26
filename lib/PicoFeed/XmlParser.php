@@ -99,7 +99,13 @@ class XmlParser
         libxml_use_internal_errors(true);
 
         $dom = new DomDocument;
-        $dom->loadHTML($input, LIBXML_NONET);
+
+        if (version_compare(PHP_VERSION, '5.4.0', '>=')) {
+            $dom->loadHTML($input, LIBXML_NONET);
+        }
+        else {
+            $dom->loadHTML($input);
+        }
 
         return $dom;
     }

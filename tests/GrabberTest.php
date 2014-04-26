@@ -15,10 +15,6 @@ class GrabberTest extends PHPUnit_Framework_TestCase
         $grabber->download();
         $this->assertTrue($grabber->parse());
 
-        $grabber = new Grabber('http://www.cnn.com/2013/08/31/world/meast/syria-civil-war/index.html?hpt=hp_t1');
-        $grabber->download();
-        $this->assertTrue($grabber->parse());
-
         $grabber = new Grabber('http://www.lemonde.fr/proche-orient/article/2013/08/30/la-france-nouvelle-plus-ancienne-alliee-des-etats-unis_3469218_3218.html');
         $grabber->download();
         $this->assertTrue($grabber->parse());
@@ -65,31 +61,4 @@ class GrabberTest extends PHPUnit_Framework_TestCase
         $this->assertTrue(is_array($feed->items));
         $this->assertTrue(strpos($feed->items[0]->content, '<img') >= 0);
     }
-/*
-    public function testAllFilters()
-    {
-        $dir = new DirectoryIterator('lib/PicoFeed/Rules/');
-
-        foreach ($dir as $fileinfo) {
-
-            if ($fileinfo->getExtension() == 'php') {
-
-                $rule = include $fileinfo->getRealPath();
-
-                if (isset($rule['test_url'])) {
-
-                    $grabber = new Grabber($rule['test_url']);
-                    $grabber->download();
-                    $r = $grabber->parse();
-
-                    if (! $r) {
-                        var_dump($rule);
-                        var_dump($grabber->content);
-                    }
-
-                    $this->assertTrue($r);
-                }
-            }
-        }
-    }*/
 }
