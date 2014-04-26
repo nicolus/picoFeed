@@ -1,6 +1,6 @@
 {
     "name": "fguillot/picofeed",
-    "description": "Feeds writer/reader (alternative to SimplePie)",
+    "description": "Modern library to write or read feeds (RSS/Atom)",
     "homepage": "https://github.com/fguillot/picoFeed",
     "type": "library",
     "license": "Unlicense",
