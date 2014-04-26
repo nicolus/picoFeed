@@ -25,11 +25,19 @@ class Stream extends Client
         $headers = array(
             'Connection: close',
             'User-Agent: '.$this->user_agent,
-            'Accept-Encoding: gzip',
         );
 
-        if ($this->etag) $headers[] = 'If-None-Match: '.$this->etag;
-        if ($this->last_modified) $headers[] = 'If-Modified-Since: '.$this->last_modified;
+        if (function_exists('gzdecode')) {
+            $headers[] = 'Accept-Encoding: gzip';
+        }
+
+        if ($this->etag) {
+            $headers[] = 'If-None-Match: '.$this->etag;
+        }
+
+        if ($this->last_modified) {
+            $headers[] = 'If-Modified-Since: '.$this->last_modified;
+        }
 
         // Create context
         $context_options = array(

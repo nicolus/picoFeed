@@ -55,6 +55,7 @@ class StreamTest extends PHPUnit_Framework_TestCase
     {
         $client = new Stream;
         $client->setUrl('http://12345gfgfgf');
+        $client->setTimeout(1);
         $result = $client->doRequest();
 
         $this->assertFalse($result);
@@ -68,15 +69,17 @@ class StreamTest extends PHPUnit_Framework_TestCase
 
         $this->assertFalse($result);
     }*/
-/*
+
     public function testDecodeGzip()
     {
-        $client = new Stream;
-        $client->url = 'http://www.nasa.gov/rss/dyn/NASAcast_vodcast.rss';
-        $result = $client->doRequest();
+        if (function_exists('gzdecode')) {
+            $client = new Stream;
+            $client->setUrl('https://github.com/fguillot/picoFeed');
+            $result = $client->doRequest();
 
-        $this->assertNotFalse($result);
-        $this->assertEquals('gzip', $result['headers']['Content-Encoding']);
-        $this->assertEquals('<?xml', substr(trim($result['body']), 0, 5));
-    }*/
+            $this->assertNotFalse($result);
+            $this->assertEquals('gzip', $result['headers']['Content-Encoding']);
+            $this->assertEquals('<!DOC', substr(trim($result['body']), 0, 5));
+        }
+    }
 }
