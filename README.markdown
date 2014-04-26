@@ -37,6 +37,7 @@ Authors
 Documentation
 -------------
 
+- [Installation](docs/installation.markdown)
 - [OPML file importation](docs/opml-import.markdown)
 - [OPML file exportation](docs/opml-export.markdown)
 - [Feed parsing](docs/feed-parsing.markdown)
