@@ -80,6 +80,7 @@ class ParserTest extends PHPUnit_Framework_TestCase
     {
         $this->assertFalse(Parser::isLanguageRTL('fr-FR'));
         $this->assertTrue(Parser::isLanguageRTL('ur'));
+        $this->assertTrue(Parser::isLanguageRTL('syr-**'));
         $this->assertFalse(Parser::isLanguageRTL('ru'));
     }
 }

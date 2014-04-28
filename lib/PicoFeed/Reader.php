@@ -148,6 +148,31 @@ class Reader
     }
 
     /**
+     * Detect the feed format
+     *
+     * @access public
+     * @param  string    $parser_name   Parser name
+     * @param  string    $haystack      First XML tag
+     * @param  array     $needles       List of strings that need to be there
+     * @return mixed                    False on failure or Parser instance
+     */
+    public function detectFormat($parser_name, $haystack, array $needles)
+    {
+        $results = array();
+
+        foreach ($needles as $needle) {
+            $results[] = strpos($haystack, $needle) !== false;
+        }
+
+        if (! in_array(false, $results, true)) {
+            Logging::setMessage(get_called_class().': Format detected => '.$parser_name);
+            return $this->getParserInstance($parser_name);
+        }
+
+        return false;
+    }
+
+    /**
      * Discover feed format and return a parser instance
      *
      * @access public
@@ -156,45 +181,33 @@ class Reader
      */
     public function getParser($discover = false)
     {
+        $formats = array(
+            array('parser' => 'Atom', 'needles' => array('<feed')),
+            array('parser' => 'Rss20', 'needles' => array('<rss', '2.0')),
+            array('parser' => 'Rss92', 'needles' => array('<rss', '0.92')),
+            array('parser' => 'Rss91', 'needles' => array('<rss', '0.91')),
+            array('parser' => 'Rss10', 'needles' => array('<rdf:', 'xmlns="http://purl.org/rss/1.0/"')),
+        );
+
         $first_tag = $this->getFirstTag($this->content);
 
-        if (strpos($first_tag, '<feed') !== false) {
+        foreach ($formats as $format) {
 
-            Logging::setMessage(get_called_class().': discover Atom feed');
-            return $this->getParserInstance('Atom');
+            $parser = $this->detectFormat($format['parser'], $first_tag, $format['needles']);
+
+            if ($parser !== false) {
+                return $parser;
+            }
         }
-        else if (strpos($first_tag, '<rss') !== false &&
-                (strpos($first_tag, 'version="2.0"') !== false || strpos($first_tag, 'version=\'2.0\'') !== false)) {
 
-            Logging::setMessage(get_called_class().': discover RSS 2.0 feed');
-            return $this->getParserInstance('Rss20');
-        }
-        else if (strpos($first_tag, '<rss') !== false &&
-                (strpos($first_tag, 'version="0.92"') !== false || strpos($first_tag, 'version=\'0.92\'') !== false)) {
+        if ($discover === true) {
 
-            Logging::setMessage(get_called_class().': discover RSS 0.92 feed');
-            return $this->getParserInstance('Rss92');
-        }
-        else if (strpos($first_tag, '<rss') !== false &&
-                (strpos($first_tag, 'version="0.91"') !== false || strpos($first_tag, 'version=\'0.91\'') !== false)) {
-
-            Logging::setMessage(get_called_class().': discover RSS 0.91 feed');
-            return $this->getParserInstance('Rss91');
-        }
-        else if (strpos($first_tag, '<rdf:') !== false && strpos($first_tag, 'xmlns="http://purl.org/rss/1.0/"') !== false) {
-
-            Logging::setMessage(get_called_class().': discover RSS 1.0 feed');
-            return $this->getParserInstance('Rss10');
-        }
-        else if ($discover === true) {
-
-            Logging::setMessage(get_called_class().': Format not supported or malformed');
-            Logging::setMessage(get_called_class().':'.PHP_EOL.$this->content);
+            Logging::setMessage(get_called_class().': Format not supported or feed malformed');
+            Logging::setMessage(get_called_class().': Content => '.PHP_EOL.$this->content);
 
             return false;
         }
         else if ($this->discover()) {
-
             return $this->getParser(true);
         }
 

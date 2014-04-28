@@ -363,32 +363,36 @@ class Grabber
     public function stripGarbage()
     {
         $dom = XmlParser::getDomDocument($this->content);
-        $xpath = new DOMXPath($dom);
 
-        foreach ($this->stripTags as $tag) {
+        if ($dom !== false) {
 
-            $nodes = $xpath->query('//'.$tag);
+            $xpath = new DOMXPath($dom);
 
-            if ($nodes !== false && $nodes->length > 0) {
-                Logging::setMessage(get_called_class().' Strip tag: "'.$tag.'"');
-                foreach ($nodes as $node) {
-                    $node->parentNode->removeChild($node);
+            foreach ($this->stripTags as $tag) {
+
+                $nodes = $xpath->query('//'.$tag);
+
+                if ($nodes !== false && $nodes->length > 0) {
+                    Logging::setMessage(get_called_class().' Strip tag: "'.$tag.'"');
+                    foreach ($nodes as $node) {
+                        $node->parentNode->removeChild($node);
+                    }
                 }
             }
-        }
 
-        foreach ($this->stripAttributes as $attribute) {
+            foreach ($this->stripAttributes as $attribute) {
 
-            $nodes = $xpath->query('//*[contains(@class, "'.$attribute.'") or contains(@id, "'.$attribute.'")]');
+                $nodes = $xpath->query('//*[contains(@class, "'.$attribute.'") or contains(@id, "'.$attribute.'")]');
 
-            if ($nodes !== false && $nodes->length > 0) {
-                Logging::setMessage(get_called_class().' Strip attribute: "'.$attribute.'"');
-                foreach ($nodes as $node) {
-                    $node->parentNode->removeChild($node);
+                if ($nodes !== false && $nodes->length > 0) {
+                    Logging::setMessage(get_called_class().' Strip attribute: "'.$attribute.'"');
+                    foreach ($nodes as $node) {
+                        $node->parentNode->removeChild($node);
+                    }
                 }
             }
-        }
 
-        $this->content = $dom->saveXML($dom->documentElement);
+            $this->content = $dom->saveXML($dom->documentElement);
+        }
     }
 }

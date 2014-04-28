@@ -290,8 +290,12 @@ abstract class Parser
         $date = DateTime::createFromFormat($format, $value, new DateTimeZone($this->timezone));
 
         if ($date !== false) {
+
             $errors = DateTime::getLastErrors();
-            if ($errors['error_count'] === 0 && $errors['warning_count'] === 0) return $date->getTimestamp();
+
+            if ($errors['error_count'] === 0 && $errors['warning_count'] === 0) {
+                return $date->getTimestamp();
+            }
         }
 
         return 0;
@@ -343,29 +347,22 @@ abstract class Parser
     {
         $language = strtolower($language);
 
-        // Arabic (ar-**)
-        if (strpos($language, 'ar') === 0) return true;
+        $rtl_languages = array(
+            'ar', // Arabic (ar-**)
+            'fa', // Farsi (fa-**)
+            'ur', // Urdu (ur-**)
+            'ps', // Pashtu (ps-**)
+            'syr', // Syriac (syr-**)
+            'dv', // Divehi (dv-**)
+            'he', // Hebrew (he-**)
+            'yi', // Yiddish (yi-**)
+        );
 
-        // Farsi (fa-**)
-        if (strpos($language, 'fa') === 0) return true;
-
-        // Urdu (ur-**)
-        if (strpos($language, 'ur') === 0) return true;
-
-        // Pashtu (ps-**)
-        if (strpos($language, 'ps') === 0) return true;
-
-        // Syriac (syr-**)
-        if (strpos($language, 'syr') === 0) return true;
-
-        // Divehi (dv-**)
-        if (strpos($language, 'dv') === 0) return true;
-
-        // Hebrew (he-**)
-        if (strpos($language, 'he') === 0) return true;
-
-        // Yiddish (yi-**)
-        if (strpos($language, 'yi') === 0) return true;
+        foreach ($rtl_languages as $prefix) {
+            if (strpos($language, $prefix) === 0) {
+                return true;
+            }
+        }
 
         return false;
     }
