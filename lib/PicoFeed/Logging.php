@@ -58,6 +58,17 @@ class Logging
     }
 
     /**
+     * Remove all logged messages
+     *
+     * @static
+     * @access public
+     */
+    public static function deleteMessages()
+    {
+        self::$messages = array();
+    }
+
+    /**
      * Set a different timezone
      *
      * @static
