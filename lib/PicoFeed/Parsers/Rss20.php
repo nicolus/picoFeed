@@ -2,10 +2,13 @@
 
 namespace PicoFeed\Parsers;
 
+use SimpleXMLElement;
 use PicoFeed\Parser;
 use PicoFeed\XmlParser;
 use PicoFeed\Logging;
 use PicoFeed\Filter;
+use PicoFeed\Feed;
+use PicoFeed\Item;
 
 /**
  * RSS 2.0 Parser
@@ -16,25 +19,26 @@ use PicoFeed\Filter;
 class Rss20 extends Parser
 {
     /**
-     * Parse the document
+     * Get the path to the items XML tree
      *
      * @access public
-     * @return mixed   Rss20 instance or false
+     * @param  SimpleXMLElement   $xml   Feed xml
+     * @return SimpleXMLElement
      */
-    public function execute()
+    public function getItemsTree(SimpleXMLElement $xml)
     {
-        Logging::setMessage(get_called_class().': begin parsing');
+        return $xml->channel->item;
+    }
 
-        $xml = XmlParser::getSimpleXml($this->content);
-
-        if ($xml === false) {
-            Logging::setMessage(get_called_class().': XML parsing error');
-            Logging::setMessage(XmlParser::getErrors());
-            return false;
-        }
-
-        $namespaces = $xml->getNamespaces(true);
-
+    /**
+     * Find the feed url
+     *
+     * @access public
+     * @param  SimpleXMLElement   $xml     Feed xml
+     * @param  \PicoFeed\Feed     $feed    Feed object
+     */
+    public function findFeedUrl(SimpleXMLElement $xml, Feed $feed)
+    {
         if ($xml->channel->link && $xml->channel->link->count() > 1) {
 
             foreach ($xml->channel->link as $xml_link) {
@@ -42,112 +46,228 @@ class Rss20 extends Parser
                 $link = (string) $xml_link;
 
                 if ($link !== '') {
-                    $this->url = (string) $link;
+                    $feed->url = $link;
                     break;
                 }
             }
         }
         else {
 
-            $this->url = (string) $xml->channel->link;
+            $feed->url = (string) $xml->channel->link;
+        }
+    }
+
+    /**
+     * Find the feed title
+     *
+     * @access public
+     * @param  SimpleXMLElement   $xml     Feed xml
+     * @param  \PicoFeed\Feed     $feed    Feed object
+     */
+    public function findFeedTitle(SimpleXMLElement $xml, Feed $feed)
+    {
+        $feed->title = $this->stripWhiteSpace((string) $xml->channel->title) ?: $feed->url;
+    }
+
+    /**
+     * Find the feed language
+     *
+     * @access public
+     * @param  SimpleXMLElement   $xml     Feed xml
+     * @param  \PicoFeed\Feed     $feed    Feed object
+     */
+    public function findFeedLanguage(SimpleXMLElement $xml, Feed $feed)
+    {
+        $feed->language = isset($xml->channel->language) ? (string) $xml->channel->language : '';
+    }
+
+    /**
+     * Find the feed id
+     *
+     * @access public
+     * @param  SimpleXMLElement   $xml     Feed xml
+     * @param  \PicoFeed\Feed     $feed    Feed object
+     */
+    public function findFeedId(SimpleXMLElement $xml, Feed $feed)
+    {
+        $feed->id = $feed->url;
+    }
+
+    /**
+     * Find the feed date
+     *
+     * @access public
+     * @param  SimpleXMLElement   $xml     Feed xml
+     * @param  \PicoFeed\Feed     $feed    Feed object
+     */
+    public function findFeedDate(SimpleXMLElement $xml, Feed $feed)
+    {
+        $date = isset($xml->channel->pubDate) ? $xml->channel->pubDate : $xml->channel->lastBuildDate;
+        $feed->date = $this->parseDate((string) $date);
+    }
+
+    /**
+     * Find the item date
+     *
+     * @access public
+     * @param  SimpleXMLElement   $entry   Feed item
+     * @param  \PicoFeed\Item     $item    Item object
+     */
+    public function findItemDate(SimpleXMLElement $entry, Item $item)
+    {
+        $date = $this->getNamespaceValue($entry, $this->namespaces, 'date');
+
+        if (empty($date)) {
+            $date = $this->getNamespaceValue($entry, $this->namespaces, 'updated');
         }
 
-        $this->language = isset($xml->channel->language) ? (string) $xml->channel->language : '';
-        $this->title = $this->stripWhiteSpace((string) $xml->channel->title) ?: $this->url;
-        $this->id = $this->url;
-        $this->updated = $this->parseDate(isset($xml->channel->pubDate) ? (string) $xml->channel->pubDate : (string) $xml->channel->lastBuildDate);
-
-        Logging::setMessage(get_called_class().': Title => '.$this->title);
-        Logging::setMessage(get_called_class().': Url => '.$this->url);
-
-        // RSS feed might be empty
-        if (! $xml->channel->item) {
-            Logging::setMessage(get_called_class().': feed empty or malformed');
-            return $this;
+        if (empty($date)) {
+            $date = (string) $entry->pubDate;
         }
 
-        foreach ($xml->channel->item as $entry) {
+        $item->date = $this->parseDate($date);
+    }
 
-            $item = new \StdClass;
-            $item->title = $this->stripWhiteSpace((string) $entry->title);
-            $item->url = '';
-            $item->author= '';
-            $item->updated = '';
-            $item->content = '';
-            $item->enclosure = '';
-            $item->enclosure_type = '';
-            $item->language = $this->language;
+    /**
+     * Find the item title
+     *
+     * @access public
+     * @param  SimpleXMLElement   $entry   Feed item
+     * @param  \PicoFeed\Item     $item    Item object
+     */
+    public function findItemTitle(SimpleXMLElement $entry, Item $item)
+    {
+        $item->title = $this->stripWhiteSpace((string) $entry->title);
 
-            foreach ($namespaces as $name => $url) {
+        if (empty($item->title)) {
+            $item->title = $item->url;
+        }
+    }
 
-                $namespace = $entry->children($namespaces[$name]);
+    /**
+     * Find the item author
+     *
+     * @access public
+     * @param  SimpleXMLElement   $xml     Feed
+     * @param  SimpleXMLElement   $entry   Feed item
+     * @param  \PicoFeed\Item     $item    Item object
+     */
+    public function findItemAuthor(SimpleXMLElement $xml, SimpleXMLElement $entry, Item $item)
+    {
+        $item->author = $this->getNamespaceValue($entry, $this->namespaces, 'creator');
 
-                if (! $item->author && ! empty($namespace->creator)) $item->author = (string) $namespace->creator;
-                if (! $item->updated && ! empty($namespace->date)) $item->updated = $this->parseDate((string) $namespace->date);
-                if (! $item->updated && ! empty($namespace->updated)) $item->updated = $this->parseDate((string) $namespace->updated);
-                if (! $item->content && ! empty($namespace->encoded)) $item->content = (string) $namespace->encoded;
-
-                // Get FeedBurner original links
-                if (! $item->url && ! empty($namespace->origLink)) $item->url = (string) $namespace->origLink;
-                if (! $item->enclosure && ! empty($namespace->origEnclosureLink)) $item->enclosure = (string) $namespace->origEnclosureLink;
+        if (empty($item->author)) {
+            if (isset($entry->author)) {
+                $item->author = (string) $entry->author;
             }
-
-            if (empty($item->url)) {
-
-                if (isset($entry->link)) {
-                    $item->url = (string) $entry->link;
-                }
-                else if (isset($entry->guid)) {
-                    $item->url = (string) $entry->guid;
-                }
+            else if (isset($xml->channel->webMaster)) {
+                $item->author = (string) $xml->channel->webMaster;
             }
+        }
+    }
 
-            if (empty($item->updated)) $item->updated = $this->parseDate((string) $entry->pubDate) ?: $this->updated;
+    /**
+     * Find the item content
+     *
+     * @access public
+     * @param  SimpleXMLElement   $entry   Feed item
+     * @param  \PicoFeed\Item     $item    Item object
+     */
+    public function findItemContent(SimpleXMLElement $entry, Item $item)
+    {
+        $content = $this->getNamespaceValue($entry, $this->namespaces, 'encoded');
 
-            if (empty($item->content)) {
-                $item->content = isset($entry->description) ? (string) $entry->description : '';
-            }
-
-            if (empty($item->author)) {
-
-                if (isset($entry->author)) {
-                    $item->author = (string) $entry->author;
-                }
-                else if (isset($xml->channel->webMaster)) {
-                    $item->author = (string) $xml->channel->webMaster;
-                }
-            }
-
-            if (isset($entry->guid) && isset($entry->guid['isPermaLink']) && (string) $entry->guid['isPermaLink'] != 'false') {
-                $id = (string) $entry->guid;
-                $item->id = $this->generateId($id !== '' && $id !== $item->url ? $id : $item->url, $this->isExcludedFromId($this->url) ? '' : $this->url);
-            }
-            else {
-                $item->id = $this->generateId($item->url, $this->isExcludedFromId($this->url) ? '' : $this->url);
-            }
-
-            if (empty($item->title)) $item->title = $item->url;
-
-            // if optional enclosure tag with multimedia provided, capture here
-            if (isset($entry->enclosure)) {
-
-                if (! $item->enclosure) {
-                    $item->enclosure = isset($entry->enclosure['url']) ? (string) $entry->enclosure['url'] : '';
-                }
-
-                $item->enclosure_type = isset($entry->enclosure['type']) ? (string) $entry->enclosure['type'] : '';
-
-                if (Filter::isRelativePath($item->enclosure)) {
-                    $item->enclosure = Filter::getAbsoluteUrl($item->enclosure, $this->url);
-                }
-            }
-
-            $item->content = $this->filterHtml($item->content, $item->url);
-            $this->items[] = $item;
+        if (empty($content) && $entry->description->count() > 0) {
+            $content = (string) $entry->description;
         }
 
-        Logging::setMessage(get_called_class().': parsing finished ('.count($this->items).' items)');
+        $item->content = $this->filterHtml($content, $item->url);
+    }
 
-        return $this;
+    /**
+     * Find the item URL
+     *
+     * @access public
+     * @param  SimpleXMLElement   $entry   Feed item
+     * @param  \PicoFeed\Item     $item    Item object
+     */
+    public function findItemUrl(SimpleXMLElement $entry, Item $item)
+    {
+        $item->url = $this->getNamespaceValue($entry, $this->namespaces, 'origLink');
+
+        if (empty($item->url)) {
+            if (isset($entry->link)) {
+                $item->url = (string) $entry->link;
+            }
+            else if (isset($entry->guid)) {
+                $item->url = (string) $entry->guid;
+            }
+        }
+    }
+
+    /**
+     * Genereate the item id
+     *
+     * @access public
+     * @param  SimpleXMLElement   $entry   Feed item
+     * @param  \PicoFeed\Item     $item    Item object
+     * @param  \PicoFeed\Feed     $feed    Feed object
+     */
+    public function findItemId(SimpleXMLElement $entry, Item $item, Feed $feed)
+    {
+        if ($entry->guid->count() > 0 && (string) $entry->guid['isPermaLink'] !== 'false') {
+            $item_permalink = (string) $entry->guid;
+        }
+        else {
+            $item_permalink = $item->url;
+        }
+
+        if ($this->isExcludedFromId($feed->url)) {
+            $feed_permalink = '';
+        }
+        else {
+            $feed_permalink = $feed->url;
+        }
+
+        $item->id = $this->generateId($item_permalink,  $feed_permalink);
+    }
+
+    /**
+     * Find the item enclosure
+     *
+     * @access public
+     * @param  SimpleXMLElement   $entry   Feed item
+     * @param  \PicoFeed\Item     $item    Item object
+     * @param  \PicoFeed\Feed     $feed    Feed object
+     */
+    public function findItemEnclosure(SimpleXMLElement $entry, Item $item, Feed $feed)
+    {
+        if (isset($entry->enclosure)) {
+
+            $item->enclosure_url = $this->getNamespaceValue($entry->enclosure, $this->namespaces, 'origEnclosureLink');
+
+            if (empty($item->enclosure_url)) {
+                $item->enclosure_url = isset($entry->enclosure['url']) ? (string) $entry->enclosure['url'] : '';
+            }
+
+            $item->enclosure_type = isset($entry->enclosure['type']) ? (string) $entry->enclosure['type'] : '';
+
+            if (Filter::isRelativePath($item->enclosure_url)) {
+                $item->enclosure_url = Filter::getAbsoluteUrl($item->enclosure_url, $feed->url);
+            }
+        }
+    }
+
+    /**
+     * Find the item language
+     *
+     * @access public
+     * @param  SimpleXMLElement   $entry   Feed item
+     * @param  \PicoFeed\Item     $item    Item object
+     * @param  \PicoFeed\Feed     $feed    Feed object
+     */
+    public function findItemLanguage(SimpleXMLElement $entry, Item $item, Feed $feed)
+    {
+        $item->language = $feed->language;
     }
 }

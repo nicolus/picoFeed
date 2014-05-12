@@ -301,7 +301,7 @@ class Filter
         $this->data = $this->removeEmptyTags($this->data);
         $this->data = $this->removeMultipleTags($this->data);
 
-        return $this->data;
+        return trim($this->data);
     }
 
     /**

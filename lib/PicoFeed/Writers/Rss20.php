@@ -4,22 +4,47 @@ namespace PicoFeed\Writers;
 
 use DomDocument;
 use DomAttr;
+use DomElement;
 use PicoFeed\Writer;
 
+/**
+ * Rss 2.0 writer class
+ *
+ * @author  Frederic Guillot
+ * @package picofeed
+ */
 class Rss20 extends Writer
 {
+    /**
+     * List of required properties for each feed
+     *
+     * @access private
+     * @var array
+     */
     private $required_feed_properties = array(
         'title',
         'site_url',
         'feed_url',
     );
 
+    /**
+     * List of required properties for each item
+     *
+     * @access private
+     * @var array
+     */
     private $required_item_properties = array(
         'title',
         'url',
     );
 
-
+    /**
+     * Get the Rss 2.0 document
+     *
+     * @access public
+     * @param  string   $filename   Optional filename
+     * @return string
+     */
     public function execute($filename = '')
     {
         $this->checkRequiredProperties($this->required_feed_properties, $this);
@@ -132,8 +157,14 @@ class Rss20 extends Writer
         }
     }
 
-
-    public function addPubDate($xml, $value = '')
+    /**
+     * Add publication date
+     *
+     * @access public
+     * @param  DomElement   $xml     XML node
+     * @param  string       $value   Timestamp
+     */
+    public function addPubDate(DomElement $xml, $value = '')
     {
         $xml->appendChild($this->dom->createElement(
             'pubDate',
@@ -141,8 +172,15 @@ class Rss20 extends Writer
         ));
     }
 
-
-    public function addAuthor($xml, $tag, array $values)
+    /**
+     * Add author
+     *
+     * @access public
+     * @param  DomElement   $xml     XML node
+     * @param  string       $tag     Tag name
+     * @param  array        $values  Author name and email
+     */
+    public function addAuthor(DomElement $xml, $tag, array $values)
     {
         $value = '';
 

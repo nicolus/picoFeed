@@ -3,23 +3,48 @@
 namespace PicoFeed\Writers;
 
 use DomDocument;
+use DomElement;
 use DomAttr;
 use PicoFeed\Writer;
 
+/**
+ * Atom writer class
+ *
+ * @author  Frederic Guillot
+ * @package picofeed
+ */
 class Atom extends Writer
 {
+    /**
+     * List of required properties for each feed
+     *
+     * @access private
+     * @var array
+     */
     private $required_feed_properties = array(
         'title',
         'site_url',
         'feed_url',
     );
 
+    /**
+     * List of required properties for each item
+     *
+     * @access private
+     * @var array
+     */
     private $required_item_properties = array(
         'title',
         'url',
     );
 
-
+    /**
+     * Get the Atom document
+     *
+     * @access public
+     * @param  string   $filename   Optional filename
+     * @return string
+     */
     public function execute($filename = '')
     {
         $this->checkRequiredProperties($this->required_feed_properties, $this);
@@ -117,8 +142,16 @@ class Atom extends Writer
         }
     }
 
-
-    public function addLink($xml, $url, $rel = 'alternate', $type = 'text/html')
+    /**
+     * Add Link
+     *
+     * @access public
+     * @param  DomElement   $xml     XML node
+     * @param  string       $url     URL
+     * @param  string       $rel     Link rel attribute
+     * @param  string       $type    Link type attribute
+     */
+    public function addLink(DomElement $xml, $url, $rel = 'alternate', $type = 'text/html')
     {
         $link = $this->dom->createElement('link');
         $link->setAttribute('rel', $rel);
@@ -127,8 +160,14 @@ class Atom extends Writer
         $xml->appendChild($link);
     }
 
-
-    public function addUpdated($xml, $value = '')
+    /**
+     * Add publication date
+     *
+     * @access public
+     * @param  DomElement   $xml     XML node
+     * @param  string       $value   Timestamp
+     */
+    public function addUpdated(DomElement $xml, $value = '')
     {
         $xml->appendChild($this->dom->createElement(
             'updated',
@@ -136,8 +175,14 @@ class Atom extends Writer
         ));
     }
 
-
-    public function addAuthor($xml, array $values)
+    /**
+     * Add author
+     *
+     * @access public
+     * @param  DomElement   $xml     XML node
+     * @param  array        $values  Author name and email
+     */
+    public function addAuthor(DomElement $xml, array $values)
     {
         $author = $this->dom->createElement('author');
 

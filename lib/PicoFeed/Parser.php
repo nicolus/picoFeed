@@ -4,11 +4,14 @@ namespace PicoFeed;
 
 use DateTime;
 use DateTimeZone;
+use DOMXPath;
+use SimpleXMLElement;
 use PicoFeed\Config;
 use PicoFeed\Encoding;
 use PicoFeed\Filter;
 use PicoFeed\Grabber;
 use PicoFeed\Logging;
+use PicoFeed\XmlParser;
 
 /**
  * Base parser class
@@ -51,16 +54,12 @@ abstract class Parser
     protected $content = '';
 
     /**
-     * Feed properties (values parsed)
+     * XML namespaces
      *
-     * @access public
+     * @access protected
+     * @var array
      */
-    public $id = '';
-    public $url = '';
-    public $title = '';
-    public $updated = '';
-    public $language = '';
-    public $items = array();
+    protected $namespaces = array();
 
     /**
      * Enable the content grabber
@@ -77,15 +76,6 @@ abstract class Parser
      * @var array
      */
     private $grabber_ignore_urls = array();
-
-    /**
-     * Parse feed content
-     *
-     * @abstract
-     * @access public
-     * @return mixed
-     */
-    abstract public function execute();
 
     /**
      * Constructor
@@ -112,6 +102,52 @@ abstract class Parser
 
         // Workarounds
         $this->content = $this->normalizeData($this->content);
+    }
+
+    /**
+     * Parse the document
+     *
+     * @access public
+     * @return mixed   \PicoFeed\Feed instance or false
+     */
+    public function execute()
+    {
+        Logging::setMessage(get_called_class().': begin parsing');
+
+        $xml = XmlParser::getSimpleXml($this->content);
+
+        if ($xml === false) {
+            Logging::setMessage(get_called_class().': XML parsing error');
+            Logging::setMessage(XmlParser::getErrors());
+            return false;
+        }
+
+        $this->namespaces = $xml->getNamespaces(true);
+
+        $feed = new Feed;
+        $this->findFeedUrl($xml, $feed);
+        $this->findFeedTitle($xml, $feed);
+        $this->findFeedLanguage($xml, $feed);
+        $this->findFeedId($xml, $feed);
+        $this->findFeedDate($xml, $feed);
+
+        foreach ($this->getItemsTree($xml) as $entry) {
+
+            $item = new Item;
+            $this->findItemAuthor($xml, $entry, $item);
+            $this->findItemUrl($entry, $item);
+            $this->findItemTitle($entry, $item);
+            $this->findItemId($entry, $item, $feed);
+            $this->findItemDate($entry, $item);
+            $this->findItemContent($entry, $item);
+            $this->findItemEnclosure($entry, $item, $feed);
+            $this->findItemLanguage($entry, $item, $feed);
+            $feed->items[] = $item;
+        }
+
+        Logging::setMessage(get_called_class().PHP_EOL.$feed);
+
+        return $feed;
     }
 
     /**
@@ -328,10 +364,13 @@ abstract class Parser
      */
     public function getXmlLang($xml)
     {
-        $dom = new \DOMDocument;
-        $dom->loadXML($this->content);
+        $dom = XmlParser::getDomDocument($this->content);
 
-        $xpath = new \DOMXPath($dom);
+        if ($dom === false) {
+            return '';
+        }
+
+        $xpath = new DOMXPath($dom);
         return $xpath->evaluate('string(//@xml:lang[1])') ?: '';
     }
 
@@ -428,5 +467,27 @@ abstract class Parser
     public function setGrabberIgnoreUrls(array $urls)
     {
         $this->grabber_ignore_urls = $urls;
+    }
+
+    /**
+     * Get a value from a XML namespace
+     *
+     * @access public
+     * @param  SimpleXMLElement     $xml    XML element
+     * @param  array                $namespaces    XML namespaces
+     * @param  string               $property      XML tag name
+     * @return string
+     */
+    public function getNamespaceValue(SimpleXMLElement $xml, array $namespaces, $property)
+    {
+        foreach ($namespaces as $name => $url) {
+            $namespace = $xml->children($namespaces[$name]);
+
+            if ($namespace->$property->count() > 0) {
+                return (string) $namespace->$property;
+            }
+        }
+
+        return '';
     }
 }

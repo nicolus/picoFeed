@@ -7,27 +7,125 @@ use PicoFeed\Parsers\Rss10;
 
 class Rss10ParserTest extends PHPUnit_Framework_TestCase
 {
-    public function testFormatOk()
-    {
-        $parser = new Rss10(file_get_contents('tests/fixtures/planete-jquery.xml'));
-        $r = $parser->execute();
-
-        $this->assertEquals('Planète jQuery : l\'actualité jQuery, plugins jQuery et tutoriels jQuery en français', $r->title);
-        $this->assertEquals('http://planete-jquery.fr', $r->url);
-        $this->assertEquals('http://planete-jquery.fr', $r->id);
-        $this->assertEquals(20, count($r->items));
-
-        $this->assertEquals('MathieuRobin : Chroniques jQuery, épisode 108', $r->items[0]->title);
-        $this->assertEquals('http://www.mathieurobin.com/2013/03/chroniques-jquery-episode-108/', $r->items[0]->url);
-        $this->assertEquals('5b48b716', $r->items[0]->id);
-        $this->assertEquals('MathieuRobin', $r->items[0]->author);
-        $this->assertEquals('<p>Hello tout le monde', substr($r->items[0]->content, 0, 22));
-    }
-
-
     public function testBadInput()
     {
-        $parser = new Rss10('ffhhghg');
+        $parser = new Rss10('boo');
         $this->assertFalse($parser->execute());
+    }
+
+    public function testFeedTitle()
+    {
+        $parser = new Rss10(file_get_contents('tests/fixtures/planete-jquery.xml'));
+        $feed = $parser->execute();
+
+        $this->assertNotFalse($feed);
+        $this->assertEquals("Planète jQuery : l'actualité jQuery, plugins jQuery et tutoriels jQuery en français", $feed->getTitle());
+    }
+
+    public function testFeedUrl()
+    {
+        $parser = new Rss10(file_get_contents('tests/fixtures/planete-jquery.xml'));
+        $feed = $parser->execute();
+
+        $this->assertNotFalse($feed);
+        $this->assertEquals('http://planete-jquery.fr', $feed->getUrl());
+    }
+
+    public function testFeedId()
+    {
+        $parser = new Rss10(file_get_contents('tests/fixtures/planete-jquery.xml'));
+        $feed = $parser->execute();
+
+        $this->assertNotFalse($feed);
+        $this->assertEquals('http://planete-jquery.fr', $feed->getId());
+    }
+
+    public function testFeedDate()
+    {
+        $parser = new Rss10(file_get_contents('tests/fixtures/planete-jquery.xml'));
+        $feed = $parser->execute();
+
+        $this->assertNotFalse($feed);
+        $this->assertEquals(1363752990, $feed->getDate());
+    }
+
+    public function testFeedLanguage()
+    {
+        $parser = new Rss10(file_get_contents('tests/fixtures/planete-jquery.xml'));
+        $feed = $parser->execute();
+
+        $this->assertNotFalse($feed);
+        $this->assertEquals('fr', $feed->getLanguage());
+        $this->assertEquals('fr', $feed->items[0]->getLanguage());
+    }
+
+    public function testItemId()
+    {
+        $parser = new Rss10(file_get_contents('tests/fixtures/planete-jquery.xml'));
+        $feed = $parser->execute();
+
+        $this->assertNotFalse($feed);
+        $this->assertNotEmpty($feed->items);
+        $this->assertEquals($parser->generateId($feed->items[0]->getUrl(), $feed->getUrl()), $feed->items[0]->getId());
+    }
+
+    public function testItemUrl()
+    {
+        $parser = new Rss10(file_get_contents('tests/fixtures/planete-jquery.xml'));
+        $feed = $parser->execute();
+
+        $this->assertNotFalse($feed);
+        $this->assertNotEmpty($feed->items);
+        $this->assertEquals('http://www.mathieurobin.com/2013/03/chroniques-jquery-episode-108/', $feed->items[0]->getUrl());
+    }
+
+    public function testItemTitle()
+    {
+        $parser = new Rss10(file_get_contents('tests/fixtures/planete-jquery.xml'));
+        $feed = $parser->execute();
+
+        $this->assertNotFalse($feed);
+        $this->assertNotEmpty($feed->items);
+        $this->assertEquals('LaFermeDuWeb : PowerTip - Des tooltips aux fonctionnalités avancées', $feed->items[1]->getTitle());
+    }
+
+    public function testItemDate()
+    {
+        $parser = new Rss10(file_get_contents('tests/fixtures/planete-jquery.xml'));
+        $feed = $parser->execute();
+
+        $this->assertNotFalse($feed);
+        $this->assertNotEmpty($feed->items);
+        $this->assertEquals(1362647700, $feed->items[1]->getDate());
+    }
+
+    public function testItemLanguage()
+    {
+        $parser = new Rss10(file_get_contents('tests/fixtures/planete-jquery.xml'));
+        $feed = $parser->execute();
+
+        $this->assertNotFalse($feed);
+        $this->assertNotEmpty($feed->items);
+        $this->assertEquals('fr', $feed->items[1]->getLanguage());
+    }
+
+    public function testItemAuthor()
+    {
+        $parser = new Rss10(file_get_contents('tests/fixtures/planete-jquery.xml'));
+        $feed = $parser->execute();
+
+        $this->assertNotFalse($feed);
+        $this->assertNotEmpty($feed->items);
+        $this->assertEquals('LaFermeDuWeb', $feed->items[1]->getAuthor());
+    }
+
+    public function testItemContent()
+    {
+        $parser = new Rss10(file_get_contents('tests/fixtures/planete-jquery.xml'));
+        $feed = $parser->execute();
+
+        $this->assertNotFalse($feed);
+        $this->assertNotEmpty($feed->items);
+        $this->assertTrue(strpos($feed->items[1]->getContent(), '<a href="http://www.lafermeduweb.net') === 0);
     }
 }

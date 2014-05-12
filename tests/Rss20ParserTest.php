@@ -7,108 +7,243 @@ use PicoFeed\Parsers\Rss20;
 
 class Rss20ParserTest extends PHPUnit_Framework_TestCase
 {
-    public function testLanguageDetection()
+    public function testBadInput()
     {
+        $parser = new Rss20('boo');
+        $this->assertFalse($parser->execute());
+    }
+
+    public function testFeedTitle()
+    {
+        $parser = new Rss20(file_get_contents('tests/fixtures/rss20.xml'));
+        $feed = $parser->execute();
+
+        $this->assertNotFalse($feed);
+        $this->assertEquals('WordPress News', $feed->getTitle());
+
+        $parser = new Rss20(file_get_contents('tests/fixtures/pcinpact.xml'));
+        $feed = $parser->execute();
+
+        $this->assertNotFalse($feed);
+        $this->assertEquals('PC INpact', $feed->getTitle());
+    }
+
+    public function testFeedUrl()
+    {
+        $parser = new Rss20(file_get_contents('tests/fixtures/rss20.xml'));
+        $feed = $parser->execute();
+
+        $this->assertNotFalse($feed);
+        $this->assertEquals('http://wordpress.org/news', $feed->getUrl());
+
+        $parser = new Rss20(file_get_contents('tests/fixtures/pcinpact.xml'));
+        $feed = $parser->execute();
+
+        $this->assertNotFalse($feed);
+        $this->assertEquals('http://www.pcinpact.com/', $feed->getUrl());
+    }
+
+    public function testFeedId()
+    {
+        $parser = new Rss20(file_get_contents('tests/fixtures/rss20.xml'));
+        $feed = $parser->execute();
+
+        $this->assertNotFalse($feed);
+        $this->assertEquals('http://wordpress.org/news', $feed->getId());
+    }
+
+    public function testFeedDate()
+    {
+        $parser = new Rss20(file_get_contents('tests/fixtures/rss20.xml'));
+        $feed = $parser->execute();
+
+        $this->assertNotFalse($feed);
+        $this->assertEquals(1359066183, $feed->getDate());
+
+        $parser = new Rss20(file_get_contents('tests/fixtures/fulltextrss.xml'));
+        $feed = $parser->execute();
+
+        $this->assertNotFalse($feed);
+        $this->assertEquals(time(), $feed->getDate());
+    }
+
+    public function testFeedLanguage()
+    {
+        $parser = new Rss20(file_get_contents('tests/fixtures/rss20.xml'));
+        $feed = $parser->execute();
+
+        $this->assertNotFalse($feed);
+        $this->assertEquals('en-US', $feed->getLanguage());
+        $this->assertEquals('en-US', $feed->items[0]->getLanguage());
+
         $parser = new Rss20(file_get_contents('tests/fixtures/zoot_egkty.xml'));
-        $this->assertNotFalse($parser->execute());
-        $this->assertEquals('ur', $parser->language);
-        $this->assertEquals('ur', $parser->items[0]->language);
+        $feed = $parser->execute();
+
+        $this->assertNotFalse($feed);
+        $this->assertEquals('ur', $feed->getLanguage());
+        $this->assertEquals('ur', $feed->items[0]->getLanguage());
 
         $parser = new Rss20(file_get_contents('tests/fixtures/ibash.ru.xml'));
-        $this->assertNotFalse($parser->execute());
-        $this->assertEquals('ru', $parser->language);
-        $this->assertEquals('ru', $parser->items[0]->language);
+        $feed = $parser->execute();
+
+        $this->assertNotFalse($feed);
+        $this->assertEquals('ru', $feed->getLanguage());
+        $this->assertEquals('ru', $feed->items[0]->getLanguage());
+    }
+
+    public function testItemId()
+    {
+        $parser = new Rss20(file_get_contents('tests/fixtures/rss20.xml'));
+        $feed = $parser->execute();
+
+        $this->assertNotFalse($feed);
+        $this->assertNotEmpty($feed->items);
+        $this->assertEquals($parser->generateId($feed->items[0]->getUrl(), $feed->getUrl()), $feed->items[0]->getId());
+
+        $parser = new Rss20(file_get_contents('tests/fixtures/pcinpact.xml'));
+        $feed = $parser->execute();
+
+        $this->assertNotFalse($feed);
+        $this->assertNotEmpty($feed->items);
+        $this->assertEquals($parser->generateId($feed->items[0]->getUrl(), $feed->getUrl()), $feed->items[0]->getId());
+
+        $parser = new Rss20(file_get_contents('tests/fixtures/fulltextrss.xml'));
+        $feed = $parser->execute();
+
+        $this->assertNotFalse($feed);
+        $this->assertNotEmpty($feed->items);
+        $this->assertEquals($parser->generateId($feed->items[0]->getUrl(), $feed->getUrl()), $feed->items[0]->getId());
+    }
+
+    public function testItemUrl()
+    {
+        $parser = new Rss20(file_get_contents('tests/fixtures/rss20.xml'));
+        $feed = $parser->execute();
+
+        $this->assertNotFalse($feed);
+        $this->assertNotEmpty($feed->items);
+        $this->assertEquals('http://wordpress.org/news/2013/01/wordpress-3-5-1/', $feed->items[0]->getUrl());
+
+        $parser = new Rss20(file_get_contents('tests/fixtures/pcinpact.xml'));
+        $feed = $parser->execute();
+
+        $this->assertNotFalse($feed);
+        $this->assertNotEmpty($feed->items);
+        $this->assertEquals('http://www.pcinpact.com/breve/78872-la-dcri-purge-wikipedia-par-menace-bel-effet-streisand-a-cle.htm?utm_source=PCi_RSS_Feed&utm_medium=news&utm_campaign=pcinpact', $feed->items[0]->getUrl());
+    }
+
+    public function testItemTitle()
+    {
+        $parser = new Rss20(file_get_contents('tests/fixtures/rss20.xml'));
+        $feed = $parser->execute();
+
+        $this->assertNotFalse($feed);
+        $this->assertNotEmpty($feed->items);
+        $this->assertEquals('2012: A Look Back', $feed->items[1]->getTitle());
+    }
+
+    public function testItemDate()
+    {
+        $parser = new Rss20(file_get_contents('tests/fixtures/rss20.xml'));
+        $feed = $parser->execute();
+
+        $this->assertNotFalse($feed);
+        $this->assertNotEmpty($feed->items);
+        $this->assertEquals(1357006940, $feed->items[1]->getDate());
+
+        $parser = new Rss20(file_get_contents('tests/fixtures/fulltextrss.xml'));
+        $feed = $parser->execute();
+
+        $this->assertNotFalse($feed);
+        $this->assertNotEmpty($feed->items);
+        $this->assertEquals(1365781095, $feed->items[0]->getDate());
+    }
+
+    public function testItemLanguage()
+    {
+        $parser = new Rss20(file_get_contents('tests/fixtures/rss20.xml'));
+        $feed = $parser->execute();
+
+        $this->assertNotFalse($feed);
+        $this->assertNotEmpty($feed->items);
+        $this->assertEquals('en-US', $feed->items[1]->getLanguage());
+    }
+
+    public function testItemAuthor()
+    {
+        $parser = new Rss20(file_get_contents('tests/fixtures/rss20.xml'));
+        $feed = $parser->execute();
+
+        $this->assertNotFalse($feed);
+        $this->assertNotEmpty($feed->items);
+        $this->assertEquals('Jen Mylo', $feed->items[1]->getAuthor());
+
+        $parser = new Rss20(file_get_contents('tests/fixtures/rss2sample.xml'));
+        $feed = $parser->execute();
+
+        $this->assertNotFalse($feed);
+        $this->assertNotEmpty($feed->items);
+        $this->assertEquals('webmaster@example.com', $feed->items[2]->getAuthor());
+    }
+
+    public function testItemContent()
+    {
+        $parser = new Rss20(file_get_contents('tests/fixtures/rss20.xml'));
+        $feed = $parser->execute();
+
+        $this->assertNotFalse($feed);
+        $this->assertNotEmpty($feed->items);
+        $this->assertTrue(strpos($feed->items[1]->getContent(), '<p>Another year is coming') === 0);
+
+        $parser = new Rss20(file_get_contents('tests/fixtures/rss2sample.xml'));
+        $feed = $parser->execute();
+
+        $this->assertNotFalse($feed);
+        $this->assertNotEmpty($feed->items);
+        $this->assertTrue(strpos($feed->items[1]->getContent(), '<p>Sky watchers in Europe') === 0);
+
+        $parser = new Rss20(file_get_contents('tests/fixtures/ibash.ru.xml'));
+        $feed = $parser->execute();
+
+        $this->assertNotFalse($feed);
+        $this->assertNotEmpty($feed->items);
+        $this->assertTrue(strpos($feed->items[0]->getContent(), '<p>Хабр, обсуждение фейлов на работе: reaferon: Интернет') === 0);
+    }
+
+    public function testItemEnclosure()
+    {
+        $parser = new Rss20(file_get_contents('tests/fixtures/rue89.xml'));
+        $feed = $parser->execute();
+
+        $this->assertNotFalse($feed);
+        $this->assertNotEmpty($feed->items);
+        $this->assertEquals('http://rue89.feedsportal.com/c/33822/f/608948/e/1/s/2a687021/l/0L0Srue890N0Csites0Cnews0Cfiles0Cstyles0Cmosaic0Cpublic0Czapnet0Cthumbnail0Isquare0C20A130C0A40Ccahuzac0I10Bpng/cahuzac_1.png', $feed->items[0]->getEnclosureUrl());
+        $this->assertEquals('image/png', $feed->items[0]->getEnclosureType());
     }
 
     public function testFeedsReportedAsNotWorking()
     {
         $parser = new Rss20(file_get_contents('tests/fixtures/jeux-linux.fr.xml'));
-        $this->assertNotEquals(true, $parser->execute());
+        $feed = $parser->execute();
 
-        $parser = new Rss20(file_get_contents('tests/fixtures/ibash.ru.xml'));
-        $this->assertNotEquals(true, $parser->execute());
-        $this->assertEquals('<p>Хабр, обсуждение фейлов на работе: reaferon: Интернет-магазин с оборотом более 1 млн. в месяц. При округлении цены до двух знаков после запятой: $price = round($price,2); была допущена досадная опечатка $price = rand($price,2);</p>', $parser->items[0]->content);
-
-        $parser = new Rss20(file_get_contents('tests/fixtures/xakep.ru.xml'));
-        $this->assertNotEquals(true, $parser->execute());
-        $this->assertEquals('Bug Bounty — другая сторона медали', $parser->items[23]->title);
-        $this->assertEquals('<p>Бывший директор АНБ, генерал Майкл Хэйден снова показал себя во всей красе.</p>', $parser->items[0]->content);
-
-        $parser = new Rss20(file_get_contents('tests/fixtures/resorts.xml'));
-        $this->assertNotEquals(false, $parser->execute());
-        $this->assertEquals('Hyatt  Rates', $parser->title);
-        $this->assertEquals('http://www.hyatt.com/rss/edeals/.jhtml', $parser->url);
-        $this->assertEquals(1, count($parser->items));
-        $this->assertEquals('Tuesday Jul 07,2009-Sunday Jul 19,2009', $parser->items[0]->title);
-        $this->assertEquals('http://www.hyatt.com/rss/edeals/.jhtml?19Jul09', $parser->items[0]->url);
+        $this->assertNotFalse($feed);
+        $this->assertNotEmpty($feed->items);
 
         $parser = new Rss20(file_get_contents('tests/fixtures/cercle.psy.xml'));
-        $this->assertNotEquals(false, $parser->execute());
-    }
+        $feed = $parser->execute();
 
-    public function testFormatOk()
-    {
-        $parser = new Rss20(file_get_contents('tests/fixtures/rss2sample.xml'));
-        $r = $parser->execute();
+        $this->assertNotFalse($feed);
+        $this->assertNotEmpty($feed->items);
 
-        $this->assertNotEquals(false, $r);
+        $parser = new Rss20(file_get_contents('tests/fixtures/resorts.xml'));
+        $feed = $parser->execute();
 
-        $this->assertEquals('Liftoff News', $r->title);
-        $this->assertEquals('http://liftoff.msfc.nasa.gov/', $r->url);
-        $this->assertEquals('http://liftoff.msfc.nasa.gov/', $r->id);
-        $this->assertEquals(4, count($r->items));
-
-        $this->assertEquals('Star City', $r->items[0]->title);
-        $this->assertEquals('http://liftoff.msfc.nasa.gov/news/2003/news-starcity.asp', $r->items[0]->url);
-        $this->assertEquals('3fa53b0b', $r->items[0]->id);
-        $this->assertEquals('webmaster@example.com', $r->items[0]->author);
-        //$this->assertEquals(224, strlen($r->items[0]->content));
-
-        $parser = new Rss20(file_get_contents('tests/fixtures/rss20.xml'));
-        $r = $parser->execute();
-
-        $this->assertEquals('WordPress News', $r->title);
-        $this->assertEquals('http://wordpress.org/news', $r->url);
-        $this->assertEquals('http://wordpress.org/news', $r->id);
-        $this->assertEquals(10, count($r->items));
-
-        $this->assertEquals('WordPress 3.4.2 Maintenance and Security Release', $r->items[9]->title);
-        $this->assertEquals('http://wordpress.org/news/2012/09/wordpress-3-4-2/', $r->items[9]->url);
-        $this->assertEquals('875b87ca', $r->items[9]->id);
-        $this->assertEquals('Andrew Nacin', $r->items[9]->author);
-        //$this->assertEquals(1443, strlen($r->items[9]->content));
-
-        $parser = new Rss20(file_get_contents('tests/fixtures/pcinpact.xml'));
-        $r = $parser->execute();
-
-        $this->assertEquals('PC INpact', $r->title);
-        $this->assertEquals('http://www.pcinpact.com/', $r->url);
-        $this->assertEquals('http://www.pcinpact.com/', $r->id);
-        $this->assertEquals(30, count($r->items));
-
-        $this->assertEquals('La DCRI purge Wikipedia par la menace, un bel effet Streisand à la clé', $r->items[0]->title);
-        $this->assertEquals('http://www.pcinpact.com/breve/78872-la-dcri-purge-wikipedia-par-menace-bel-effet-streisand-a-cle.htm?utm_source=PCi_RSS_Feed&utm_medium=news&utm_campaign=pcinpact', $r->items[0]->url);
-        $this->assertEquals('bcc94f39', $r->items[0]->id);
-        $this->assertEquals('', $r->items[0]->author);
-
-        $parser = new Rss20(file_get_contents('tests/fixtures/fulltextrss.xml'));
-        $r = $parser->execute();
-
-        $this->assertEquals('Numerama.com - Magazine', $r->title);
-        $this->assertEquals('http://www.numerama.com/', $r->url);
-        $this->assertEquals('http://www.numerama.com/', $r->id);
-        $this->assertEquals(time(), $r->updated);
-        $this->assertEquals(6, count($r->items));
-
-        $this->assertEquals('Brevets : un juge doute de la bonne volonté de Google et Apple', $r->items[0]->title);
-        $this->assertEquals('http://www.numerama.com/magazine/25669-brevets-un-juge-doute-de-la-bonne-volonte-de-google-et-apple.html', $r->items[0]->url);
-        $this->assertEquals('11aba651', $r->items[0]->id);
-        $this->assertEquals('', $r->items[0]->author);
-    }
-
-    public function testBadInput()
-    {
-        $parser = new Rss20('ffhhghg');
-        $this->assertFalse($parser->execute());
+        $this->assertNotFalse($feed);
+        $this->assertNotEmpty($feed->items);
+        $this->assertEquals('Hyatt  Rates', $feed->getTitle());
+        $this->assertEquals('http://www.hyatt.com/rss/edeals/.jhtml', $feed->getUrl());
+        $this->assertEquals(1, count($feed->getItems()));
+        $this->assertEquals('Tuesday Jul 07,2009-Sunday Jul 19,2009', $feed->items[0]->getTitle());
+        $this->assertEquals('http://www.hyatt.com/rss/edeals/.jhtml?19Jul09', $feed->items[0]->getUrl());
     }
 }

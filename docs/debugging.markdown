@@ -35,3 +35,12 @@ Array
     ....
 )
 ```
+
+Remove messages
+---------------
+
+All messages are stored in memory, if you need to clear them just call the method `Logging::deleteMessages()`:
+
+```php
+PicoFeed\Logging::deleteMessages();
+```

@@ -54,7 +54,7 @@ Example:
 ```php
 <?php
 
-require '..../PicoFeed/PicoFeed.php';
+require 'path/to/PicoFeed.php';
 
 use PicoFeed\Reader;
 

@@ -2,26 +2,56 @@
 
 namespace PicoFeed;
 
+use SimpleXMLElement;
+
+/**
+ * OPML export class
+ *
+ * @author  Frederic Guillot
+ * @package picofeed
+ */
 class Export
 {
+    /**
+     * List of feeds to exports
+     *
+     * @access private
+     * @var array
+     */
     private $content = array();
 
-    public $required_fields = array(
+    /**
+     * List of required properties for each feed
+     *
+     * @access private
+     * @var array
+     */
+    private $required_fields = array(
         'title',
         'site_url',
-        'feed_url'
+        'feed_url',
     );
 
-
+    /**
+     * Constructor
+     *
+     * @access public
+     * @param  array   $content   List of feeds
+     */
     public function __construct(array $content)
     {
         $this->content = $content;
     }
 
-
+    /**
+     * Get the OPML document
+     *
+     * @access public
+     * @return string
+     */
     public function execute()
     {
-        $xml = new \SimpleXMLElement('<?xml version="1.0" encoding="utf-8"?><opml/>');
+        $xml = new SimpleXMLElement('<?xml version="1.0" encoding="utf-8"?><opml/>');
 
         $head = $xml->addChild('head');
         $head->addChild('title', 'OPML Export');
@@ -35,13 +65,14 @@ class Export
             foreach ($this->required_fields as $field) {
 
                 if (! isset($feed[$field])) {
-
                     $valid = false;
                     break;
                 }
             }
 
-            if (! $valid) continue;
+            if (! $valid) {
+                continue;
+            }
 
             $outline = $body->addChild('outline');
             $outline->addAttribute('xmlUrl', $feed['feed_url']);

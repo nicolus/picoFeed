@@ -4,6 +4,8 @@
 
 require __DIR__.'/Config.php';
 require __DIR__.'/Logging.php';
+require __DIR__.'/Item.php';
+require __DIR__.'/Feed.php';
 require __DIR__.'/Client.php';
 require __DIR__.'/Filter.php';
 require __DIR__.'/XmlParser.php';

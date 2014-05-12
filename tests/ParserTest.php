@@ -3,6 +3,7 @@
 require_once 'lib/PicoFeed/PicoFeed.php';
 require_once 'lib/PicoFeed/Parsers/Rss20.php';
 
+use PicoFeed\XmlParser;
 use PicoFeed\Parser;
 use PicoFeed\Parsers\Rss20;
 
@@ -14,6 +15,7 @@ class ParserTest extends PHPUnit_Framework_TestCase
 
         date_default_timezone_set('UTC');
 
+        $this->assertEquals(1359066183, $parser->parseDate('Thu, 24 Jan 2013 22:23:03 +0000'));
         $this->assertEquals(1362992761, $parser->parseDate('2013-03-11T09:06:01+00:00'));
         $this->assertEquals(1363752990, $parser->parseDate('2013-03-20T04:16:30+00:00'));
         $this->assertEquals(1359066183, $parser->parseDate('Thu, 24 Jan 2013 22:23:03 +0000'));
@@ -82,5 +84,16 @@ class ParserTest extends PHPUnit_Framework_TestCase
         $this->assertTrue(Parser::isLanguageRTL('ur'));
         $this->assertTrue(Parser::isLanguageRTL('syr-**'));
         $this->assertFalse(Parser::isLanguageRTL('ru'));
+    }
+
+    public function testNamespaceValue()
+    {
+        $xml = XmlParser::getSimpleXml(file_get_contents('tests/fixtures/rue89.xml'));
+        $this->assertNotFalse($xml);
+        $namespaces = $xml->getNamespaces(true);
+
+        $parser = new Rss20('');
+        $this->assertEquals('Blandine Grosjean', $parser->getNamespaceValue($xml->channel->item[0], $namespaces, 'creator'));
+        $this->assertEquals('Pierre-Carl Langlais', $parser->getNamespaceValue($xml->channel->item[1], $namespaces, 'creator'));
     }
 }

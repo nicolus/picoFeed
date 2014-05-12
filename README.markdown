@@ -6,6 +6,8 @@ PicoFeed was originally developed for [Miniflux](http://miniflux.net), a minimal
 However, this library can be used inside any project.
 PicoFeed is tested with a lot of different feeds and it's simple and easy to use.
 
+[![Build Status](https://travis-ci.org/fguillot/picoFeed.svg?branch=master)](https://travis-ci.org/fguillot/picoFeed)
+
 Features and requirements
 -------------------------
 
@@ -15,6 +17,7 @@ Features and requirements
 - Import/Export OPML subscriptions
 - Content filter: HTML cleanup, remove pixel trackers and Ads
 - Multiple HTTP client adapters: cURL or Stream Context
+- Proxy support
 - Content grabber: download from the original website the full content
 - Enclosure detection
 - RTL languages support
@@ -45,5 +48,3 @@ Documentation
 - [Web scraping](docs/grabber.markdown)
 - [Debugging](docs/debugging.markdown)
 - [Configuration](docs/config.markdown)
-
-[![Build Status](https://travis-ci.org/fguillot/picoFeed.svg?branch=master)](https://travis-ci.org/fguillot/picoFeed)
