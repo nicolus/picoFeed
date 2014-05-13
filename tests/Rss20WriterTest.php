@@ -1,5 +1,6 @@
 <?php
 
+require_once 'lib/PicoFeed/PicoFeed.php';
 require_once 'lib/PicoFeed/Writers/Rss20.php';
 
 use PicoFeed\Writers\Rss20;
