@@ -13,6 +13,14 @@ use RuntimeException;
 abstract class Writer
 {
     /**
+     * Dom object
+     *
+     * @access protected
+     * @var DomDocument
+     */
+    protected $dom;
+
+    /**
      * Items
      *
      * @access public
