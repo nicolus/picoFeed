@@ -1,7 +1,7 @@
 {
     "name": "fguillot/picofeed",
     "description": "Modern library to write or read feeds (RSS/Atom)",
-    "homepage": "https://github.com/fguillot/picoFeed",
+    "homepage": "http://fguillot.github.io/picoFeed",
     "type": "library",
     "license": "Unlicense",
     "authors": [

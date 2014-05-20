@@ -8,8 +8,8 @@ PicoFeed is tested with a lot of different feeds and it's simple and easy to use
 
 [![Build Status](https://travis-ci.org/fguillot/picoFeed.svg?branch=master)](https://travis-ci.org/fguillot/picoFeed)
 
-Features and requirements
--------------------------
+Features
+--------
 
 - Simple and fast
 - Feed parser for Atom 1.0 and RSS 0.91, 0.92, 1.0 and 2.0
