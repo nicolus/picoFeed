@@ -6,7 +6,7 @@ require_once 'lib/PicoFeed/Parsers/Rss20.php';
 use PicoFeed\Parsers\Rss20;
 
 class Rss20ParserTest extends PHPUnit_Framework_TestCase
-{/*
+{
     public function testBadInput()
     {
         $parser = new Rss20('boo');
@@ -220,12 +220,12 @@ class Rss20ParserTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('http://rue89.feedsportal.com/c/33822/f/608948/e/1/s/2a687021/l/0L0Srue890N0Csites0Cnews0Cfiles0Cstyles0Cmosaic0Cpublic0Czapnet0Cthumbnail0Isquare0C20A130C0A40Ccahuzac0I10Bpng/cahuzac_1.png', $feed->items[0]->getEnclosureUrl());
         $this->assertEquals('image/png', $feed->items[0]->getEnclosureType());
     }
-*/
+
     public function testFeedsReportedAsNotWorking()
     {
         $parser = new Rss20(file_get_contents('tests/fixtures/next_inpact_full.xml'));
         $feed = $parser->execute();
-var_dump(\PicoFeed\Logging::getMessages());
+
         $this->assertNotFalse($feed);
         $this->assertNotEmpty($feed->items);
 

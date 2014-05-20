@@ -182,15 +182,11 @@ abstract class Parser
                 $callback = $this->config->getContentFilteringCallback();
 
                 if (is_callable($callback)) {
-                    Logging::setMessage(get_called_class().': Custom filter callback applied');
                     $content = $callback($item_content, $item_url);
                 }
             }
 
             if (! $content) {
-
-                Logging::setMessage(get_called_class().': Apply default content filter');
-
                 $filter = new Filter($item_content, $item_url);
                 $filter->setConfig($this->config);
                 $content = $filter->execute();

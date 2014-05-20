@@ -147,7 +147,7 @@ class Grabber
      *
      * @access public
      * @param  \PicoFeed\Config  $config   Config instance
-     * @return \PicoFeed\Parse
+     * @return \PicoFeed\Grabber
      */
     public function setConfig($config)
     {
@@ -164,6 +164,17 @@ class Grabber
     public function getContent()
     {
         return $this->content;
+    }
+
+    /**
+     * Get raw content (unfiltered)
+     *
+     * @access public
+     * @return string
+     */
+    public function getRawContent()
+    {
+        return $this->html;
     }
 
     /**
@@ -234,6 +245,7 @@ class Grabber
 
         $client->execute($this->url);
         $this->html = $client->getContent();
+        $this->encoding = $client->getEncoding();
 
         return $this->html;
     }
