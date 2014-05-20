@@ -128,12 +128,19 @@ class Curl extends Client
         curl_setopt($ch, CURLOPT_COOKIEFILE, 'php://memory');
 
         if ($this->proxy_hostname) {
+
+            Logging::setMessage(get_called_class().' Proxy: '.$this->proxy_hostname.':'.$this->proxy_port);
+
             curl_setopt($ch, CURLOPT_PROXYPORT, $this->proxy_port);
             curl_setopt($ch, CURLOPT_PROXYTYPE, 'HTTP');
             curl_setopt($ch, CURLOPT_PROXY, $this->proxy_hostname);
 
             if ($this->proxy_username) {
+                Logging::setMessage(get_called_class().' Proxy credentials: Yes');
                 curl_setopt($ch, CURLOPT_PROXYUSERPWD, $this->proxy_username.':'.$this->proxy_password);
+            }
+            else {
+                Logging::setMessage(get_called_class().' Proxy credentials: No');
             }
         }
 

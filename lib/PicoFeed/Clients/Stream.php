@@ -51,12 +51,20 @@ class Stream extends Client
         );
 
         if ($this->proxy_hostname) {
+
+            Logging::setMessage(get_called_class().' Proxy: '.$this->proxy_hostname.':'.$this->proxy_port);
+
             $context_options['http']['proxy'] = 'tcp://'.$this->proxy_hostname.':'.$this->proxy_port;
             $context_options['http']['request_fulluri'] = true;
 
             if ($this->proxy_username) {
+                Logging::setMessage(get_called_class().' Proxy credentials: Yes');
+
                 $headers[] = 'Proxy-Authorization: Basic '.base64_encode($this->proxy_username.':'.$this->proxy_password);
                 $context_options['http']['header'] = implode("\r\n", $headers);
+            }
+            else {
+                Logging::setMessage(get_called_class().' Proxy credentials: No');
             }
         }
 
