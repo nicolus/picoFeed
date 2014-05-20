@@ -223,6 +223,12 @@ class Rss20ParserTest extends PHPUnit_Framework_TestCase
 
     public function testFeedsReportedAsNotWorking()
     {
+        $parser = new Rss20(file_get_contents('tests/fixtures/lincoln_loop.xml'));
+        $feed = $parser->execute();
+
+        $this->assertNotFalse($feed);
+        $this->assertNotEmpty($feed->items);
+
         $parser = new Rss20(file_get_contents('tests/fixtures/next_inpact_full.xml'));
         $feed = $parser->execute();
 

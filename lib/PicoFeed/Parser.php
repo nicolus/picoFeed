@@ -205,6 +205,7 @@ abstract class Parser
      */
     public function normalizeData($data)
     {
+        $data = str_replace("\x10", '', $data);
         $data = str_replace("\xc3\x20", '', $data);
         $data = str_replace("&#x1F;", '', $data);
         $data = $this->replaceEntityAttribute($data);

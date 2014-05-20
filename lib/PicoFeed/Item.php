@@ -96,7 +96,7 @@ class Item
             $output .= 'Item::'.$property.' = '.$this->$property.PHP_EOL;
         }
 
-        $output .= 'Item::content = '.substr($this->content, 0, 20).'... ('.strlen($this->content).' bytes)'.PHP_EOL;
+        $output .= 'Item::content = '.strlen($this->content).' bytes'.PHP_EOL;
 
         return $output;
     }
