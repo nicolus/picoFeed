@@ -193,14 +193,17 @@ class Rss20 extends Parser
      */
     public function findItemUrl(SimpleXMLElement $entry, Item $item)
     {
-        $item->url = $this->getNamespaceValue($entry, $this->namespaces, 'origLink');
+        $links = array(
+            $this->getNamespaceValue($entry, $this->namespaces, 'origLink'),
+            isset($entry->link) ? (string) $entry->link : '',
+            $this->getNamespaceValue($entry, $this->namespaces, 'link', 'href'),
+            isset($entry->guid) ? (string) $entry->guid : '',
+        );
 
-        if (empty($item->url)) {
-            if (isset($entry->link)) {
-                $item->url = (string) $entry->link;
-            }
-            else if (isset($entry->guid)) {
-                $item->url = (string) $entry->guid;
+        foreach ($links as $link) {
+            if (! empty($link) && filter_var($link, FILTER_VALIDATE_URL) !== false) {
+                $item->url = $link;
+                break;
             }
         }
     }

@@ -205,9 +205,16 @@ abstract class Parser
      */
     public function normalizeData($data)
     {
-        $data = str_replace("\x10", '', $data);
-        $data = str_replace("\xc3\x20", '', $data);
-        $data = str_replace("&#x1F;", '', $data);
+        $invalid_chars = array(
+            "\x10",
+            "\xc3\x20",
+            "&#x1F;",
+        );
+
+        foreach ($invalid_chars as $needle) {
+            $data = str_replace($needle, '', $data);
+        }
+
         $data = $this->replaceEntityAttribute($data);
         return $data;
     }
@@ -474,14 +481,25 @@ abstract class Parser
      * @param  SimpleXMLElement     $xml    XML element
      * @param  array                $namespaces    XML namespaces
      * @param  string               $property      XML tag name
+     * @param  string               $attribute     XML attribute name
      * @return string
      */
-    public function getNamespaceValue(SimpleXMLElement $xml, array $namespaces, $property)
+    public function getNamespaceValue(SimpleXMLElement $xml, array $namespaces, $property, $attribute = '')
     {
         foreach ($namespaces as $name => $url) {
             $namespace = $xml->children($namespaces[$name]);
 
             if ($namespace->$property->count() > 0) {
+
+                if ($attribute) {
+
+                    foreach ($namespace->$property->attributes() as $xml_attribute => $xml_value) {
+                        if ($xml_attribute === $attribute && $xml_value) {
+                            return (string) $xml_value;
+                        }
+                    }
+                }
+
                 return (string) $namespace->$property;
             }
         }
