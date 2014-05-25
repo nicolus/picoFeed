@@ -734,33 +734,6 @@ class Filter
     }
 
     /**
-     * Get the encoding from a xml tag
-     *
-     * @static
-     * @access public
-     * @param  string  $data  Input data
-     * @return string
-     */
-    public static function getEncodingFromXmlTag($data)
-    {
-        $encoding = '';
-
-        if (strpos($data, '<?xml') !== false) {
-
-            $data = substr($data, 0, strrpos($data, '?>'));
-            $data = str_replace("'", '"', $data);
-
-            $p1 = strpos($data, 'encoding=');
-            $p2 = strpos($data, '"', $p1 + 10);
-
-            $encoding = substr($data, $p1 + 10, $p2 - $p1 - 10);
-            $encoding = strtolower($encoding);
-        }
-
-        return $encoding;
-    }
-
-    /**
      * Set whitelisted tags adn attributes for each tag
      *
      * @access public

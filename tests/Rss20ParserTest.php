@@ -222,13 +222,13 @@ class Rss20ParserTest extends PHPUnit_Framework_TestCase
     }
 
     public function testFeedsReportedAsNotWorking()
-    {/*
+    {
         $parser = new Rss20(file_get_contents('tests/fixtures/fanboys.fm_episodes.all.mp3.rss'));
         $feed = $parser->execute();
 
         $this->assertNotFalse($feed);
         $this->assertNotEmpty($feed->items);
-*/
+
         $parser = new Rss20(file_get_contents('tests/fixtures/geekstammtisch.de_episodes.mp3.rss'));
         $feed = $parser->execute();
 

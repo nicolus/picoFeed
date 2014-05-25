@@ -85,14 +85,6 @@ class FilterTest extends PHPUnit_Framework_TestCase
     }
 
 
-    public function testGetEncodingFromXmlTag()
-    {
-        $this->assertEquals('utf-8', Filter::getEncodingFromXmlTag("<?xml version='1.0' encoding='UTF-8'?><?xml-stylesheet"));
-        $this->assertEquals('utf-8', Filter::getEncodingFromXmlTag('<?xml version="1.0" encoding="UTF-8"?><feed xml:'));
-        $this->assertEquals('windows-1251', Filter::getEncodingFromXmlTag('<?xml version="1.0" encoding="Windows-1251"?><rss version="2.0">'));
-    }
-
-
     public function testCode()
     {
         $data = '<pre><code>HEAD / HTTP/1.1

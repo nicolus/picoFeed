@@ -191,13 +191,7 @@ class Grabber
             Logging::setMessage(get_called_class().': HTTP Encoding "'.$this->encoding.'"');
 
             $this->html = Filter::stripHeadTags($this->html);
-
-            if ($this->encoding == 'windows-1251') {
-                $this->html = Encoding::cp1251ToUtf8($this->html);
-            }
-            else {
-                $this->html = Encoding::toUTF8($this->html);
-            }
+            $this->html = Encoding::convert($this->html, $this->encoding);
 
             Logging::setMessage(get_called_class().' Content length: '.strlen($this->html).' bytes');
             $rules = $this->getRules();

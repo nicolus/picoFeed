@@ -42,36 +42,6 @@ class Encoding
         159 => "\xc5\xb8"
     );
 
-    protected static $utf8ToWin1252 = array(
-        "\xe2\x82\xac" => "\x80",
-        "\xe2\x80\x9a" => "\x82",
-        "\xc6\x92"     => "\x83",
-        "\xe2\x80\x9e" => "\x84",
-        "\xe2\x80\xa6" => "\x85",
-        "\xe2\x80\xa0" => "\x86",
-        "\xe2\x80\xa1" => "\x87",
-        "\xcb\x86"     => "\x88",
-        "\xe2\x80\xb0" => "\x89",
-        "\xc5\xa0"     => "\x8a",
-        "\xe2\x80\xb9" => "\x8b",
-        "\xc5\x92"     => "\x8c",
-        "\xc5\xbd"     => "\x8e",
-        "\xe2\x80\x98" => "\x91",
-        "\xe2\x80\x99" => "\x92",
-        "\xe2\x80\x9c" => "\x93",
-        "\xe2\x80\x9d" => "\x94",
-        "\xe2\x80\xa2" => "\x95",
-        "\xe2\x80\x93" => "\x96",
-        "\xe2\x80\x94" => "\x97",
-        "\xcb\x9c"     => "\x98",
-        "\xe2\x84\xa2" => "\x99",
-        "\xc5\xa1"     => "\x9a",
-        "\xe2\x80\xba" => "\x9b",
-        "\xc5\x93"     => "\x9c",
-        "\xc5\xbe"     => "\x9e",
-        "\xc5\xb8"     => "\x9f"
-    );
-
     /**
     * Function Encoding::toUTF8
     *
@@ -127,9 +97,7 @@ class Encoding
                             $i++;
                         }
                         else { //not valid UTF8.  Convert it.
-                            $cc1 = (chr(ord($c1) / 64) | "\xc0");
-                            $cc2 = ($c1 & "\x3f") | "\x80";
-                            $buf .= $cc1 . $cc2;
+                            $buf .= self::convertInvalidCharacter($c1);
                         }
                     }
                     else if ($c1 >= "\xe0" & $c1 <= "\xef") { //looks like 3 bytes UTF8
@@ -139,9 +107,7 @@ class Encoding
                             $i = $i + 2;
                         }
                         else { //not valid UTF8.  Convert it.
-                            $cc1 = (chr(ord($c1) / 64) | "\xc0");
-                            $cc2 = ($c1 & "\x3f") | "\x80";
-                            $buf .= $cc1 . $cc2;
+                            $buf .= self::convertInvalidCharacter($c1);
                         }
                     }
                     else if ($c1 >= "\xf0" & $c1 <= "\xf7") { //looks like 4 bytes UTF8
@@ -151,15 +117,11 @@ class Encoding
                             $i = $i + 2;
                         }
                         else { //not valid UTF8.  Convert it.
-                            $cc1 = (chr(ord($c1) / 64) | "\xc0");
-                            $cc2 = ($c1 & "\x3f") | "\x80";
-                            $buf .= $cc1 . $cc2;
+                            $buf .= self::convertInvalidCharacter($c1);
                         }
                     }
                     else { //doesn't look like UTF8, but should be converted
-                        $cc1 = (chr(ord($c1) / 64) | "\xc0");
-                        $cc2 = (($c1 & "\x3f") | "\x80");
-                        $buf .= $cc1 . $cc2;
+                        $buf .= self::convertInvalidCharacter($c1);
                     }
                 }
                 elseif (($c1 & "\xc0") == "\x80") { // needs conversion
@@ -168,12 +130,10 @@ class Encoding
                         $buf .= self::$win1252ToUtf8[ord($c1)];
                     }
                     else {
-                        $cc1 = (chr(ord($c1) / 64) | "\xc0");
-                        $cc2 = (($c1 & "\x3f") | "\x80");
-                        $buf .= $cc1 . $cc2;
+                        $buf .= self::convertInvalidCharacter($c1);
                     }
                 }
-                else { // it doesn't need convesion
+                else { // it doesn't need conversion
                     $buf .= $c1;
                 }
             }
@@ -185,8 +145,27 @@ class Encoding
         }
     }
 
-    public static function cp1251ToUtf8($input)
+    public static function convertInvalidCharacter($c1)
+    {
+        $cc1 = chr(ord($c1) / 64) | "\xc0";
+        $cc2 = ($c1 & "\x3f") | "\x80";
+        return $cc1.$cc2;
+    }
+
+    public static function convert_CP_1251($input)
     {
         return iconv('CP1251', 'UTF-8//TRANSLIT', $input);
+    }
+
+    public static function convert($input, $encoding)
+    {
+        if ($encoding === 'windows-1251') {
+            return self::convert_CP_1251($input);
+        }
+        else if ($encoding === '' || $encoding !== 'utf-8') {
+            return self::toUTF8($input);
+        }
+
+        return $input;
     }
 }
