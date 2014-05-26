@@ -261,8 +261,11 @@ class Grabber
 
         if (($pos = strpos($hostname, '.')) !== false) {
             $files[] = substr($hostname, $pos);
+            $files[] = substr($hostname, $pos + 1);
             $files[] = substr($hostname, 0, $pos);
         }
+
+        // Logging::setMessage(var_export($files, true));
 
         foreach ($files as $file) {
 
@@ -285,6 +288,7 @@ class Grabber
      */
     public function parseContentWithRules(array $rules)
     {
+        // Logging::setMessage($this->html);
         $dom = XmlParser::getHtmlDocument('<?xml version="1.0" encoding="UTF-8">'.$this->html);
         $xpath = new DOMXPath($dom);
 

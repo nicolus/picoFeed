@@ -235,8 +235,8 @@ class Reader
         $xpath = new DOMXPath($dom);
 
         $queries = array(
-            "//link[@type='application/atom+xml']",
-            "//link[@type='application/rss+xml']"
+            '//link[@type="application/rss+xml"]',
+            '//link[@type="application/atom+xml"]',
         );
 
         foreach ($queries as $query) {

@@ -1,6 +1,6 @@
 <?php
 return array(
-    'test_url' => 'http://www.igen.fr/ailleurs/2014/05/nvidia-va-delaisser-les-smartphones-grand-public-86031',
+    'test_url' => 'http://www.macg.co//logiciels/2014/05/feedly-sameliore-un-petit-peu-sur-mac-82205',
     'body' => array(
         '//div[contains(@class, "field-name-body")]'
     ),
