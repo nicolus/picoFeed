@@ -98,14 +98,14 @@ class Rss20ParserTest extends PHPUnit_Framework_TestCase
 
         $this->assertNotFalse($feed);
         $this->assertNotEmpty($feed->items);
-        $this->assertEquals($parser->generateId($feed->items[0]->getUrl(), $feed->getUrl()), $feed->items[0]->getId());
+        $this->assertEquals($parser->generateId($feed->items[0]->getUrl(), $feed->getUrl(), 'http://wordpress.org/news/?p=2531'), $feed->items[0]->getId());
 
         $parser = new Rss20(file_get_contents('tests/fixtures/pcinpact.xml'));
         $feed = $parser->execute();
 
         $this->assertNotFalse($feed);
         $this->assertNotEmpty($feed->items);
-        $this->assertEquals($parser->generateId($feed->items[0]->getUrl(), $feed->getUrl()), $feed->items[0]->getId());
+        $this->assertEquals($parser->generateId($feed->items[0]->getUrl(), $feed->getUrl(), '78872'), $feed->items[0]->getId());
 
         $parser = new Rss20(file_get_contents('tests/fixtures/fulltextrss.xml'));
         $feed = $parser->execute();
@@ -113,6 +113,16 @@ class Rss20ParserTest extends PHPUnit_Framework_TestCase
         $this->assertNotFalse($feed);
         $this->assertNotEmpty($feed->items);
         $this->assertEquals($parser->generateId($feed->items[0]->getUrl(), $feed->getUrl()), $feed->items[0]->getId());
+
+        $parser = new Rss20(file_get_contents('tests/fixtures/debug_show.xml'));
+        $feed = $parser->execute();
+
+        $this->assertNotFalse($feed);
+        $this->assertNotEmpty($feed->items);
+        $this->assertEquals($parser->generateId($feed->items[1]->getUrl(), $feed->getUrl(), '38DC2FF1-4207-4C04-93F3-2DAFB0E559D9'), $feed->items[1]->getId());
+        $this->assertEquals($parser->generateId($feed->items[2]->getUrl(), $feed->getUrl(), '3FA03A63-BEA2-4199-A1E4-D2963845F3F6'), $feed->items[2]->getId());
+        $this->assertEquals($feed->items[1]->getUrl(), $feed->items[2]->getUrl());
+        $this->assertNotEquals($feed->items[1]->getId(), $feed->items[2]->getId());
     }
 
     public function testItemUrl()

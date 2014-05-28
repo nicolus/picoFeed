@@ -218,12 +218,7 @@ class Rss20 extends Parser
      */
     public function findItemId(SimpleXMLElement $entry, Item $item, Feed $feed)
     {
-        if ($entry->guid->count() > 0 && (string) $entry->guid['isPermaLink'] !== 'false') {
-            $item_permalink = (string) $entry->guid;
-        }
-        else {
-            $item_permalink = $item->url;
-        }
+        $item_permalink = $item->url;
 
         if ($this->isExcludedFromId($feed->url)) {
             $feed_permalink = '';
@@ -232,7 +227,12 @@ class Rss20 extends Parser
             $feed_permalink = $feed->url;
         }
 
-        $item->id = $this->generateId($item_permalink,  $feed_permalink);
+        if ($entry->guid->count() > 0 && (string) $entry->guid['isPermaLink'] === 'false') {
+            $item->id = $this->generateId($item_permalink,  $feed_permalink, (string) $entry->guid);
+        }
+        else {
+            $item->id = $this->generateId($item_permalink,  $feed_permalink);
+        }
     }
 
     /**
