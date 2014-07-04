@@ -186,7 +186,7 @@ class Reader
             array('parser' => 'Rss20', 'needles' => array('<rss', '2.0')),
             array('parser' => 'Rss92', 'needles' => array('<rss', '0.92')),
             array('parser' => 'Rss91', 'needles' => array('<rss', '0.91')),
-            array('parser' => 'Rss10', 'needles' => array('<rdf:', 'xmlns="http://purl.org/rss/1.0/"')),
+            array('parser' => 'Rss10', 'needles' => array('<rdf:'/*, 'xmlns="http://purl.org/rss/1.0/"'*/)),
         );
 
         $first_tag = $this->getFirstTag($this->content);
