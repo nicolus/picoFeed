@@ -227,7 +227,7 @@ class Rss20 extends Parser
             $feed_permalink = $feed->url;
         }
 
-        if ($entry->guid->count() > 0 && (string) $entry->guid['isPermaLink'] === 'false') {
+        if ($entry->guid->count() > 0 && ((string) $entry->guid['isPermaLink'] === 'false' || ! isset($entry->guid['isPermaLink']))) {
             $item->id = $this->generateId($item_permalink,  $feed_permalink, (string) $entry->guid);
         }
         else {

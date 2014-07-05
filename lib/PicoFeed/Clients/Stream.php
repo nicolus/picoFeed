@@ -92,7 +92,7 @@ class Stream extends Client
         }
 
         if (isset($headers['Content-Encoding']) && $headers['Content-Encoding'] === 'gzip') {
-            $body = gzdecode($body);
+            $body = @gzdecode($body);
         }
 
         return array(
