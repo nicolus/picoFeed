@@ -49,6 +49,21 @@ class Rss20ParserTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('Deux développeurs en vadrouille qui se sortent les doigts du code', $feed->getDescription());
     }
 
+    public function testFeedLogo()
+    {
+        $parser = new Rss20(file_get_contents('tests/fixtures/rss20.xml'));
+        $feed = $parser->execute();
+
+        $this->assertNotFalse($feed);
+        $this->assertEquals('', $feed->getLogo());
+
+        $parser = new Rss20(file_get_contents('tests/fixtures/radio-france.xml'));
+        $feed = $parser->execute();
+
+        $this->assertNotFalse($feed);
+        $this->assertEquals('http://media.radiofrance-podcast.net/podcast09/RF_OMM_0000006330_ITE.jpg', $feed->getLogo());
+    }
+
     public function testFeedUrl()
     {
         $parser = new Rss20(file_get_contents('tests/fixtures/rss20.xml'));

@@ -43,7 +43,7 @@ class Feed
     public $description = '';
 
     /**
-     * Item url
+     * Feed url
      *
      * @access public
      * @var string
@@ -51,7 +51,7 @@ class Feed
     public $url = '';
 
     /**
-     * Item date
+     * Feed date
      *
      * @access public
      * @var integer
@@ -59,12 +59,20 @@ class Feed
     public $date = 0;
 
     /**
-     * Item language
+     * Feed language
      *
      * @access public
      * @var string
      */
     public $language = '';
+
+    /**
+     * Feed logo URL (not the same as icon)
+     *
+     * @access public
+     * @var string
+     */
+    public $logo = '';
 
     /**
      * Return feed information
@@ -76,7 +84,7 @@ class Feed
     {
         $output = '';
 
-        foreach (array('id', 'title', 'url', 'date', 'language', 'description') as $property) {
+        foreach (array('id', 'title', 'url', 'date', 'language', 'description', 'logo') as $property) {
             $output .= 'Feed::'.$property.' = '.$this->$property.PHP_EOL;
         }
 
@@ -110,6 +118,17 @@ class Feed
     public function getDescription()
     {
         return $this->description;
+    }
+
+    /**
+     * Get the logo url
+     *
+     * @access public
+     * $return string
+     */
+    public function getLogo()
+    {
+        return $this->logo;
     }
 
     /**

@@ -70,6 +70,20 @@ class Rss20 extends Parser
     }
 
     /**
+     * Find the feed logo url
+     *
+     * @access public
+     * @param  SimpleXMLElement   $xml     Feed xml
+     * @param  \PicoFeed\Feed     $feed    Feed object
+     */
+    public function findFeedLogo(SimpleXMLElement $xml, Feed $feed)
+    {
+        if (isset($xml->channel->image->url)) {
+            $feed->logo = (string) $xml->channel->image->url;
+        }
+    }
+
+    /**
      * Find the feed title
      *
      * @access public

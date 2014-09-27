@@ -126,6 +126,7 @@ abstract class Parser
         $this->findFeedLanguage($xml, $feed);
         $this->findFeedId($xml, $feed);
         $this->findFeedDate($xml, $feed);
+        $this->findFeedLogo($xml, $feed);
 
         foreach ($this->getItemsTree($xml) as $entry) {
 

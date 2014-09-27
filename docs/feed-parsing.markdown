@@ -71,13 +71,14 @@ All properties are public and they are also available with getter methods:
 ```php
 
 // Examples for the feed:
-echo $feed->getId();
-echo $feed->getTitle();
-echo $feed->getUrl();
-echo $feed->getDate();
-echo $feed->getLanguage();
-echo $feed->getDescription();
-echo $feed->getItems();
+echo $feed->getId();              // Unique feed id
+echo $feed->getTitle();           // Feed title
+echo $feed->getUrl();             // Feed url
+echo $feed->getDate();            // Feed last updated date
+echo $feed->getLanguage();        // Feed language
+echo $feed->getDescription();     // Feed description
+echo $feed->getLogo();            // Feed logo (can be a large image, different from icon)
+echo $feed->getItems();           // List of items
 
 // Examples for items:
 echo $feed->items[0]->getId();
