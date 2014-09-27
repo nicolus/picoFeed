@@ -27,7 +27,7 @@ class Logging
      *
      * @static
      * @access private
-     * @var array
+     * @var string
      */
     private static $timezone = 'UTC';
 

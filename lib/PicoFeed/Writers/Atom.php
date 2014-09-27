@@ -72,7 +72,7 @@ class Atom extends Writer
         $feed->appendChild($id);
 
         // <updated/>
-        $this->addUpdated($feed, isset($this->updated) ? $this->updated : '');
+        $this->addUpdated($feed, $this->updated);
 
         // <link rel="alternate" type="text/html" href="http://example.org/"/>
         $this->addLink($feed, $this->site_url);
@@ -165,9 +165,9 @@ class Atom extends Writer
      *
      * @access public
      * @param  DomElement   $xml     XML node
-     * @param  string       $value   Timestamp
+     * @param  integer      $value   Timestamp
      */
-    public function addUpdated(DomElement $xml, $value = '')
+    public function addUpdated(DomElement $xml, $value = 0)
     {
         $xml->appendChild($this->dom->createElement(
             'updated',

@@ -7,8 +7,9 @@ use RuntimeException;
 /**
  * Base writer class
  *
- * @author  Frederic Guillot
- * @package picofeed
+ * @author    Frederic Guillot
+ * @package   picofeed
+ * @property  string   $description  Feed description
  */
 abstract class Writer
 {
@@ -16,7 +17,7 @@ abstract class Writer
      * Dom object
      *
      * @access protected
-     * @var DomDocument
+     * @var \DomDocument
      */
     protected $dom;
 
@@ -27,6 +28,46 @@ abstract class Writer
      * @var array
      */
     public $items = array();
+
+    /**
+     * Author
+     *
+     * @access public
+     * @var array
+     */
+    public $author = array();
+
+    /**
+     * Feed URL
+     *
+     * @access public
+     * @var string
+     */
+    public $feed_url = '';
+
+    /**
+     * Website URL
+     *
+     * @access public
+     * @var string
+     */
+    public $site_url = '';
+
+    /**
+     * Feed title
+     *
+     * @access public
+     * @var string
+     */
+    public $title = '';
+
+    /**
+     * Feed modification date (timestamp)
+     *
+     * @access public
+     * @var integer
+     */
+    public $updated = 0;
 
     /**
      * Generate the XML document

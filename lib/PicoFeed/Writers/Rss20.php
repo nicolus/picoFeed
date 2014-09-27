@@ -75,7 +75,7 @@ class Rss20 extends Writer
         $channel->appendChild($description);
 
         // <pubDate/>
-        $this->addPubDate($channel, isset($this->updated) ? $this->updated : '');
+        $this->addPubDate($channel, $this->updated);
 
         // <atom:link/>
         $link = $this->dom->createElement('atom:link');
@@ -162,9 +162,9 @@ class Rss20 extends Writer
      *
      * @access public
      * @param  DomElement   $xml     XML node
-     * @param  string       $value   Timestamp
+     * @param  integer      $value   Timestamp
      */
-    public function addPubDate(DomElement $xml, $value = '')
+    public function addPubDate(DomElement $xml, $value = 0)
     {
         $xml->appendChild($this->dom->createElement(
             'pubDate',
