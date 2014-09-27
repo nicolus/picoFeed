@@ -253,6 +253,11 @@ class Grabber
     public function getRules()
     {
         $hostname = parse_url($this->url, PHP_URL_HOST);
+
+        if ($hostname === false) {
+            return false;
+        }
+
         $files = array($hostname);
 
         if (substr($hostname, 0, 4) == 'www.') {

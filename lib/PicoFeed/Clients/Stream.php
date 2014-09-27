@@ -14,14 +14,13 @@ use \PicoFeed\Client;
 class Stream extends Client
 {
     /**
-     * Do the HTTP request
+     * Prepare HTTP headers
      *
-     * @access public
-     * @return array   HTTP response ['body' => ..., 'status' => ..., 'headers' => ...]
+     * @access private
+     * @return array
      */
-    public function doRequest()
+    private function prepareHeaders()
     {
-        // Prepare HTTP headers for the request
         $headers = array(
             'Connection: close',
             'User-Agent: '.$this->user_agent,
@@ -39,14 +38,27 @@ class Stream extends Client
             $headers[] = 'If-Modified-Since: '.$this->last_modified;
         }
 
-        // Create context
-        $context_options = array(
+        if ($this->proxy_username) {
+            $headers[] = 'Proxy-Authorization: Basic '.base64_encode($this->proxy_username.':'.$this->proxy_password);
+        }
+
+        return $headers;
+    }
+
+    /**
+     * Prepare stream context
+     *
+     * @access private
+     * @return array
+     */
+    private function prepareContext()
+    {
+        $context = array(
             'http' => array(
                 'method' => 'GET',
                 'protocol_version' => 1.1,
                 'timeout' => $this->timeout,
                 'max_redirects' => $this->max_redirects,
-                'header' => implode("\r\n", $headers)
             )
         );
 
@@ -54,31 +66,47 @@ class Stream extends Client
 
             Logging::setMessage(get_called_class().' Proxy: '.$this->proxy_hostname.':'.$this->proxy_port);
 
-            $context_options['http']['proxy'] = 'tcp://'.$this->proxy_hostname.':'.$this->proxy_port;
-            $context_options['http']['request_fulluri'] = true;
+            $context['http']['proxy'] = 'tcp://'.$this->proxy_hostname.':'.$this->proxy_port;
+            $context['http']['request_fulluri'] = true;
 
             if ($this->proxy_username) {
                 Logging::setMessage(get_called_class().' Proxy credentials: Yes');
 
-                $headers[] = 'Proxy-Authorization: Basic '.base64_encode($this->proxy_username.':'.$this->proxy_password);
-                $context_options['http']['header'] = implode("\r\n", $headers);
             }
             else {
                 Logging::setMessage(get_called_class().' Proxy credentials: No');
             }
         }
 
-        $context = stream_context_create($context_options);
+        $context['http']['header'] = implode("\r\n", $this->prepareHeaders());
+
+        return $context;
+    }
+
+    /**
+     * Do the HTTP request
+     *
+     * @access public
+     * @return array   HTTP response ['body' => ..., 'status' => ..., 'headers' => ...]
+     */
+    public function doRequest()
+    {
+        // Create context
+        $context = stream_context_create($this->prepareContext());
 
         // Make HTTP request
         $stream = @fopen($this->url, 'r', false, $context);
-        if (! is_resource($stream)) return false;
+        if (! is_resource($stream)) {
+            return false;
+        }
 
         // Get the entire body until the max size
         $body = stream_get_contents($stream, $this->max_body_size + 1);
 
         // If the body size is too large abort everything
-        if (strlen($body) > $this->max_body_size) return false;
+        if (strlen($body) > $this->max_body_size) {
+            return false;
+        }
 
         // Get HTTP headers response
         $metadata = stream_get_meta_data($stream);

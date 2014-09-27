@@ -539,7 +539,7 @@ class Filter
      *
      * @access public
      * @param  string  $tag        Tag name
-     * @param  array   $attribute  Attribute name
+     * @param  string  $attribute  Attribute name
      * @return boolean
      */
     public function isAllowedAttribute($tag, $attribute)
