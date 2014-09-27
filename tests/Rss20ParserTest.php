@@ -28,6 +28,27 @@ class Rss20ParserTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('PC INpact', $feed->getTitle());
     }
 
+    public function testFeedDescription()
+    {
+        $parser = new Rss20(file_get_contents('tests/fixtures/rss20.xml'));
+        $feed = $parser->execute();
+
+        $this->assertNotFalse($feed);
+        $this->assertEquals('WordPress News', $feed->getDescription());
+
+        $parser = new Rss20(file_get_contents('tests/fixtures/pcinpact.xml'));
+        $feed = $parser->execute();
+
+        $this->assertNotFalse($feed);
+        $this->assertEquals('Actualités Informatique', $feed->getDescription());
+
+        $parser = new Rss20(file_get_contents('tests/fixtures/sametmax.xml'));
+        $feed = $parser->execute();
+
+        $this->assertNotFalse($feed);
+        $this->assertEquals('Deux développeurs en vadrouille qui se sortent les doigts du code', $feed->getDescription());
+    }
+
     public function testFeedUrl()
     {
         $parser = new Rss20(file_get_contents('tests/fixtures/rss20.xml'));

@@ -43,6 +43,18 @@ class Atom extends Parser
     }
 
     /**
+     * Find the feed description
+     *
+     * @access public
+     * @param  SimpleXMLElement   $xml     Feed xml
+     * @param  \PicoFeed\Feed     $feed    Feed object
+     */
+    public function findFeedDescription(SimpleXMLElement $xml, Feed $feed)
+    {
+        $feed->description = (string) $xml->subtitle;
+    }
+
+    /**
      * Find the feed title
      *
      * @access public

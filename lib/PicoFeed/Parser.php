@@ -122,6 +122,7 @@ abstract class Parser
         $feed = new Feed;
         $this->findFeedUrl($xml, $feed);
         $this->findFeedTitle($xml, $feed);
+        $this->findFeedDescription($xml, $feed);
         $this->findFeedLanguage($xml, $feed);
         $this->findFeedId($xml, $feed);
         $this->findFeedDate($xml, $feed);

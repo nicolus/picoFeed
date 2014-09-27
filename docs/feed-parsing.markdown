@@ -76,6 +76,7 @@ echo $feed->getTitle();
 echo $feed->getUrl();
 echo $feed->getDate();
 echo $feed->getLanguage();
+echo $feed->getDescription();
 echo $feed->getItems();
 
 // Examples for items:

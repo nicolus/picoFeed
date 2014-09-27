@@ -35,6 +35,14 @@ class Feed
     public $title = '';
 
     /**
+     * Feed description
+     *
+     * @access public
+     * @var string
+     */
+    public $description = '';
+
+    /**
      * Item url
      *
      * @access public
@@ -68,7 +76,7 @@ class Feed
     {
         $output = '';
 
-        foreach (array('id', 'title', 'url', 'date', 'language') as $property) {
+        foreach (array('id', 'title', 'url', 'date', 'language', 'description') as $property) {
             $output .= 'Feed::'.$property.' = '.$this->$property.PHP_EOL;
         }
 
@@ -91,6 +99,17 @@ class Feed
     public function getTitle()
     {
         return $this->title;
+    }
+
+    /**
+     * Get description
+     *
+     * @access public
+     * $return string
+     */
+    public function getDescription()
+    {
+        return $this->description;
     }
 
     /**
