@@ -8,6 +8,8 @@ PicoFeed is tested with a lot of different feeds and it's simple and easy to use
 
 [![Build Status](https://travis-ci.org/fguillot/picoFeed.svg?branch=master)](https://travis-ci.org/fguillot/picoFeed)
 
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/fguillot/picoFeed/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/fguillot/picoFeed/?branch=master)
+
 Features
 --------
 
