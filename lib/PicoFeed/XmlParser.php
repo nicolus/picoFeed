@@ -111,6 +111,20 @@ class XmlParser
     }
 
     /**
+     * Convert a HTML document to XML
+     *
+     * @static
+     * @access public
+     * @param  string   $html   HTML document
+     * @return string
+     */
+    public static function HtmlToXml($html)
+    {
+        $dom = self::getHtmlDocument('<?xml version="1.0" encoding="UTF-8">'.$html);
+        return $dom->saveXML($dom->getElementsByTagName('body')->item(0));
+    }
+
+    /**
      * Get XML parser errors
      *
      * @static

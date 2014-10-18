@@ -6,9 +6,9 @@ use SimpleXMLElement;
 use PicoFeed\Parser;
 use PicoFeed\XmlParser;
 use PicoFeed\Logging;
-use PicoFeed\Filter;
 use PicoFeed\Feed;
 use PicoFeed\Item;
+use PicoFeed\Url;
 
 /**
  * Atom parser
@@ -226,13 +226,8 @@ class Atom extends Parser
         foreach ($entry->link as $link) {
             if ((string) $link['rel'] === 'enclosure') {
 
-                $item->enclosure_url = (string) $link['href'];
+                $item->enclosure_url = Url::resolve((string) $link['href'], $feed->url);
                 $item->enclosure_type = (string) $link['type'];
-
-                if (Filter::isRelativePath($item->enclosure_url)) {
-                    $item->enclosure_url = Filter::getAbsoluteUrl($item->enclosure_url, $feed->url);
-                }
-
                 break;
             }
         }

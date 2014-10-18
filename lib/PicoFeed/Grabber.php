@@ -3,10 +3,6 @@
 namespace PicoFeed;
 
 use DOMXPath;
-use PicoFeed\Logging;
-use PicoFeed\Client;
-use PicoFeed\Encoding;
-use PicoFeed\Filter;
 
 /**
  * Grabber class

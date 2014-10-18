@@ -211,7 +211,7 @@ $config->setFilterIntegerAttributes(['width', 'height']);
 - Argument value: array
 
 ```php
-$config->setFilterAttributeOverrides(['a' => 'target="_blank"']);
+$config->setFilterAttributeOverrides(['a' => ['target' => '_blank']);
 ```
 
 ### Set the list of required attributes for tags
@@ -266,15 +266,4 @@ $config->setFilterSchemeWhitelist(['http://', 'ftp://']);
 
 ```php
 $config->setFilterWhitelistedTags(['a' => ['href'], 'img' => ['src', 'title']]);
-```
-
-### Define a tags blacklist (executed after the tags whitelist)
-
-- Method name: `setFilterBlacklistedTags()`
-- Default value: See the Filter class source code
-- Argument value: array
-- Note: useful if you don't want to redefine the tag whitelist
-
-```php
-$config->setFilterBlacklistedTags(['video', 'audio']);
 ```

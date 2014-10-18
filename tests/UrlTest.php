@@ -144,5 +144,11 @@ AAAFCAYAAACNbyblAAAAHElEQVQI12P4//8/w38GIAXDIBKE0DHxgljNBAAO
 
         $url = new Url('index.php?foo=bar&test=1');
         $this->assertEquals('', $url->getAbsoluteUrl());
+
+        $url = new Url('https://127.0.0.1:8000/here/test?v=3');
+        $this->assertEquals('https://127.0.0.1:8000/here/test?v=3', $url->getAbsoluteUrl());
+
+        $url = new Url('test?v=3');
+        $this->assertEquals('https://127.0.0.1:8000/here/test?v=3', $url->getAbsoluteUrl('https://127.0.0.1:8000/here/'));
     }
 }

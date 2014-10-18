@@ -6,12 +6,6 @@ use DateTime;
 use DateTimeZone;
 use DOMXPath;
 use SimpleXMLElement;
-use PicoFeed\Config;
-use PicoFeed\Encoding;
-use PicoFeed\Filter;
-use PicoFeed\Grabber;
-use PicoFeed\Logging;
-use PicoFeed\XmlParser;
 
 /**
  * Base parser class
@@ -184,7 +178,7 @@ abstract class Parser
             }
 
             if (! $content) {
-                $filter = new Filter($item_content, $item_url);
+                $filter = Filter::html($item_content, $item_url);
                 $filter->setConfig($this->config);
                 $content = $filter->execute();
             }

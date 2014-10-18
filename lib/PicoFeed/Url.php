@@ -46,6 +46,30 @@ class Url
     }
 
     /**
+     * Shortcut method to get an absolute url from relative url
+     *
+     * @static
+     * @access public
+     * @param  string    $item_url      Unknown url (can be relative or not)
+     * @param  mixed     $website_url   Website url
+     * @return string
+     */
+    public static function resolve($item_url, $website_url)
+    {
+        $link = new Url($item_url);
+        $website = is_string($website_url) ? new Url($website_url) : $website_url;
+
+        if ($link->isRelativeUrl()) {
+            return $link->getAbsoluteUrl($website->getAbsoluteUrl());
+        }
+        else if ($link->isProtocolRelative()) {
+            $link->setScheme($website->getScheme());
+        }
+
+        return $link->getAbsoluteUrl();
+    }
+
+    /**
      * Get the base URL
      *
      * @access public
@@ -66,12 +90,17 @@ class Url
      */
     public function getAbsoluteUrl($base_url = '')
     {
+        $url = '';
+
         if ($base_url) {
             $base = new Url($base_url);
-            return $base->hasHost() ? $base->getBaseUrl().$this->getFullPath() : '';
+            $url = $base->getAbsoluteUrl().substr($this->getFullPath(), 1);
+        }
+        else {
+            $url = $this->hasHost() ? $this->getBaseUrl().$this->getFullPath() : '';
         }
 
-        return $this->hasHost() ? $this->getBaseUrl().$this->getFullPath() : '';
+        return $url;
     }
 
     /**

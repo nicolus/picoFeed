@@ -6,9 +6,9 @@ use SimpleXMLElement;
 use PicoFeed\Parser;
 use PicoFeed\XmlParser;
 use PicoFeed\Logging;
-use PicoFeed\Filter;
 use PicoFeed\Feed;
 use PicoFeed\Item;
+use PicoFeed\Url;
 
 /**
  * RSS 2.0 Parser
@@ -280,10 +280,7 @@ class Rss20 extends Parser
             }
 
             $item->enclosure_type = isset($entry->enclosure['type']) ? (string) $entry->enclosure['type'] : '';
-
-            if (Filter::isRelativePath($item->enclosure_url)) {
-                $item->enclosure_url = Filter::getAbsoluteUrl($item->enclosure_url, $feed->url);
-            }
+            $item->enclosure_url = Url::resolve($item->enclosure_url, $feed->url);
         }
     }
 
