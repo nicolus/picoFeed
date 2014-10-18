@@ -78,6 +78,16 @@ class ReaderTest extends PHPUnit_Framework_TestCase
         $reader = new Reader;
         $reader->download('http://planete-jquery.fr');
         $this->assertTrue($reader->discover());
+
+        $reader = new Reader;
+        $reader->download('http://cabinporn.com/');
+        $this->assertTrue($reader->discover());
+        $this->assertEquals('http://cabinporn.com/rss', $reader->getUrl());
+
+        $reader = new Reader;
+        $reader->download('http://linuxfr.org/');
+        $this->assertTrue($reader->discover());
+        $this->assertEquals('http://linuxfr.org/news.atom', $reader->getUrl());
     }
 
 

@@ -9,6 +9,7 @@ use PicoFeed\Logging;
 use PicoFeed\Filter;
 use PicoFeed\Client;
 use PicoFeed\Parser;
+use PicoFeed\Url;
 
 /**
  * Reader class
@@ -78,14 +79,7 @@ class Reader
         }
 
         $client = Client::getInstance();
-        $client->setTimeout($this->config->getClientTimeout())
-               ->setUserAgent($this->config->getClientUserAgent())
-               ->setMaxRedirections($this->config->getMaxRedirections())
-               ->setMaxBodySize($this->config->getMaxBodySize())
-               ->setProxyHostname($this->config->getProxyHostname())
-               ->setProxyPort($this->config->getProxyPort())
-               ->setProxyUsername($this->config->getProxyUsername())
-               ->setProxyPassword($this->config->getProxyPassword())
+        $client->setConfig($this->config)
                ->setLastModified($last_modified)
                ->setEtag($etag);
 
@@ -249,16 +243,13 @@ class Reader
 
                 if (! empty($link)) {
 
-                    // Relative links
-                    if (strpos($link, 'http') !== 0) {
+                    $feedUrl = new Url($link);
+                    $siteUrl = new Url($this->url);
 
-                        if ($link{0} === '/') $link = substr($link, 1);
-                        if ($this->url{strlen($this->url) - 1} !== '/') $this->url .= '/';
-
-                        $link = $this->url.$link;
-                    }
+                    $link = $feedUrl->getAbsoluteUrl($feedUrl->isRelativeUrl() ? $siteUrl->getBaseUrl() : '');
 
                     Logging::setMessage(get_called_class().': Find subscription link: '.$link);
+
                     $this->download($link);
 
                     return true;
