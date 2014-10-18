@@ -71,7 +71,6 @@ class Stream extends Client
 
             if ($this->proxy_username) {
                 Logging::setMessage(get_called_class().' Proxy credentials: Yes');
-
             }
             else {
                 Logging::setMessage(get_called_class().' Proxy credentials: No');

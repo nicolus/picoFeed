@@ -97,36 +97,37 @@ class Curl extends Client
     }
 
     /**
-     * Do the HTTP request
+     * Prepare HTTP headers
      *
-     * @access public
-     * @param  bool    $follow_location    Flag used when there is an open_basedir restriction
-     * @return array   HTTP response ['body' => ..., 'status' => ..., 'headers' => ...]
+     * @access private
+     * @return array
      */
-    public function doRequest($follow_location = true)
+    private function prepareHeaders()
     {
-        $request_headers = array('Connection: close');
+        $headers = array(
+            'Connection: close',
+            'User-Agent: '.$this->user_agent,
+        );
 
-        if ($this->etag) $request_headers[] = 'If-None-Match: '.$this->etag;
-        if ($this->last_modified) $request_headers[] = 'If-Modified-Since: '.$this->last_modified;
+        if ($this->etag) {
+            $headers[] = 'If-None-Match: '.$this->etag;
+        }
 
-        $ch = curl_init();
+        if ($this->last_modified) {
+            $headers[] = 'If-Modified-Since: '.$this->last_modified;
+        }
 
-        curl_setopt($ch, CURLOPT_URL, $this->url);
-        curl_setopt($ch, CURLOPT_HTTP_VERSION, CURL_HTTP_VERSION_1_1);
-        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, $this->timeout);
-        curl_setopt($ch, CURLOPT_TIMEOUT, $this->timeout);
-        curl_setopt($ch, CURLOPT_USERAGENT, $this->user_agent);
-        curl_setopt($ch, CURLOPT_HTTPHEADER, $request_headers);
-        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, ini_get('open_basedir') === '');
-        curl_setopt($ch, CURLOPT_MAXREDIRS, $this->max_redirects);
-        curl_setopt($ch, CURLOPT_ENCODING, '');
-        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false); // For auto-signed certificates...
-        curl_setopt($ch, CURLOPT_WRITEFUNCTION, array($this, 'readBody'));
-        curl_setopt($ch, CURLOPT_HEADERFUNCTION, array($this, 'readHeaders'));
-        curl_setopt($ch, CURLOPT_COOKIEJAR, 'php://memory');
-        curl_setopt($ch, CURLOPT_COOKIEFILE, 'php://memory');
+        return $headers;
+    }
 
+    /**
+     * Prepare curl proxy context
+     *
+     * @access private
+     * @return resource
+     */
+    private function prepareProxyContext($ch)
+    {
         if ($this->proxy_hostname) {
 
             Logging::setMessage(get_called_class().' Proxy: '.$this->proxy_hostname.':'.$this->proxy_port);
@@ -144,6 +145,47 @@ class Curl extends Client
             }
         }
 
+        return $ch;
+    }
+
+    /**
+     * Prepare curl context
+     *
+     * @access private
+     * @return resource
+     */
+    private function prepareContext()
+    {
+        $ch = curl_init();
+
+        curl_setopt($ch, CURLOPT_URL, $this->url);
+        curl_setopt($ch, CURLOPT_HTTP_VERSION, CURL_HTTP_VERSION_1_1);
+        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, $this->timeout);
+        curl_setopt($ch, CURLOPT_TIMEOUT, $this->timeout);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $this->prepareHeaders());
+        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, ini_get('open_basedir') === '');
+        curl_setopt($ch, CURLOPT_MAXREDIRS, $this->max_redirects);
+        curl_setopt($ch, CURLOPT_ENCODING, '');
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false); // For auto-signed certificates...
+        curl_setopt($ch, CURLOPT_WRITEFUNCTION, array($this, 'readBody'));
+        curl_setopt($ch, CURLOPT_HEADERFUNCTION, array($this, 'readHeaders'));
+        curl_setopt($ch, CURLOPT_COOKIEJAR, 'php://memory');
+        curl_setopt($ch, CURLOPT_COOKIEFILE, 'php://memory');
+
+        $ch = $this->prepareProxyContext($ch);
+
+        return $ch;
+    }
+
+    /**
+     * Execute curl context
+     *
+     * @access private
+     * @return resource
+     */
+    private function executeContext()
+    {
+        $ch = $this->prepareContext();
         curl_exec($ch);
 
         Logging::setMessage(get_called_class().' cURL total time: '.curl_getinfo($ch, CURLINFO_TOTAL_TIME));
@@ -153,44 +195,34 @@ class Curl extends Client
         Logging::setMessage(get_called_class().' cURL effective url: '.curl_getinfo($ch, CURLINFO_EFFECTIVE_URL));
 
         if (curl_errno($ch)) {
-
             Logging::setMessage(get_called_class().' cURL error: '.curl_error($ch));
-
             curl_close($ch);
             return false;
         }
 
         curl_close($ch);
 
+        return true;
+    }
+
+    /**
+     * Do the HTTP request
+     *
+     * @access public
+     * @param  bool    $follow_location    Flag used when there is an open_basedir restriction
+     * @return array                       HTTP response ['body' => ..., 'status' => ..., 'headers' => ...]
+     */
+    public function doRequest($follow_location = true)
+    {
+        if (! $this->executeContext()) {
+            return false;
+        }
+
         list($status, $headers) = $this->parseHeaders(explode("\r\n", $this->headers[$this->headers_counter - 1]));
 
-        if ($follow_location && ini_get('open_basedir') !== '' && ($status == 301 || $status == 302)) {
-
-            $nb_redirects = 0;
-            $this->url = $headers['Location'];
-            $this->body = '';
-            $this->body_length = 0;
-            $this->headers = array();
-            $this->headers_counter = 0;
-
-            while (true) {
-
-                $nb_redirects++;
-                if ($nb_redirects >= $this->max_redirects) return false;
-
-                $result = $this->doRequest(false);
-
-                if ($result['status'] == 301 || $result['status'] == 302) {
-                    $this->url = $result['headers']['Location'];
-                    $this->body = '';
-                    $this->body_length = 0;
-                    $this->headers = array();
-                    $this->headers_counter = 0;
-                }
-                else {
-                    return $result;
-                }
-            }
+        // When resticted with open_basedir
+        if ($this->needToHandleRedirection($follow_location, $status)) {
+            return $this->handleRedirection($headers['Location']);
         }
 
         return array(
@@ -198,5 +230,59 @@ class Curl extends Client
             'body' => $this->body,
             'headers' => $headers
         );
+    }
+
+    /**
+     * Check if the redirection have to be handled manually
+     *
+     * @access private
+     * @param  boolean    $follow_location    Flag
+     * @param  integer    $status             HTTP status code
+     * @return boolean
+     */
+    private function needToHandleRedirection($follow_location, $status)
+    {
+        return $follow_location && ini_get('open_basedir') !== '' && ($status == 301 || $status == 302);
+    }
+
+    /**
+     * Handle manually redirections when there is an open base dir restriction
+     *
+     * @access private
+     * @param  string     $location       Redirected URL
+     * @return boolean|array
+     */
+    private function handleRedirection($location)
+    {
+        $nb_redirects = 0;
+        $this->url = $location;
+        $this->body = '';
+        $this->body_length = 0;
+        $this->headers = array();
+        $this->headers_counter = 0;
+
+        while (true) {
+
+            $nb_redirects++;
+
+            if ($nb_redirects >= $this->max_redirects) {
+                return false;
+            }
+
+            $result = $this->doRequest(false);
+
+            if ($result['status'] == 301 || $result['status'] == 302) {
+                $this->url = $result['headers']['Location'];
+                $this->body = '';
+                $this->body_length = 0;
+                $this->headers = array();
+                $this->headers_counter = 0;
+            }
+            else {
+                return $result;
+            }
+        }
+
+        return false;
     }
 }
