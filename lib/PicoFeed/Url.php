@@ -36,6 +36,13 @@ class Url
     {
         $this->url = $url;
         $this->components = parse_url($url);
+
+        // Issue with PHP < 5.4.7 and protocol relative url
+        if (version_compare(PHP_VERSION, '5.4.7', '<') && $this->isProtocolRelative()) {
+            $slash = strpos($this->components['path'], '/', 2);
+            $this->components['host'] = substr($this->components['path'], 2, $slash - 2);
+            $this->components['path'] = substr($this->components['path'], $slash);
+        }
     }
 
     /**

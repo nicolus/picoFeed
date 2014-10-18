@@ -434,12 +434,6 @@ class Filter
     {
         $content = str_replace("\xc2\xa0", ' ', $content); // Replace &nbsp; with normal space
 
-        // Issue with Cyrillic characters
-        // Replace mutliple space by a single one
-        // if (! $this->is_code) {
-        //     $content = preg_replace('!\s+!', ' ', $content);
-        // }
-
         if (! $this->strip_content) {
             $this->data .= $this->escape($content);
         }
