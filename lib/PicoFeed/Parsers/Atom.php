@@ -7,6 +7,7 @@ use PicoFeed\Parser;
 use PicoFeed\XmlParser;
 use PicoFeed\Logging;
 use PicoFeed\Feed;
+use PicoFeed\Filter;
 use PicoFeed\Item;
 use PicoFeed\Url;
 
@@ -75,7 +76,7 @@ class Atom extends Parser
      */
     public function findFeedTitle(SimpleXMLElement $xml, Feed $feed)
     {
-        $feed->title = $this->stripWhiteSpace((string) $xml->title) ?: $feed->url;
+        $feed->title = Filter::stripWhiteSpace((string) $xml->title) ?: $feed->url;
     }
 
     /**
@@ -87,7 +88,7 @@ class Atom extends Parser
      */
     public function findFeedLanguage(SimpleXMLElement $xml, Feed $feed)
     {
-        $feed->language = $this->getXmlLang($this->content);
+        $feed->language = XmlParser::getXmlLang($this->content);
     }
 
     /**
@@ -131,11 +132,11 @@ class Atom extends Parser
      *
      * @access public
      * @param  SimpleXMLElement   $entry   Feed item
-     * @param  Item           $item    Item object
+     * @param  Item               $item    Item object
      */
     public function findItemTitle(SimpleXMLElement $entry, Item $item)
     {
-        $item->title = $this->stripWhiteSpace((string) $entry->title);
+        $item->title = Filter::stripWhiteSpace((string) $entry->title);
 
         if (empty($item->title)) {
             $item->title = $item->url;

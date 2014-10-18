@@ -90,8 +90,6 @@ class Url
      */
     public function getAbsoluteUrl($base_url = '')
     {
-        $url = '';
-
         if ($base_url) {
             $base = new Url($base_url);
             $url = $base->getAbsoluteUrl().substr($this->getFullPath(), 1);

@@ -4,8 +4,6 @@ namespace PicoFeed;
 
 use DateTime;
 use DateTimeZone;
-use DOMXPath;
-use SimpleXMLElement;
 
 /**
  * Base parser class
@@ -90,7 +88,7 @@ abstract class Parser
         $this->content = Encoding::convert($this->content, $xml_encoding ?: $http_encoding);
 
         // Workarounds
-        $this->content = $this->normalizeData($this->content);
+        $this->content = Filter::normalizeData($this->content);
     }
 
     /**
@@ -185,60 +183,6 @@ abstract class Parser
         }
 
         return $content;
-    }
-
-    /**
-     * Dirty quickfixes before XML parsing
-     *
-     * @access public
-     * @param  string  $data Raw data
-     * @return string        Normalized data
-     */
-    public function normalizeData($data)
-    {
-        $invalid_chars = array(
-            "\x10",
-            "\xc3\x20",
-            "&#x1F;",
-        );
-
-        foreach ($invalid_chars as $needle) {
-            $data = str_replace($needle, '', $data);
-        }
-
-        $data = $this->replaceEntityAttribute($data);
-        return $data;
-    }
-
-    /**
-     * Replace & by &amp; for each href attribute (Fix broken feeds)
-     *
-     * @access public
-     * @param  string  $content Raw data
-     * @return string           Normalized data
-     */
-    public function replaceEntityAttribute($content)
-    {
-        $content = preg_replace_callback('/href="[^"]+"/', function(array $matches) {
-            return htmlspecialchars($matches[0], ENT_NOQUOTES, 'UTF-8', false);
-        }, $content);
-
-        return $content;
-    }
-
-    /**
-     * Trim whitespace from the begining, the end and inside a string and don't break utf-8 string
-     *
-     * @access public
-     * @param  string  $value  Raw data
-     * @return string          Normalized data
-     */
-    public function stripWhiteSpace($value)
-    {
-        $value = str_replace("\r", "", $value);
-        $value = str_replace("\t", "", $value);
-        $value = str_replace("\n", "", $value);
-        return trim($value);
     }
 
     /**
@@ -352,25 +296,6 @@ abstract class Parser
     }
 
     /**
-     * Get xml:lang value
-     *
-     * @access public
-     * @param  string  $xml  XML string
-     * @return string        Language
-     */
-    public function getXmlLang($xml)
-    {
-        $dom = XmlParser::getDomDocument($this->content);
-
-        if ($dom === false) {
-            return '';
-        }
-
-        $xpath = new DOMXPath($dom);
-        return $xpath->evaluate('string(//@xml:lang[1])') ?: '';
-    }
-
-    /**
      * Return true if the given language is "Right to Left"
      *
      * @static
@@ -463,38 +388,5 @@ abstract class Parser
     public function setGrabberIgnoreUrls(array $urls)
     {
         $this->grabber_ignore_urls = $urls;
-    }
-
-    /**
-     * Get a value from a XML namespace
-     *
-     * @access public
-     * @param  SimpleXMLElement     $xml    XML element
-     * @param  array                $namespaces    XML namespaces
-     * @param  string               $property      XML tag name
-     * @param  string               $attribute     XML attribute name
-     * @return string
-     */
-    public function getNamespaceValue(SimpleXMLElement $xml, array $namespaces, $property, $attribute = '')
-    {
-        foreach ($namespaces as $name => $url) {
-            $namespace = $xml->children($namespaces[$name]);
-
-            if ($namespace->$property->count() > 0) {
-
-                if ($attribute) {
-
-                    foreach ($namespace->$property->attributes() as $xml_attribute => $xml_value) {
-                        if ($xml_attribute === $attribute && $xml_value) {
-                            return (string) $xml_value;
-                        }
-                    }
-                }
-
-                return (string) $namespace->$property;
-            }
-        }
-
-        return '';
     }
 }

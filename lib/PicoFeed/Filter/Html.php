@@ -47,6 +47,14 @@ class Html
     private $empty_tags = array();
 
     /**
+     * Empty flag
+     *
+     * @access private
+     * @var boolean
+     */
+    private $empty = true;
+
+    /**
      * Tag instance
      *
      * @access public

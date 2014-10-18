@@ -7,6 +7,7 @@ use PicoFeed\Parser;
 use PicoFeed\XmlParser;
 use PicoFeed\Logging;
 use PicoFeed\Feed;
+use PicoFeed\Filter;
 use PicoFeed\Item;
 use PicoFeed\Url;
 
@@ -92,7 +93,7 @@ class Rss20 extends Parser
      */
     public function findFeedTitle(SimpleXMLElement $xml, Feed $feed)
     {
-        $feed->title = $this->stripWhiteSpace((string) $xml->channel->title) ?: $feed->url;
+        $feed->title = Filter::stripWhiteSpace((string) $xml->channel->title) ?: $feed->url;
     }
 
     /**
@@ -141,10 +142,10 @@ class Rss20 extends Parser
      */
     public function findItemDate(SimpleXMLElement $entry, Item $item)
     {
-        $date = $this->getNamespaceValue($entry, $this->namespaces, 'date');
+        $date = XmlParser::getNamespaceValue($entry, $this->namespaces, 'date');
 
         if (empty($date)) {
-            $date = $this->getNamespaceValue($entry, $this->namespaces, 'updated');
+            $date = XmlParser::getNamespaceValue($entry, $this->namespaces, 'updated');
         }
 
         if (empty($date)) {
@@ -163,7 +164,7 @@ class Rss20 extends Parser
      */
     public function findItemTitle(SimpleXMLElement $entry, Item $item)
     {
-        $item->title = $this->stripWhiteSpace((string) $entry->title);
+        $item->title = Filter::stripWhiteSpace((string) $entry->title);
 
         if (empty($item->title)) {
             $item->title = $item->url;
@@ -180,7 +181,7 @@ class Rss20 extends Parser
      */
     public function findItemAuthor(SimpleXMLElement $xml, SimpleXMLElement $entry, Item $item)
     {
-        $item->author = $this->getNamespaceValue($entry, $this->namespaces, 'creator');
+        $item->author = XmlParser::getNamespaceValue($entry, $this->namespaces, 'creator');
 
         if (empty($item->author)) {
             if (isset($entry->author)) {
@@ -201,7 +202,7 @@ class Rss20 extends Parser
      */
     public function findItemContent(SimpleXMLElement $entry, Item $item)
     {
-        $content = $this->getNamespaceValue($entry, $this->namespaces, 'encoded');
+        $content = XmlParser::getNamespaceValue($entry, $this->namespaces, 'encoded');
 
         if (empty($content) && $entry->description->count() > 0) {
             $content = (string) $entry->description;
@@ -220,9 +221,9 @@ class Rss20 extends Parser
     public function findItemUrl(SimpleXMLElement $entry, Item $item)
     {
         $links = array(
-            $this->getNamespaceValue($entry, $this->namespaces, 'origLink'),
+            XmlParser::getNamespaceValue($entry, $this->namespaces, 'origLink'),
             isset($entry->link) ? (string) $entry->link : '',
-            $this->getNamespaceValue($entry, $this->namespaces, 'link', 'href'),
+            XmlParser::getNamespaceValue($entry, $this->namespaces, 'link', 'href'),
             isset($entry->guid) ? (string) $entry->guid : '',
         );
 
@@ -273,7 +274,7 @@ class Rss20 extends Parser
     {
         if (isset($entry->enclosure)) {
 
-            $item->enclosure_url = $this->getNamespaceValue($entry->enclosure, $this->namespaces, 'origEnclosureLink');
+            $item->enclosure_url = XmlParser::getNamespaceValue($entry->enclosure, $this->namespaces, 'origEnclosureLink');
 
             if (empty($item->enclosure_url)) {
                 $item->enclosure_url = isset($entry->enclosure['url']) ? (string) $entry->enclosure['url'] : '';

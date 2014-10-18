@@ -7,6 +7,7 @@ require_once __DIR__.'/Rss20.php';
 use SimpleXMLElement;
 use PicoFeed\Feed;
 use PicoFeed\Item;
+use PicoFeed\XmlParser;
 use PicoFeed\Parsers\Rss20;
 
 /**
@@ -38,7 +39,7 @@ class Rss10 extends Rss20
      */
     public function findFeedDate(SimpleXMLElement $xml, Feed $feed)
     {
-        $feed->date = $this->parseDate($this->getNamespaceValue($xml->channel, $this->namespaces, 'date'));
+        $feed->date = $this->parseDate(XmlParser::getNamespaceValue($xml->channel, $this->namespaces, 'date'));
     }
 
     /**
@@ -50,7 +51,7 @@ class Rss10 extends Rss20
      */
     public function findFeedLanguage(SimpleXMLElement $xml, Feed $feed)
     {
-        $feed->language = $this->getNamespaceValue($xml->channel, $this->namespaces, 'language');
+        $feed->language = XmlParser::getNamespaceValue($xml->channel, $this->namespaces, 'language');
     }
 
     /**

@@ -99,4 +99,43 @@ class Filter
 
         return $data;
     }
+
+    /**
+     * Trim whitespace from the begining, the end and inside a string and don't break utf-8 string
+     *
+     * @static
+     * @access public
+     * @param  string  $value  Raw data
+     * @return string          Normalized data
+     */
+    public static function stripWhiteSpace($value)
+    {
+        $value = str_replace("\r", "", $value);
+        $value = str_replace("\t", "", $value);
+        $value = str_replace("\n", "", $value);
+        return trim($value);
+    }
+
+    /**
+     * Dirty quickfixes before XML parsing
+     *
+     * @static
+     * @access public
+     * @param  string  $data Raw data
+     * @return string        Normalized data
+     */
+    public static function normalizeData($data)
+    {
+        $invalid_chars = array(
+            "\x10",
+            "\xc3\x20",
+            "&#x1F;",
+        );
+
+        foreach ($invalid_chars as $needle) {
+            $data = str_replace($needle, '', $data);
+        }
+
+        return $data;
+    }
 }
