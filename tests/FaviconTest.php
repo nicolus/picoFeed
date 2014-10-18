@@ -3,6 +3,7 @@
 require_once 'lib/PicoFeed/PicoFeed.php';
 
 use PicoFeed\Favicon;
+use PicoFeed\Url;
 
 class FaviconTest extends PHPUnit_Framework_TestCase
 {
@@ -54,13 +55,38 @@ class FaviconTest extends PHPUnit_Framework_TestCase
 
         $this->assertEquals(array('http://example.com/image.png', 'http://example.com/image.ico'), $favicon->extract($html));
     }
-
+/*
     public function testHasFile()
     {
         $favicon = new Favicon;
         $this->assertTrue($favicon->exists('https://en.wikipedia.org/favicon.ico'));
         $this->assertFalse($favicon->exists('http://minicoders.com/favicon.ico'));
         $this->assertFalse($favicon->exists('http://blabla'));
+    }
+*/
+    public function testConvertLink()
+    {
+        $favicon = new Favicon;
+
+        $this->assertEquals(
+            'http://miniflux.net/assets/img/favicon.png',
+            $favicon->convertLink(new Url('http://miniflux.net'), new Url('assets/img/favicon.png'))
+        );
+
+        $this->assertEquals(
+            'https://miniflux.net/assets/img/favicon.png',
+            $favicon->convertLink(new Url('https://miniflux.net'), new Url('assets/img/favicon.png'))
+        );
+
+        $this->assertEquals(
+            'http://google.com/assets/img/favicon.png',
+            $favicon->convertLink(new Url('http://miniflux.net'), new Url('//google.com/assets/img/favicon.png'))
+        );
+
+        $this->assertEquals(
+            'https://google.com/assets/img/favicon.png',
+            $favicon->convertLink(new Url('https://miniflux.net'), new Url('//google.com/assets/img/favicon.png'))
+        );
     }
 
     public function testFind()
@@ -85,7 +111,7 @@ class FaviconTest extends PHPUnit_Framework_TestCase
 
         // Protocol relative favicon
         $this->assertEquals(
-            'http://bits.wikimedia.org/favicon/wikipedia.ico',
+            'https://bits.wikimedia.org/favicon/wikipedia.ico',
             $favicon->find('https://en.wikipedia.org/')
         );
 

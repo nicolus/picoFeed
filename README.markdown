@@ -14,6 +14,7 @@ Features
 - Simple and fast
 - Feed parser for Atom 1.0 and RSS 0.91, 0.92, 1.0 and 2.0
 - Feed writer for Atom 1.0 and RSS 2.0
+- Favicon fetcher
 - Import/Export OPML subscriptions
 - Content filter: HTML cleanup, remove pixel trackers and Ads
 - Multiple HTTP client adapters: cURL or Stream Context
@@ -45,6 +46,7 @@ Documentation
 - [OPML file exportation](docs/opml-export.markdown)
 - [Feed parsing](docs/feed-parsing.markdown)
 - [Feed creation](docs/feed-creation.markdown)
+- [Favicon fetcher](docs/favicon.markdown)
 - [Web scraping](docs/grabber.markdown)
 - [Debugging](docs/debugging.markdown)
 - [Configuration](docs/config.markdown)

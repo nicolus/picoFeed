@@ -3,7 +3,6 @@
 namespace PicoFeed;
 
 use DOMXpath;
-use PicoFeed\Config;
 
 /**
  * Favicon class
@@ -90,20 +89,19 @@ class Favicon
      * Get the icon link for a website
      *
      * @access public
-     * @param  string    $link    URL
+     * @param  string    $website_link    URL
      * @return string
      */
-    public function find($link)
+    public function find($website_link)
     {
-        $url = new Url($link);
+        $website = new Url($website_link);
 
-        $icons = $this->extract($this->download($url->getBaseUrl('/')));
-        $icons[] = $url->getBaseUrl('/favicon.ico');
+        $icons = $this->extract($this->download($website->getBaseUrl('/')));
+        $icons[] = $website->getBaseUrl('/favicon.ico');
 
         foreach ($icons as $icon_link) {
 
-            $icon_url = new Url($icon_link);
-            $icon_link = $icon_url->getAbsoluteUrl($icon_url->isRelativeUrl() ? $url->getBaseUrl() : '');
+            $icon_link = $this->convertLink($website, new Url($icon_link));
             $this->content = $this->download($icon_link);
 
             if ($this->content !== '') {
@@ -112,6 +110,28 @@ class Favicon
         }
 
         return '';
+    }
+
+    /**
+     * Convert icon links to absolute url
+     *
+     * @access public
+     * @param  \PicoFeed\Url      $website     Website url
+     * @param  \PicoFeed\Url      $icon        Icon url
+     * @return string
+     */
+    public function convertLink(Url $website, Url $icon)
+    {
+        $base_url = '';
+
+        if ($icon->isRelativeUrl()) {
+            $base_url = $website->getBaseUrl();
+        }
+        else if ($icon->isProtocolRelative()) {
+            $icon->setScheme($website->getScheme());
+        }
+
+        return $icon->getAbsoluteUrl($base_url);
     }
 
     /**

@@ -156,6 +156,18 @@ class Url
     }
 
     /**
+     * Set the scheme
+     *
+     * @access public
+     * @param  string    $scheme    Set a scheme
+     * @return string
+     */
+    public function setScheme($scheme)
+    {
+        $this->components['scheme'] = $scheme;
+    }
+
+    /**
      * Return true if the url has a scheme
      *
      * @access public
