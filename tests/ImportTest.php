@@ -1,6 +1,6 @@
 <?php
 
-require_once 'lib/PicoFeed/Import.php';
+require_once 'lib/PicoFeed/PicoFeed.php';
 
 use PicoFeed\Import;
 
