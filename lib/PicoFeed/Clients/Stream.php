@@ -114,6 +114,23 @@ class Stream extends Client
 
         fclose($stream);
 
+        return array(
+            'status' => $status,
+            'body' => $this->decodeBody($body, $headers),
+            'headers' => $headers
+        );
+    }
+
+    /**
+     * Decode body response according to the HTTP headers
+     *
+     * @access public
+     * @param  string    $body      Raw body
+     * @param  array     $headers   HTTP headers
+     * @return string
+     */
+    public function decodeBody($body, array $headers)
+    {
         if (isset($headers['Transfer-Encoding']) && $headers['Transfer-Encoding'] === 'chunked') {
             $body = $this->decodeChunked($body);
         }
@@ -122,11 +139,7 @@ class Stream extends Client
             $body = @gzdecode($body);
         }
 
-        return array(
-            'status' => $status,
-            'body' => $body,
-            'headers' => $headers
-        );
+        return $body;
     }
 
     /**
