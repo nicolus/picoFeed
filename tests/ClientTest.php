@@ -67,4 +67,19 @@ class ClientTest extends PHPUnit_Framework_TestCase
 
         $this->assertFalse($client->isModified());
     }
+
+    public function testCharset()
+    {
+        $client = Client::getInstance();
+        $client->setUrl('http://php.net/');
+
+        $this->assertTrue($client->execute());
+        $this->assertEquals('utf-8', $client->getEncoding());
+
+        $client = Client::getInstance();
+        $client->setUrl('http://php.net/robots.txt');
+
+        $this->assertTrue($client->execute());
+        $this->assertEquals('', $client->getEncoding());
+    }
 }

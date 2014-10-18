@@ -178,37 +178,108 @@ abstract class Client
         $response = $this->doRequest();
 
         if (is_array($response)) {
-
-            if ($response['status'] == 304) {
-                $this->is_modified = false;
-                Logging::setMessage(get_called_class().' Resource not modified');
-            }
-            else if ($response['status'] == 404) {
-                $this->is_not_found = true;
-                Logging::setMessage(get_called_class().' Resource not found');
-            }
-            else {
-                $etag = isset($response['headers']['ETag']) ? $response['headers']['ETag'] : '';
-                $last_modified = isset($response['headers']['Last-Modified']) ? $response['headers']['Last-Modified'] : '';
-                $this->content = $response['body'];
-
-                if (isset($response['headers']['Content-Type'])) {
-                    $result = explode('charset=', strtolower($response['headers']['Content-Type']));
-                    $this->encoding = isset($result[1]) ? $result[1] : '';
-                }
-
-                if (($this->etag && $this->etag === $etag) || ($this->last_modified && $last_modified === $this->last_modified)) {
-                    $this->is_modified = false;
-                }
-
-                $this->etag = $etag;
-                $this->last_modified = $last_modified;
-            }
-
+            $this->handleNotModifiedResponse($response);
+            $this->handleNotFoundResponse($response);
+            $this->handleNormalResponse($response);
             return true;
         }
 
         return false;
+    }
+
+    /**
+     * Handle not modified response
+     *
+     * @access public
+     * @param  array      $response     Client response
+     */
+    public function handleNotModifiedResponse(array $response)
+    {
+        if ($response['status'] == 304) {
+            $this->is_modified = false;
+        }
+        else if ($response['status'] == 200) {
+
+            $etag = $this->getHeader($response, 'ETag');
+            $last_modified = $this->getHeader($response, 'Last-Modified');
+
+            if ($this->isPropertyEquals('etag', $etag) || $this->isPropertyEquals('last_modified', $last_modified)) {
+                $this->is_modified = false;
+            }
+
+            $this->etag = $etag;
+            $this->last_modified = $last_modified;
+        }
+
+        if ($this->is_modified === false) {
+            Logging::setMessage(get_called_class().' Resource not modified');
+        }
+    }
+
+    /**
+     * Handle not found response
+     *
+     * @access public
+     * @param  array      $response     Client response
+     */
+    public function handleNotFoundResponse(array $response)
+    {
+        if ($response['status'] == 404) {
+            $this->is_not_found = true;
+            Logging::setMessage(get_called_class().' Resource not found');
+        }
+    }
+
+    /**
+     * Handle normal response
+     *
+     * @access public
+     * @param  array      $response     Client response
+     */
+    public function handleNormalResponse(array $response)
+    {
+        if ($response['status'] == 200) {
+            $this->content = $response['body'];
+            $this->encoding = $this->findCharset($response);
+        }
+    }
+
+    /**
+     * Check if a class property equals to a value
+     *
+     * @access public
+     * @param  string   $property    Class property
+     * @param  string   $value       Value
+     * @return boolean
+     */
+    private function isPropertyEquals($property, $value)
+    {
+        return $this->$property && $this->$property === $value;
+    }
+
+    /**
+     * Find charset from response headers
+     *
+     * @access public
+     * @param  array      $response     Client response
+     */
+    public function findCharset(array $response)
+    {
+        $result = explode('charset=', strtolower($this->getHeader($response, 'Content-Type')));
+        return isset($result[1]) ? $result[1] : '';
+    }
+
+    /**
+     * Get header value from a client response
+     *
+     * @access public
+     * @param  array      $response     Client response
+     * @param  string     $header       Header name
+     * @return string
+     */
+    public function getHeader(array $response, $header)
+    {
+        return isset($response['headers'][$header]) ? $response['headers'][$header] : '';
     }
 
     /**
