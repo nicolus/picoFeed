@@ -4,6 +4,7 @@
 
 require __DIR__.'/Config.php';
 require __DIR__.'/Logging.php';
+require __DIR__.'/Url.php';
 require __DIR__.'/Item.php';
 require __DIR__.'/Feed.php';
 require __DIR__.'/Client.php';
@@ -18,3 +19,4 @@ require __DIR__.'/Writer.php';
 require __DIR__.'/Writers/Rss20.php';
 require __DIR__.'/Writers/Atom.php';
 require __DIR__.'/Parser.php';
+require __DIR__.'/Favicon.php';

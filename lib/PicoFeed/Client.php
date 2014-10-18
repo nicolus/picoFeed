@@ -24,6 +24,14 @@ abstract class Client
     private $is_modified = true;
 
     /**
+     * Flag that say if the resource is a 404
+     *
+     * @access private
+     * @var bool
+     */
+    private $is_not_found = false;
+
+    /**
      * HTTP encoding
      *
      * @access private
@@ -176,6 +184,7 @@ abstract class Client
                 Logging::setMessage(get_called_class().' Resource not modified');
             }
             else if ($response['status'] == 404) {
+                $this->is_not_found = true;
                 Logging::setMessage(get_called_class().' Resource not found');
             }
             else {
@@ -338,6 +347,17 @@ abstract class Client
     public function isModified()
     {
         return $this->is_modified;
+    }
+
+    /**
+     * Return true if the remote resource is not found
+     *
+     * @access public
+     * @return bool
+     */
+    public function isNotFound()
+    {
+        return $this->is_not_found;
     }
 
     /**
