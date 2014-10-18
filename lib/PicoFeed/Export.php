@@ -58,23 +58,39 @@ class Export
 
         $body = $xml->addChild('body');
 
-        foreach ($this->content as $feed) {
+        foreach ($this->content as $category => $values) {
 
-            $valid = true;
-
-            foreach ($this->required_fields as $field) {
-
-                if (! isset($feed[$field])) {
-                    $valid = false;
-                    break;
-                }
+            if (is_string($category)) {
+                $this->createCategory($body, $category, $values);
             }
-
-            if (! $valid) {
-                continue;
+            else {
+                $this->createEntry($body, $values);
             }
+        }
 
-            $outline = $body->addChild('outline');
+        return $xml->asXML();
+    }
+
+    /**
+     * Create a feed entry
+     *
+     * @access public
+     * @param  SimpleXMLElement    $parent      Parent Element
+     * @param  array               $feed        Feed properties
+     */
+    public function createEntry(SimpleXMLElement $parent, array $feed)
+    {
+        $valid = true;
+
+        foreach ($this->required_fields as $field) {
+            if (! isset($feed[$field])) {
+                $valid = false;
+                break;
+            }
+        }
+
+        if ($valid) {
+            $outline = $parent->addChild('outline');
             $outline->addAttribute('xmlUrl', $feed['feed_url']);
             $outline->addAttribute('htmlUrl', $feed['site_url']);
             $outline->addAttribute('title', $feed['title']);
@@ -83,7 +99,34 @@ class Export
             $outline->addAttribute('type', 'rss');
             $outline->addAttribute('version', 'RSS');
         }
+    }
 
-        return $xml->asXML();
+    /**
+     * Create entries for a feed list
+     *
+     * @access public
+     * @param  SimpleXMLElement    $parent      Parent Element
+     * @param  array               $feeds       Feed list
+     */
+    public function createEntries(SimpleXMLElement $parent, array $feeds)
+    {
+        foreach ($feeds as $feed) {
+            $this->createEntry($parent, $feed);
+        }
+    }
+
+    /**
+     * Create a category entry
+     *
+     * @access public
+     * @param  SimpleXMLElement    $parent      Parent Element
+     * @param  string              $category    Category
+     * @param  array               $feed        Feed properties
+     */
+    public function createCategory(SimpleXMLElement $parent, $category, array $feeds)
+    {
+        $outline = $parent->addChild('outline');
+        $outline->addAttribute('text', $category);
+        $this->createEntries($outline, $feeds);
     }
 }

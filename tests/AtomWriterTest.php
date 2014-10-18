@@ -1,7 +1,6 @@
 <?php
 
 require_once 'lib/PicoFeed/PicoFeed.php';
-require_once 'lib/PicoFeed/Writers/Atom.php';
 
 use PicoFeed\Writers\Atom;
 

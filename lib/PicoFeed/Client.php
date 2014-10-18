@@ -5,7 +5,6 @@ namespace PicoFeed;
 use LogicException;
 use Clients\Curl;
 use Clients\Stream;
-use PicoFeed\Logging;
 
 /**
  * Client class

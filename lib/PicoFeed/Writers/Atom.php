@@ -85,51 +85,8 @@ class Atom extends Writer
 
         // <entry/>
         foreach ($this->items as $item) {
-
             $this->checkRequiredProperties($this->required_item_properties, $item);
-
-            $entry = $this->dom->createElement('entry');
-
-            // <title/>
-            $title = $this->dom->createElement('title');
-            $title->appendChild($this->dom->createTextNode($item['title']));
-            $entry->appendChild($title);
-
-            // <id/>
-            $id = $this->dom->createElement('id');
-            $id->appendChild($this->dom->createTextNode(isset($item['id']) ? $item['id'] : $item['url']));
-            $entry->appendChild($id);
-
-            // <updated/>
-            $this->addUpdated($entry, isset($item['updated']) ? $item['updated'] : '');
-
-            // <published/>
-            if (isset($item['published'])) {
-                $entry->appendChild($this->dom->createElement('published', date(DATE_ATOM, $item['published'])));
-            }
-
-            // <link rel="alternate" type="text/html" href="http://example.org/"/>
-            $this->addLink($entry, $item['url']);
-
-            // <summary/>
-            if (isset($item['summary'])) {
-                $summary = $this->dom->createElement('summary');
-                $summary->appendChild($this->dom->createTextNode($item['summary']));
-                $entry->appendChild($summary);
-            }
-
-            // <content/>
-            if (isset($item['content'])) {
-                $content = $this->dom->createElement('content');
-                $content->setAttribute('type', 'html');
-                $content->appendChild($this->dom->createCDATASection($item['content']));
-                $entry->appendChild($content);
-            }
-
-            // <author/>
-            if (isset($item['author'])) $this->addAuthor($entry, $item['author']);
-
-            $feed->appendChild($entry);
+            $feed->appendChild($this->createEntry($item));
         }
 
         $this->dom->appendChild($feed);
@@ -140,6 +97,61 @@ class Atom extends Writer
         else {
             return $this->dom->saveXML();
         }
+    }
+
+    /**
+     * Create item entry
+     *
+     * @access public
+     * @param  arrray    $item    Item properties
+     * @return DomElement
+     */
+    public function createEntry(array $item)
+    {
+        $entry = $this->dom->createElement('entry');
+
+        // <title/>
+        $title = $this->dom->createElement('title');
+        $title->appendChild($this->dom->createTextNode($item['title']));
+        $entry->appendChild($title);
+
+        // <id/>
+        $id = $this->dom->createElement('id');
+        $id->appendChild($this->dom->createTextNode(isset($item['id']) ? $item['id'] : $item['url']));
+        $entry->appendChild($id);
+
+        // <updated/>
+        $this->addUpdated($entry, isset($item['updated']) ? $item['updated'] : '');
+
+        // <published/>
+        if (isset($item['published'])) {
+            $entry->appendChild($this->dom->createElement('published', date(DATE_ATOM, $item['published'])));
+        }
+
+        // <link rel="alternate" type="text/html" href="http://example.org/"/>
+        $this->addLink($entry, $item['url']);
+
+        // <summary/>
+        if (isset($item['summary'])) {
+            $summary = $this->dom->createElement('summary');
+            $summary->appendChild($this->dom->createTextNode($item['summary']));
+            $entry->appendChild($summary);
+        }
+
+        // <content/>
+        if (isset($item['content'])) {
+            $content = $this->dom->createElement('content');
+            $content->setAttribute('type', 'html');
+            $content->appendChild($this->dom->createCDATASection($item['content']));
+            $entry->appendChild($content);
+        }
+
+        // <author/>
+        if (isset($item['author'])) {
+            $this->addAuthor($entry, $item['author']);
+        }
+
+        return $entry;
     }
 
     /**
