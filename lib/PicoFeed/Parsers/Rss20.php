@@ -208,7 +208,7 @@ class Rss20 extends Parser
             $content = (string) $entry->description;
         }
 
-        $item->content = $this->filterHtml($content, $item->url);
+        $item->content = $content;
     }
 
     /**

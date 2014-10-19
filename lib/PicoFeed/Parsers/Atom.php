@@ -170,7 +170,7 @@ class Atom extends Parser
      */
     public function findItemContent(SimpleXMLElement $entry, Item $item)
     {
-        $item->content = $this->filterHtml($this->getContent($entry), $item->url);
+        $item->content = $this->getContent($entry);
     }
 
     /**

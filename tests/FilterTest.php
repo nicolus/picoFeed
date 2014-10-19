@@ -82,6 +82,6 @@ class FilterTest extends PHPUnit_Framework_TestCase
 
         $f = Filter::html('<p>Test<strong>boo</strong></p>', 'http://blabla');
         $f->setConfig($config);
-        $this->assertEquals('<p>Test</p>', $f->execute());
+        $this->assertEquals('<p>Testboo</p>', $f->execute());
     }
 }

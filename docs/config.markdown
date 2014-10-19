@@ -140,20 +140,14 @@ Parser
 $config->setParserHashAlgo('sha1');
 ```
 
-### Set a custom filter
+### Disable item content filtering
 
-- Method name: `setContentFilteringCallback()`
-- Default value: null
-- Argument value: callable
-- Note: if the callback return nothing, the default filtering is applied
+- Method name: `setContentFiltering()`
+- Default value: true (filtering is enabled by default)
+- Argument value: boolean
 
 ```php
-$config->setContentFilteringCallback(function($item_content, $item_url) {
-
-    // Do something here...
-
-    return $filtered_content;
-});
+$config->setContentFiltering();
 ```
 
 ### Timezone

@@ -44,6 +44,11 @@ class AttributeFilterTest extends PHPUnit_Framework_TestCase
 
     public function testFilterAbsoluteUrlAttribute()
     {
+        $filter = new Attribute(new Url('http://www.la-grange.net'));
+        $url = '/2014/08/03/4668-noisettes';
+        $this->assertTrue($filter->filterAbsoluteUrlAttribute('a', 'href', $url));
+        $this->assertEquals('http://www.la-grange.net/2014/08/03/4668-noisettes', $url);
+
         $filter = new Attribute(new Url('http://google.com'));
 
         $url = 'test';

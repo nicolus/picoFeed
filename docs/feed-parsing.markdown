@@ -166,4 +166,40 @@ $config->setTimezone('Europe/Paris');
 $reader = new Reader($config);
 ...
 ```
+
 [List of supported TimeZones](http://php.net/manual/en/timezones.php)
+
+Disable content filtering
+-------------------------
+
+If you want to disable the internal filtering system to use an external library like [HTMLPurifier](http://htmlpurifier.org):
+
+```php
+use PicoFeed\Reader;
+use PicoFeed\Config;
+
+$config = new Config;
+$config->setTimezone('Europe/Paris');
+$config->setContentFiltering(false);
+
+$reader = new Reader($config);
+...
+```
+
+or
+
+```php
+use PicoFeed\Reader;
+
+$reader = new Reader;
+$reader->download('http://.....');
+
+$parser = $reader->getParser();
+
+if ($parser !== false) {
+
+    $parser->disableContentFiltering(); // <= Disable content filtering
+    $feed = $parser->execute();
+    // ...
+}
+```

@@ -34,6 +34,29 @@ if ($parser !== false) {
 When the content scraper is enabled, everything will be slower.
 For each item a new HTTP request is made and the HTML downloaded is parsed with XML/Xpath.
 
+Configuration
+-------------
+
+### Enable content grabber for items
+
+- Method name: `enableContentGrabber()`
+- Default value: false (content grabber is disabled by default)
+- Argument value: none
+
+```php
+$parser->enableContentGrabber();
+```
+
+### Ignore item urls for the content grabber
+
+- Method name: `setGrabberIgnoreUrls()`
+- Default value: empty (fetch all item urls)
+- Argument value: array (list of item urls to ignore)
+
+```php
+$parser->setGrabberIgnoreUrls(['http://foo', 'http://bar']);
+```
+
 How to write a grabber rules file?
 ----------------------------------
 

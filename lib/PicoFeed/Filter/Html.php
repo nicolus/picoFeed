@@ -190,12 +190,8 @@ class Html
      */
     public function dataTag($parser, $content)
     {
-        if (! $this->empty) {
-
-            // Replace &nbsp; with normal space
-            $content = str_replace("\xc2\xa0", ' ', $content);
-
-            $this->output .= Filter::escape($content);
-        }
+        // Replace &nbsp; with normal space
+        $content = str_replace("\xc2\xa0", ' ', $content);
+        $this->output .= Filter::escape($content);
     }
 }

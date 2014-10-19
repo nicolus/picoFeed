@@ -54,12 +54,20 @@ abstract class Parser
     protected $namespaces = array();
 
     /**
+     * Enable the content filtering
+     *
+     * @access private
+     * @var bool
+     */
+    private $enable_filter = true;
+
+    /**
      * Enable the content grabber
      *
      * @access private
      * @var bool
      */
-    public $enable_grabber = false;
+    private $enable_grabber = false;
 
     /**
      * Ignore those urls for the content scraper
@@ -131,6 +139,10 @@ abstract class Parser
             $this->findItemContent($entry, $item);
             $this->findItemEnclosure($entry, $item, $feed);
             $this->findItemLanguage($entry, $item, $feed);
+
+            $this->scrapWebsite($item);
+            $this->filterItemContent($feed, $item);
+
             $feed->items[] = $item;
         }
 
@@ -140,49 +152,42 @@ abstract class Parser
     }
 
     /**
-     * Filter HTML for entry content
+     * Fetch item content with the content grabber
      *
      * @access public
-     * @param  string  $item_content  Item content
-     * @param  string  $item_url      Item URL
-     * @return string                 Filtered content
+     * @param  Item    $item          Item object
      */
-    public function filterHtml($item_content, $item_url)
+    public function scrapWebsite(Item $item)
     {
-        $content = '';
+        if ($this->enable_grabber && ! in_array($item->getUrl(), $this->grabber_ignore_urls)) {
 
-        // Setup the content scraper
-        if ($this->enable_grabber && ! in_array($item_url, $this->grabber_ignore_urls)) {
-
-            $grabber = new Grabber($item_url);
+            $grabber = new Grabber($item->getUrl());
             $grabber->setConfig($this->config);
             $grabber->download();
 
             if ($grabber->parse()) {
-                $item_content = $grabber->getContent();
+                $item->content = $grabber->getContent() ?: $item->content;
             }
         }
+    }
 
-        // Content filtering
-        if ($item_content) {
-
-            if ($this->config !== null) {
-
-                $callback = $this->config->getContentFilteringCallback();
-
-                if (is_callable($callback)) {
-                    $content = $callback($item_content, $item_url);
-                }
-            }
-
-            if (! $content) {
-                $filter = Filter::html($item_content, $item_url);
-                $filter->setConfig($this->config);
-                $content = $filter->execute();
-            }
+    /**
+     * Filter HTML for entry content
+     *
+     * @access public
+     * @param  Feed    $feed          Feed object
+     * @param  Item    $item          Item object
+     */
+    public function filterItemContent(Feed $feed, Item $item)
+    {
+        if ($this->isFilteringEnabled()) {
+            $filter = Filter::html($item->getContent(), $feed->getUrl());
+            $filter->setConfig($this->config);
+            $item->content = $filter->execute();
         }
-
-        return $content;
+        else {
+            Logging::setMessage(get_called_class().': Content filtering disabled');
+        }
     }
 
     /**
@@ -365,6 +370,32 @@ abstract class Parser
     {
         $this->config = $config;
         return $this;
+    }
+
+    /**
+     * Enable the content grabber
+     *
+     * @access public
+     * @return \PicoFeed\Parser
+     */
+    public function disableContentFiltering()
+    {
+        $this->enable_filter = false;
+    }
+
+    /**
+     * Return true if the content filtering is enabled
+     *
+     * @access public
+     * @return boolean
+     */
+    public function isFilteringEnabled()
+    {
+        if ($this->config === null) {
+            return $this->enable_filter;
+        }
+
+        return $this->config->getContentFiltering($this->enable_filter);
     }
 
     /**

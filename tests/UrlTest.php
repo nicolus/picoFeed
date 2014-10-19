@@ -86,6 +86,9 @@ class UrlTest extends PHPUnit_Framework_TestCase
         $url = new Url('anything');
         $this->assertTrue($url->isRelativeUrl());
 
+        $url = new Url('/2014/08/03/4668-noisettes');
+        $this->assertTrue($url->isRelativeUrl());
+
         $url = new Url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUA
 AAAFCAYAAACNbyblAAAAHElEQVQI12P4//8/w38GIAXDIBKE0DHxgljNBAAO
 9TXL0Y4OHwAAAABJRU5ErkJggg==');
@@ -117,6 +120,9 @@ AAAFCAYAAACNbyblAAAAHElEQVQI12P4//8/w38GIAXDIBKE0DHxgljNBAAO
     {
         $url = new Url('../bla');
         $this->assertEquals('', $url->getAbsoluteUrl(''));
+
+        $url = new Url('/2014/08/03/4668-noisettes');
+        $this->assertEquals('http://www.la-grange.net/2014/08/03/4668-noisettes', $url->getAbsoluteUrl('http://www.la-grange.net/'));
 
         $url = new Url('http://www.google.fr/../bla');
         $this->assertEquals('http://www.google.fr/../bla', $url->getAbsoluteUrl('http://www.google.fr/'));
