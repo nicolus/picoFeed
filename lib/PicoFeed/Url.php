@@ -35,7 +35,7 @@ class Url
     public function __construct($url)
     {
         $this->url = $url;
-        $this->components = parse_url($url);
+        $this->components = parse_url($url) ?: array();
 
         // Issue with PHP < 5.4.7 and protocol relative url
         if (version_compare(PHP_VERSION, '5.4.7', '<') && $this->isProtocolRelative()) {
@@ -65,7 +65,12 @@ class Url
         $website = is_string($website_url) ? new Url($website_url) : $website_url;
 
         if ($link->isRelativeUrl()) {
-            return $link->getAbsoluteUrl($website->getAbsoluteUrl());
+
+            if ($link->isRelativePath()) {
+                return $link->getAbsoluteUrl($website->getAbsoluteUrl());
+            }
+
+            return $link->getAbsoluteUrl($website->getBaseUrl());
         }
         else if ($link->isProtocolRelative()) {
             $link->setScheme($website->getScheme());
@@ -118,6 +123,18 @@ class Url
     }
 
     /**
+     * Return true if the path is relative
+     *
+     * @access public
+     * @return boolean
+     */
+    public function isRelativePath()
+    {
+        $path = $this->getPath();
+        return empty($path) || $path{0} !== '/';
+    }
+
+    /**
      * Get the path
      *
      * @access public
@@ -125,17 +142,7 @@ class Url
      */
     public function getPath()
     {
-        $path = '/';
-
-        if (! empty($this->components['path'])) {
-            $path = $this->components['path'];
-
-            if ($path{0} !== '/') {
-                $path = '/'.$path;
-            }
-        }
-
-        return $path;
+        return empty($this->components['path']) ? '' : $this->components['path'];
     }
 
     /**
@@ -146,7 +153,8 @@ class Url
      */
     public function getFullPath()
     {
-        $path = $this->getPath();
+        $path = $this->isRelativePath() ? '/' : '';
+        $path .= $this->getPath();
         $path .= empty($this->components['query']) ? '' : '?'.$this->components['query'];
         $path .= empty($this->components['fragment']) ? '' : '#'.$this->components['fragment'];
 

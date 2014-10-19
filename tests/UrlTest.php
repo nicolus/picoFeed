@@ -118,6 +118,12 @@ AAAFCAYAAACNbyblAAAAHElEQVQI12P4//8/w38GIAXDIBKE0DHxgljNBAAO
 
     public function testAbsoluteUrl()
     {
+        $url = new Url('http://google.fr/');
+        $this->assertEquals('http://google.fr/', $url->getAbsoluteUrl());
+
+        $url = new Url('http://google.ca');
+        $this->assertEquals('http://google.ca/', $url->getAbsoluteUrl());
+
         $url = new Url('../bla');
         $this->assertEquals('', $url->getAbsoluteUrl(''));
 
@@ -156,5 +162,59 @@ AAAFCAYAAACNbyblAAAAHElEQVQI12P4//8/w38GIAXDIBKE0DHxgljNBAAO
 
         $url = new Url('test?v=3');
         $this->assertEquals('https://127.0.0.1:8000/here/test?v=3', $url->getAbsoluteUrl('https://127.0.0.1:8000/here/'));
+    }
+
+    public function testIsRelativePath()
+    {
+        $url = new Url('');
+        $this->assertTrue($url->isRelativePath());
+
+        $url = new Url('http://google.fr');
+        $this->assertTrue($url->isRelativePath());
+
+        $url = new Url('filename.json');
+        $this->assertTrue($url->isRelativePath());
+
+        $url = new Url('folder/filename.json');
+        $this->assertTrue($url->isRelativePath());
+
+        $url = new Url('/filename.json');
+        $this->assertFalse($url->isRelativePath());
+
+        $url = new Url('/folder/filename.json');
+        $this->assertFalse($url->isRelativePath());
+    }
+
+    public function testResolve()
+    {
+        $this->assertEquals(
+            'http://www.la-grange.net/2014/08/03/4668-noisettes',
+            Url::resolve('/2014/08/03/4668-noisettes', 'http://www.la-grange.net')
+        );
+
+        $this->assertEquals(
+            'http://www.la-grange.net/2014/08/03/4668-noisettes',
+            Url::resolve('/2014/08/03/4668-noisettes', 'http://www.la-grange.net/')
+        );
+
+        $this->assertEquals(
+            'http://www.la-grange.net/2014/08/03/4668-noisettes',
+            Url::resolve('/2014/08/03/4668-noisettes', 'http://www.la-grange.net/feed.atom')
+        );
+
+        $this->assertEquals(
+            'http://what-if.xkcd.com/imgs/a/112/driving.png',
+            Url::resolve('/imgs/a/112/driving.png', 'http://what-if.xkcd.com/feed.atom')
+        );
+
+        $this->assertEquals(
+            'http://website/subfolder/img/foo.png',
+            Url::resolve('img/foo.png', 'http://website/subfolder/')
+        );
+
+        $this->assertEquals(
+            'http://website/img/foo.png',
+            Url::resolve('/img/foo.png', 'http://website/subfolder/')
+        );
     }
 }
