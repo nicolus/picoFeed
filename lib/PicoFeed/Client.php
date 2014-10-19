@@ -543,14 +543,16 @@ abstract class Client
      */
     public function setConfig($config)
     {
-        $this->setTimeout($config->getGrabberTimeout());
-        $this->setUserAgent($config->getGrabberUserAgent());
-        $this->setMaxRedirections($config->getMaxRedirections());
-        $this->setMaxBodySize($config->getMaxBodySize());
-        $this->setProxyHostname($config->getProxyHostname());
-        $this->setProxyPort($config->getProxyPort());
-        $this->setProxyUsername($config->getProxyUsername());
-        $this->setProxyPassword($config->getProxyPassword());
+        if ($config !== null) {
+            $this->setTimeout($config->getGrabberTimeout());
+            $this->setUserAgent($config->getGrabberUserAgent());
+            $this->setMaxRedirections($config->getMaxRedirections());
+            $this->setMaxBodySize($config->getMaxBodySize());
+            $this->setProxyHostname($config->getProxyHostname());
+            $this->setProxyPort($config->getProxyPort());
+            $this->setProxyUsername($config->getProxyUsername());
+            $this->setProxyPassword($config->getProxyPassword());
+        }
 
         return $this;
     }
