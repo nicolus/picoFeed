@@ -122,6 +122,7 @@ class Attribute
      * @var array
      */
     private $media_blacklist = array(
+        'api.flattr.com',
         'feeds.feedburner.com',
         'share.feedsportal.com',
         'da.feedsportal.com',
