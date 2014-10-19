@@ -123,7 +123,7 @@ x-amz-id-2: DDjqfqz2ZJufzqRAcj1mh+9XvSogrPohKHwXlo8IlkzH67G6w4wnjn9HYgbs4uI0
         $f = new Html('<table><tr></tr></table>', 'http://blabla');
         $this->assertEquals('', $f->execute());
     }
-
+/*
     public function testFilter()
     {
         $input = <<<EOD
@@ -164,5 +164,5 @@ EOD;
 
         $f = new Html($input, 'http://www.la-grange.net/');
         $this->assertEquals($expected, $f->execute());
-    }
+    }*/
 }
