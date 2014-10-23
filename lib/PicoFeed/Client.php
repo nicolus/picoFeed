@@ -135,6 +135,15 @@ abstract class Client
     protected $max_body_size = 2097152; // 2MB
 
     /**
+     * Do the HTTP request
+     *
+     * @abstract
+     * @access public
+     * @return array
+     */
+    abstract public function doRequest();
+
+    /**
      * Get client instance: curl or stream driver
      *
      * @static
