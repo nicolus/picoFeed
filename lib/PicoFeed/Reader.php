@@ -104,7 +104,7 @@ class Reader
         require_once __DIR__.'/Parsers/'.ucfirst($name).'.php';
         $name = '\PicoFeed\Parsers\\'.$name;
 
-        $parser = new $name($this->content, $this->encoding);
+        $parser = new $name($this->content, $this->encoding, $this->getUrl());
         $parser->setHashAlgo($this->config->getParserHashAlgo());
         $parser->setTimezone($this->config->getTimezone());
         $parser->setConfig($this->config);

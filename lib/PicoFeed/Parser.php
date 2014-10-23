@@ -46,6 +46,14 @@ abstract class Parser
     protected $content = '';
 
     /**
+     * Fallback url
+     *
+     * @access protected
+     * @var string
+     */
+    protected $fallback_url = '';
+
+    /**
      * XML namespaces
      *
      * @access protected
@@ -81,11 +89,13 @@ abstract class Parser
      * Constructor
      *
      * @access public
-     * @param  string  $content        Feed content
-     * @param  string  $http_encoding  HTTP encoding (headers)
+     * @param  string  $content         Feed content
+     * @param  string  $http_encoding   HTTP encoding (headers)
+     * @param  string  $base_url        Fallback url when the feed provide relative or broken url
      */
-    public function __construct($content, $http_encoding = '')
+    public function __construct($content, $http_encoding = '', $fallback_url = '')
     {
+        $this->fallback_url = $fallback_url;
         $xml_encoding = XmlParser::getEncodingFromXmlTag($content);
 
         // Strip XML tag to avoid multiple encoding/decoding in the next XML processing
@@ -120,7 +130,10 @@ abstract class Parser
         $this->namespaces = $xml->getNamespaces(true);
 
         $feed = new Feed;
+
         $this->findFeedUrl($xml, $feed);
+        $this->checkFeedUrl($feed);
+
         $this->findFeedTitle($xml, $feed);
         $this->findFeedDescription($xml, $feed);
         $this->findFeedLanguage($xml, $feed);
@@ -132,7 +145,10 @@ abstract class Parser
 
             $item = new Item;
             $this->findItemAuthor($xml, $entry, $item);
+
             $this->findItemUrl($entry, $item);
+            $this->checkItemUrl($feed, $item);
+
             $this->findItemTitle($entry, $item);
             $this->findItemId($entry, $item, $feed);
             $this->findItemDate($entry, $item);
@@ -149,6 +165,37 @@ abstract class Parser
         Logging::setMessage(get_called_class().PHP_EOL.$feed);
 
         return $feed;
+    }
+
+    /**
+     * Check if the feed url is correct
+     *
+     * @access public
+     * @param  Feed    $feed          Feed object
+     */
+    public function checkFeedUrl(Feed $feed)
+    {
+        $url = new Url($feed->getUrl());
+
+        if ($url->isRelativeUrl()) {
+            $feed->url = $this->fallback_url;
+        }
+    }
+
+    /**
+     * Check if the item url is correct
+     *
+     * @access public
+     * @param  Feed    $feed          Feed object
+     * @param  Item    $item          Item object
+     */
+    public function checkItemUrl(Feed $feed, Item $item)
+    {
+        $url = new Url($item->getUrl());
+
+        if ($url->isRelativeUrl()) {
+            $item->url = Url::resolve($item->getUrl(), $feed->getUrl());
+        }
     }
 
     /**

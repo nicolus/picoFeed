@@ -104,5 +104,20 @@ class ReaderTest extends PHPUnit_Framework_TestCase
         $reader = new Reader;
         $reader->setContent(file_get_contents('tests/fixtures/grotte_barbu.xml'));
         $this->assertInstanceOf('PicoFeed\Parsers\Rss20', $reader->getParser());
+
+        $reader = new Reader;
+        $reader->download('http://www.groovehq.com/blog/feed');
+
+        $parser = $reader->getParser();
+        $this->assertInstanceOf('PicoFeed\Parsers\Atom', $parser);
+
+        $feed = $parser->execute();
+        $this->assertNotFalse($feed);
+
+        $this->assertEquals('http://www.groovehq.com/blog/feed', $reader->getUrl());
+        $this->assertEquals('http://www.groovehq.com/blog/feed', $feed->getUrl());
+        $this->assertNotEquals('http://www.groovehq.com/blog/feed', $feed->items[0]->getUrl());
+        $this->assertTrue(strpos($feed->items[0]->getUrl(), 'http://') === 0);
+        $this->assertTrue(strpos($feed->items[0]->getUrl(), 'feed') === false);
     }
 }
