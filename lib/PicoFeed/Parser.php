@@ -2,6 +2,7 @@
 
 namespace PicoFeed;
 
+use SimpleXMLElement;
 use DateTime;
 use DateTimeZone;
 
@@ -467,4 +468,152 @@ abstract class Parser
     {
         $this->grabber_ignore_urls = $urls;
     }
+
+    /**
+     * Find the feed url
+     *
+     * @access public
+     * @param  SimpleXMLElement   $xml     Feed xml
+     * @param  \PicoFeed\Feed     $feed    Feed object
+     */
+    public abstract function findFeedUrl(SimpleXMLElement $xml, Feed $feed);
+
+    /**
+     * Find the feed title
+     *
+     * @access public
+     * @param  SimpleXMLElement   $xml     Feed xml
+     * @param  \PicoFeed\Feed     $feed    Feed object
+     */
+    public abstract function findFeedTitle(SimpleXMLElement $xml, Feed $feed);
+
+    /**
+     * Find the feed description
+     *
+     * @access public
+     * @param  SimpleXMLElement   $xml     Feed xml
+     * @param  \PicoFeed\Feed     $feed    Feed object
+     */
+    public abstract function findFeedDescription(SimpleXMLElement $xml, Feed $feed);
+
+    /**
+     * Find the feed language
+     *
+     * @access public
+     * @param  SimpleXMLElement   $xml     Feed xml
+     * @param  \PicoFeed\Feed     $feed    Feed object
+     */
+    public abstract function findFeedLanguage(SimpleXMLElement $xml, Feed $feed);
+
+    /**
+     * Find the feed id
+     *
+     * @access public
+     * @param  SimpleXMLElement   $xml     Feed xml
+     * @param  \PicoFeed\Feed     $feed    Feed object
+     */
+    public abstract function findFeedId(SimpleXMLElement $xml, Feed $feed);
+
+    /**
+     * Find the feed date
+     *
+     * @access public
+     * @param  SimpleXMLElement   $xml     Feed xml
+     * @param  \PicoFeed\Feed     $feed    Feed object
+     */
+    public abstract function findFeedDate(SimpleXMLElement $xml, Feed $feed);
+
+    /**
+     * Find the feed logo url
+     *
+     * @access public
+     * @param  SimpleXMLElement   $xml     Feed xml
+     * @param  \PicoFeed\Feed     $feed    Feed object
+     */
+    public abstract function findFeedLogo(SimpleXMLElement $xml, Feed $feed);
+
+    /**
+     * Get the path to the items XML tree
+     *
+     * @access public
+     * @param  SimpleXMLElement   $xml   Feed xml
+     * @return SimpleXMLElement
+     */
+    public abstract function getItemsTree(SimpleXMLElement $xml);
+
+    /**
+     * Find the item author
+     *
+     * @access public
+     * @param  SimpleXMLElement   $xml     Feed
+     * @param  SimpleXMLElement   $entry   Feed item
+     * @param  \PicoFeed\Item     $item    Item object
+     */
+    public abstract function findItemAuthor(SimpleXMLElement $xml, SimpleXMLElement $entry, Item $item);
+
+    /**
+     * Find the item URL
+     *
+     * @access public
+     * @param  SimpleXMLElement   $entry   Feed item
+     * @param  \PicoFeed\Item     $item    Item object
+     */
+    public abstract function findItemUrl(SimpleXMLElement $entry, Item $item);
+
+    /**
+     * Find the item title
+     *
+     * @access public
+     * @param  SimpleXMLElement   $entry   Feed item
+     * @param  \PicoFeed\Item     $item    Item object
+     */
+    public abstract function findItemTitle(SimpleXMLElement $entry, Item $item);
+
+    /**
+     * Genereate the item id
+     *
+     * @access public
+     * @param  SimpleXMLElement   $entry   Feed item
+     * @param  \PicoFeed\Item     $item    Item object
+     * @param  \PicoFeed\Feed     $feed    Feed object
+     */
+    public abstract function findItemId(SimpleXMLElement $entry, Item $item, Feed $feed);
+
+    /**
+     * Find the item date
+     *
+     * @access public
+     * @param  SimpleXMLElement   $entry   Feed item
+     * @param  \PicoFeed\Item     $item    Item object
+     */
+    public abstract function findItemDate(SimpleXMLElement $entry, Item $item);
+
+    /**
+     * Find the item content
+     *
+     * @access public
+     * @param  SimpleXMLElement   $entry   Feed item
+     * @param  \PicoFeed\Item     $item    Item object
+     */
+    public abstract function findItemContent(SimpleXMLElement $entry, Item $item);
+
+    /**
+     * Find the item enclosure
+     *
+     * @access public
+     * @param  SimpleXMLElement   $entry   Feed item
+     * @param  \PicoFeed\Item     $item    Item object
+     * @param  \PicoFeed\Feed     $feed    Feed object
+     */
+    public abstract function findItemEnclosure(SimpleXMLElement $entry, Item $item, Feed $feed);
+
+    /**
+     * Find the item language
+     *
+     * @access public
+     * @param  SimpleXMLElement   $entry   Feed item
+     * @param  \PicoFeed\Item     $item    Item object
+     * @param  \PicoFeed\Feed     $feed    Feed object
+     */
+    public abstract function findItemLanguage(SimpleXMLElement $entry, Item $item, Feed $feed);
 }
