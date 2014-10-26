@@ -110,9 +110,10 @@ class Filter
      */
     public static function stripWhiteSpace($value)
     {
-        $value = str_replace("\r", "", $value);
-        $value = str_replace("\t", "", $value);
-        $value = str_replace("\n", "", $value);
+        $value = str_replace("\r", ' ', $value);
+        $value = str_replace("\t", ' ', $value);
+        $value = str_replace("\n", ' ', $value);
+        $value = preg_replace('/\s+/', ' ', $value);
         return trim($value);
     }
 
