@@ -1,6 +1,6 @@
 <?php
 
-namespace PicoFeed\Parsers;
+namespace PicoFeed\Parser;
 
 require_once __DIR__.'/Rss20.php';
 
@@ -8,7 +8,6 @@ use SimpleXMLElement;
 use PicoFeed\Feed;
 use PicoFeed\Item;
 use PicoFeed\XmlParser;
-use PicoFeed\Parsers\Rss20;
 
 /**
  * RSS 1.0 parser

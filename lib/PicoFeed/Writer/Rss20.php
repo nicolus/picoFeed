@@ -5,7 +5,7 @@ namespace PicoFeed\Writers;
 use DomDocument;
 use DomAttr;
 use DomElement;
-use PicoFeed\Writer;
+use PicoFeed\Writer as BaseWriter;
 
 /**
  * Rss 2.0 writer class
@@ -13,7 +13,7 @@ use PicoFeed\Writer;
  * @author  Frederic Guillot
  * @package picofeed
  */
-class Rss20 extends Writer
+class Rss20 extends BaseWriter
 {
     /**
      * List of required properties for each feed

@@ -3,13 +3,7 @@
 namespace PicoFeed;
 
 use DOMXPath;
-use PicoFeed\Config;
-use PicoFeed\XmlParser;
-use PicoFeed\Logging;
-use PicoFeed\Filter;
-use PicoFeed\Client;
-use PicoFeed\Parser;
-use PicoFeed\Url;
+use PicoFeed\Exception\Reader as ReaderException;
 
 /**
  * Reader class
@@ -20,28 +14,18 @@ use PicoFeed\Url;
 class Reader
 {
     /**
-     * Feed or site URL
+     * Feed formats for detection
      *
      * @access private
-     * @var string
+     * @var array
      */
-    private $url = '';
-
-    /**
-     * Feed content
-     *
-     * @access private
-     * @var string
-     */
-    private $content = '';
-
-    /**
-     * HTTP encoding
-     *
-     * @access private
-     * @var string
-     */
-    private $encoding = '';
+    private $formats = array(
+        'Atom' => array('<feed'),
+        'Rss20' => array('<rss', '2.0'),
+        'Rss92' => array('<rss', '0.92'),
+        'Rss91' => array('<rss', '0.91'),
+        'Rss10' => array('<rdf:'),
+    );
 
     /**
      * Config class instance
@@ -64,12 +48,12 @@ class Reader
     }
 
     /**
-     * Download a feed
+     * Download a feed (no discovery)
      *
      * @access public
-     * @param  string  $url            Feed content
-     * @param  string  $last_modified  Last modified HTTP header
-     * @param  string  $etag           Etag HTTP header
+     * @param  string            $url              Feed url
+     * @param  string            $last_modified    Last modified HTTP header
+     * @param  string            $etag             Etag HTTP header
      * @return \PicoFeed\Client
      */
     public function download($url, $last_modified = '', $etag = '')
@@ -78,155 +62,56 @@ class Reader
             $url = 'http://'.$url;
         }
 
-        $client = Client::getInstance();
-        $client->setConfig($this->config)
-               ->setLastModified($last_modified)
-               ->setEtag($etag);
-
-        if ($client->execute($url)) {
-            $this->content = $client->getContent();
-            $this->url = $client->getUrl();
-            $this->encoding = $client->getEncoding();
-        }
-
-        return $client;
+        return Client::getInstance()
+                        ->setConfig($this->config)
+                        ->setLastModified($last_modified)
+                        ->setEtag($etag)
+                        ->execute($url);
     }
 
     /**
-     * Get a parser instance with a custom config
+     * Discover and download a feed
      *
      * @access public
-     * @param  string  $name  Parser name
-     * @return \PicoFeed\Parser
+     * @param  string            $url              Feed or website url
+     * @param  string            $last_modified    Last modified HTTP header
+     * @param  string            $etag             Etag HTTP header
+     * @return \PicoFeed\Client
      */
-    public function getParserInstance($name)
+    public function discover($url, $last_modified = '', $etag = '')
     {
-        require_once __DIR__.'/Parsers/'.ucfirst($name).'.php';
-        $name = '\PicoFeed\Parsers\\'.$name;
+        $client = $this->download($url, $last_modified, $etag);
 
-        $parser = new $name($this->content, $this->encoding, $this->getUrl());
-        $parser->setHashAlgo($this->config->getParserHashAlgo());
-        $parser->setTimezone($this->config->getTimezone());
-        $parser->setConfig($this->config);
+        // It's already a feed
+        if ($this->detectFormat($client->getContent())) {
+            return $client;
+        }
 
-        return $parser;
+        // Try to find a subscription
+        $links = $this->find($client->getUrl(), $client->getContent());
+
+        if (empty($links)) {
+            throw new ReaderException('Unable to find a subscription');
+        }
+
+        return $this->download($links[0], $last_modified, $etag);
     }
 
     /**
-     * Get the first XML tag
+     * Find feed urls inside a HTML document
      *
      * @access public
-     * @param  string  $data  Feed content
-     * @return string
+     * @param  string    $url        Website url
+     * @param  string    $html       HTML content
+     * @return array                 List of feed links
      */
-    public function getFirstTag($data)
+    public function find($url, $html)
     {
-        // Strip HTML comments (max of 5,000 characters long to prevent crashing)
-        $data = preg_replace('/<!--(.{0,5000}?)-->/Uis', '', $data);
+        Logging::setMessage(get_called_class().': Try to discover subscriptions');
 
-        /* Strip Doctype:
-         * Doctype needs to be within the first 100 characters. (Ideally the first!)
-         * If it's not found by then, we need to stop looking to prevent PREG
-         * from reaching max backtrack depth and crashing.
-         */
-        $data = preg_replace('/^.{0,100}<!DOCTYPE([^>]*)>/Uis', '', $data);
-
-        // Strip <?xml version....
-        $data = Filter::stripXmlTag($data);
-
-        // Find the first tag
-        $open_tag = strpos($data, '<');
-        $close_tag = strpos($data, '>');
-
-        return substr($data, $open_tag, $close_tag);
-    }
-
-    /**
-     * Detect the feed format
-     *
-     * @access public
-     * @param  string    $parser_name   Parser name
-     * @param  string    $haystack      First XML tag
-     * @param  array     $needles       List of strings that need to be there
-     * @return mixed                    False on failure or Parser instance
-     */
-    public function detectFormat($parser_name, $haystack, array $needles)
-    {
-        $results = array();
-
-        foreach ($needles as $needle) {
-            $results[] = strpos($haystack, $needle) !== false;
-        }
-
-        if (! in_array(false, $results, true)) {
-            Logging::setMessage(get_called_class().': Format detected => '.$parser_name);
-            return $this->getParserInstance($parser_name);
-        }
-
-        return false;
-    }
-
-    /**
-     * Discover feed format and return a parser instance
-     *
-     * @access public
-     * @param  boolean  $discover      Enable feed autodiscovery in HTML document
-     * @return mixed                   False on failure or Parser instance
-     */
-    public function getParser($discover = false)
-    {
-        $formats = array(
-            array('parser' => 'Atom', 'needles' => array('<feed')),
-            array('parser' => 'Rss20', 'needles' => array('<rss', '2.0')),
-            array('parser' => 'Rss92', 'needles' => array('<rss', '0.92')),
-            array('parser' => 'Rss91', 'needles' => array('<rss', '0.91')),
-            array('parser' => 'Rss10', 'needles' => array('<rdf:'/*, 'xmlns="http://purl.org/rss/1.0/"'*/)),
-        );
-
-        $first_tag = $this->getFirstTag($this->content);
-
-        foreach ($formats as $format) {
-
-            $parser = $this->detectFormat($format['parser'], $first_tag, $format['needles']);
-
-            if ($parser !== false) {
-                return $parser;
-            }
-        }
-
-        if ($discover === true) {
-
-            Logging::setMessage(get_called_class().': Format not supported or feed malformed');
-            Logging::setMessage(get_called_class().': Content => '.PHP_EOL.$this->content);
-
-            return false;
-        }
-        else if ($this->discover()) {
-            return $this->getParser(true);
-        }
-
-        Logging::setMessage(get_called_class().': Subscription not found');
-        Logging::setMessage(get_called_class().': Content => '.PHP_EOL.$this->content);
-
-        return false;
-    }
-
-    /**
-     * Discover the feed url inside a HTML document and download the feed
-     *
-     * @access public
-     * @return boolean
-     */
-    public function discover()
-    {
-        if (! $this->content) {
-            return false;
-        }
-
-        Logging::setMessage(get_called_class().': Try to discover a subscription');
-
-        $dom = XmlParser::getHtmlDocument($this->content);
+        $dom = XmlParser::getHtmlDocument($html);
         $xpath = new DOMXPath($dom);
+        $links = array();
 
         $queries = array(
             '//link[@type="application/rss+xml"]',
@@ -244,67 +129,84 @@ class Reader
                 if (! empty($link)) {
 
                     $feedUrl = new Url($link);
-                    $siteUrl = new Url($this->url);
+                    $siteUrl = new Url($url);
 
-                    $link = $feedUrl->getAbsoluteUrl($feedUrl->isRelativeUrl() ? $siteUrl->getBaseUrl() : '');
-
-                    Logging::setMessage(get_called_class().': Find subscription link: '.$link);
-
-                    $this->download($link);
-
-                    return true;
+                    $links[] = $feedUrl->getAbsoluteUrl($feedUrl->isRelativeUrl() ? $siteUrl->getBaseUrl() : '');
                 }
             }
         }
 
-        return false;
+        Logging::setMessage(get_called_class().': '.implode(', ', $links));
+
+        return $links;
     }
 
     /**
-     * Get the downloaded content
+     * Get a parser instance
      *
      * @access public
+     * @param  string                $url          Site url
+     * @param  string                $content      Feed content
+     * @param  string                $encoding     HTTP encoding
+     * @return \PicoFeed\Parser
+     */
+    public function getParser($url, $content, $encoding)
+    {
+        $format = $this->detectFormat($content);
+
+        if (empty($format)) {
+            throw new ReaderException('Unable to detect feed format');
+        }
+
+        $className = '\PicoFeed\Parser\\'.$format;
+
+        $parser = new $className($content, $encoding, $url);
+        $parser->setHashAlgo($this->config->getParserHashAlgo());
+        $parser->setTimezone($this->config->getTimezone());
+        $parser->setConfig($this->config);
+
+        return $parser;
+    }
+
+    /**
+     * Detect the feed format
+     *
+     * @access public
+     * @param  string    $content     Feed content
      * @return string
      */
-    public function getContent()
+    public function detectFormat($content)
     {
-        return $this->content;
+        $first_tag = Filter::getFirstTag($content);
+
+        Logging::setMessage(get_called_class().': DetectFormat(): '.$first_tag);
+
+        foreach ($this->formats as $parser => $needles) {
+
+            if ($this->contains($first_tag, $needles)) {
+                return $parser;
+            }
+        }
+
+        return '';
     }
 
     /**
-     * Set the page content
+     * Return true if all needles are found in the haystack
      *
-     * @access public
-     * @param  string  $content   Page content
-     * @return \PicoFeed\Reader
+     * @access private
+     * @param  string    $haystack    Haystack
+     * @param  string    $needles     Needles to find
+     * @return boolean
      */
-    public function setContent($content)
+    private function contains($haystack, array $needles)
     {
-        $this->content = $content;
-        return $this;
-    }
+        $results = array();
 
-    /**
-     * Get final URL
-     *
-     * @access public
-     * @return string
-     */
-    public function getUrl()
-    {
-        return $this->url;
-    }
+        foreach ($needles as $needle) {
+            $results[] = strpos($haystack, $needle) !== false;
+        }
 
-    /**
-     * Set the URL
-     *
-     * @access public
-     * @param  string  $url   URL
-     * @return \PicoFeed\Reader
-     */
-    public function setUrl($url)
-    {
-        $this->url = $url;
-        return $this;
+        return ! in_array(false, $results, true);
     }
 }

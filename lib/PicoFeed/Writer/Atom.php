@@ -1,11 +1,11 @@
 <?php
 
-namespace PicoFeed\Writers;
+namespace PicoFeed\Writer;
 
 use DomDocument;
 use DomElement;
 use DomAttr;
-use PicoFeed\Writer;
+use PicoFeed\Writer as BaseWriter;
 
 /**
  * Atom writer class
@@ -13,7 +13,7 @@ use PicoFeed\Writer;
  * @author  Frederic Guillot
  * @package picofeed
  */
-class Atom extends Writer
+class Atom extends BaseWriter
 {
     /**
      * List of required properties for each feed

@@ -3,8 +3,9 @@
 namespace PicoFeed;
 
 use LogicException;
-use Clients\Curl;
-use Clients\Stream;
+use PicoFeed\Client\Curl;
+use PicoFeed\Client\Stream;
+use PicoFeed\Exception\Client as ClientException;
 
 /**
  * Client class
@@ -21,14 +22,6 @@ abstract class Client
      * @var bool
      */
     private $is_modified = true;
-
-    /**
-     * Flag that say if the resource is a 404
-     *
-     * @access private
-     * @var bool
-     */
-    private $is_not_found = false;
 
     /**
      * HTTP encoding
@@ -153,14 +146,10 @@ abstract class Client
     public static function getInstance()
     {
         if (function_exists('curl_init')) {
-
-            require_once __DIR__.'/Clients/Curl.php';
-            return new Clients\Curl;
+            return new Curl;
         }
         else if (ini_get('allow_url_fopen')) {
-
-            require_once __DIR__.'/Clients/Stream.php';
-            return new Clients\Stream;
+            return new Stream;
         }
 
         throw new LogicException('You must have "allow_url_fopen=1" or curl extension installed');
@@ -171,7 +160,7 @@ abstract class Client
      *
      * @access public
      * @param  string  $url  URL
-     * @return bool
+     * @return Client
      */
     public function execute($url = '')
     {
@@ -185,14 +174,11 @@ abstract class Client
 
         $response = $this->doRequest();
 
-        if (is_array($response)) {
-            $this->handleNotModifiedResponse($response);
-            $this->handleNotFoundResponse($response);
-            $this->handleNormalResponse($response);
-            return true;
-        }
+        $this->handleNotModifiedResponse($response);
+        $this->handleNotFoundResponse($response);
+        $this->handleNormalResponse($response);
 
-        return false;
+        return $this;
     }
 
     /**
@@ -233,8 +219,7 @@ abstract class Client
     public function handleNotFoundResponse(array $response)
     {
         if ($response['status'] == 404) {
-            $this->is_not_found = true;
-            Logging::setMessage(get_called_class().' Resource not found');
+            throw new ClientException('Resource not found');
         }
     }
 
@@ -426,17 +411,6 @@ abstract class Client
     public function isModified()
     {
         return $this->is_modified;
-    }
-
-    /**
-     * Return true if the remote resource is not found
-     *
-     * @access public
-     * @return bool
-     */
-    public function isNotFound()
-    {
-        return $this->is_not_found;
     }
 
     /**

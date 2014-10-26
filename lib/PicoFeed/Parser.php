@@ -5,6 +5,7 @@ namespace PicoFeed;
 use SimpleXMLElement;
 use DateTime;
 use DateTimeZone;
+use PicoFeed\Exception\Parser as ParserException;
 
 /**
  * Base parser class
@@ -114,7 +115,7 @@ abstract class Parser
      * Parse the document
      *
      * @access public
-     * @return mixed   \PicoFeed\Feed instance or false
+     * @return \PicoFeed\Feed
      */
     public function execute()
     {
@@ -125,7 +126,7 @@ abstract class Parser
         if ($xml === false) {
             Logging::setMessage(get_called_class().': XML parsing error');
             Logging::setMessage(XmlParser::getErrors());
-            return false;
+            throw new ParserException('XML parsing error');
         }
 
         $this->namespaces = $xml->getNamespaces(true);

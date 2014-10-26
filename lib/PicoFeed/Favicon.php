@@ -3,6 +3,7 @@
 namespace PicoFeed;
 
 use DOMXpath;
+use PicoFeed\Exception\Client as ClientException;
 
 /**
  * Favicon class
@@ -61,16 +62,19 @@ class Favicon
      */
     public function download($url)
     {
-        Logging::setMessage(get_called_class().' Download => '.$url);
+        try {
 
-        $client = Client::getInstance();
-        $client->setConfig($this->config);
+            Logging::setMessage(get_called_class().' Download => '.$url);
 
-        if ($client->execute($url) && ! $client->isNotFound()) {
+            $client = Client::getInstance();
+            $client->setConfig($this->config);
+            $client->execute($url);
+
             return $client->getContent();
         }
-
-        return '';
+        catch (ClientException $e) {
+            return '';
+        }
     }
 
     /**

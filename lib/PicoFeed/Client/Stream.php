@@ -1,9 +1,10 @@
 <?php
 
-namespace PicoFeed\Clients;
+namespace PicoFeed\Client;
 
-use \PicoFeed\Logging;
-use \PicoFeed\Client;
+use PicoFeed\Logging;
+use PicoFeed\Client as BaseClient;
+use PicoFeed\Exception\Client as ClientException;
 
 /**
  * Stream context HTTP client
@@ -11,7 +12,7 @@ use \PicoFeed\Client;
  * @author  Frederic Guillot
  * @package client
  */
-class Stream extends Client
+class Stream extends BaseClient
 {
     /**
      * Prepare HTTP headers
@@ -96,7 +97,7 @@ class Stream extends Client
         // Make HTTP request
         $stream = @fopen($this->url, 'r', false, $context);
         if (! is_resource($stream)) {
-            return false;
+            throw new ClientException('Unable to establish a connection');
         }
 
         // Get the entire body until the max size
@@ -104,7 +105,7 @@ class Stream extends Client
 
         // If the body size is too large abort everything
         if (strlen($body) > $this->max_body_size) {
-            return false;
+            throw new ClientException('Content size too large');
         }
 
         // Get HTTP headers response

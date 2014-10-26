@@ -1,9 +1,10 @@
 <?php
 
-namespace PicoFeed\Clients;
+namespace PicoFeed\Client;
 
-use \PicoFeed\Logging;
-use \PicoFeed\Client;
+use PicoFeed\Logging;
+use PicoFeed\Client as BaseClient;
+use PicoFeed\Exception\Client as ClientException;
 
 /**
  * cURL HTTP client
@@ -11,7 +12,7 @@ use \PicoFeed\Client;
  * @author  Frederic Guillot
  * @package client
  */
-class Curl extends Client
+class Curl extends BaseClient
 {
     /**
      * HTTP response body
@@ -181,7 +182,6 @@ class Curl extends Client
      * Execute curl context
      *
      * @access private
-     * @return resource
      */
     private function executeContext()
     {
@@ -197,12 +197,10 @@ class Curl extends Client
         if (curl_errno($ch)) {
             Logging::setMessage(get_called_class().' cURL error: '.curl_error($ch));
             curl_close($ch);
-            return false;
+            throw new ClientException('Unable to establish a connection');
         }
 
         curl_close($ch);
-
-        return true;
     }
 
     /**
@@ -214,9 +212,7 @@ class Curl extends Client
      */
     public function doRequest($follow_location = true)
     {
-        if (! $this->executeContext()) {
-            return false;
-        }
+        $this->executeContext();
 
         list($status, $headers) = $this->parseHeaders(explode("\r\n", $this->headers[$this->headers_counter - 1]));
 

@@ -80,4 +80,16 @@ class Logging
     {
         self::$timezone = $timezone ?: self::$timezone;
     }
+
+    /**
+     * Get all messages serialized into a string
+     *
+     * @static
+     * @access public
+     * @return string
+     */
+    public static function toString()
+    {
+        return implode(PHP_EOL, self::$messages).PHP_EOL;
+    }
 }

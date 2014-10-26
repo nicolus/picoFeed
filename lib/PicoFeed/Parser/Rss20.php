@@ -1,9 +1,9 @@
 <?php
 
-namespace PicoFeed\Parsers;
+namespace PicoFeed\Parser;
 
 use SimpleXMLElement;
-use PicoFeed\Parser;
+use PicoFeed\Parser as BaseParser;
 use PicoFeed\XmlParser;
 use PicoFeed\Logging;
 use PicoFeed\Feed;
@@ -12,12 +12,12 @@ use PicoFeed\Item;
 use PicoFeed\Url;
 
 /**
- * Atom parser
+ * RSS 2.0 Parser
  *
  * @author  Frederic Guillot
  * @package parser
  */
-class Atom extends Parser
+class Rss20 extends BaseParser
 {
     /**
      * Get the path to the items XML tree
@@ -28,7 +28,7 @@ class Atom extends Parser
      */
     public function getItemsTree(SimpleXMLElement $xml)
     {
-        return $xml->entry;
+        return $xml->channel->item;
     }
 
     /**
@@ -40,7 +40,22 @@ class Atom extends Parser
      */
     public function findFeedUrl(SimpleXMLElement $xml, Feed $feed)
     {
-        $feed->url = $this->getLink($xml);
+        if ($xml->channel->link && $xml->channel->link->count() > 1) {
+
+            foreach ($xml->channel->link as $xml_link) {
+
+                $link = (string) $xml_link;
+
+                if ($link !== '') {
+                    $feed->url = $link;
+                    break;
+                }
+            }
+        }
+        else {
+
+            $feed->url = (string) $xml->channel->link;
+        }
     }
 
     /**
@@ -52,7 +67,7 @@ class Atom extends Parser
      */
     public function findFeedDescription(SimpleXMLElement $xml, Feed $feed)
     {
-        $feed->description = (string) $xml->subtitle;
+        $feed->description = (string) $xml->channel->description;
     }
 
     /**
@@ -64,7 +79,9 @@ class Atom extends Parser
      */
     public function findFeedLogo(SimpleXMLElement $xml, Feed $feed)
     {
-        $feed->logo = (string) $xml->logo;
+        if (isset($xml->channel->image->url)) {
+            $feed->logo = (string) $xml->channel->image->url;
+        }
     }
 
     /**
@@ -76,7 +93,7 @@ class Atom extends Parser
      */
     public function findFeedTitle(SimpleXMLElement $xml, Feed $feed)
     {
-        $feed->title = Filter::stripWhiteSpace((string) $xml->title) ?: $feed->url;
+        $feed->title = Filter::stripWhiteSpace((string) $xml->channel->title) ?: $feed->url;
     }
 
     /**
@@ -88,7 +105,7 @@ class Atom extends Parser
      */
     public function findFeedLanguage(SimpleXMLElement $xml, Feed $feed)
     {
-        $feed->language = XmlParser::getXmlLang($this->content);
+        $feed->language = isset($xml->channel->language) ? (string) $xml->channel->language : '';
     }
 
     /**
@@ -100,7 +117,7 @@ class Atom extends Parser
      */
     public function findFeedId(SimpleXMLElement $xml, Feed $feed)
     {
-        $feed->id = (string) $xml->id;
+        $feed->id = $feed->url;
     }
 
     /**
@@ -112,7 +129,8 @@ class Atom extends Parser
      */
     public function findFeedDate(SimpleXMLElement $xml, Feed $feed)
     {
-        $feed->date = $this->parseDate((string) $xml->updated);
+        $date = isset($xml->channel->pubDate) ? $xml->channel->pubDate : $xml->channel->lastBuildDate;
+        $feed->date = $this->parseDate((string) $date);
     }
 
     /**
@@ -120,11 +138,21 @@ class Atom extends Parser
      *
      * @access public
      * @param  SimpleXMLElement   $entry   Feed item
-     * @param  Item           $item    Item object
+     * @param  \PicoFeed\Item     $item    Item object
      */
     public function findItemDate(SimpleXMLElement $entry, Item $item)
     {
-        $item->date = $this->parseDate((string) $entry->updated);
+        $date = XmlParser::getNamespaceValue($entry, $this->namespaces, 'date');
+
+        if (empty($date)) {
+            $date = XmlParser::getNamespaceValue($entry, $this->namespaces, 'updated');
+        }
+
+        if (empty($date)) {
+            $date = (string) $entry->pubDate;
+        }
+
+        $item->date = $this->parseDate($date);
     }
 
     /**
@@ -132,7 +160,7 @@ class Atom extends Parser
      *
      * @access public
      * @param  SimpleXMLElement   $entry   Feed item
-     * @param  Item               $item    Item object
+     * @param  \PicoFeed\Item     $item    Item object
      */
     public function findItemTitle(SimpleXMLElement $entry, Item $item)
     {
@@ -153,11 +181,15 @@ class Atom extends Parser
      */
     public function findItemAuthor(SimpleXMLElement $xml, SimpleXMLElement $entry, Item $item)
     {
-        if (isset($entry->author->name)) {
-            $item->author = (string) $entry->author->name;
-        }
-        else {
-            $item->author = (string) $xml->author->name;
+        $item->author = XmlParser::getNamespaceValue($entry, $this->namespaces, 'creator');
+
+        if (empty($item->author)) {
+            if (isset($entry->author)) {
+                $item->author = (string) $entry->author;
+            }
+            else if (isset($xml->channel->webMaster)) {
+                $item->author = (string) $xml->channel->webMaster;
+            }
         }
     }
 
@@ -170,7 +202,13 @@ class Atom extends Parser
      */
     public function findItemContent(SimpleXMLElement $entry, Item $item)
     {
-        $item->content = $this->getContent($entry);
+        $content = XmlParser::getNamespaceValue($entry, $this->namespaces, 'encoded');
+
+        if (empty($content) && $entry->description->count() > 0) {
+            $content = (string) $entry->description;
+        }
+
+        $item->content = $content;
     }
 
     /**
@@ -182,7 +220,19 @@ class Atom extends Parser
      */
     public function findItemUrl(SimpleXMLElement $entry, Item $item)
     {
-        $item->url = $this->getLink($entry);
+        $links = array(
+            XmlParser::getNamespaceValue($entry, $this->namespaces, 'origLink'),
+            isset($entry->link) ? (string) $entry->link : '',
+            XmlParser::getNamespaceValue($entry, $this->namespaces, 'link', 'href'),
+            isset($entry->guid) ? (string) $entry->guid : '',
+        );
+
+        foreach ($links as $link) {
+            if (! empty($link) && filter_var($link, FILTER_VALIDATE_URL) !== false) {
+                $item->url = $link;
+                break;
+            }
+        }
     }
 
     /**
@@ -195,14 +245,7 @@ class Atom extends Parser
      */
     public function findItemId(SimpleXMLElement $entry, Item $item, Feed $feed)
     {
-        $id = (string) $entry->id;
-
-        if ($id !== $item->url) {
-            $item_permalink = $id;
-        }
-        else {
-            $item_permalink = $item->url;
-        }
+        $item_permalink = $item->url;
 
         if ($this->isExcludedFromId($feed->url)) {
             $feed_permalink = '';
@@ -211,7 +254,12 @@ class Atom extends Parser
             $feed_permalink = $feed->url;
         }
 
-        $item->id = $this->generateId($item_permalink,  $feed_permalink);
+        if ($entry->guid->count() > 0 && ((string) $entry->guid['isPermaLink'] === 'false' || ! isset($entry->guid['isPermaLink']))) {
+            $item->id = $this->generateId($item_permalink,  $feed_permalink, (string) $entry->guid);
+        }
+        else {
+            $item->id = $this->generateId($item_permalink,  $feed_permalink);
+        }
     }
 
     /**
@@ -224,13 +272,16 @@ class Atom extends Parser
      */
     public function findItemEnclosure(SimpleXMLElement $entry, Item $item, Feed $feed)
     {
-        foreach ($entry->link as $link) {
-            if ((string) $link['rel'] === 'enclosure') {
+        if (isset($entry->enclosure)) {
 
-                $item->enclosure_url = Url::resolve((string) $link['href'], $feed->url);
-                $item->enclosure_type = (string) $link['type'];
-                break;
+            $item->enclosure_url = XmlParser::getNamespaceValue($entry->enclosure, $this->namespaces, 'origEnclosureLink');
+
+            if (empty($item->enclosure_url)) {
+                $item->enclosure_url = isset($entry->enclosure['url']) ? (string) $entry->enclosure['url'] : '';
             }
+
+            $item->enclosure_type = isset($entry->enclosure['type']) ? (string) $entry->enclosure['type'] : '';
+            $item->enclosure_url = Url::resolve($item->enclosure_url, $feed->url);
         }
     }
 
@@ -245,48 +296,5 @@ class Atom extends Parser
     public function findItemLanguage(SimpleXMLElement $entry, Item $item, Feed $feed)
     {
         $item->language = $feed->language;
-    }
-
-    /**
-     * Get the URL from a link tag
-     *
-     * @access public
-     * @param  SimpleXMLElement   $xml    XML tag
-     * @return string
-     */
-    public function getLink(SimpleXMLElement $xml)
-    {
-        foreach ($xml->link as $link) {
-            if ((string) $link['type'] === 'text/html' || (string) $link['type'] === 'application/xhtml+xml') {
-                return (string) $link['href'];
-            }
-        }
-
-        return (string) $xml->link['href'];
-    }
-
-    /**
-     * Get the entry content
-     *
-     * @access public
-     * @param  SimpleXMLElement   $entry   XML Entry
-     * @return string
-     */
-    public function getContent(SimpleXMLElement $entry)
-    {
-        if (isset($entry->content) && ! empty($entry->content)) {
-
-            if (count($entry->content->children())) {
-                return (string) $entry->content->asXML();
-            }
-            else {
-                return (string) $entry->content;
-            }
-        }
-        else if (isset($entry->summary) && ! empty($entry->summary)) {
-            return (string) $entry->summary;
-        }
-
-        return '';
     }
 }

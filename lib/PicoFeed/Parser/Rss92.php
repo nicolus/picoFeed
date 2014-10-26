@@ -1,17 +1,15 @@
 <?php
 
-namespace PicoFeed\Parsers;
+namespace PicoFeed\Parser;
 
 require_once __DIR__.'/Rss20.php';
 
-use PicoFeed\Parsers\Rss20;
-
 /**
- * RSS 0.91 Parser
+ * RSS 0.92 Parser
  *
  * @author  Frederic Guillot
  * @package parser
  */
-class Rss91 extends Rss20
+class Rss92 extends Rss20
 {
 }
