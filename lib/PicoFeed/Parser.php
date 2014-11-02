@@ -29,7 +29,7 @@ abstract class Parser
      * @access private
      * @var string
      */
-    private $hash_algo = 'crc32b'; // crc32b seems to be faster and shorter than other hash algorithms
+    private $hash_algo = 'sha256';
 
     /**
      * Timezone used to parse feed dates
@@ -152,9 +152,12 @@ abstract class Parser
             $this->checkItemUrl($feed, $item);
 
             $this->findItemTitle($entry, $item);
-            $this->findItemId($entry, $item, $feed);
-            $this->findItemDate($entry, $item);
             $this->findItemContent($entry, $item);
+
+            // Id generation can use the item url/title/content (order is important)
+            $this->findItemId($entry, $item, $feed);
+
+            $this->findItemDate($entry, $item);
             $this->findItemEnclosure($entry, $item, $feed);
             $this->findItemLanguage($entry, $item, $feed);
 
@@ -329,24 +332,6 @@ abstract class Parser
         }
 
         return 0;
-    }
-
-    /**
-     * Hardcoded list of hostname/token to exclude from id generation
-     *
-     * @access public
-     * @param  string  $url  URL
-     * @return boolean
-     */
-    public function isExcludedFromId($url)
-    {
-        $exclude_list = array('ap.org', 'jacksonville.com');
-
-        foreach ($exclude_list as $token) {
-            if (strpos($url, $token) !== false) return true;
-        }
-
-        return false;
     }
 
     /**

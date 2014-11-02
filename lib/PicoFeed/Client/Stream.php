@@ -4,7 +4,8 @@ namespace PicoFeed\Client;
 
 use PicoFeed\Logging;
 use PicoFeed\Client as BaseClient;
-use PicoFeed\Exception\Client as ClientException;
+use PicoFeed\Exception\InvalidUrl;
+use PicoFeed\Exception\MaxSize;
 
 /**
  * Stream context HTTP client
@@ -97,7 +98,7 @@ class Stream extends BaseClient
         // Make HTTP request
         $stream = @fopen($this->url, 'r', false, $context);
         if (! is_resource($stream)) {
-            throw new ClientException('Unable to establish a connection');
+            throw new InvalidUrl('Unable to establish a connection');
         }
 
         // Get the entire body until the max size
@@ -105,11 +106,15 @@ class Stream extends BaseClient
 
         // If the body size is too large abort everything
         if (strlen($body) > $this->max_body_size) {
-            throw new ClientException('Content size too large');
+            throw new MaxSize('Content size too large');
         }
 
         // Get HTTP headers response
         $metadata = stream_get_meta_data($stream);
+
+        if ($metadata['timed_out']) {
+            throw new InvalidUrl('Operation timeout');
+        }
 
         list($status, $headers) = $this->parseHeaders($metadata['wrapper_data']);
 

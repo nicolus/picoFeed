@@ -2,14 +2,12 @@
 
 namespace PicoFeed\Exception;
 
-use Exception as BaseException;
-
 /**
- * Reader Exception
+ * InvalidCertificate Exception
  *
  * @author  Frederic Guillot
  * @package exception
  */
-class Reader extends BaseException
+class InvalidCertificate extends Client
 {
 }

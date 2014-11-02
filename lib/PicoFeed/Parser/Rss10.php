@@ -63,14 +63,9 @@ class Rss10 extends Rss20
      */
     public function findItemId(SimpleXMLElement $entry, Item $item, Feed $feed)
     {
-        if ($this->isExcludedFromId($feed->url)) {
-            $feed_permalink = '';
-        }
-        else {
-            $feed_permalink = $feed->url;
-        }
-
-        $item->id = $this->generateId($item->url,  $feed_permalink);
+        $item->id = $this->generateId(
+            $item->getTitle(), $item->getUrl(), $item->getContent()
+        );
     }
 
     /**

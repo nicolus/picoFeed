@@ -1,6 +1,6 @@
 <?php
 
-namespace PicoFeed\Writers;
+namespace PicoFeed\Writer;
 
 use DomDocument;
 use DomAttr;

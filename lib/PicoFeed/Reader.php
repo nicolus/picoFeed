@@ -58,9 +58,7 @@ class Reader
      */
     public function download($url, $last_modified = '', $etag = '')
     {
-        if (strpos($url, 'http') !== 0) {
-            $url = 'http://'.$url;
-        }
+        $url = $this->prependScheme($url);
 
         return Client::getInstance()
                         ->setConfig($this->config)
@@ -122,9 +120,9 @@ class Reader
 
             $nodes = $xpath->query($query);
 
-            if ($nodes->length !== 0) {
+            foreach ($nodes as $node) {
 
-                $link = $nodes->item(0)->getAttribute('href');
+                $link = $node->getAttribute('href');
 
                 if (! empty($link)) {
 
@@ -208,5 +206,21 @@ class Reader
         }
 
         return ! in_array(false, $results, true);
+    }
+
+    /**
+     * Add the prefix "http://" if the end-user just enter a domain name
+     *
+     * @access public
+     * @param  string    $url    Url
+     * @retunr string
+     */
+    public function prependScheme($url)
+    {
+        if (! preg_match('%^https?://%', $url)) {
+           $url = 'http://' . $url;
+        }
+
+        return $url;
     }
 }

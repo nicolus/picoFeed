@@ -1,11 +1,10 @@
 <?php
 
 require_once 'lib/PicoFeed/PicoFeed.php';
-require_once 'lib/PicoFeed/Parsers/Rss20.php';
 
 use PicoFeed\XmlParser;
 use PicoFeed\Parser;
-use PicoFeed\Parsers\Rss20;
+use PicoFeed\Parser\Rss20;
 
 class ParserTest extends PHPUnit_Framework_TestCase
 {
@@ -48,31 +47,10 @@ class ParserTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(time(), $parser->parseDate('+0400'));
     }
 
-/*
-    public function testNormalizeData()
-    {
-        $parser = new Rss20('');
-
-        $data = '<title> Police &#039;Like&#039; Wanted Suspect&#039;s Facebook Post</title>
-            <link rel="alternate" type="text/html" href="http://www.huffingtonpost.com/huff-wires/20140121/us-odd--police-like-facebook-post/?utm_hp_ref=travel&ir=travel" />
-        <id>http://www.huffingtonpost.com/2014/01/22/anthony-lescowitch-facebook_n_4643239.html</id>
-        <truc href="blabla &amp;"/>';
-
-        $result = $parser->replaceEntityAttribute($data);
-
-        $expected = '<title> Police &#039;Like&#039; Wanted Suspect&#039;s Facebook Post</title>
-            <link rel="alternate" type="text/html" href="http://www.huffingtonpost.com/huff-wires/20140121/us-odd--police-like-facebook-post/?utm_hp_ref=travel&amp;ir=travel" />
-        <id>http://www.huffingtonpost.com/2014/01/22/anthony-lescowitch-facebook_n_4643239.html</id>
-        <truc href="blabla &amp;"/>';
-
-        $this->assertEquals($expected, $result);
-    }
-*/
-
     public function testChangeHashAlgo()
     {
         $parser = new Rss20('');
-        $this->assertEquals('9e83486d', $parser->generateId('a', 'b'));
+        $this->assertEquals('fb8e20fc2e4c3f248c60c39bd652f3c1347298bb977b8b4d5903b85055620603', $parser->generateId('a', 'b'));
 
         $parser->setHashAlgo('sha1');
         $this->assertEquals('da23614e02469a0d7c7bd1bdab5c9c474b1904dc', $parser->generateId('a', 'b'));

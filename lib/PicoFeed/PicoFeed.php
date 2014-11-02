@@ -4,6 +4,10 @@
 
 require __DIR__.'/Exception/Parser.php';
 require __DIR__.'/Exception/Client.php';
+require __DIR__.'/Exception/InvalidCertificate.php';
+require __DIR__.'/Exception/InvalidUrl.php';
+require __DIR__.'/Exception/MaxRedirect.php';
+require __DIR__.'/Exception/MaxSize.php';
 require __DIR__.'/Exception/Reader.php';
 
 require __DIR__.'/Logging.php';

@@ -50,12 +50,9 @@ class GrabberTest extends PHPUnit_Framework_TestCase
     public function testRssGrabContent()
     {
         $reader = new Reader;
-        $reader->download('http://www.egscomics.com/rss.php');
-
-        $parser = $reader->getParser();
-        $this->assertTrue($parser !== false);
-
-        $parser->grabber = true;
+        $client = $reader->download('http://www.egscomics.com/rss.php');
+        $parser = $reader->getParser($client->getUrl(), $client->getContent(), $client->getEncoding());
+        $parser->enableContentGrabber();
         $feed = $parser->execute();
 
         $this->assertTrue(is_array($feed->items));

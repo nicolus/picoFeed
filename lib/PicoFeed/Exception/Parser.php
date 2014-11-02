@@ -8,7 +8,7 @@ use Exception as BaseException;
  * Parser Exception
  *
  * @author  Frederic Guillot
- * @package picofeed
+ * @package exception
  */
 class Parser extends BaseException
 {

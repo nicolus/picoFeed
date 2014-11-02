@@ -1,9 +1,8 @@
 <?php
 
 require_once 'lib/PicoFeed/PicoFeed.php';
-require_once 'lib/PicoFeed/Clients/Curl.php';
 
-use PicoFeed\Clients\Curl;
+use PicoFeed\Client\Curl;
 
 class CurlTest extends PHPUnit_Framework_TestCase
 {
@@ -32,33 +31,23 @@ class CurlTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('text/html; charset=utf-8', $result['headers']['Content-Type']);
     }
 
+    /**
+     * @expectedException PicoFeed\Exception\InvalidCertificate
+     */
+    public function testSSL()
+    {
+        $client = new Curl;
+        $client->setUrl('https://linuxfr.org/');
+        $client->doRequest();
+    }
 
-    // public function testInfiniteRedirect()
-    // {
-    //     $client = new Curl;
-    //     $client->url = 'http://www.accupass.com/home/rss/%E8%AA%B2%E7%A8%8B%E8%AC%9B%E5%BA%A7';
-    //     $result = $client->doRequest();
-
-    //     $this->assertFalse($result);
-    // }
-
-
+    /**
+     * @expectedException PicoFeed\Exception\InvalidUrl
+     */
     public function testBadUrl()
     {
         $client = new Curl;
         $client->setUrl('http://12345gfgfgf');
-        $result = $client->doRequest();
-
-        $this->assertFalse($result);
+        $client->doRequest();
     }
-
-
-    // public function testAbortOnLargeBody()
-    // {
-    //     $client = new Curl;
-    //     $client->setUrl('http://duga.jp/ror.xml');
-    //     $result = $client->doRequest();
-
-    //     $this->assertFalse($result);
-    // }
 }

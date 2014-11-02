@@ -8,7 +8,7 @@ use Exception as BaseException;
  * Client Exception
  *
  * @author  Frederic Guillot
- * @package picofeed
+ * @package exception
  */
 class Client extends BaseException
 {

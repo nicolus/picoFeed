@@ -245,20 +245,15 @@ class Rss20 extends BaseParser
      */
     public function findItemId(SimpleXMLElement $entry, Item $item, Feed $feed)
     {
-        $item_permalink = $item->url;
+        $id = (string) $entry->guid;
 
-        if ($this->isExcludedFromId($feed->url)) {
-            $feed_permalink = '';
+        if ($id) {
+            $item->id = $this->generateId($id);
         }
         else {
-            $feed_permalink = $feed->url;
-        }
-
-        if ($entry->guid->count() > 0 && ((string) $entry->guid['isPermaLink'] === 'false' || ! isset($entry->guid['isPermaLink']))) {
-            $item->id = $this->generateId($item_permalink,  $feed_permalink, (string) $entry->guid);
-        }
-        else {
-            $item->id = $this->generateId($item_permalink,  $feed_permalink);
+            $item->id = $this->generateId(
+                $item->getTitle(), $item->getUrl(), $item->getContent()
+            );
         }
     }
 

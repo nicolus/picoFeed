@@ -197,21 +197,14 @@ class Atom extends BaseParser
     {
         $id = (string) $entry->id;
 
-        if ($id !== $item->url) {
-            $item_permalink = $id;
+        if ($id) {
+            $item->id = $this->generateId($id);
         }
         else {
-            $item_permalink = $item->url;
+            $item->id = $this->generateId(
+                $item->getTitle(), $item->getUrl(), $item->getContent()
+            );
         }
-
-        if ($this->isExcludedFromId($feed->url)) {
-            $feed_permalink = '';
-        }
-        else {
-            $feed_permalink = $feed->url;
-        }
-
-        $item->id = $this->generateId($item_permalink,  $feed_permalink);
     }
 
     /**

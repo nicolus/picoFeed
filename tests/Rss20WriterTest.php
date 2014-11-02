@@ -2,7 +2,7 @@
 
 require_once 'lib/PicoFeed/PicoFeed.php';
 
-use PicoFeed\Writers\Rss20;
+use PicoFeed\Writer\Rss20;
 
 class Rss20WriterTest extends PHPUnit_Framework_TestCase
 {

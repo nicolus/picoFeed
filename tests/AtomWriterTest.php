@@ -2,7 +2,7 @@
 
 require_once 'lib/PicoFeed/PicoFeed.php';
 
-use PicoFeed\Writers\Atom;
+use PicoFeed\Writer\Atom;
 
 class AtomWriterTest extends PHPUnit_Framework_TestCase
 {

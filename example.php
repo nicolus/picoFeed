@@ -11,7 +11,7 @@ use PicoFeed\Logging;
 try {
 
     $reader = new Reader;
-    $resource = $reader->download('http://linuxfr.org/news.atom');
+    $resource = $reader->download('https://linuxfr.org/news.atom');
 
     $parser = $reader->getParser(
         $resource->getUrl(),
@@ -27,7 +27,7 @@ catch (Exception $e) {
     echo $e->getMessage().PHP_EOL;
     echo Logging::toString();
 }
-
+/*
 
 // Feed discovery: return a list of feeds
 
@@ -66,3 +66,4 @@ catch (Exception $e) {
     echo $e->getMessage().PHP_EOL;
     echo Logging::toString();
 }
+*/

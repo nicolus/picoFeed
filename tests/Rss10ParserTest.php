@@ -1,24 +1,24 @@
 <?php
 
 require_once 'lib/PicoFeed/PicoFeed.php';
-require_once 'lib/PicoFeed/Parsers/Rss10.php';
 
-use PicoFeed\Parsers\Rss10;
+use PicoFeed\Parser\Rss10;
 
 class Rss10ParserTest extends PHPUnit_Framework_TestCase
 {
+    /**
+     * @expectedException PicoFeed\Exception\Parser
+     */
     public function testBadInput()
     {
         $parser = new Rss10('boo');
-        $this->assertFalse($parser->execute());
+        $parser->execute();
     }
 
     public function testFeedTitle()
     {
         $parser = new Rss10(file_get_contents('tests/fixtures/planete-jquery.xml'));
         $feed = $parser->execute();
-
-        $this->assertNotFalse($feed);
         $this->assertEquals("Planète jQuery : l'actualité jQuery, plugins jQuery et tutoriels jQuery en français", $feed->getTitle());
     }
 
@@ -26,8 +26,6 @@ class Rss10ParserTest extends PHPUnit_Framework_TestCase
     {
         $parser = new Rss10(file_get_contents('tests/fixtures/planete-jquery.xml'));
         $feed = $parser->execute();
-
-        $this->assertNotFalse($feed);
         $this->assertEquals('http://planete-jquery.fr', $feed->getUrl());
     }
 
@@ -35,8 +33,6 @@ class Rss10ParserTest extends PHPUnit_Framework_TestCase
     {
         $parser = new Rss10(file_get_contents('tests/fixtures/planete-jquery.xml'));
         $feed = $parser->execute();
-
-        $this->assertNotFalse($feed);
         $this->assertEquals('http://planete-jquery.fr', $feed->getId());
     }
 
@@ -44,8 +40,6 @@ class Rss10ParserTest extends PHPUnit_Framework_TestCase
     {
         $parser = new Rss10(file_get_contents('tests/fixtures/planete-jquery.xml'));
         $feed = $parser->execute();
-
-        $this->assertNotFalse($feed);
         $this->assertEquals(1363752990, $feed->getDate());
     }
 
@@ -53,8 +47,6 @@ class Rss10ParserTest extends PHPUnit_Framework_TestCase
     {
         $parser = new Rss10(file_get_contents('tests/fixtures/planete-jquery.xml'));
         $feed = $parser->execute();
-
-        $this->assertNotFalse($feed);
         $this->assertEquals('fr', $feed->getLanguage());
         $this->assertEquals('fr', $feed->items[0]->getLanguage());
     }
@@ -62,19 +54,18 @@ class Rss10ParserTest extends PHPUnit_Framework_TestCase
     public function testItemId()
     {
         $parser = new Rss10(file_get_contents('tests/fixtures/planete-jquery.xml'));
+        $parser->disableContentFiltering();
         $feed = $parser->execute();
-
-        $this->assertNotFalse($feed);
         $this->assertNotEmpty($feed->items);
-        $this->assertEquals($parser->generateId($feed->items[0]->getUrl(), $feed->getUrl()), $feed->items[0]->getId());
+
+        $item = $feed->items[0];
+        $this->assertEquals($parser->generateId($item->getTitle(), $item->getUrl(), $item->getContent()), $item->getId());
     }
 
     public function testItemUrl()
     {
         $parser = new Rss10(file_get_contents('tests/fixtures/planete-jquery.xml'));
         $feed = $parser->execute();
-
-        $this->assertNotFalse($feed);
         $this->assertNotEmpty($feed->items);
         $this->assertEquals('http://www.mathieurobin.com/2013/03/chroniques-jquery-episode-108/', $feed->items[0]->getUrl());
     }
@@ -83,8 +74,6 @@ class Rss10ParserTest extends PHPUnit_Framework_TestCase
     {
         $parser = new Rss10(file_get_contents('tests/fixtures/planete-jquery.xml'));
         $feed = $parser->execute();
-
-        $this->assertNotFalse($feed);
         $this->assertNotEmpty($feed->items);
         $this->assertEquals('LaFermeDuWeb : PowerTip - Des tooltips aux fonctionnalités avancées', $feed->items[1]->getTitle());
     }
@@ -93,8 +82,6 @@ class Rss10ParserTest extends PHPUnit_Framework_TestCase
     {
         $parser = new Rss10(file_get_contents('tests/fixtures/planete-jquery.xml'));
         $feed = $parser->execute();
-
-        $this->assertNotFalse($feed);
         $this->assertNotEmpty($feed->items);
         $this->assertEquals(1362647700, $feed->items[1]->getDate());
     }
@@ -103,8 +90,6 @@ class Rss10ParserTest extends PHPUnit_Framework_TestCase
     {
         $parser = new Rss10(file_get_contents('tests/fixtures/planete-jquery.xml'));
         $feed = $parser->execute();
-
-        $this->assertNotFalse($feed);
         $this->assertNotEmpty($feed->items);
         $this->assertEquals('fr', $feed->items[1]->getLanguage());
     }
@@ -113,8 +98,6 @@ class Rss10ParserTest extends PHPUnit_Framework_TestCase
     {
         $parser = new Rss10(file_get_contents('tests/fixtures/planete-jquery.xml'));
         $feed = $parser->execute();
-
-        $this->assertNotFalse($feed);
         $this->assertNotEmpty($feed->items);
         $this->assertEquals('LaFermeDuWeb', $feed->items[1]->getAuthor());
     }
@@ -123,8 +106,6 @@ class Rss10ParserTest extends PHPUnit_Framework_TestCase
     {
         $parser = new Rss10(file_get_contents('tests/fixtures/planete-jquery.xml'));
         $feed = $parser->execute();
-
-        $this->assertNotFalse($feed);
         $this->assertNotEmpty($feed->items);
         $this->assertTrue(strpos($feed->items[1]->getContent(), '<a href="http://www.lafermeduweb.net') === 0);
     }

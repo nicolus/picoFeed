@@ -5,6 +5,10 @@ namespace PicoFeed\Client;
 use PicoFeed\Logging;
 use PicoFeed\Client as BaseClient;
 use PicoFeed\Exception\Client as ClientException;
+use PicoFeed\Exception\InvalidCertificate;
+use PicoFeed\Exception\InvalidUrl;
+use PicoFeed\Exception\MaxRedirect;
+use PicoFeed\Exception\MaxSize;
 
 /**
  * cURL HTTP client
@@ -193,10 +197,13 @@ class Curl extends BaseClient
         Logging::setMessage(get_called_class().' cURL speed download: '.curl_getinfo($ch, CURLINFO_SPEED_DOWNLOAD));
         Logging::setMessage(get_called_class().' cURL effective url: '.curl_getinfo($ch, CURLINFO_EFFECTIVE_URL));
 
-        if (curl_errno($ch)) {
+        $curl_errno = curl_errno($ch);
+
+        if ($curl_errno) {
             Logging::setMessage(get_called_class().' cURL error: '.curl_error($ch));
             curl_close($ch);
-            throw new ClientException('Unable to establish a connection');
+
+            $this->handleError($curl_errno);
         }
 
         curl_close($ch);
@@ -279,5 +286,45 @@ class Curl extends BaseClient
         }
 
         return false;
+    }
+
+    /**
+     * Handle cURL errors (throw individual exceptions)
+     *
+     * We don't use constants because they are not necessary always available
+     * (depends of the version of libcurl linked to php)
+     *
+     * @see    http://curl.haxx.se/libcurl/c/libcurl-errors.html
+     * @access private
+     * @param  integer     $errno    cURL error code
+     */
+    private function handleError($errno)
+    {
+        switch ($errno) {
+            case 78: // CURLE_REMOTE_FILE_NOT_FOUND
+                throw new InvalidUrl('Resource not found');
+            case 6:  // CURLE_COULDNT_RESOLVE_HOST
+                throw new InvalidUrl('Unable to resolve hostname');
+            case 7:  // CURLE_COULDNT_CONNECT
+                throw new InvalidUrl('Unable to connect to the remote host');
+            case 28: // CURLE_OPERATION_TIMEDOUT
+                throw new InvalidUrl('Operation timeout');
+            case 35: // CURLE_SSL_CONNECT_ERROR
+            case 51: // CURLE_PEER_FAILED_VERIFICATION
+            case 58: // CURLE_SSL_CERTPROBLEM
+            case 60: // CURLE_SSL_CACERT
+            case 59: // CURLE_SSL_CIPHER
+            case 64: // CURLE_USE_SSL_FAILED
+            case 66: // CURLE_SSL_ENGINE_INITFAILED
+            case 77: // CURLE_SSL_CACERT_BADFILE
+            case 83: // CURLE_SSL_ISSUER_ERROR
+                throw new InvalidCertificate('Invalid SSL certificate');
+            case 47: // CURLE_TOO_MANY_REDIRECTS
+                throw new MaxRedirect('Maximum number of redirections reached');
+            case 63: // CURLE_FILESIZE_EXCEEDED
+                throw new MaxSize('Maximum response size exceeded');
+            default:
+                throw new InvalidUrl('Unable to fetch the URL');
+        }
     }
 }
