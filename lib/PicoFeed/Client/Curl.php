@@ -167,7 +167,6 @@ class Curl extends BaseClient
         curl_setopt($ch, CURLOPT_FOLLOWLOCATION, ini_get('open_basedir') === '');
         curl_setopt($ch, CURLOPT_MAXREDIRS, $this->max_redirects);
         curl_setopt($ch, CURLOPT_ENCODING, '');
-        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false); // For auto-signed certificates...
         curl_setopt($ch, CURLOPT_WRITEFUNCTION, array($this, 'readBody'));
         curl_setopt($ch, CURLOPT_HEADERFUNCTION, array($this, 'readHeaders'));
         curl_setopt($ch, CURLOPT_COOKIEJAR, 'php://memory');
