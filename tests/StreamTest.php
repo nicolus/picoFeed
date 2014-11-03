@@ -49,17 +49,6 @@ class StreamTest extends PHPUnit_Framework_TestCase
         $client->doRequest();
     }
 
-    /**
-     * @expectedException PicoFeed\Exception\MaxSize
-     */
-    public function testAbortOnLargeBody()
-    {
-        $client = new Stream;
-        $client->setUrl('http://duga.jp/ror.xml');
-        $client->setMaxBodySize(100);
-        $client->doRequest();
-    }
-
     public function testDecodeGzip()
     {
         if (function_exists('gzdecode')) {
