@@ -37,7 +37,7 @@ class CurlTest extends PHPUnit_Framework_TestCase
     public function testSSL()
     {
         $client = new Curl;
-        $client->setUrl('https://linuxfr.org/');
+        $client->setUrl('https://www.mjvmobile.com.br');
         $client->doRequest();
     }
 
