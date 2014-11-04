@@ -1,6 +1,6 @@
 <?php
 
-require 'lib/PicoFeed/PicoFeed.php';
+require 'vendor/autoload.php';
 
 use PicoFeed\Reader;
 use PicoFeed\Logging;

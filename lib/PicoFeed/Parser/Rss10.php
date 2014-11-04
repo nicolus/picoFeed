@@ -2,18 +2,13 @@
 
 namespace PicoFeed\Parser;
 
-require_once __DIR__.'/Rss20.php';
-
 use SimpleXMLElement;
-use PicoFeed\Feed;
-use PicoFeed\Item;
-use PicoFeed\XmlParser;
 
 /**
  * RSS 1.0 parser
  *
  * @author  Frederic Guillot
- * @package parser
+ * @package Parser
  */
 class Rss10 extends Rss20
 {
@@ -34,7 +29,7 @@ class Rss10 extends Rss20
      *
      * @access public
      * @param  SimpleXMLElement   $xml     Feed xml
-     * @param  \PicoFeed\Feed     $feed    Feed object
+     * @param  \PicoFeed\Parser\Feed     $feed    Feed object
      */
     public function findFeedDate(SimpleXMLElement $xml, Feed $feed)
     {
@@ -46,7 +41,7 @@ class Rss10 extends Rss20
      *
      * @access public
      * @param  SimpleXMLElement   $xml     Feed xml
-     * @param  \PicoFeed\Feed     $feed    Feed object
+     * @param  \PicoFeed\Parser\Feed     $feed    Feed object
      */
     public function findFeedLanguage(SimpleXMLElement $xml, Feed $feed)
     {
@@ -58,8 +53,8 @@ class Rss10 extends Rss20
      *
      * @access public
      * @param  SimpleXMLElement   $entry   Feed item
-     * @param  \PicoFeed\Item     $item    Item object
-     * @param  \PicoFeed\Feed     $feed    Feed object
+     * @param  \PicoFeed\Parser\Item     $item    Item object
+     * @param  \PicoFeed\Parser\Feed     $feed    Feed object
      */
     public function findItemId(SimpleXMLElement $entry, Item $item, Feed $feed)
     {
@@ -73,8 +68,8 @@ class Rss10 extends Rss20
      *
      * @access public
      * @param  SimpleXMLElement   $entry   Feed item
-     * @param  \PicoFeed\Item     $item    Item object
-     * @param  \PicoFeed\Feed     $feed    Feed object
+     * @param  \PicoFeed\Parser\Item     $item    Item object
+     * @param  \PicoFeed\Parser\Feed     $feed    Feed object
      */
     public function findItemEnclosure(SimpleXMLElement $entry, Item $item, Feed $feed)
     {

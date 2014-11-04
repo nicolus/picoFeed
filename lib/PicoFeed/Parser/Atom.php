@@ -3,21 +3,17 @@
 namespace PicoFeed\Parser;
 
 use SimpleXMLElement;
-use PicoFeed\Parser as BaseParser;
-use PicoFeed\XmlParser;
-use PicoFeed\Logging;
-use PicoFeed\Feed;
-use PicoFeed\Filter;
-use PicoFeed\Item;
-use PicoFeed\Url;
+use PicoFeed\Logging\Logging;
+use PicoFeed\Filter\Filter;
+use PicoFeed\Client\Url;
 
 /**
  * Atom parser
  *
  * @author  Frederic Guillot
- * @package parser
+ * @package Parser
  */
-class Atom extends BaseParser
+class Atom extends Parser
 {
     /**
      * Get the path to the items XML tree
@@ -36,7 +32,7 @@ class Atom extends BaseParser
      *
      * @access public
      * @param  SimpleXMLElement   $xml     Feed xml
-     * @param  \PicoFeed\Feed     $feed    Feed object
+     * @param  \PicoFeed\Parser\Feed     $feed    Feed object
      */
     public function findFeedUrl(SimpleXMLElement $xml, Feed $feed)
     {
@@ -48,7 +44,7 @@ class Atom extends BaseParser
      *
      * @access public
      * @param  SimpleXMLElement   $xml     Feed xml
-     * @param  \PicoFeed\Feed     $feed    Feed object
+     * @param  \PicoFeed\Parser\Feed     $feed    Feed object
      */
     public function findFeedDescription(SimpleXMLElement $xml, Feed $feed)
     {
@@ -60,7 +56,7 @@ class Atom extends BaseParser
      *
      * @access public
      * @param  SimpleXMLElement   $xml     Feed xml
-     * @param  \PicoFeed\Feed     $feed    Feed object
+     * @param  \PicoFeed\Parser\Feed     $feed    Feed object
      */
     public function findFeedLogo(SimpleXMLElement $xml, Feed $feed)
     {
@@ -72,7 +68,7 @@ class Atom extends BaseParser
      *
      * @access public
      * @param  SimpleXMLElement   $xml     Feed xml
-     * @param  \PicoFeed\Feed     $feed    Feed object
+     * @param  \PicoFeed\Parser\Feed     $feed    Feed object
      */
     public function findFeedTitle(SimpleXMLElement $xml, Feed $feed)
     {
@@ -84,7 +80,7 @@ class Atom extends BaseParser
      *
      * @access public
      * @param  SimpleXMLElement   $xml     Feed xml
-     * @param  \PicoFeed\Feed     $feed    Feed object
+     * @param  \PicoFeed\Parser\Feed     $feed    Feed object
      */
     public function findFeedLanguage(SimpleXMLElement $xml, Feed $feed)
     {
@@ -96,7 +92,7 @@ class Atom extends BaseParser
      *
      * @access public
      * @param  SimpleXMLElement   $xml     Feed xml
-     * @param  \PicoFeed\Feed     $feed    Feed object
+     * @param  \PicoFeed\Parser\Feed     $feed    Feed object
      */
     public function findFeedId(SimpleXMLElement $xml, Feed $feed)
     {
@@ -108,7 +104,7 @@ class Atom extends BaseParser
      *
      * @access public
      * @param  SimpleXMLElement   $xml     Feed xml
-     * @param  \PicoFeed\Feed     $feed    Feed object
+     * @param  \PicoFeed\Parser\Feed     $feed    Feed object
      */
     public function findFeedDate(SimpleXMLElement $xml, Feed $feed)
     {
@@ -149,7 +145,7 @@ class Atom extends BaseParser
      * @access public
      * @param  SimpleXMLElement   $xml     Feed
      * @param  SimpleXMLElement   $entry   Feed item
-     * @param  \PicoFeed\Item     $item    Item object
+     * @param  \PicoFeed\Parser\Item     $item    Item object
      */
     public function findItemAuthor(SimpleXMLElement $xml, SimpleXMLElement $entry, Item $item)
     {
@@ -166,7 +162,7 @@ class Atom extends BaseParser
      *
      * @access public
      * @param  SimpleXMLElement   $entry   Feed item
-     * @param  \PicoFeed\Item     $item    Item object
+     * @param  \PicoFeed\Parser\Item     $item    Item object
      */
     public function findItemContent(SimpleXMLElement $entry, Item $item)
     {
@@ -178,7 +174,7 @@ class Atom extends BaseParser
      *
      * @access public
      * @param  SimpleXMLElement   $entry   Feed item
-     * @param  \PicoFeed\Item     $item    Item object
+     * @param  \PicoFeed\Parser\Item     $item    Item object
      */
     public function findItemUrl(SimpleXMLElement $entry, Item $item)
     {
@@ -190,8 +186,8 @@ class Atom extends BaseParser
      *
      * @access public
      * @param  SimpleXMLElement   $entry   Feed item
-     * @param  \PicoFeed\Item     $item    Item object
-     * @param  \PicoFeed\Feed     $feed    Feed object
+     * @param  \PicoFeed\Parser\Item     $item    Item object
+     * @param  \PicoFeed\Parser\Feed     $feed    Feed object
      */
     public function findItemId(SimpleXMLElement $entry, Item $item, Feed $feed)
     {
@@ -212,8 +208,8 @@ class Atom extends BaseParser
      *
      * @access public
      * @param  SimpleXMLElement   $entry   Feed item
-     * @param  \PicoFeed\Item     $item    Item object
-     * @param  \PicoFeed\Feed     $feed    Feed object
+     * @param  \PicoFeed\Parser\Item     $item    Item object
+     * @param  \PicoFeed\Parser\Feed     $feed    Feed object
      */
     public function findItemEnclosure(SimpleXMLElement $entry, Item $item, Feed $feed)
     {
@@ -232,8 +228,8 @@ class Atom extends BaseParser
      *
      * @access public
      * @param  SimpleXMLElement   $entry   Feed item
-     * @param  \PicoFeed\Item     $item    Item object
-     * @param  \PicoFeed\Feed     $feed    Feed object
+     * @param  \PicoFeed\Parser\Item     $item    Item object
+     * @param  \PicoFeed\Parser\Feed     $feed    Feed object
      */
     public function findItemLanguage(SimpleXMLElement $entry, Item $item, Feed $feed)
     {

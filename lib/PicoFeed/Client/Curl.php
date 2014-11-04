@@ -2,21 +2,15 @@
 
 namespace PicoFeed\Client;
 
-use PicoFeed\Logging;
-use PicoFeed\Client as BaseClient;
-use PicoFeed\Exception\Client as ClientException;
-use PicoFeed\Exception\InvalidCertificate;
-use PicoFeed\Exception\InvalidUrl;
-use PicoFeed\Exception\MaxRedirect;
-use PicoFeed\Exception\MaxSize;
+use PicoFeed\Logging\Logging;
 
 /**
  * cURL HTTP client
  *
  * @author  Frederic Guillot
- * @package client
+ * @package Client
  */
-class Curl extends BaseClient
+class Curl extends Client
 {
     /**
      * HTTP response body
@@ -302,13 +296,13 @@ class Curl extends BaseClient
     {
         switch ($errno) {
             case 78: // CURLE_REMOTE_FILE_NOT_FOUND
-                throw new InvalidUrl('Resource not found');
+                throw new InvalidUrlException('Resource not found');
             case 6:  // CURLE_COULDNT_RESOLVE_HOST
-                throw new InvalidUrl('Unable to resolve hostname');
+                throw new InvalidUrlException('Unable to resolve hostname');
             case 7:  // CURLE_COULDNT_CONNECT
-                throw new InvalidUrl('Unable to connect to the remote host');
+                throw new InvalidUrlException('Unable to connect to the remote host');
             case 28: // CURLE_OPERATION_TIMEDOUT
-                throw new InvalidUrl('Operation timeout');
+                throw new TimeoutException('Operation timeout');
             case 35: // CURLE_SSL_CONNECT_ERROR
             case 51: // CURLE_PEER_FAILED_VERIFICATION
             case 58: // CURLE_SSL_CERTPROBLEM
@@ -318,13 +312,13 @@ class Curl extends BaseClient
             case 66: // CURLE_SSL_ENGINE_INITFAILED
             case 77: // CURLE_SSL_CACERT_BADFILE
             case 83: // CURLE_SSL_ISSUER_ERROR
-                throw new InvalidCertificate('Invalid SSL certificate');
+                throw new InvalidCertificateException('Invalid SSL certificate');
             case 47: // CURLE_TOO_MANY_REDIRECTS
-                throw new MaxRedirect('Maximum number of redirections reached');
+                throw new MaxRedirectException('Maximum number of redirections reached');
             case 63: // CURLE_FILESIZE_EXCEEDED
-                throw new MaxSize('Maximum response size exceeded');
+                throw new MaxSizeException('Maximum response size exceeded');
             default:
-                throw new InvalidUrl('Unable to fetch the URL');
+                throw new InvalidUrlException('Unable to fetch the URL');
         }
     }
 }

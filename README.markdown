@@ -52,3 +52,13 @@ Documentation
 - [Web scraping](docs/grabber.markdown)
 - [Debugging](docs/debugging.markdown)
 - [Configuration](docs/config.markdown)
+
+Running Tests
+-------------
+If the autoloader is not yet installed run:
+
+    composer dump-autoload
+
+Then run:
+
+    phpunit tests
