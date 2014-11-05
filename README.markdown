@@ -44,6 +44,7 @@ Documentation
 -------------
 
 - [Installation](docs/installation.markdown)
+- [Running unit tests](docs/tests.markdown)
 - [OPML file importation](docs/opml-import.markdown)
 - [OPML file exportation](docs/opml-export.markdown)
 - [Feed parsing](docs/feed-parsing.markdown)
@@ -52,13 +53,3 @@ Documentation
 - [Web scraping](docs/grabber.markdown)
 - [Debugging](docs/debugging.markdown)
 - [Configuration](docs/config.markdown)
-
-Running Tests
--------------
-If the autoloader is not yet installed run:
-
-    composer dump-autoload
-
-Then run:
-
-    phpunit tests
