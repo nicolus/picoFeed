@@ -85,11 +85,15 @@ try {
     $reader = new Reader;
     $resource = $reader->download('http://www.cnn.com');
 
-    print_r($reader->find($resource->getUrl(), $resource->getContent()));
+    $feeds = $reader->find(
+        $resource->getUrl(),
+        $resource->getContent()
+    );
+
+    print_r($feeds);
 }
 catch (PicoFeedException $e) {
-    echo $e->getMessage().PHP_EOL;
-    echo Logging::toString();
+    // Do something...
 }
 ```
 
@@ -125,4 +129,36 @@ try {
 }
 catch (PicoFeedException $e) {
 }
+```
+
+HTTP caching
+------------
+
+TODO
+
+
+Feed and item properties
+------------------------
+
+```php
+// Feed object
+$feed->getId();              // Unique feed id
+$feed->getTitle();           // Feed title
+$feed->getUrl();             // Website url
+$feed->getDate();            // Feed last updated date
+$feed->getLanguage();        // Feed language
+$feed->getDescription();     // Feed description
+$feed->getLogo();            // Feed logo (can be a large image, different from icon)
+$feed->getItems();           // List of item objects
+
+// Item object
+$feed->items[0]->getId();                      // Item unique id (hash)
+$feed->items[0]->getTitle();                   // Item title
+$feed->items[0]->getUrl();                     // Item url
+$feed->items[0]->getDate();                    // Item published date (timestamp)
+$feed->items[0]->getLanguage();                // Item language
+$feed->items[0]->getAuthor();                  // Item author
+$feed->items[0]->getEnclosureUrl();            // Enclosure url
+$feed->items[0]->getEnclosureType();           // Enclosure mime-type (audio/mp3, image/png...)
+$feed->items[0]->getContent();                 // Item content (filtered or raw)
 ```

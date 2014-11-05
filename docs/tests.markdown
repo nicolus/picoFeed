@@ -1,5 +1,5 @@
-Running Tests
-=============
+Running unit tests
+==================
 
 If the autoloader is not yet installed run:
 

@@ -42,7 +42,7 @@ Usage example with the Composer autoloading:
 
 require 'vendor/autoload.php';
 
-use PicoFeed\Reader;
+use PicoFeed\Reader\Reader;
 
 try {
 
