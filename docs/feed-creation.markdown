@@ -5,7 +5,7 @@ Generate RSS 2.0 feed
 ----------------------
 
 ```php
-use PicoFeed\Writers\Rss20;
+use PicoFeed\Syndication\Rss20;
 
 $writer = new Rss20();
 $writer->title = 'My site';
@@ -48,7 +48,7 @@ Generate Atom feed
 ------------------
 
 ```php
-use PicoFeed\Writers\Atom;
+use PicoFeed\Syndication\Atom;
 
 $writer = new Atom();
 $writer->title = 'My site';

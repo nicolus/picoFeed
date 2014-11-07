@@ -13,7 +13,7 @@ try {
     $reader = new Reader;
 
     // Return a resource
-    $resource = $reader->download('https://linuxfr.org/news.atom');
+    $resource = $reader->download('http://linuxfr.org/news.atom');
 
     // Return the right parser instance according to the feed format
     $parser = $reader->getParser(
@@ -134,7 +134,54 @@ catch (PicoFeedException $e) {
 HTTP caching
 ------------
 
-TODO
+PicoFeed supports HTTP caching to avoid unnecessary processing.
+
+1. After the first feed download, save in your database the values of the Etag and LastModified HTTP headers
+2. For the next requests, provide those values to the `download()` method and check if the feed was modified or not
+
+Here an example:
+
+```php
+try {
+
+    // Fetch from your database the previous values of the Etag and LastModified headers
+    $etag = '...';
+    $last_modified = '...';
+
+    $reader = new Reader;
+
+    // Provide those values to the download method
+    $resource = $reader->download('http://linuxfr.org/news.atom', $last_modified, $etag);
+
+    // Return true if the remote content has changed
+    if ($resource->isModified()) {
+
+        $parser = $reader->getParser(
+            $resource->getUrl(),
+            $resource->getContent(),
+            $resource->getEncoding()
+        );
+
+        $feed = $parser->execute();
+
+        // Save your feed in your database
+        // ...
+
+        // Store the Etag and the LastModified headers in your database for the next requests
+        $etag = $resource->getEtag();
+        $last_modified = $resource->getLastModified();
+
+        // ...
+    }
+    else {
+
+        echo 'Not modified, nothing to do!';
+    }
+}
+catch (PicoFeedException $e) {
+    // Do something...
+}
+```
 
 
 Feed and item properties

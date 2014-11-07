@@ -2,7 +2,7 @@
 
 namespace PicoFeed\Client;
 
-use PicoFeed\Logging\Logging;
+use PicoFeed\Logging\Logger;
 
 /**
  * cURL HTTP client
@@ -129,18 +129,18 @@ class Curl extends Client
     {
         if ($this->proxy_hostname) {
 
-            Logging::setMessage(get_called_class().' Proxy: '.$this->proxy_hostname.':'.$this->proxy_port);
+            Logger::setMessage(get_called_class().' Proxy: '.$this->proxy_hostname.':'.$this->proxy_port);
 
             curl_setopt($ch, CURLOPT_PROXYPORT, $this->proxy_port);
             curl_setopt($ch, CURLOPT_PROXYTYPE, 'HTTP');
             curl_setopt($ch, CURLOPT_PROXY, $this->proxy_hostname);
 
             if ($this->proxy_username) {
-                Logging::setMessage(get_called_class().' Proxy credentials: Yes');
+                Logger::setMessage(get_called_class().' Proxy credentials: Yes');
                 curl_setopt($ch, CURLOPT_PROXYUSERPWD, $this->proxy_username.':'.$this->proxy_password);
             }
             else {
-                Logging::setMessage(get_called_class().' Proxy credentials: No');
+                Logger::setMessage(get_called_class().' Proxy credentials: No');
             }
         }
 
@@ -185,16 +185,16 @@ class Curl extends Client
         $ch = $this->prepareContext();
         curl_exec($ch);
 
-        Logging::setMessage(get_called_class().' cURL total time: '.curl_getinfo($ch, CURLINFO_TOTAL_TIME));
-        Logging::setMessage(get_called_class().' cURL dns lookup time: '.curl_getinfo($ch, CURLINFO_NAMELOOKUP_TIME));
-        Logging::setMessage(get_called_class().' cURL connect time: '.curl_getinfo($ch, CURLINFO_CONNECT_TIME));
-        Logging::setMessage(get_called_class().' cURL speed download: '.curl_getinfo($ch, CURLINFO_SPEED_DOWNLOAD));
-        Logging::setMessage(get_called_class().' cURL effective url: '.curl_getinfo($ch, CURLINFO_EFFECTIVE_URL));
+        Logger::setMessage(get_called_class().' cURL total time: '.curl_getinfo($ch, CURLINFO_TOTAL_TIME));
+        Logger::setMessage(get_called_class().' cURL dns lookup time: '.curl_getinfo($ch, CURLINFO_NAMELOOKUP_TIME));
+        Logger::setMessage(get_called_class().' cURL connect time: '.curl_getinfo($ch, CURLINFO_CONNECT_TIME));
+        Logger::setMessage(get_called_class().' cURL speed download: '.curl_getinfo($ch, CURLINFO_SPEED_DOWNLOAD));
+        Logger::setMessage(get_called_class().' cURL effective url: '.curl_getinfo($ch, CURLINFO_EFFECTIVE_URL));
 
         $curl_errno = curl_errno($ch);
 
         if ($curl_errno) {
-            Logging::setMessage(get_called_class().' cURL error: '.curl_error($ch));
+            Logger::setMessage(get_called_class().' cURL error: '.curl_error($ch));
             curl_close($ch);
 
             $this->handleError($curl_errno);

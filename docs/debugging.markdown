@@ -7,7 +7,10 @@ Get log messages
 PicoFeed log in memory the execution flow, if a feed doesn't work correctly it's easy to see what is wrong.
 
 ```php
-print_r(PicoFeed\Logging::getMessages());
+use PicoFeed\Logging\Logger;
+
+// All messages are stored inside an Array
+print_r(Logger::getMessages());
 ```
 
 You will got an output like that:
@@ -42,5 +45,5 @@ Remove messages
 All messages are stored in memory, if you need to clear them just call the method `Logging::deleteMessages()`:
 
 ```php
-PicoFeed\Logging::deleteMessages();
+Logger::deleteMessages();
 ```
