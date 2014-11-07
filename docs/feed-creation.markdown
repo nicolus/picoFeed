@@ -1,6 +1,8 @@
 Feed creation
 =============
 
+PicoFeed can also generate Atom and RSS feeds.
+
 Generate RSS 2.0 feed
 ----------------------
 

@@ -80,7 +80,7 @@ $config->setProxyHostname('proxy.example.org');
 - Argument value: port number (integer)
 
 ```php
-$config->getProxyPort(8118);
+$config->setProxyPort(8118);
 ```
 
 ### Proxy username

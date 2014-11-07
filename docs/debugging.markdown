@@ -42,7 +42,7 @@ Array
 Remove messages
 ---------------
 
-All messages are stored in memory, if you need to clear them just call the method `Logging::deleteMessages()`:
+All messages are stored in memory, if you need to clear them just call the method `Logger::deleteMessages()`:
 
 ```php
 Logger::deleteMessages();
