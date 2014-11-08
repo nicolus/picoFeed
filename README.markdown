@@ -45,8 +45,8 @@ Authors
 Real world usage
 ----------------
 
-- [Miniflux](http://miniflux.net)
 - [AnythingNew](http://anythingnew.co)
+- [Miniflux](http://miniflux.net)
 - [Owncloud News](https://github.com/owncloud/news)
 
 Documentation
