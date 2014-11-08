@@ -246,11 +246,12 @@ class Curl extends Client
      *
      * @access private
      * @param  string     $location       Redirected URL
-     * @return boolean|array
+     * @return array
      */
     private function handleRedirection($location)
     {
         $nb_redirects = 0;
+        $result = array();
         $this->url = $location;
         $this->body = '';
         $this->body_length = 0;
@@ -262,7 +263,7 @@ class Curl extends Client
             $nb_redirects++;
 
             if ($nb_redirects >= $this->max_redirects) {
-                return false;
+                throw new MaxRedirectException('Maximum number of redirections reached');
             }
 
             $result = $this->doRequest(false);
@@ -275,11 +276,11 @@ class Curl extends Client
                 $this->headers_counter = 0;
             }
             else {
-                return $result;
+                break;
             }
         }
 
-        return false;
+        return $result;
     }
 
     /**

@@ -147,7 +147,7 @@ class Grabber
      * Set config object
      *
      * @access public
-     * @param  \PicoFeed\Config  $config   Config instance
+     * @param  \PicoFeed\Config\Config   $config    Config instance
      * @return \PicoFeed\Grabber
      */
     public function setConfig($config)
