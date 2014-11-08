@@ -63,9 +63,3 @@ Documentation
 - [Exceptions](docs/exceptions.markdown)
 - [Debugging](docs/debugging.markdown)
 - [Configuration](docs/config.markdown)
-
-Usage in Real World
--------------
-
-- [Miniflux](http://miniflux.net)
-- [AnythingNew](http://anythingnew.co)
