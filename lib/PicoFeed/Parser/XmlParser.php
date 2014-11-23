@@ -2,6 +2,7 @@
 
 namespace PicoFeed\Parser;
 
+use Closure;
 use DomDocument;
 use DOMXPath;
 use SimpleXmlElement;
@@ -45,14 +46,14 @@ class XmlParser
     /**
      * Scan the input for XXE attacks
      *
-     * @param string   $input        Unsafe input
-     * @param string   $callback     Callback called to build the dom.
+     * @param string    $input       Unsafe input
+     * @param Closure   $callback    Callback called to build the dom.
      *                               Must be an instance of DomDocument and receives the input as argument
      *
      * @return bool|DomDocument      False if an XXE attack was discovered,
      *                               otherwise the return of the callback
      */
-    private static function scanInput($input, $callback)
+    private static function scanInput($input, Closure $callback)
     {
         if (substr(php_sapi_name(), 0, 3) === 'fpm') {
 
