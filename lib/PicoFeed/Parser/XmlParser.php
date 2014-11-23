@@ -42,15 +42,15 @@ class XmlParser
         return false;
     }
 
-
     /**
      * Scan the input for XXE attacks
-     * @param string input
-     * @param string $callback a callback that is called to build the dom. Must
-     * return an instance of DomDocument and receives the input as first
-     * argument
-     * @return bool|DomDocument false if an XXE attack was discovered, otherwise
-     * the return of the callback
+     *
+     * @param string   $input        Unsafe input
+     * @param string   $callback     Callback called to build the dom.
+     *                               Must be an instance of DomDocument and receives the input as argument
+     *
+     * @return bool|DomDocument      False if an XXE attack was discovered,
+     *                               otherwise the return of the callback
      */
     private static function scanInput($input, $callback)
     {
@@ -82,7 +82,6 @@ class XmlParser
 
         return $dom;
     }
-
 
     /**
      * Get a DomDocument instance or return false
