@@ -43,7 +43,8 @@ Output:
 ```bash
 Feed::id = tag:linuxfr.org,2005:/news
 Feed::title = LinuxFr.org : les dépêches
-Feed::url = http://linuxfr.org/news
+Feed::feed_url = http://linuxfr.org/news.atom
+Feed::site_url = http://linuxfr.org/news
 Feed::date = 1415138079
 Feed::language = en-US
 Feed::description =
@@ -181,7 +182,8 @@ Feed and item properties
 // Feed object
 $feed->getId();              // Unique feed id
 $feed->getTitle();           // Feed title
-$feed->getUrl();             // Website url
+$feed->getFeedUrl();         // Feed url
+$feed->getSiteUrl();         // Website url
 $feed->getDate();            // Feed last updated date
 $feed->getLanguage();        // Feed language
 $feed->getDescription();     // Feed description
