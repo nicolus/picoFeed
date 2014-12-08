@@ -188,7 +188,7 @@ abstract class Parser
      */
     public function checkFeedUrl(Feed $feed)
     {
-        if (empty($feed->getFeedUrl())) {
+        if ($feed->getFeedUrl() === '') {
             $feed->feed_url = $this->fallback_url;
         }
         else {
@@ -204,7 +204,7 @@ abstract class Parser
      */
     public function checkSiteUrl(Feed $feed)
     {
-        if (empty($feed->getSiteUrl())) {
+        if ($feed->getSiteUrl() === '') {
             $feed->site_url = Url::base($feed->getFeedUrl());
         }
         else {
