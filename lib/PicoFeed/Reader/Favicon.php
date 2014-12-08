@@ -30,12 +30,20 @@ class Favicon
     private $config;
 
     /**
-     * Icon content
+     * Icon binary content
      *
      * @access private
      * @var string
      */
     private $content = '';
+
+    /**
+     * Icon content type
+     *
+     * @access private
+     * @var string
+     */
+    private $content_type = '';
 
     /**
      * Constructor
@@ -94,12 +102,12 @@ class Favicon
      */
     public function download($url)
     {
+        $client = Client::getInstance();
+        $client->setConfig($this->config);
+
+        Logger::setMessage(get_called_class().' Download => '.$url);
+
         try {
-
-            Logger::setMessage(get_called_class().' Download => '.$url);
-
-            $client = Client::getInstance();
-            $client->setConfig($this->config);
             $client->execute($url);
         }
         catch (ClientException $e) {

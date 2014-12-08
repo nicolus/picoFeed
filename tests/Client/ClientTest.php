@@ -81,12 +81,12 @@ class ClientTest extends PHPUnit_Framework_TestCase
     public function testContentType()
     {
         $client = Client::getInstance();
-        $client->setUrl('http://php.net/images/logo.php');
+        $client->setUrl('http://miniflux.net/assets/img/favicon.png');
         $client->execute();
         $this->assertEquals('image/png', $client->getContentType());
 
         $client = Client::getInstance();
-        $client->setUrl('http://php.net/');
+        $client->setUrl('http://miniflux.net/');
         $client->execute();
         $this->assertEquals('text/html; charset=utf-8', $client->getContentType());
     }
