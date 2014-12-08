@@ -1,8 +1,8 @@
 <?php
+
 namespace PicoFeed\Parser;
 
 use PHPUnit_Framework_TestCase;
-
 
 class ParserTest extends PHPUnit_Framework_TestCase
 {
@@ -52,14 +52,6 @@ class ParserTest extends PHPUnit_Framework_TestCase
 
         $parser->setHashAlgo('sha1');
         $this->assertEquals('da23614e02469a0d7c7bd1bdab5c9c474b1904dc', $parser->generateId('a', 'b'));
-    }
-
-    public function testLangRTL()
-    {
-        $this->assertFalse(Parser::isLanguageRTL('fr-FR'));
-        $this->assertTrue(Parser::isLanguageRTL('ur'));
-        $this->assertTrue(Parser::isLanguageRTL('syr-**'));
-        $this->assertFalse(Parser::isLanguageRTL('ru'));
     }
 
     public function testNamespaceValue()

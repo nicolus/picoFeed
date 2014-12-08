@@ -59,6 +59,7 @@ Item::language = en-US
 Item::author = Syvolc
 Item::enclosure_url =
 Item::enclosure_type =
+Item::isRTL() = false
 Item::content = 18307 bytes
 ....
 ```
@@ -200,16 +201,16 @@ $feed->items[0]->getAuthor();                  // Item author
 $feed->items[0]->getEnclosureUrl();            // Enclosure url
 $feed->items[0]->getEnclosureType();           // Enclosure mime-type (audio/mp3, image/png...)
 $feed->items[0]->getContent();                 // Item content (filtered or raw)
+$feed->items[0]->isRTL();                      // Return true if the item language is Right-To-Left
 ```
 
 RTL language detection
 ----------------------
 
-There is an utility method to determine if a language code is Right-To-Left or not:
+Use the method `Item::isRTL()` to test if an item is RTL or not:
 
 ```php
-// Return true if RTL
-Parser::isLanguageRTL($item->getLanguage());
+var_dump($item->isRTL()); // true or false
 ```
 
 Known RTL languages are:
