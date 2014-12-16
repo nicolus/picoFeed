@@ -39,6 +39,9 @@ class ReaderTest extends PHPUnit_Framework_TestCase
     public function testDetectFormat()
     {
         $reader = new Reader;
+        $this->assertEquals('Rss20', $reader->detectFormat(file_get_contents('tests/fixtures/podbean.xml')));
+
+        $reader = new Reader;
         $this->assertEquals('Rss20', $reader->detectFormat(file_get_contents('tests/fixtures/jeux-linux.fr.xml')));
 
         $reader = new Reader;
