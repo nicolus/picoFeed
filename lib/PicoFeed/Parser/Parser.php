@@ -299,6 +299,7 @@ abstract class Parser
             'D, d M Y H:i:s' => 25,
             'D, d M Y h:i:s' => 25,
             'D M d Y H:i:s' => 24,
+            'j M Y H:i:s' => 20,
             'Y-m-d H:i:s' => 19,
             'Y-m-d\TH:i:s' => 19,
             'd/m/Y H:i:s' => 19,
