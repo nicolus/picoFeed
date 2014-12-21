@@ -213,8 +213,15 @@ class Curl extends Client
     {
         $this->executeContext();
 
-        list($status, $headers) = $this->parseHeaders(explode("\r\n", $this->headers[$this->headers_counter - 1]));
-
+        // Update the url if there where redirects
+        for ($i=0; $i < $this->headers_counter; $i++) {
+            list($status, $headers) = $this->parseHeaders(explode("\r\n", $this->headers[$i]));
+            
+            if ($status == 301 || $status == 302) {
+                $this->url = $headers['Location'];
+            }
+        }
+        
         // When resticted with open_basedir
         if ($this->needToHandleRedirection($follow_location, $status)) {
             return $this->handleRedirection($headers['Location']);

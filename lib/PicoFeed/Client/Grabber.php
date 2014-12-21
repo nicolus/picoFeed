@@ -228,6 +228,7 @@ class Grabber
         $client->setConfig($this->config);
         $client->execute($this->url);
 
+        $this->url = $client->getUrl();
         $this->html = $client->getContent();
         $this->encoding = $client->getEncoding();
 
