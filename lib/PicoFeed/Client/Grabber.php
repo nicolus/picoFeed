@@ -191,8 +191,8 @@ class Grabber
             Logger::setMessage(get_called_class().' Fix encoding');
             Logger::setMessage(get_called_class().': HTTP Encoding "'.$this->encoding.'"');
 
-            $this->html = Filter::stripHeadTags($this->html);
             $this->html = Encoding::convert($this->html, $this->encoding);
+            $this->html = Filter::stripHeadTags($this->html);
 
             Logger::setMessage(get_called_class().' Content length: '.strlen($this->html).' bytes');
             $rules = $this->getRules();

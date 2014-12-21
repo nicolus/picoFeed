@@ -88,16 +88,7 @@ class Filter
      */
     public static function stripHeadTags($data)
     {
-        $start = strpos($data, '<head>');
-        $end = strpos($data, '</head>');
-
-        if ($start !== false && $end !== false) {
-            $before = substr($data, 0, $start);
-            $after = substr($data, $end + 7);
-            $data = $before.$after;
-        }
-
-        return $data;
+        return preg_replace('@<head[^>]*?>.*?</head>@siu','', $data );
     }
 
     /**
