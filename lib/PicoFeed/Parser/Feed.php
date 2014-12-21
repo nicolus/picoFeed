@@ -204,4 +204,9 @@ class Feed
     {
         return $this->items;
     }
+    
+    public function isRTL()
+    {
+        return Parser::isLanguageRTL($this->language);
+    }
 }

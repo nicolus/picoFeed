@@ -357,6 +357,38 @@ abstract class Parser
     }
 
     /**
+     * Return true if the given language is "Right to Left"
+     *
+     * @static
+     * @access public
+     * @param  string  $language  Language: fr-FR, en-US
+     * @return bool
+     */
+    public static function isLanguageRTL($language)
+    {
+        $language = strtolower($language);
+
+        $rtl_languages = array(
+            'ar', // Arabic (ar-**)
+            'fa', // Farsi (fa-**)
+            'ur', // Urdu (ur-**)
+            'ps', // Pashtu (ps-**)
+            'syr', // Syriac (syr-**)
+            'dv', // Divehi (dv-**)
+            'he', // Hebrew (he-**)
+            'yi', // Yiddish (yi-**)
+        );
+
+        foreach ($rtl_languages as $prefix) {
+            if (strpos($language, $prefix) === 0) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
      * Set Hash algorithm used for id generation
      *
      * @access public
