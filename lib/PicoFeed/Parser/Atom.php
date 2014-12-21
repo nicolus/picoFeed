@@ -289,7 +289,7 @@ class Atom extends Parser
     private function findLink(SimpleXMLElement $xml, $rel)
     {
         foreach ($xml->link as $link) {
-            if (empty($rel) || $rel === (string) $link['rel']) {
+            if ($rel === (string) $link['rel']) {
                 return $link;
             }
         }
