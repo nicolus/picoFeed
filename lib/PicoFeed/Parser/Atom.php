@@ -245,7 +245,13 @@ class Atom extends Parser
      */
     public function findItemLanguage(SimpleXMLElement $entry, Item $item, Feed $feed)
     {
-        $item->language = $feed->language;
+        $language = (string) $entry->attributes('xml', true)->{'lang'};
+        
+        if ($language === "") {
+            $language = $feed->language;
+        }
+        
+        $item->language = $language;
     }
 
     /**
