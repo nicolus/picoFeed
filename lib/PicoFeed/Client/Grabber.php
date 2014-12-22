@@ -179,6 +179,19 @@ class Grabber
     }
 
     /**
+     * Get filtered relevant content
+     *
+     * @access public
+     * @return string
+     */
+    public function getFilteredContent()
+    {
+        $filter = Filter::html($this->content, $this->url);
+        $filter->setConfig($this->config);
+        return $filter->execute();
+    }
+
+    /**
      * Parse the HTML content
      *
      * @access public

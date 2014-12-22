@@ -24,12 +24,14 @@ $grabber = new Grabber($item_url);
 $grabber->download();
 $grabber->parse();
 
-// Get relevant content
-echo $grabber->getContent();
-
 // Get raw HTML content
 echo $grabber->getRawContent();
 
+// Get relevant content
+echo $grabber->getContent();
+
+// Get filtered relevant content
+echo $grabber->getFilteredContent();
 ```
 
 Fetch full item contents during feed parsing
