@@ -12,12 +12,34 @@ How the content grabber works?
 
 **The best results are obtained with XPath rules file.**
 
-How to use the content scraper?
--------------------------------
+Standalone usage
+----------------
+
+```php
+<?php
+
+use PicoFeed\Client\Grabber;
+
+$grabber = new Grabber($item_url);
+$grabber->download();
+$grabber->parse();
+
+// Get relevant content
+echo $grabber->getContent();
+
+// Get raw HTML content
+echo $grabber->getRawContent();
+
+```
+
+Fetch full item contents during feed parsing
+--------------------------------------------
 
 Before parsing all items, just call the method `$parser->enableContentGrabber()`:
 
 ```php
+<?php
+
 use PicoFeed\Reader\Reader;
 use PicoFeed\PicoFeedException;
 
