@@ -200,7 +200,6 @@ abstract class Client
         }
         else if ($response['status'] == 200) {
             $this->is_modified = $this->hasBeenModified($response, $this->etag, $this->last_modified);
-
             $this->etag = $this->getHeader($response, 'ETag');
             $this->last_modified = $this->getHeader($response, 'Last-Modified');
         }
@@ -242,9 +241,9 @@ abstract class Client
      * Check if a request has been modified according to the parameters
      *
      * @access public
-     * @param  array   $response
-     * @param string   $etag
-     * @param string   $lastModified
+     * @param  array    $response
+     * @param  string   $etag
+     * @param  string   $lastModified
      * @return boolean
      */
     private function hasBeenModified($response, $etag, $lastModified)
@@ -254,24 +253,24 @@ abstract class Client
             'Last-Modified' => $lastModified
         );
 
-        // compare the values for each header that is present
+        // Compare the values for each header that is present
         $presentCacheHeaderCount = 0;
         foreach ($headers as $key => $value) {
             if (isset($response['headers'][$key])) {
-                if($response['headers'][$key] !== $value) {
+                if ($response['headers'][$key] !== $value) {
                     return true;
                 }
-                $presentCacheHeaderCount += 1;
+                $presentCacheHeaderCount++;
             }
         }
 
-        // if at least one header is present and the values match, the response
+        // If at least one header is present and the values match, the response
         // was not modified
         if ($presentCacheHeaderCount > 0) {
             return false;
-        } else {
-            return true;
         }
+
+        return true;
     }
 
     /**
