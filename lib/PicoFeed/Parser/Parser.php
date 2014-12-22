@@ -5,7 +5,6 @@ namespace PicoFeed\Parser;
 use SimpleXMLElement;
 use DateTime;
 use DateTimeZone;
-
 use PicoFeed\Encoding\Encoding;
 use PicoFeed\Filter\Filter;
 use PicoFeed\Logging\Logger;
@@ -96,9 +95,9 @@ abstract class Parser
      * Constructor
      *
      * @access public
-     * @param  string  $content         Feed content
-     * @param  string  $http_encoding   HTTP encoding (headers)
-     * @param  string  $base_url        Fallback url when the feed provide relative or broken url
+     * @param  string  $content          Feed content
+     * @param  string  $http_encoding    HTTP encoding (headers)
+     * @param  string  $fallback_url     Fallback url when the feed provide relative or broken url
      */
     public function __construct($content, $http_encoding = '', $fallback_url = '')
     {
@@ -268,7 +267,7 @@ abstract class Parser
      *
      * @access public
      * @param  string  $args  Pieces of data to hash
-     * @return string         Id
+     * @return string
      */
     public function generateId()
     {

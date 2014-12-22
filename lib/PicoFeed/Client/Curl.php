@@ -99,7 +99,7 @@ class Curl extends Client
      * Prepare HTTP headers
      *
      * @access private
-     * @return array
+     * @return string[]
      */
     private function prepareHeaders()
     {
@@ -123,7 +123,7 @@ class Curl extends Client
      * Prepare curl proxy context
      *
      * @access private
-     * @return resource
+     * @return resource $ch
      */
     private function prepareProxyContext($ch)
     {

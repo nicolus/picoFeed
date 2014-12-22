@@ -2,8 +2,6 @@
 
 namespace PicoFeed\Filter;
 
-use PicoFeed\Parser\XmlParser;
-
 /**
  * Filter class
  *
@@ -19,7 +17,7 @@ class Filter
      * @access public
      * @param  string  $html      HTML content
      * @param  string  $website   Site URL (used to build absolute URL)
-     * @return PicoFeed\Filter\Html
+     * @return Html
      */
     public static function html($html, $website)
     {

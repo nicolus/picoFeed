@@ -3,7 +3,6 @@
 namespace PicoFeed\Client;
 
 use DOMXPath;
-
 use PicoFeed\Encoding\Encoding;
 use PicoFeed\Logging\Logger;
 use PicoFeed\Filter\Filter;
@@ -148,7 +147,7 @@ class Grabber
      *
      * @access public
      * @param  \PicoFeed\Config\Config   $config    Config instance
-     * @return \PicoFeed\Grabber
+     * @return Grabber
      */
     public function setConfig($config)
     {

@@ -568,7 +568,7 @@ abstract class Client
      *
      * @access public
      * @param  \PicoFeed\Config\Config  $config   Config instance
-     * @return \PicoFeed\Config\Config
+     * @return \PicoFeed\Client\Client
      */
     public function setConfig($config)
     {

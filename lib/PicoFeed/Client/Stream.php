@@ -16,7 +16,7 @@ class Stream extends Client
      * Prepare HTTP headers
      *
      * @access private
-     * @return array
+     * @return string[]
      */
     private function prepareHeaders()
     {
