@@ -154,7 +154,7 @@ class Encoding
 
     public static function convert($input, $encoding)
     {
-        switch($encoding) {
+        switch ($encoding) {
             case 'utf-8':
                 return $input;
             case 'windows-1251':
