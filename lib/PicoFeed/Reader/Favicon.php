@@ -21,6 +21,20 @@ use PicoFeed\Parser\XmlParser;
 class Favicon
 {
     /**
+     * Valid types for favicon (supported by browsers)
+     *
+     * @access private
+     * @var array
+     */
+    private $types = array(
+        'image/png',
+        'image/gif',
+        'image/x-icon',
+        'image/jpeg',
+        'image/jpg',
+    );
+
+    /**
      * Config class instance
      *
      * @access private
@@ -74,7 +88,13 @@ class Favicon
      */
     public function getType()
     {
-        return $this->content_type;
+        foreach ($this->types as $type) {
+            if (strpos($this->content_type, $type) === 0) {
+                return $type;
+            }
+        }
+
+        return 'image/x-icon';
     }
 
     /**
@@ -87,7 +107,7 @@ class Favicon
     {
         return sprintf(
             'data:%s;base64,%s',
-            $this->content_type,
+            $this->getType(),
             base64_encode($this->content)
         );
     }
