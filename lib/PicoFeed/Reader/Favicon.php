@@ -105,6 +105,10 @@ class Favicon
      */
     public function getDataUri()
     {
+        if (empty($this->content)) {
+            return '';
+        }
+
         return sprintf(
             'data:%s;base64,%s',
             $this->getType(),
