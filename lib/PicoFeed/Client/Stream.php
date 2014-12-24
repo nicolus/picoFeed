@@ -41,6 +41,10 @@ class Stream extends Client
             $headers[] = 'Proxy-Authorization: Basic '.base64_encode($this->proxy_username.':'.$this->proxy_password);
         }
 
+        if ($this->username && $this->password) {
+            $headers[] = 'Authorization: Basic '.base64_encode($this->username.':'.$this->password);
+        }
+
         return $headers;
     }
 

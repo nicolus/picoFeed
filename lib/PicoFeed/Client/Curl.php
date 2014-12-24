@@ -148,6 +148,21 @@ class Curl extends Client
     }
 
     /**
+     * Prepare curl auth context
+     *
+     * @access private
+     * @return resource $ch
+     */
+    private function prepareAuthContext($ch)
+    {
+        if ($this->username && $this->password) {
+            curl_setopt($ch, CURLOPT_USERPWD, $this->username.':'.$this->password);
+        }
+
+        return $ch;
+    }
+
+    /**
      * Prepare curl context
      *
      * @access private
@@ -170,6 +185,7 @@ class Curl extends Client
         curl_setopt($ch, CURLOPT_COOKIEFILE, 'php://memory');
 
         $ch = $this->prepareProxyContext($ch);
+        $ch = $this->prepareAuthContext($ch);
 
         return $ch;
     }

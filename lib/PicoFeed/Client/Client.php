@@ -86,6 +86,22 @@ abstract class Client
     protected $proxy_password = '';
 
     /**
+     * Basic auth username
+     *
+     * @access protected
+     * @var string
+     */
+    protected $username = '';
+
+    /**
+     * Basic auth password
+     *
+     * @access protected
+     * @var string
+     */
+    protected $password = '';
+
+    /**
      * Client connection timeout
      *
      * @access protected
@@ -134,6 +150,14 @@ abstract class Client
     protected $max_body_size = 2097152; // 2MB
 
     /**
+     * HTTP response status code
+     *
+     * @access protected
+     * @var integer
+     */
+    protected $status_code = 0;
+
+    /**
      * Do the HTTP request
      *
      * @abstract
@@ -180,6 +204,7 @@ abstract class Client
 
         $response = $this->doRequest();
 
+        $this->status_code = $response['status'];
         $this->handleNotModifiedResponse($response);
         $this->handleNotFoundResponse($response);
         $this->handleNormalResponse($response);
@@ -416,6 +441,17 @@ abstract class Client
     }
 
     /**
+     * Get the HTTP response status code
+     *
+     * @access public
+     * @return integer
+     */
+    public function getStatusCode()
+    {
+        return $this->status_code;
+    }
+
+    /**
      * Get the body of the HTTP response
      *
      * @access public
@@ -560,6 +596,32 @@ abstract class Client
     public function setProxyPassword($password)
     {
         $this->proxy_password = $password ?: $this->proxy_password;
+        return $this;
+    }
+
+    /**
+     * Set the username
+     *
+     * @access public
+     * @param  string   $username   Basic Auth username
+     * @return \PicoFeed\Client\Client
+     */
+    public function setUsername($username)
+    {
+        $this->username = $username ?: $this->username;
+        return $this;
+    }
+
+    /**
+     * Set the password
+     *
+     * @access public
+     * @param  string  $password  Basic Auth Password
+     * @return \PicoFeed\Client\Client
+     */
+    public function setPassword($password)
+    {
+        $this->password = $password ?: $this->password;
         return $this;
     }
 
