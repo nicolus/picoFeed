@@ -118,6 +118,10 @@ class XmlParser
      */
     public static function getHtmlDocument($input)
     {
+        if (empty($input)) {
+            return new DomDocument;
+        }
+
         if (version_compare(PHP_VERSION, '5.4.0', '>=')) {
             $callback = function ($in) {
                 $dom = new DomDocument;
@@ -237,7 +241,7 @@ class XmlParser
         foreach ($namespaces as $name => $url) {
             $namespace = $xml->children($namespaces[$name]);
 
-            if ($namespace->$property->count() > 0) {
+            if (isset($namespace->$property) && $namespace->$property->count() > 0) {
 
                 if ($attribute) {
 
