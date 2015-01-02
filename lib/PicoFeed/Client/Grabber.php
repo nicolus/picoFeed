@@ -236,13 +236,19 @@ class Grabber
      */
     public function download()
     {
-        $client = Client::getInstance();
-        $client->setConfig($this->config);
-        $client->execute($this->url);
+        try {
 
-        $this->url = $client->getUrl();
-        $this->html = $client->getContent();
-        $this->encoding = $client->getEncoding();
+            $client = Client::getInstance();
+            $client->setConfig($this->config);
+            $client->execute($this->url);
+
+            $this->url = $client->getUrl();
+            $this->html = $client->getContent();
+            $this->encoding = $client->getEncoding();
+        }
+        catch (ClientException $e) {
+            Logger::setMessage(get_called_class().': '.$e->getMessage());
+        }
 
         return $this->html;
     }
