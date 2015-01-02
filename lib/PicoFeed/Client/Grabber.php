@@ -201,7 +201,7 @@ class Grabber
      */
     public function getFilteredContent()
     {
-        $filter = Filter::html($this->content, Url::base($this->url));
+        $filter = Filter::html($this->content, $this->url);
         $filter->setConfig($this->config);
         return $filter->execute();
     }

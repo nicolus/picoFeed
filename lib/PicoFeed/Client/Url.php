@@ -67,7 +67,7 @@ class Url
         if ($link->isRelativeUrl()) {
 
             if ($link->isRelativePath()) {
-                return $link->getAbsoluteUrl($website->getAbsoluteUrl());
+                return $link->getAbsoluteUrl($website->getBaseUrl($website->getBasePath()));
             }
 
             return $link->getAbsoluteUrl($website->getBaseUrl());
@@ -157,6 +157,22 @@ class Url
     public function getPath()
     {
         return empty($this->components['path']) ? '' : $this->components['path'];
+    }
+
+    /**
+     * Get the base path
+     *
+     * @access public
+     * @return string
+     */
+    public function getBasePath()
+    {
+        $current_path = $this->getPath();
+
+        $path = $this->isRelativePath() ? '/' : '';
+        $path .= substr($current_path, -1) === '/' ? $current_path : dirname($current_path);
+
+        return str_replace('//', '/', $path.'/');
     }
 
     /**

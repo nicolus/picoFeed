@@ -67,6 +67,9 @@ class UrlTest extends PHPUnit_Framework_TestCase
 
         $url = new Url('//localhost/test?truc');
         $this->assertEquals('http://localhost', $url->getBaseUrl());
+
+        $url = new Url('//localhost/test?truc');
+        $this->assertEquals('http://localhost', $url->getBaseUrl());
     }
 
     public function testIsRelativeUrl()
@@ -111,6 +114,9 @@ AAAFCAYAAACNbyblAAAAHElEQVQI12P4//8/w38GIAXDIBKE0DHxgljNBAAO
 
         $url = new Url('anything');
         $this->assertEquals('/anything', $url->getFullPath());
+
+        $url = new Url('foo/bar');
+        $this->assertEquals('/foo/bar', $url->getFullPath());
 
         $url = new Url('index.php?foo=bar&test=1');
         $this->assertEquals('/index.php?foo=bar&test=1', $url->getFullPath());
@@ -160,6 +166,9 @@ AAAFCAYAAACNbyblAAAAHElEQVQI12P4//8/w38GIAXDIBKE0DHxgljNBAAO
         $url = new Url('https://127.0.0.1:8000/here/test?v=3');
         $this->assertEquals('https://127.0.0.1:8000/here/test?v=3', $url->getAbsoluteUrl());
 
+        $url = new Url('http://www.lofibucket.com/articles/oscilloscope_quake.html');
+        $this->assertEquals('http://www.lofibucket.com/articles/oscilloscope_quake.html', $url->getAbsoluteUrl());
+
         $url = new Url('test?v=3');
         $this->assertEquals('https://127.0.0.1:8000/here/test?v=3', $url->getAbsoluteUrl('https://127.0.0.1:8000/here/'));
     }
@@ -183,6 +192,27 @@ AAAFCAYAAACNbyblAAAAHElEQVQI12P4//8/w38GIAXDIBKE0DHxgljNBAAO
 
         $url = new Url('/folder/filename.json');
         $this->assertFalse($url->isRelativePath());
+    }
+
+    public function testGetBasePath()
+    {
+        $url = new Url('img/quakescope.jpg');
+        $this->assertEquals('/img/', $url->getBasePath());
+
+        $url = new Url('http://foo/img/quakescope.jpg');
+        $this->assertEquals('/img/', $url->getBasePath());
+
+        $url = new Url('http://foo/bar.html');
+        $this->assertEquals('/', $url->getBasePath());
+
+        $url = new Url('http://foo/bar');
+        $this->assertEquals('/', $url->getBasePath());
+
+        $url = new Url('http://foo/bar/');
+        $this->assertEquals('/bar/', $url->getBasePath());
+
+        $url = new Url('http://website/subfolder/img/foo.png');
+        $this->assertEquals('/subfolder/img/', $url->getBasePath());
     }
 
     public function testResolve()
@@ -215,6 +245,11 @@ AAAFCAYAAACNbyblAAAAHElEQVQI12P4//8/w38GIAXDIBKE0DHxgljNBAAO
         $this->assertEquals(
             'http://website/img/foo.png',
             Url::resolve('/img/foo.png', 'http://website/subfolder/')
+        );
+
+        $this->assertEquals(
+            'http://www.lofibucket.com/articles/img/quakescope.jpg',
+            Url::resolve('img/quakescope.jpg', 'http://www.lofibucket.com/articles/oscilloscope_quake.html')
         );
     }
 }
