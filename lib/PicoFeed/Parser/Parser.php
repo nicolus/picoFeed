@@ -168,8 +168,9 @@ abstract class Parser
             $this->findItemEnclosure($entry, $item, $feed);
             $this->findItemLanguage($entry, $item, $feed);
 
-            $this->scrapWebsite($item);
+            // Order is important (avoid double filtering)
             $this->filterItemContent($feed, $item);
+            $this->scrapWebsite($item);
 
             $feed->items[] = $item;
         }
@@ -238,7 +239,7 @@ abstract class Parser
             $grabber->download();
 
             if ($grabber->parse()) {
-                $item->content = $grabber->getContent() ?: $item->content;
+                $item->content = $grabber->getFilteredContent();
             }
         }
     }

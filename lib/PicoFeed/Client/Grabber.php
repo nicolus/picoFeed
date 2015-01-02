@@ -49,6 +49,14 @@ class Grabber
     private $encoding = '';
 
     /**
+     * Flag to skip download and parsing
+     *
+     * @access private
+     * @var boolean
+     */
+    private $skip_processing = false;
+
+    /**
      * List of attributes to try to get the content, order is important, generic terms at the end
      *
      * @access private
@@ -65,6 +73,7 @@ class Grabber
         'post-content',
         'post_content',
         'entry-content',
+        'entry-body',
         'main-content',
         'story_content',
         'storycontent',
@@ -101,6 +110,10 @@ class Grabber
         'related-posts',
         'tweet',
         'categories',
+        'post_title',
+        'by_line',
+        'byline',
+        'sponsors',
     );
 
     /**
@@ -140,6 +153,9 @@ class Grabber
         $this->url = $url;
         $this->html = $html;
         $this->encoding = $encoding;
+
+        $this->handleFiles();
+        $this->handleStreamingVideos();
     }
 
     /**
@@ -191,6 +207,34 @@ class Grabber
     }
 
     /**
+     * Return the Youtube embed player and skip processing
+     *
+     * @access public
+     * @return string
+     */
+    public function handleStreamingVideos()
+    {
+        if (preg_match("#(?<=v=|v\/|vi=|vi\/|youtu.be\/)[a-zA-Z0-9_-]{11}#", $this->url, $matches)) {
+            $this->content = '<iframe width="560" height="315" src="//www.youtube.com/embed/'.$matches[0].'" frameborder="0"></iframe>';
+            $this->skip_processing = true;
+        }
+    }
+
+    /**
+     * Skip processing for PDF documents
+     *
+     * @access public
+     * @return string
+     */
+    public function handleFiles()
+    {
+        if (substr($this->url, -3) === 'pdf') {
+            $this->skip_processing = true;
+            Logger::setMessage(get_called_class().': PDF document => processing skipped');
+        }
+    }
+
+    /**
      * Parse the HTML content
      *
      * @access public
@@ -198,32 +242,36 @@ class Grabber
      */
     public function parse()
     {
+        if ($this->skip_processing) {
+            return true;
+        }
+
         if ($this->html) {
 
-            Logger::setMessage(get_called_class().' Fix encoding');
+            Logger::setMessage(get_called_class().': Fix encoding');
             Logger::setMessage(get_called_class().': HTTP Encoding "'.$this->encoding.'"');
 
             $this->html = Encoding::convert($this->html, $this->encoding);
             $this->html = Filter::stripHeadTags($this->html);
 
-            Logger::setMessage(get_called_class().' Content length: '.strlen($this->html).' bytes');
+            Logger::setMessage(get_called_class().': Content length: '.strlen($this->html).' bytes');
             $rules = $this->getRules();
 
             if (is_array($rules)) {
-                Logger::setMessage(get_called_class().' Parse content with rules');
+                Logger::setMessage(get_called_class().': Parse content with rules');
                 $this->parseContentWithRules($rules);
             }
             else {
-                Logger::setMessage(get_called_class().' Parse content with candidates');
+                Logger::setMessage(get_called_class().': Parse content with candidates');
                 $this->parseContentWithCandidates();
             }
         }
         else {
-            Logger::setMessage(get_called_class().' No content fetched');
+            Logger::setMessage(get_called_class().': No content fetched');
         }
 
-        Logger::setMessage(get_called_class().' Content length: '.strlen($this->content).' bytes');
-        Logger::setMessage(get_called_class().' Grabber done');
+        Logger::setMessage(get_called_class().': Content length: '.strlen($this->content).' bytes');
+        Logger::setMessage(get_called_class().': Grabber done');
 
         return $this->content !== '';
     }
@@ -236,18 +284,21 @@ class Grabber
      */
     public function download()
     {
-        try {
+        if (! $this->skip_processing) {
 
-            $client = Client::getInstance();
-            $client->setConfig($this->config);
-            $client->execute($this->url);
+            try {
 
-            $this->url = $client->getUrl();
-            $this->html = $client->getContent();
-            $this->encoding = $client->getEncoding();
-        }
-        catch (ClientException $e) {
-            Logger::setMessage(get_called_class().': '.$e->getMessage());
+                $client = Client::getInstance();
+                $client->setConfig($this->config);
+                $client->execute($this->url);
+
+                $this->url = $client->getUrl();
+                $this->html = $client->getContent();
+                $this->encoding = $client->getEncoding();
+            }
+            catch (ClientException $e) {
+                Logger::setMessage(get_called_class().': '.$e->getMessage());
+            }
         }
 
         return $this->html;
@@ -346,34 +397,40 @@ class Grabber
         // Try to lookup in each tag
         foreach ($this->candidatesAttributes as $candidate) {
 
-            Logger::setMessage(get_called_class().' Try this candidate: "'.$candidate.'"');
+            Logger::setMessage(get_called_class().': Try this candidate: "'.$candidate.'"');
 
             $nodes = $xpath->query('//*[(contains(@class, "'.$candidate.'") or @id="'.$candidate.'") and not (contains(@class, "nav") or contains(@class, "page"))]');
 
             if ($nodes !== false && $nodes->length > 0) {
                 $this->content = $dom->saveXML($nodes->item(0));
-                Logger::setMessage(get_called_class().' Find candidate "'.$candidate.'" ('.strlen($this->content).' bytes)');
+                Logger::setMessage(get_called_class().': Find candidate "'.$candidate.'" ('.strlen($this->content).' bytes)');
                 break;
             }
         }
 
         // Try to fetch <article/>
-        if (! $this->content) {
+        if (strlen($this->content) < 200) {
 
             $nodes = $xpath->query('//article');
 
             if ($nodes !== false && $nodes->length > 0) {
                 $this->content = $dom->saveXML($nodes->item(0));
-                Logger::setMessage(get_called_class().' Find <article/> tag ('.strlen($this->content).' bytes)');
+                Logger::setMessage(get_called_class().': Find <article/> tag ('.strlen($this->content).' bytes)');
             }
         }
 
+        // Get everything
         if (strlen($this->content) < 50) {
-            Logger::setMessage(get_called_class().' No enought content fetched, get the full body');
-            $this->content = $dom->saveXML($dom->firstChild);
+
+            $nodes = $xpath->query('//body');
+
+            if ($nodes !== false && $nodes->length > 0) {
+                Logger::setMessage(get_called_class().' No enought content fetched, get //body');
+                $this->content = $dom->saveXML($nodes->item(0));
+            }
         }
 
-        Logger::setMessage(get_called_class().' Strip garbage');
+        Logger::setMessage(get_called_class().': Strip garbage');
         $this->stripGarbage();
     }
 
@@ -395,7 +452,7 @@ class Grabber
                 $nodes = $xpath->query('//'.$tag);
 
                 if ($nodes !== false && $nodes->length > 0) {
-                    Logger::setMessage(get_called_class().' Strip tag: "'.$tag.'"');
+                    Logger::setMessage(get_called_class().': Strip tag: "'.$tag.'"');
                     foreach ($nodes as $node) {
                         $node->parentNode->removeChild($node);
                     }
@@ -407,14 +464,43 @@ class Grabber
                 $nodes = $xpath->query('//*[contains(@class, "'.$attribute.'") or contains(@id, "'.$attribute.'")]');
 
                 if ($nodes !== false && $nodes->length > 0) {
-                    Logger::setMessage(get_called_class().' Strip attribute: "'.$attribute.'"');
+                    Logger::setMessage(get_called_class().': Strip attribute: "'.$attribute.'"');
                     foreach ($nodes as $node) {
-                        $node->parentNode->removeChild($node);
+                        if ($this->shouldRemove($dom, $node)) {
+                            $node->parentNode->removeChild($node);
+                        }
                     }
                 }
             }
 
             $this->content = $dom->saveXML($dom->documentElement);
         }
+    }
+
+    /**
+     * Return false if the node should not be removed
+     *
+     * @access public
+     * @param  DomDocument  $dom
+     * @param  DomNode      $node
+     * @return boolean
+     */
+    public function shouldRemove($dom, $node)
+    {
+        $document_length = strlen($dom->textContent);
+        $node_length = strlen($node->textContent);
+
+        if ($document_length === 0) {
+            return true;
+        }
+
+        $ratio = $node_length * 100 / $document_length;
+
+        if ($ratio >= 90) {
+            Logger::setMessage(get_called_class().': Should not remove this node ('.$node->nodeName.') ratio: '.$ratio.'%');
+            return false;
+        }
+
+        return true;
     }
 }

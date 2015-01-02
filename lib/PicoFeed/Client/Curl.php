@@ -320,6 +320,8 @@ class Curl extends Client
                 throw new InvalidUrlException('Unable to resolve hostname');
             case 7:  // CURLE_COULDNT_CONNECT
                 throw new InvalidUrlException('Unable to connect to the remote host');
+            case 23: // CURLE_WRITE_ERROR
+                throw new MaxSizeException('Maximum response size exceeded');
             case 28: // CURLE_OPERATION_TIMEDOUT
                 throw new TimeoutException('Operation timeout');
             case 35: // CURLE_SSL_CONNECT_ERROR
