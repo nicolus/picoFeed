@@ -30,7 +30,8 @@ There two different ways to use this feature, define a proxy url or a callback.
 ### Define a proxy url
 
 A proxy url must be defined with a placeholder `%s`.
-The placeholder will be replaced by the image source urlencoded.
+The placeholder will be replaced by the image source url encoded (RFC 3986).
+In PHP, the url can be decoded with the function `rawurldecode()`.
 
 ```php
 $config = new Config;
@@ -55,7 +56,7 @@ $config = new Config;
 
 $config->setFilterImageProxyCallback(function ($image_url) {
     $key = hash_hmac('sha1', $image_url, 'secret');
-    return 'https://mypublicproxy/'.$key.'/'.urlencode($image_url);
+    return 'https://mypublicproxy/'.$key.'/'.rawurlencode($image_url);
 });
 ```
 

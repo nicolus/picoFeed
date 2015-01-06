@@ -389,7 +389,7 @@ class Attribute
         if ($tag === 'img' && $attribute === 'src') {
 
             if ($this->image_proxy_url) {
-                $value = sprintf($this->image_proxy_url, urlencode($value));
+                $value = sprintf($this->image_proxy_url, rawurlencode($value));
             }
             else if (is_callable($this->image_proxy_callback)) {
                 $value = call_user_func($this->image_proxy_callback, $value);

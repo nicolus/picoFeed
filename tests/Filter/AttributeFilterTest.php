@@ -64,18 +64,18 @@ class AttributeFilterTest extends PHPUnit_Framework_TestCase
         $filter->setImageProxyUrl('https://myproxy/?u=%s');
         $url = 'http://example.net/image.png';
         $this->assertTrue($filter->rewriteImageProxyUrl('img', 'src', $url));
-        $this->assertEquals('https://myproxy/?u='.urlencode('http://example.net/image.png'), $url);
+        $this->assertEquals('https://myproxy/?u='.rawurlencode('http://example.net/image.png'), $url);
 
         $filter = new Attribute(new Url('http://www.la-grange.net'));
 
         $filter->setImageProxyCallback(function ($image_url) {
             $key = hash_hmac('sha1', $image_url, 'secret');
-            return 'https://mypublicproxy/'.$key.'/'.urlencode($image_url);
+            return 'https://mypublicproxy/'.$key.'/'.rawurlencode($image_url);
         });
 
         $url = 'http://example.net/image.png';
         $this->assertTrue($filter->rewriteImageProxyUrl('img', 'src', $url));
-        $this->assertEquals('https://mypublicproxy/d9701029b054f6e178ef88fcd3c789365e52a26d/'.urlencode('http://example.net/image.png'), $url);
+        $this->assertEquals('https://mypublicproxy/d9701029b054f6e178ef88fcd3c789365e52a26d/'.rawurlencode('http://example.net/image.png'), $url);
     }
 
     public function testRewriteAbsoluteUrl()
