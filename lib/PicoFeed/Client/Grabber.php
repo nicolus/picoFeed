@@ -194,6 +194,9 @@ class Grabber
         $this->url = $url;
         $this->html = "";
         $this->encoding = "";
+
+        $this->handleFiles();
+        $this->handleStreamingVideos();
     }
 
     /**
