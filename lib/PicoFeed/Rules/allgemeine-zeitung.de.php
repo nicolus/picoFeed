@@ -1,17 +1,20 @@
 <?php
 
 return array(
-    'test_url' => 'http://www.allgemeine-zeitung.de/lokales/polizei/zweimal-totalschaden-nach-unfaellen-auf-eisglatten-fahrbahnen-bei-mainz-und-bei-bad-sobernheim-mit-baeumen-kollidiert_14904737.htm',
+    'test_url' => 'http://www.allgemeine-zeitung.de/lokales/polizei/mainz-gonsenheim-unbekannte-rauben-esso-tankstelle-in-kurt-schumacher-strasse-aus_14913147.htm',
     'body' => array(
         '//div[contains(@class, "article")][1]',
     ),
     'strip' => array(
         '//read/h1',
+		'//*[@id="t-map"]',
+        '//*[contains(@class, "modules")]',
         '//*[contains(@class, "adsense")]',
         '//*[contains(@class, "linkbox")]',
         '//*[contains(@class, "info")]',
         '//*[@class="skip"]',
         '//*[@class="funcs"]',
+		'//span[@class="nd address"]',
         '//a[contains(@href, "abo-und-services")]'
     )
 );

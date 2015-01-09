@@ -14,6 +14,10 @@ class FilterTest extends PHPUnit_Framework_TestCase
         $expected = '<html><body><h1>boo</h1></body>';
         $this->assertEquals($expected, Filter::stripHeadTags($input));
 
+        $input = file_get_contents('tests/fixtures/html4_page.html');
+        $expected = file_get_contents('tests/fixtures/html4_head_stripped_page.html');
+        $this->assertEquals($expected, Filter::stripHeadTags($input));
+
         $input = file_get_contents('tests/fixtures/html_page.html');
         $expected = file_get_contents('tests/fixtures/html_head_stripped_page.html');
         $this->assertEquals($expected, Filter::stripHeadTags($input));
