@@ -6,7 +6,8 @@ Versions
 
 - Development version: master
 - Available versions:
-    - v0.1.0 (stable)
+    - v0.1.1 (stable)
+    - v0.1.0
     - v0.0.2
     - v0.0.1
 
