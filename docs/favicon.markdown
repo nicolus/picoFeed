@@ -21,6 +21,21 @@ PicoFeed will try first to find the favicon from the meta tags and fallback to t
 
 When the HTML page is parsed, relative links and protocol relative links are converted to absolute url.
 
+Download a know favicon
+-----------------------
+It's possible to download a known favicon using the second optional parameter of Favicon::find(). The link to the favicon can be a relative or protocol relative url as well, but it has to be relative to the specified website.
+
+If the requested favicon could not be found, the HTML of the website is parsed instead, with the fallback to the `favicon.ico` located in the website's root.
+
+```php
+use PicoFeed\Reader\Favicon;
+
+$favicon = new Favicon;
+
+$icon_link = $favicon->find('https://en.wikipedia.org/','https://bits.wikimedia.org/favicon/wikipedia.ico');
+$icon_content = $favicon->getContent();
+```
+
 Get Favicon file type
 ---------------------
 

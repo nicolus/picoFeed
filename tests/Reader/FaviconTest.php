@@ -164,7 +164,7 @@ class FaviconTest extends PHPUnit_Framework_TestCase
         );
     }
 
-    public function testFind()
+    public function testFind_inMeta()
     {
         $favicon = new Favicon;
 
@@ -175,7 +175,10 @@ class FaviconTest extends PHPUnit_Framework_TestCase
         );
 
         $this->assertNotEmpty($favicon->getContent());
+    }
 
+//    public function testFind_inRootDir()
+//    {
 //        // favicon not in meta, only in website root (need example page)
 //        $favicon = new Favicon;
 //
@@ -183,14 +186,41 @@ class FaviconTest extends PHPUnit_Framework_TestCase
 //            'http://minicoders.com/favicon.ico',
 //            $favicon->find('http://minicoders.com')
 //        );
+//    }
 
-        // no icon
+    public function testFind_noIcons()
+    {
+        $favicon = new Favicon;
+
         $this->assertEquals(
             '',
             $favicon->find('http://minicoders.com')
         );
 
         $this->assertEmpty($favicon->getContent());
+    }
+
+    public function testFind_directLinkFirst()
+    {
+        $favicon = new Favicon;
+
+        $this->assertEquals(
+            'http://miniflux.net/assets/img/touch-icon-ipad.png',
+            $favicon->find('http://miniflux.net', '/assets/img/touch-icon-ipad.png')
+        );
+
+        $this->assertNotEmpty($favicon->getContent());
+    }
+
+    public function testFind_fallsBackToExtract()
+    {
+        $favicon = new Favicon;
+        $this->assertEquals(
+            'http://miniflux.net/assets/img/favicon.png',
+            $favicon->find('http://miniflux.net','/nofavicon.ico')
+        );
+
+        $this->assertNotEmpty($favicon->getContent());
     }
 
     public function testDataUri()
@@ -207,7 +237,7 @@ class FaviconTest extends PHPUnit_Framework_TestCase
         $this->assertEquals($expected, $favicon->getDataUri());
     }
 
-    public function testDataUriWithBadContentType()
+    public function testDataUri_withBadContentType()
     {
         $favicon = new Favicon;
         $this->assertNotEmpty($favicon->find('http://www.lemonde.fr/'));

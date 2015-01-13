@@ -75,6 +75,18 @@ class Atom extends Parser
     }
 
     /**
+     * Find the feed icon
+     *
+     * @access public
+     * @param  SimpleXMLElement          $xml     Feed xml
+     * @param  \PicoFeed\Parser\Feed     $feed    Feed object
+     */
+    public function findFeedIcon(SimpleXMLElement $xml, Feed $feed)
+    {
+        $feed->icon = (string) $xml->icon;
+    }
+
+    /**
      * Find the feed title
      *
      * @access public

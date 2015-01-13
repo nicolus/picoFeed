@@ -77,6 +77,18 @@ class Rss20 extends Parser
     }
 
     /**
+     * Find the feed icon
+     *
+     * @access public
+     * @param  SimpleXMLElement          $xml     Feed xml
+     * @param  \PicoFeed\Parser\Feed     $feed    Feed object
+     */
+    public function findFeedIcon(SimpleXMLElement $xml, Feed $feed)
+    {
+        $feed->icon = '';
+    }
+
+    /**
      * Find the feed title
      *
      * @access public

@@ -47,6 +47,17 @@ class AtomParserTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('http://www.bbc.co.uk/urdu/images/gel/rss_logo.gif', $feed->getLogo());
     }
 
+    public function testFeedIcon()
+    {
+        $parser = new Atom(file_get_contents('tests/fixtures/atom.xml'));
+        $feed = $parser->execute();
+        $this->assertEquals('', $feed->getIcon());
+
+        $parser = new Atom(file_get_contents('tests/fixtures/lagrange.xml'));
+        $feed = $parser->execute();
+        $this->assertEquals('http://www.la-grange.net/favicon.png', $feed->getIcon());
+    }
+
     public function testFeedUrl()
     {
         $parser = new Atom(file_get_contents('tests/fixtures/atom.xml'));

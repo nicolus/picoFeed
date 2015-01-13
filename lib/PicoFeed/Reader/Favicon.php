@@ -157,17 +157,21 @@ class Favicon
      *
      * @access public
      * @param  string    $website_link    URL
+     * @param  string    $favicon_link    optional URL
      * @return string
      */
-    public function find($website_link)
+    public function find($website_link, $favicon_link = '')
     {
         $website = new Url($website_link);
 
-        $icons = $this->extract($this->download($website->getBaseUrl('/'))->getContent());
-        $icons[] = $website->getBaseUrl('/favicon.ico');
+        if ($favicon_link !== '') {
+            $icons = array($favicon_link);
+        } else {
+            $icons = $this->extract($this->download($website->getBaseUrl('/'))->getContent());
+            $icons[] = $website->getBaseUrl('/favicon.ico');
+        }
 
         foreach ($icons as $icon_link) {
-
             $icon_link = $this->convertLink($website, new Url($icon_link));
             $resource = $this->download($icon_link);
             $this->content = $resource->getContent();
@@ -175,6 +179,8 @@ class Favicon
 
             if ($this->content !== '') {
                 return $icon_link;
+            } elseif ($favicon_link !== '') {
+                return $this->find($website_link);
             }
         }
 

@@ -75,12 +75,20 @@ class Feed
     public $language = '';
 
     /**
-     * Feed logo URL (not the same as icon)
+     * Feed logo URL
      *
      * @access public
      * @var string
      */
     public $logo = '';
+
+    /**
+     * Feed icon URL
+     *
+     * @access public
+     * @var string
+     */
+    public $icon = '';
 
     /**
      * Return feed information
@@ -138,6 +146,17 @@ class Feed
     public function getLogo()
     {
         return $this->logo;
+    }
+
+    /**
+     * Get the icon url
+     *
+     * @access public
+     * $return string
+     */
+    public function getIcon()
+    {
+        return $this->icon;
     }
 
     /**
