@@ -193,6 +193,7 @@ class Grabber
     {
         $this->url = $url;
         $this->html = "";
+        $this->content = "";
         $this->encoding = "";
 
         $this->handleFiles();
