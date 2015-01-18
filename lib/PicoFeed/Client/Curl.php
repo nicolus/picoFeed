@@ -233,7 +233,7 @@ class Curl extends Client
     {
         $this->executeContext();
 
-        list($status, $headers) = $this->parseHeaders(explode("\r\n", $this->headers[$this->headers_counter - 1]));
+        list($status, $headers) = HttpHeaders::parse(explode("\r\n", $this->headers[$this->headers_counter - 1]));
 
         // When restricted with open_basedir
         if ($this->needToHandleRedirection($follow_location, $status)) {

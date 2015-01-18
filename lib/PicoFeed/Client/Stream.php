@@ -117,7 +117,7 @@ class Stream extends Client
             throw new TimeoutException('Operation timeout');
         }
 
-        list($status, $headers) = $this->parseHeaders($metadata['wrapper_data']);
+        list($status, $headers) = HttpHeaders::parse($metadata['wrapper_data']);
 
         fclose($stream);
 

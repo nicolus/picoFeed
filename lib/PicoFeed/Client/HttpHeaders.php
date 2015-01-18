@@ -3,11 +3,13 @@
 namespace PicoFeed\Client;
 
 use ArrayAccess;
+use PicoFeed\Logging\Logger;
 
 /**
- * Class to handle http headers case insensitivity
+ * Class to handle HTTP headers case insensitivity
  *
  * @author  Bernhard Posselt
+ * @author  Frederic Guillot
  * @package Client
  */
 class HttpHeaders implements ArrayAccess
@@ -39,5 +41,39 @@ class HttpHeaders implements ArrayAccess
     public function offsetUnset($offset)
     {
         unset($this->headers[strtolower($offset)]);
+    }
+
+    /**
+     * Parse HTTP headers
+     *
+     * @static
+     * @access public
+     * @param  array   $lines   List of headers
+     * @return array
+     */
+    public static function parse(array $lines)
+    {
+        $status = 200;
+        $headers = array();
+
+        foreach ($lines as $line) {
+
+            if (strpos($line, 'HTTP') === 0) {
+                $status = (int) substr($line, 9, 3);
+            }
+            else if (strpos($line, ':') !== false) {
+
+                @list($name, $value) = explode(': ', $line);
+                if ($value) $headers[trim($name)] = trim($value);
+            }
+        }
+
+        Logger::setMessage(get_called_class().' HTTP status code: '.$status);
+
+        foreach ($headers as $name => $value) {
+            Logger::setMessage(get_called_class().' HTTP header: '.$name.' => '.$value);
+        }
+
+        return array($status, new self($headers));
     }
 }

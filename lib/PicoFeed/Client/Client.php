@@ -336,39 +336,6 @@ abstract class Client
     }
 
     /**
-     * Parse HTTP headers
-     *
-     * @access public
-     * @param  array   $lines   List of headers
-     * @return array
-     */
-    public function parseHeaders(array $lines)
-    {
-        $status = 200;
-        $headers = array();
-
-        foreach ($lines as $line) {
-
-            if (strpos($line, 'HTTP') === 0) {
-                $status = (int) substr($line, 9, 3);
-            }
-            else if (strpos($line, ':') !== false) {
-
-                @list($name, $value) = explode(': ', $line);
-                if ($value) $headers[trim($name)] = trim($value);
-            }
-        }
-
-        Logger::setMessage(get_called_class().' HTTP status code: '.$status);
-
-        foreach ($headers as $name => $value) {
-            Logger::setMessage(get_called_class().' HTTP header: '.$name.' => '.$value);
-        }
-
-        return array($status, new HttpHeaders($headers));
-    }
-
-    /**
      * Set the Last-Modified HTTP header
      *
      * @access public
