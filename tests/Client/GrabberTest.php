@@ -36,6 +36,14 @@ class GrabberTest extends PHPUnit_Framework_TestCase
         $this->assertTrue(is_array($grabber->getRules()));
     }
 
+    // 01net.com - https://github.com/fguillot/miniflux/issues/267
+    public function testGetRules_afterRedirection()
+    {
+        $grabber = new Grabber('http://rss.feedsportal.com/c/629/f/502199/s/422f8c8a/sc/44/l/0L0S0A1net0N0Ceditorial0C640A3130Cces0E20A150Eimprimer0Eune0Epizza0Eet0Edes0Ebiscuits0Evideo0C0T0Dxtor0FRSS0E16/story01.htm');
+        $grabber->download();
+        $this->assertTrue(is_array($grabber->getRules()));
+    }
+
     public function testGrabContent()
     {
         $grabber = new Grabber('http://www.egscomics.com/index.php?id=1690');

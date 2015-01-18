@@ -15,14 +15,21 @@ class ReaderTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('https://google.com', $reader->prependScheme('https://google.com'));
     }
 
-    public function testDownload()
+    public function testDownload_withHTTP()
     {
         $reader = new Reader;
         $feed = $reader->download('http://wordpress.org/news/feed/')->getContent();
         $this->assertNotEmpty($feed);
     }
 
-    public function testDownloadWithCache()
+    public function testDownload_withHTTPS()
+    {
+        $reader = new Reader;
+        $feed = $reader->download('https://wordpress.org/news/feed/')->getContent();
+        $this->assertNotEmpty($feed);
+    }
+
+    public function testDownload_withCache()
     {
         $reader = new Reader;
         $resource = $reader->download('http://linuxfr.org/robots.txt');
@@ -78,30 +85,129 @@ class ReaderTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('Rss20', $reader->detectFormat($content));
     }
 
-    public function testFind()
+    public function testFind_rssFeed()
     {
         $reader = new Reader;
-        $resource = $reader->download('http://miniflux.net/');
-        $feeds = $reader->find($resource->getUrl(), $resource->getContent());
-        $this->assertTrue(is_array($feeds));
-        $this->assertNotEmpty($feeds);
-        $this->assertEquals('http://miniflux.net/feed', $feeds[0]);
 
-        $reader = new Reader;
-        $resource = $reader->download('http://www.bbc.com/news/');
-        $feeds = $reader->find($resource->getUrl(), $resource->getContent());
-        $this->assertTrue(is_array($feeds));
-        $this->assertNotEmpty($feeds);
-        $this->assertEquals('http://feeds.bbci.co.uk/news/rss.xml', $feeds[0]);
+        $html = '<!DOCTYPE html><html><head>
+                <link type="application/rss+xml" href="http://miniflux.net/feed">
+                </head><body><p>boo</p></body></html>';
 
+        $feeds = $reader->find('http://miniflux.net/', $html);
+        $this->assertEquals(array('http://miniflux.net/feed'), $feeds);
+    }
+
+    public function testFind_atomFeed()
+    {
         $reader = new Reader;
-        $resource = $reader->download('http://www.cnn.com/services/rss/');
-        $feeds = $reader->find($resource->getUrl(), $resource->getContent());
-        $this->assertTrue(is_array($feeds));
-        $this->assertNotEmpty($feeds);
-        $this->assertTrue(count($feeds) > 1);
-        $this->assertEquals('http://rss.cnn.com/rss/cnn_topstories.rss', $feeds[0]);
-        $this->assertEquals('http://rss.cnn.com/rss/cnn_world.rss', $feeds[1]);
+
+        $html = '<!DOCTYPE html><html><head>
+                <link type="application/atom+xml" href="http://miniflux.net/feed">
+                </head><body><p>boo</p></body></html>';
+
+        $feeds = $reader->find('http://miniflux.net/', $html);
+        $this->assertEquals(array('http://miniflux.net/feed'), $feeds);
+    }
+
+    public function testFind_feedNotInHead()
+    {
+        $reader = new Reader;
+
+        $html = '<!DOCTYPE html><html><head></head>
+                <body>
+                <link type="application/atom+xml" href="http://miniflux.net/feed">
+                <p>boo</p></body></html>';
+
+        $feeds = $reader->find('http://miniflux.net/', $html);
+        $this->assertEquals(array('http://miniflux.net/feed'), $feeds);
+    }
+
+    public function testFind_noFeedPresent()
+    {
+        $reader = new Reader;
+
+        $html = '<!DOCTYPE html><html><head>
+                </head><body><p>boo</p></body></html>';
+
+        $feeds = $reader->find('http://miniflux.net/', $html);
+        $this->assertEquals(array(), $feeds);
+    }
+
+    public function testFind_ignoreUnknownType()
+    {
+        $reader = new Reader;
+
+        $html = '<!DOCTYPE html><html><head>
+                <link type="application/flux+xml" href="http://miniflux.net/feed">
+                </head><body><p>boo</p></body></html>';
+
+        $feeds = $reader->find('http://miniflux.net/', $html);
+        $this->assertEquals(array(), $feeds);
+    }
+
+    public function testFind_ignoreTypeInOtherAttribute()
+    {
+        $reader = new Reader;
+
+        $html = '<!DOCTYPE html><html><head>
+                <link rel="application/rss+xml" href="http://miniflux.net/feed">
+                </head><body><p>boo</p></body></html>';
+
+        $feeds = $reader->find('http://miniflux.net/', $html);
+        $this->assertEquals(array(), $feeds);
+    }
+
+    public function testFind_withOtherAttributesPresent()
+    {
+        $reader = new Reader;
+
+        $html = '<!DOCTYPE html><html><head>
+                <link rel="alternate" type="application/rss+xml" title="RSS" href="http://miniflux.net/feed">
+                </head><body><p>boo</p></body></html>';
+
+        $feeds = $reader->find('http://miniflux.net/', $html);
+        $this->assertEquals(array('http://miniflux.net/feed'), $feeds);
+    }
+
+    public function testFind_multipleFeeds()
+    {
+        $reader = new Reader;
+
+        $html = '<!DOCTYPE html><html><head>
+                <link rel="alternate" type="application/rss+xml" title="CNN International: Top Stories" href="http://rss.cnn.com/rss/edition.rss"/>
+                <link rel="alternate" type="application/rss+xml" title="Connect The World" href="http://rss.cnn.com/rss/edition_connecttheworld.rss"/>
+                <link rel="alternate" type="application/rss+xml" title="World Sport" href="http://rss.cnn.com/rss/edition_worldsportblog.rss"/>
+                </head><body><p>boo</p></body></html>';
+
+        $feeds = $reader->find('http://www.cnn.com/services/rss/', $html);
+        $this->assertEquals(
+                array(
+                    'http://rss.cnn.com/rss/edition.rss',
+                    'http://rss.cnn.com/rss/edition_connecttheworld.rss',
+                    'http://rss.cnn.com/rss/edition_worldsportblog.rss'
+                ),
+                $feeds
+        );
+    }
+
+    public function testFind_withInvalidHTML()
+    {
+        $reader = new Reader;
+
+        $html = '!DOCTYPE html html head
+                link type="application/rss+xml" href="http://miniflux.net/feed"
+                /head body /p boo /p body /html';
+
+        $feeds = $reader->find('http://miniflux.net/', '');
+        $this->assertEquals(array(), $feeds);
+    }
+
+    public function testFind_withHtmlParamEmptyString()
+    {
+        $reader = new Reader;
+
+        $feeds = $reader->find('http://miniflux.net/', '');
+        $this->assertEquals(array(), $feeds);
     }
 
     public function testDiscover()

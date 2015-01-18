@@ -149,6 +149,7 @@ abstract class Parser
         $this->findFeedId($xml, $feed);
         $this->findFeedDate($xml, $feed);
         $this->findFeedLogo($xml, $feed);
+        $this->findFeedIcon($xml, $feed);
 
         foreach ($this->getItemsTree($xml) as $entry) {
 
@@ -548,6 +549,15 @@ abstract class Parser
      * @param  \PicoFeed\Parser\Feed     $feed    Feed object
      */
     public abstract function findFeedLogo(SimpleXMLElement $xml, Feed $feed);
+
+    /**
+     * Find the feed icon
+     *
+     * @access public
+     * @param  SimpleXMLElement          $xml     Feed xml
+     * @param  \PicoFeed\Parser\Feed     $feed    Feed object
+     */
+    public abstract function findFeedIcon(SimpleXMLElement $xml, Feed $feed);
 
     /**
      * Get the path to the items XML tree
