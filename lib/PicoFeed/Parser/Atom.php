@@ -131,7 +131,7 @@ class Atom extends Parser
      */
     public function findFeedDate(SimpleXMLElement $xml, Feed $feed)
     {
-        $feed->date = $this->parseDate((string) $xml->updated);
+        $feed->date = $this->date->getTimestamp((string) $xml->updated);
     }
 
     /**
@@ -143,8 +143,8 @@ class Atom extends Parser
      */
     public function findItemDate(SimpleXMLElement $entry, Item $item)
     {
-        $published = isset($entry->published) ? $this->parseDate((string) $entry->published) : 0;
-        $updated = isset($entry->updated) ? $this->parseDate((string) $entry->updated) : 0;
+        $published = isset($entry->published) ? $this->date->getTimestamp((string) $entry->published) : 0;
+        $updated = isset($entry->updated) ? $this->date->getTimestamp((string) $entry->updated) : 0;
 
         $item->date = max($published, $updated) ?: time();
     }
