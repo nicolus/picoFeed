@@ -4,7 +4,23 @@ Debugging
 Logging
 -------
 
-PicoFeed log in memory the execution flow, if a feed doesn't work correctly it's easy to see what is wrong.
+PicoFeed can log **in memory** the execution flow, if a feed doesn't work correctly it's easy to see what is wrong.
+
+### Enable/disable logging
+
+The logging is **disabled by default** to avoid unnecessary memory usage.
+
+Enable logging:
+
+```php
+use PicoFeed\Logging\Logger;
+
+Logger::enable();
+
+// or change the flag value
+
+Logger::$enable = true;
+```
 
 ### Reading messages
 

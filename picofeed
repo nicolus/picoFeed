@@ -8,6 +8,8 @@ use PicoFeed\Reader\Reader;
 use PicoFeed\Logging\Logger;
 use PicoFeed\PicoFeedException;
 
+Logger::enable();
+
 function get_feed($url, $disable_filtering = false)
 {
     try {

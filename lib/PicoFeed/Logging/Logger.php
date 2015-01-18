@@ -32,6 +32,26 @@ class Logger
     private static $timezone = 'UTC';
 
     /**
+     * Enable or disable logging
+     *
+     * @static
+     * @access public
+     * @var boolean
+     */
+    public static $enable = false;
+
+    /**
+     * Enable logging
+     *
+     * @static
+     * @access public
+     */
+    public static function enable()
+    {
+        self::$enable = true;
+    }
+
+    /**
      * Add a new message
      *
      * @static
@@ -40,9 +60,10 @@ class Logger
      */
     public static function setMessage($message)
     {
-        $date = new DateTime('now', new DateTimeZone(self::$timezone));
-
-        self::$messages[] = '['.$date->format('Y-m-d H:i:s').'] '.$message;
+        if (self::$enable) {
+            $date = new DateTime('now', new DateTimeZone(self::$timezone));
+            self::$messages[] = '['.$date->format('Y-m-d H:i:s').'] '.$message;
+        }
     }
 
     /**
