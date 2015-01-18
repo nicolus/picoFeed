@@ -172,6 +172,35 @@ class Grabber
     }
 
     /**
+     * Get URL to download.
+     *
+     * @access  public
+     * @return  string
+     */
+    public function getUrl ()
+    {
+        return $this->url;
+    }
+
+    /**
+     * Set URL to download and reset object to use for another grab.
+     *
+     * @access  public
+     * @param   string  $url    URL
+     * @return  string
+     */
+    public function setUrl ($url)
+    {
+        $this->url = $url;
+        $this->html = "";
+        $this->content = "";
+        $this->encoding = "";
+
+        $this->handleFiles();
+        $this->handleStreamingVideos();
+    }
+
+    /**
      * Get relevant content
      *
      * @access public
@@ -284,7 +313,7 @@ class Grabber
      */
     public function download()
     {
-        if (! $this->skip_processing) {
+        if (! $this->skip_processing && $this->url != '') {
 
             try {
 
