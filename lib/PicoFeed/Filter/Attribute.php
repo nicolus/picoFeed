@@ -376,7 +376,7 @@ class Attribute
     }
 
     /**
-     * Rewrite image url to use with a proxy
+     * Rewrite image url to use with a proxy (HTTPS resource are ignored)
      *
      * @access public
      * @param  string    $tag           Tag name
@@ -386,7 +386,7 @@ class Attribute
      */
     public function rewriteImageProxyUrl($tag, $attribute, &$value)
     {
-        if ($tag === 'img' && $attribute === 'src') {
+        if ($tag === 'img' && $attribute === 'src' && strpos($value, 'http:') === 0) {
 
             if ($this->image_proxy_url) {
                 $value = sprintf($this->image_proxy_url, rawurlencode($value));
