@@ -177,7 +177,7 @@ class Grabber
      * @access  public
      * @return  string
      */
-    public function getUrl ()
+    public function getUrl()
     {
         return $this->url;
     }
@@ -189,7 +189,7 @@ class Grabber
      * @param   string  $url    URL
      * @return  string
      */
-    public function setUrl ($url)
+    public function setUrl($url)
     {
         $this->url = $url;
         $this->html = "";
