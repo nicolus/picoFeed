@@ -172,7 +172,7 @@ class Url
         $path = $this->isRelativePath() ? '/' : '';
         $path .= substr($current_path, -1) === '/' ? $current_path : dirname($current_path);
 
-        return str_replace('//', '/', $path.'/');
+        return preg_replace('/\\\\\/|\/\//', '/', $path.'/');
     }
 
     /**
