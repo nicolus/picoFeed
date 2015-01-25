@@ -172,7 +172,7 @@ class Favicon
         }
 
         foreach ($icons as $icon_link) {
-            $icon_link = $this->convertLink($website, new Url($icon_link));
+            $icon_link = Url::resolve($icon_link, $website);
             $resource = $this->download($icon_link);
             $this->content = $resource->getContent();
             $this->content_type = $resource->getContentType();
@@ -185,28 +185,6 @@ class Favicon
         }
 
         return '';
-    }
-
-    /**
-     * Convert icon links to absolute url
-     *
-     * @access public
-     * @param  \PicoFeed\Client\Url      $website     Website url
-     * @param  \PicoFeed\Client\Url      $icon        Icon url
-     * @return string
-     */
-    public function convertLink(Url $website, Url $icon)
-    {
-        $base_url = '';
-
-        if ($icon->isRelativeUrl()) {
-            $base_url = $website->getBaseUrl();
-        }
-        else if ($icon->isProtocolRelative()) {
-            $icon->setScheme($website->getScheme());
-        }
-
-        return $icon->getAbsoluteUrl($base_url);
     }
 
     /**

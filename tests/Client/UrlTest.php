@@ -217,39 +217,76 @@ AAAFCAYAAACNbyblAAAAHElEQVQI12P4//8/w38GIAXDIBKE0DHxgljNBAAO
 
     public function testResolve()
     {
+        // relative link
         $this->assertEquals(
-            'http://www.la-grange.net/2014/08/03/4668-noisettes',
-            Url::resolve('/2014/08/03/4668-noisettes', 'http://www.la-grange.net')
+            'http://miniflux.net/assets/img/favicon.png',
+            Url::resolve('assets/img/favicon.png', 'http://miniflux.net')
         );
 
+        // relative link + HTTPS
         $this->assertEquals(
-            'http://www.la-grange.net/2014/08/03/4668-noisettes',
-            Url::resolve('/2014/08/03/4668-noisettes', 'http://www.la-grange.net/')
+            'https://miniflux.net/assets/img/favicon.png',
+            Url::resolve('assets/img/favicon.png', 'https://miniflux.net')
         );
 
+        // absolute link
         $this->assertEquals(
-            'http://www.la-grange.net/2014/08/03/4668-noisettes',
-            Url::resolve('/2014/08/03/4668-noisettes', 'http://www.la-grange.net/feed.atom')
+            'http://miniflux.net/assets/img/favicon.png',
+            Url::resolve('/assets/img/favicon.png', 'http://miniflux.net')
         );
 
+        // absolute link + HTTPS
         $this->assertEquals(
-            'http://what-if.xkcd.com/imgs/a/112/driving.png',
-            Url::resolve('/imgs/a/112/driving.png', 'http://what-if.xkcd.com/feed.atom')
+            'https://miniflux.net/assets/img/favicon.png',
+            Url::resolve('/assets/img/favicon.png', 'https://miniflux.net')
         );
 
+        // Protocol relative link
         $this->assertEquals(
-            'http://website/subfolder/img/foo.png',
-            Url::resolve('img/foo.png', 'http://website/subfolder/')
+            'http://google.com/assets/img/favicon.png',
+            Url::resolve('//google.com/assets/img/favicon.png', 'http://miniflux.net')
         );
 
+        // Protocol relative link + HTTPS
         $this->assertEquals(
-            'http://website/img/foo.png',
-            Url::resolve('/img/foo.png', 'http://website/subfolder/')
+            'https://google.com/assets/img/favicon.png',
+            Url::resolve('//google.com/assets/img/favicon.png', 'https://miniflux.net')
         );
 
+        // URL same fqdn
         $this->assertEquals(
-            'http://www.lofibucket.com/articles/img/quakescope.jpg',
-            Url::resolve('img/quakescope.jpg', 'http://www.lofibucket.com/articles/oscilloscope_quake.html')
+            'http://miniflux.net/assets/img/favicon.png',
+            Url::resolve('http://miniflux.net/assets/img/favicon.png', 'https://miniflux.net')
+        );
+
+        // URL different fqdn
+        $this->assertEquals(
+            'https://www.google.com/assets/img/favicon.png',
+            Url::resolve('https://www.google.com/assets/img/favicon.png', 'https://miniflux.net')
+        );
+
+        // HTTPS URL
+        $this->assertEquals(
+            'https://miniflux.net/assets/img/favicon.png',
+            Url::resolve('https://miniflux.net/assets/img/favicon.png', 'https://miniflux.net')
+        );
+
+        // empty string on missing website parameter
+        $this->assertEquals(
+            '',
+            Url::resolve('favicon.png', '')
+        );
+
+        // website only on missing icon parameter
+        $this->assertEquals(
+            'https://miniflux.net/',
+            Url::resolve('', 'https://miniflux.net')
+        );
+
+        // empty string on missing website and icon parameter
+        $this->assertEquals(
+            '',
+            Url::resolve('', '')
         );
     }
 }
