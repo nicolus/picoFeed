@@ -30,12 +30,14 @@ class StreamTest extends PHPUnit_Framework_TestCase
     public function testRedirect()
     {
         $client = new Stream;
-        $client->setUrl('http://github.com/fguillot/picoFeed');
+        $client->setUrl('http://www.miniflux.net/index.html');
         $result = $client->doRequest();
 
+        $this->assertTrue(is_array($result));
         $this->assertEquals(200, $result['status']);
-        $this->assertEquals('<!DOCTYPE html>', substr(trim($result['body']), 0, 15));
+        $this->assertEquals('<!DOCTYPE', substr($result['body'], 0, 9));
         $this->assertEquals('text/html; charset=utf-8', $result['headers']['Content-Type']);
+        $this->assertEquals('http://miniflux.net/', $client->getUrl());
     }
 
     /**

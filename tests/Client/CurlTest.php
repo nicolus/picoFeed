@@ -29,6 +29,7 @@ class CurlTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(200, $result['status']);
         $this->assertEquals('<!DOCTYPE', substr($result['body'], 0, 9));
         $this->assertEquals('text/html; charset=utf-8', $result['headers']['Content-Type']);
+        $this->assertEquals('http://miniflux.net/', $client->getUrl());
     }
 
     /**
