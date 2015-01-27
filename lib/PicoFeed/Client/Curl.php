@@ -13,38 +13,6 @@ use PicoFeed\Logging\Logger;
 class Curl extends Client
 {
     /**
-     * HTTP response body
-     *
-     * @access private
-     * @var string
-     */
-    private $body = '';
-
-    /**
-     * Body size
-     *
-     * @access private
-     * @var integer
-     */
-    private $body_length = 0;
-
-    /**
-     * HTTP response headers
-     *
-     * @access private
-     * @var array
-     */
-    private $headers = array();
-
-    /**
-     * Counter on the number of header received
-     *
-     * @access private
-     * @var integer
-     */
-    private $headers_counter = 0;
-
-    /**
      * cURL callback to read the HTTP body
      *
      * If the function return -1, curl stop to read the HTTP response

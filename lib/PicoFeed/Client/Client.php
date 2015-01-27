@@ -158,13 +158,46 @@ abstract class Client
     protected $status_code = 0;
 
     /**
+     * HTTP response body
+     *
+     * @access protected
+     * @var string
+     */
+    protected $body = '';
+
+    /**
+     * Body size
+     *
+     * @access protected
+     * @var integer
+     */
+    protected $body_length = 0;
+
+    /**
+     * HTTP response headers
+     *
+     * @access protected
+     * @var array
+     */
+    protected $headers = array();
+
+    /**
+     * Counter on the number of header received
+     *
+     * @access protected
+     * @var integer
+     */
+    protected $headers_counter = 0;
+
+    /**
      * Do the HTTP request
      *
      * @abstract
      * @access public
+     * @param  bool      $follow_location    Flag used when there is an open_basedir restriction
      * @return array
      */
-    abstract public function doRequest();
+    abstract public function doRequest($follow_location = true);
 
     /**
      * Get client instance: curl or stream driver
