@@ -159,6 +159,7 @@ class Encoding
                 return $input;
             case 'windows-1251':
             case 'windows-1255':
+            case 'windows-1256':
                 return iconv($encoding, 'UTF-8//TRANSLIT', $input);
             default:
                 return self::toUTF8($input);
