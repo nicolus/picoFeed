@@ -93,7 +93,7 @@ class Rss20ParserTest extends PHPUnit_Framework_TestCase
 
         $parser = new Rss20(file_get_contents('tests/fixtures/fulltextrss.xml'));
         $feed = $parser->execute();
-        $this->assertEquals(time(), $feed->getDate(), 1);
+        $this->assertEquals(time(), $feed->getDate(), '', 1);
     }
 
     public function testFeedLanguage()
