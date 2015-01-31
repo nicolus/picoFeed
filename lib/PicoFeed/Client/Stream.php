@@ -89,8 +89,7 @@ class Stream extends Client
      * Do the HTTP request
      *
      * @access public
-     * @param  bool    $follow_location    Flag used when there is an open_basedir restriction
-     * @return array                       HTTP response ['body' => ..., 'status' => ..., 'headers' => ...]
+     * @return array   HTTP response ['body' => ..., 'status' => ..., 'headers' => ...]
      */
     public function doRequest($follow_location = false)
     {
