@@ -262,48 +262,6 @@ abstract class Client
         }
     }
 
-     /**
-     * Handle manually redirections when there is an open base dir restriction
-     *
-     * @access private
-     * @param  string     $location       Redirected URL
-     * @return array
-     */
-    public function handleRedirection($location)
-    {
-        $nb_redirects = 0;
-        $result = array();
-        $this->url = Url::resolve($location, $this->url);
-        $this->body = '';
-        $this->body_length = 0;
-        $this->headers = array();
-        $this->headers_counter = 0;
-
-        while (true) {
-
-            $nb_redirects++;
-
-            if ($nb_redirects >= $this->max_redirects) {
-                throw new MaxRedirectException('Maximum number of redirections reached');
-            }
-
-            $result = $this->doRequest(false);
-
-            if ($result['status'] == 301 || $result['status'] == 302) {
-                $this->url = $result['headers']['Location'];
-                $this->body = '';
-                $this->body_length = 0;
-                $this->headers = array();
-                $this->headers_counter = 0;
-            }
-            else {
-                break;
-            }
-        }
-
-        return $result;
-    }
-
     /**
      * Check if a request has been modified according to the parameters
      *

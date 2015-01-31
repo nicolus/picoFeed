@@ -61,7 +61,7 @@ class Stream extends Client
                 'method' => 'GET',
                 'protocol_version' => 1.1,
                 'timeout' => $this->timeout,
-                'follow_location' => 0,
+                'max_redirects' => $this->max_redirects,
             )
         );
 
@@ -91,7 +91,7 @@ class Stream extends Client
      * @access public
      * @return array   HTTP response ['body' => ..., 'status' => ..., 'headers' => ...]
      */
-    public function doRequest($follow_location = false)
+    public function doRequest()
     {
         // Create context
         $context = stream_context_create($this->prepareContext());
@@ -120,12 +120,6 @@ class Stream extends Client
         list($status, $headers) = HttpHeaders::parse($metadata['wrapper_data']);
 
         fclose($stream);
-
-        // Do redirect manual to get only the headers of the last request and
-        // the final url
-        if ($status == 301 || $status == 302) {
-            return $this->handleRedirection($headers['Location']);
-        }
 
         return array(
             'status' => $status,
