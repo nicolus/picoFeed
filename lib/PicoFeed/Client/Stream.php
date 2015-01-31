@@ -49,6 +49,23 @@ class Stream extends Client
     }
 
     /**
+     * Construct the final URL from location headers
+     *
+     * @access private
+     * @param  array $headers List of HTTP response header
+     */
+    private function setEffectiveUrl($headers)
+    {
+        foreach($headers as $header) {
+            if (stripos($header, 'Location') === 0) {
+                list($name, $value) = explode(': ', $header);
+
+                $this->url = Url::resolve($value, $this->url);
+            }
+        }
+    }
+
+    /**
      * Prepare stream context
      *
      * @access private
@@ -113,13 +130,15 @@ class Stream extends Client
         // Get HTTP headers response
         $metadata = stream_get_meta_data($stream);
 
+        fclose($stream);
+
         if ($metadata['timed_out']) {
             throw new TimeoutException('Operation timeout');
         }
 
-        list($status, $headers) = HttpHeaders::parse($metadata['wrapper_data']);
+        $this->setEffectiveUrl($metadata['wrapper_data']);
 
-        fclose($stream);
+        list($status, $headers) = HttpHeaders::parse($metadata['wrapper_data']);
 
         return array(
             'status' => $status,

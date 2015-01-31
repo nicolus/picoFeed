@@ -271,7 +271,7 @@ class Curl extends Client
     {
         $nb_redirects = 0;
         $result = array();
-        $this->url = $location;
+        $this->url = Url::resolve($location, $this->url);
         $this->body = '';
         $this->body_length = 0;
         $this->headers = array();
@@ -288,7 +288,7 @@ class Curl extends Client
             $result = $this->doRequest(false);
 
             if ($result['status'] == 301 || $result['status'] == 302) {
-                $this->url = $result['headers']['Location'];
+                $this->url = Url::resolve($result['headers']['Location'], $this->url);
                 $this->body = '';
                 $this->body_length = 0;
                 $this->headers = array();
