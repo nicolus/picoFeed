@@ -25,7 +25,9 @@ class Stream extends Client
             'User-Agent: '.$this->user_agent,
         );
 
-        if (function_exists('gzdecode')) {
+        // disable compression in passthrough mode. It could result in double
+        // compressed content which isn't decodeable by browsers
+        if (function_exists('gzdecode') && ! $this->isPassthroughEnabled()) {
             $headers[] = 'Accept-Encoding: gzip';
         }
 
@@ -110,6 +112,8 @@ class Stream extends Client
      */
     public function doRequest()
     {
+        $body = '';
+
         // Create context
         $context = stream_context_create($this->prepareContext());
 
@@ -119,26 +123,36 @@ class Stream extends Client
             throw new InvalidUrlException('Unable to establish a connection');
         }
 
-        // Get the entire body until the max size
-        $body = stream_get_contents($stream, $this->max_body_size + 1);
-
-        // If the body size is too large abort everything
-        if (strlen($body) > $this->max_body_size) {
-            throw new MaxSizeException('Content size too large');
-        }
-
         // Get HTTP headers response
         $metadata = stream_get_meta_data($stream);
+        list($status, $headers) = HttpHeaders::parse($metadata['wrapper_data']);
+
+        if ($this->isPassthroughEnabled()) {
+            header(':', true, $status);
+
+            if (isset($headers['Content-Type'])) {
+                header('Content-Type: '.$headers['Content-Type']);
+            }
+
+            fpassthru($stream);
+        }
+        else {
+            // Get the entire body until the max size
+            $body = stream_get_contents($stream, $this->max_body_size + 1);
+
+            // If the body size is too large abort everything
+            if (strlen($body) > $this->max_body_size) {
+                throw new MaxSizeException('Content size too large');
+            }
+
+            if ($metadata['timed_out']) {
+                throw new TimeoutException('Operation timeout');
+            }
+        }
 
         fclose($stream);
 
-        if ($metadata['timed_out']) {
-            throw new TimeoutException('Operation timeout');
-        }
-
         $this->setEffectiveUrl($metadata['wrapper_data']);
-
-        list($status, $headers) = HttpHeaders::parse($metadata['wrapper_data']);
 
         return array(
             'status' => $status,

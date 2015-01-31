@@ -158,6 +158,14 @@ abstract class Client
     protected $status_code = 0;
 
     /**
+     * Enables direct passthrough to requesting client
+     *
+     * @access protected
+     * @var bool
+     */
+    protected $passthrough = false;
+
+    /**
      * Do the HTTP request
      *
      * @abstract
@@ -463,6 +471,17 @@ abstract class Client
     }
 
     /**
+     * return true if passthrough mode is enabled
+     *
+     * @access public
+     * @return bool
+     */
+    public function isPassthroughEnabled()
+    {
+        return $this->passthrough;
+    }
+
+    /**
      * Set connection timeout
      *
      * @access public
@@ -589,6 +608,30 @@ abstract class Client
     public function setPassword($password)
     {
         $this->password = $password ?: $this->password;
+        return $this;
+    }
+
+    /**
+     * enable the passthrough mode
+     *
+     * @access public
+     * @return \PicoFeed\Client\Client
+     */
+    public function enablePassthroughMode()
+    {
+        $this->passthrough = true;
+        return $this;
+    }
+
+    /**
+     * disable the passthrough mode
+     *
+     * @access public
+     * @return \PicoFeed\Client\Client
+     */
+    public function disablePassthroughMode()
+    {
+        $this->passthrough = false;
         return $this;
     }
 

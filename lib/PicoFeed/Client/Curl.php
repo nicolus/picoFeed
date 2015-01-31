@@ -96,6 +96,44 @@ class Curl extends Client
     }
 
     /**
+     * cURL callback to passthrough the HTTP status header to the client
+     *
+     * @access public
+     * @param  resource  $ch       cURL handler
+     * @param  string    $buffer   Header line
+     * @return integer   Length of the buffer
+     */
+    public function passthroughHeaders($ch, $buffer)
+    {
+        list($status, $headers) = HttpHeaders::parse(array($buffer));
+
+        if ($status !== 0) {
+            header(':', true, $status);
+        }
+        elseif (isset($headers['Content-Type'])) {
+            header($buffer);
+        }
+
+        return $this->readHeaders($ch, $buffer);
+    }
+
+    /**
+     * cURL callback to passthrough the HTTP body to the client
+     *
+     * If the function return -1, curl stop to read the HTTP response
+     *
+     * @access public
+     * @param  resource  $ch       cURL handler
+     * @param  string    $buffer   Chunk of data
+     * @return integer   Length of the buffer
+     */
+    public function passthroughBody($ch, $buffer)
+    {
+        echo $buffer;
+        return strlen($buffer);
+    }
+
+    /**
      * Prepare HTTP headers
      *
      * @access private
@@ -163,6 +201,29 @@ class Curl extends Client
     }
 
     /**
+     * Set write/header functions
+     *
+     * @access private
+     * @return resource $ch
+     */
+    private function prepareDownloadMode($ch)
+    {
+        $write_function = 'readBody';
+        $header_function = 'readHeaders';
+
+        if ($this->isPassthroughEnabled()) {
+            $write_function = 'passthroughBody';
+            $header_function = 'passthroughHeaders';
+
+        }
+
+        curl_setopt($ch, CURLOPT_WRITEFUNCTION, array($this, $write_function));
+        curl_setopt($ch, CURLOPT_HEADERFUNCTION, array($this, $header_function));
+
+        return $ch;
+    }
+
+    /**
      * Prepare curl context
      *
      * @access private
@@ -179,12 +240,11 @@ class Curl extends Client
         curl_setopt($ch, CURLOPT_FOLLOWLOCATION, ini_get('open_basedir') === '');
         curl_setopt($ch, CURLOPT_MAXREDIRS, $this->max_redirects);
         curl_setopt($ch, CURLOPT_ENCODING, '');
-        curl_setopt($ch, CURLOPT_WRITEFUNCTION, array($this, 'readBody'));
-        curl_setopt($ch, CURLOPT_HEADERFUNCTION, array($this, 'readHeaders'));
         curl_setopt($ch, CURLOPT_COOKIEJAR, 'php://memory');
         curl_setopt($ch, CURLOPT_COOKIEFILE, 'php://memory');
         curl_setopt($ch, CURLOPT_SSLVERSION, 1); // Enforce TLS v1
 
+        $ch = $this->prepareDownloadMode($ch);
         $ch = $this->prepareProxyContext($ch);
         $ch = $this->prepareAuthContext($ch);
 
