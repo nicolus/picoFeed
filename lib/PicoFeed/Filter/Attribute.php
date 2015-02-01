@@ -29,6 +29,14 @@ class Attribute
     private $image_proxy_callback = null;
 
     /**
+     * limits the image proxy usage to this protocol
+     *
+     * @access private
+     * @var string
+     */
+    private $image_proxy_limit_protocol = '';
+
+    /**
      * Tags and attribute whitelist
      *
      * @access private
@@ -273,8 +281,8 @@ class Attribute
      *
      * @access public
      * @param  string    $tag           Tag name
-     * @param  string    $attribute     Atttribute name
-     * @param  string    $value         Atttribute value
+     * @param  string    $attribute     Attribute name
+     * @param  string    $value         Attribute value
      * @return boolean
      */
     public function filterEmptyAttribute($tag, $attribute, $value)
@@ -287,8 +295,8 @@ class Attribute
      *
      * @access public
      * @param  string    $tag           Tag name
-     * @param  string    $attribute     Atttribute name
-     * @param  string    $value         Atttribute value
+     * @param  string    $attribute     Attribute name
+     * @param  string    $value         Attribute value
      * @return boolean
      */
     public function filterAllowedAttribute($tag, $attribute, $value)
@@ -301,8 +309,8 @@ class Attribute
      *
      * @access public
      * @param  string    $tag           Tag name
-     * @param  string    $attribute     Atttribute name
-     * @param  string    $value         Atttribute value
+     * @param  string    $attribute     Attribute name
+     * @param  string    $value         Attribute value
      * @return boolean
      */
     public function filterIntegerAttribute($tag, $attribute, $value)
@@ -319,8 +327,8 @@ class Attribute
      *
      * @access public
      * @param  string    $tag           Tag name
-     * @param  string    $attribute     Atttribute name
-     * @param  string    $value         Atttribute value
+     * @param  string    $attribute     Attribute name
+     * @param  string    $value         Attribute value
      * @return boolean
      */
     public function filterIframeAttribute($tag, $attribute, $value)
@@ -344,8 +352,8 @@ class Attribute
      *
      * @access public
      * @param  string    $tag           Tag name
-     * @param  string    $attribute     Atttribute name
-     * @param  string    $value         Atttribute value
+     * @param  string    $attribute     Attribute name
+     * @param  string    $value         Attribute value
      * @return boolean
      */
     public function filterBlacklistResourceAttribute($tag, $attribute, $value)
@@ -362,8 +370,8 @@ class Attribute
      *
      * @access public
      * @param  string    $tag           Tag name
-     * @param  string    $attribute     Atttribute name
-     * @param  string    $value         Atttribute value
+     * @param  string    $attribute     Attribute name
+     * @param  string    $value         Attribute value
      * @return boolean
      */
     public function rewriteAbsoluteUrl($tag, $attribute, &$value)
@@ -376,17 +384,18 @@ class Attribute
     }
 
     /**
-     * Rewrite image url to use with a proxy (HTTPS resource are ignored)
+     * Rewrite image url to use with a proxy
      *
      * @access public
      * @param  string    $tag           Tag name
-     * @param  string    $attribute     Atttribute name
-     * @param  string    $value         Atttribute value
+     * @param  string    $attribute     Attribute name
+     * @param  string    $value         Attribute value
      * @return boolean
      */
     public function rewriteImageProxyUrl($tag, $attribute, &$value)
     {
-        if ($tag === 'img' && $attribute === 'src' && strpos($value, 'http:') === 0) {
+        if ($tag === 'img' && $attribute === 'src'
+	    && ! ($this->image_proxy_limit_protocol !== '' && stripos($value, $this->image_proxy_limit_protocol.':') !== 0)) {
 
             if ($this->image_proxy_url) {
                 $value = sprintf($this->image_proxy_url, rawurlencode($value));
@@ -404,8 +413,8 @@ class Attribute
      *
      * @access public
      * @param  string    $tag           Tag name
-     * @param  string    $attribute     Atttribute name
-     * @param  string    $value         Atttribute value
+     * @param  string    $attribute     Attribute name
+     * @param  string    $value         Attribute value
      * @return boolean
      */
     public function filterProtocolUrlAttribute($tag, $attribute, $value)
@@ -422,7 +431,7 @@ class Attribute
      *
      * @access public
      * @param  string    $tag            Tag name
-     * @param  array     $attributes     Atttributes list
+     * @param  array     $attributes     Attributes list
      * @return array
      */
     public function addAttributes($tag, array $attributes)
@@ -439,7 +448,7 @@ class Attribute
      *
      * @access public
      * @param  string    $tag            Tag name
-     * @param  array     $attributes     Atttributes list
+     * @param  array     $attributes     Attributes list
      * @return boolean
      */
     public function hasRequiredAttributes($tag, array $attributes)
@@ -653,6 +662,12 @@ class Attribute
     public function setImageProxyCallback($callback)
     {
         $this->image_proxy_callback = $callback ?: $this->image_proxy_callback;
+        return $this;
+    }
+
+    public function setImageProxyLimitToProto($value)
+    {
+        $this->image_proxy_limit_protocol = $value ?: $this->image_proxy_limit_protocol;
         return $this;
     }
 }

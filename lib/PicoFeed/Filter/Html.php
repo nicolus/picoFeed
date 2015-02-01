@@ -98,6 +98,7 @@ class Html
         if ($this->config !== null) {
             $this->attribute->setImageProxyCallback($this->config->getFilterImageProxyCallback());
             $this->attribute->setImageProxyUrl($this->config->getFilterImageProxyUrl());
+            $this->attribute->setImageProxyLimitToProto($this->config->getFilterImageProxyLimitToProto());
             $this->attribute->setIframeWhitelist($this->config->getFilterIframeWhitelist(array()));
             $this->attribute->setIntegerAttributes($this->config->getFilterIntegerAttributes(array()));
             $this->attribute->setAttributeOverrides($this->config->getFilterAttributeOverrides(array()));
