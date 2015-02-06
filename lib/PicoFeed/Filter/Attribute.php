@@ -665,7 +665,14 @@ class Attribute
         return $this;
     }
 
-    public function setImageProxyLimitToProto($value)
+    /**
+     * Set image proxy protocol restriction
+     *
+     * @access public
+     * @param  string       $value
+     * @return Attribute
+     */
+    public function setImageProxyProtocol($value)
     {
         $this->image_proxy_limit_protocol = $value ?: $this->image_proxy_limit_protocol;
         return $this;

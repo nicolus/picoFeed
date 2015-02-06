@@ -612,7 +612,7 @@ abstract class Client
     }
 
     /**
-     * enable the passthrough mode
+     * Enable the passthrough mode
      *
      * @access public
      * @return \PicoFeed\Client\Client
@@ -624,7 +624,7 @@ abstract class Client
     }
 
     /**
-     * disable the passthrough mode
+     * Disable the passthrough mode
      *
      * @access public
      * @return \PicoFeed\Client\Client

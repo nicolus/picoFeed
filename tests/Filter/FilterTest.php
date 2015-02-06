@@ -132,7 +132,7 @@ class FilterTest extends PHPUnit_Framework_TestCase
     {
         $config = new Config;
         $config->setFilterImageProxyUrl('http://myproxy/?url=%s');
-        $config->setFilterImageProxyLimitToProto('tripleX');
+        $config->setFilterImageProxyProtocol('tripleX');
 
         $f = Filter::html('<p>Image <img src="http://localhost/image.png" alt="My Image"/></p>', 'http://foo');
         $f->setConfig($config);
@@ -147,7 +147,7 @@ class FilterTest extends PHPUnit_Framework_TestCase
     {
         $config = new Config;
         $config->setFilterImageProxyUrl('http://myproxy/?url=%s');
-        $config->setFilterImageProxyLimitToProto('http');
+        $config->setFilterImageProxyProtocol('http');
 
         $f = Filter::html('<p>Image <img src="http://localhost/image.png" alt="My Image"/></p>', 'http://foo');
         $f->setConfig($config);
@@ -162,7 +162,7 @@ class FilterTest extends PHPUnit_Framework_TestCase
     {
         $config = new Config;
         $config->setFilterImageProxyUrl('http://myproxy/?url=%s');
-        $config->setFilterImageProxyLimitToProto('http');
+        $config->setFilterImageProxyProtocol('http');
 
         $f = Filter::html('<p>Image <img src="https://localhost/image.png" alt="My Image"/></p>', 'http://foo');
         $f->setConfig($config);
@@ -177,7 +177,7 @@ class FilterTest extends PHPUnit_Framework_TestCase
     {
         $config = new Config;
         $config->setFilterImageProxyUrl('http://myproxy/?url=%s');
-        $config->setFilterImageProxyLimitToProto('https');
+        $config->setFilterImageProxyProtocol('https');
 
         $f = Filter::html('<p>Image <img src="http://localhost/image.png" alt="My Image"/></p>', 'http://foo');
         $f->setConfig($config);
@@ -192,7 +192,7 @@ class FilterTest extends PHPUnit_Framework_TestCase
     {
         $config = new Config;
         $config->setFilterImageProxyUrl('http://myproxy/?url=%s');
-        $config->setFilterImageProxyLimitToProto('https');
+        $config->setFilterImageProxyProtocol('https');
 
         $f = Filter::html('<p>Image <img src="https://localhost/image.png" alt="My Image"/></p>', 'http://foo');
         $f->setConfig($config);
