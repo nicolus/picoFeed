@@ -71,10 +71,11 @@ class FilterTest extends PHPUnit_Framework_TestCase
     public function testOverrideFilters()
     {
         $data = '<iframe src="http://www.kickstarter.com/projects/lefnire/habitrpg-mobile/widget/video.html" height="480" width="640" frameborder="0"></iframe>';
+        $expected = '<iframe src="https://www.kickstarter.com/projects/lefnire/habitrpg-mobile/widget/video.html" height="480" width="640" frameborder="0"></iframe>';
 
         $f = Filter::html($data, 'http://blabla');
         $f->attribute->setIframeWhitelist(array('http://www.kickstarter.com'));
-        $this->assertEquals($data, $f->execute());
+        $this->assertEquals($expected, $f->execute());
 
         $data = '<iframe src="http://www.youtube.com/bla" height="480" width="640" frameborder="0"></iframe>';
 
