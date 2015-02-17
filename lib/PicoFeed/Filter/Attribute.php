@@ -139,6 +139,18 @@ class Attribute
     );
 
     /**
+     * Iframe source whitelist which will be converted from http to https
+     *
+     * @access private
+     * @var array
+     */
+    private $secure_iframe_whitelist = array(
+        'http://www.youtube.com',
+        'http://player.vimeo.com',
+        'http://www.dailymotion.com',
+    );
+
+    /**
      * Blacklisted resources
      *
      * @access private
@@ -438,6 +450,31 @@ class Attribute
     {
         if (isset($this->add_attributes[$tag])) {
             $attributes += $this->add_attributes[$tag];
+        }
+
+        $attributes = $this->secureIframe($tag, $attributes);
+
+        return $attributes;
+    }
+
+    /**
+     * Turns whitelisted iframes' src attribute from http to https to prevent
+     * mixed active content
+     *
+     * @access public
+     * @param  string    $tag            Tag name
+     * @param  array     $attributes     Atttributes list
+     * @return array
+     */
+    private function secureIframe($tag, array $attributes)
+    {
+        if ($tag === 'iframe') {
+            $src = $attributes['src'];
+            foreach ($this->secure_iframe_whitelist as $url) {
+                if (strpos($src, $url) === 0) {
+                    $attributes['src'] = substr_replace($src, 's', 4, 0);
+                }
+            }
         }
 
         return $attributes;
