@@ -2,8 +2,8 @@
 
 namespace PicoFeed\Filter;
 
-use \PicoFeed\Client\Url;
-use \PicoFeed\Parser\XmlParser;
+use PicoFeed\Client\Url;
+use PicoFeed\Parser\XmlParser;
 
 /**
  * HTML Filter class

@@ -2,6 +2,11 @@
 
 namespace PicoFeed\Encoding;
 
+/**
+ * Encoding class
+ *
+ * @package Encoding
+ */
 class Encoding
 {
     public static function convert($input, $encoding)

@@ -2,7 +2,7 @@
 
 namespace PicoFeed\Filter;
 
-use \PicoFeed\Client\Url;
+use PicoFeed\Client\Url;
 
 /**
  * Attribute Filter class
@@ -390,8 +390,9 @@ class Attribute
      *
      * @access public
      * @param  string    $tag            Tag name
-     * @param  array     $attributes     Atttributes list
-     * @return array
+     * @param  array     $attribute      Atttributes name
+     * @param  string    $value          Attribute value
+     * @return boolean
      */
     public function secureIframeSrc($tag, $attribute, &$value)
     {
