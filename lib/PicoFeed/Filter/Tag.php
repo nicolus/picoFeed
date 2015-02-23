@@ -135,6 +135,21 @@ class Tag
     }
 
     /**
+     * Remove script tags
+     *
+     * @access public
+     * @param  string  $data  Input data
+     * @return string
+     */
+    public function removeScriptTags($data)
+    {
+        // FIXME: using regex on HTML documents is very hacky, this should be
+        // refactored into a dom based solution
+        return preg_replace('/<script(.*?)>(.*?)<\/script>/is', '', $data);
+    }
+
+
+    /**
      * Remove empty tags
      *
      * @access public

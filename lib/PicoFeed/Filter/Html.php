@@ -121,6 +121,8 @@ class Html
      */
     public function execute()
     {
+        $this->preFilter();
+
         $parser = xml_parser_create();
 
         xml_set_object($parser, $this);
@@ -134,6 +136,17 @@ class Html
 
         return $this->output;
     }
+
+    /**
+     * Called before XML parsing
+     *
+     * @access public
+     */
+    public function preFilter()
+    {
+        $this->input = $this->tag->removeScriptTags($this->input);
+    }
+
 
     /**
      * Called after XML parsing

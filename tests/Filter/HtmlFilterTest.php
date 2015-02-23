@@ -31,6 +31,16 @@ class HtmlFilterTest extends PHPUnit_Framework_TestCase
         $this->assertEquals($expected, $f->execute());
     }
 
+
+    public function testClearScriptAttributes()
+    {
+        $data = '<div><script>this is the content</script><p>something</p></div><p>hi</p>';
+
+        $f = new Html($data, 'http://blabla');
+        $expected = '<p>something</p><p>hi</p>';
+        $this->assertEquals($expected, $f->execute());
+    }
+
     public function testEmptyTags()
     {
         $data = <<<EOD
