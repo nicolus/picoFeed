@@ -144,7 +144,7 @@ class Html
      */
     public function preFilter()
     {
-        $this->input = $this->tag->removeScriptTags($this->input);
+        $this->input = $this->tag->removeBlacklistedTags($this->input);
     }
 
 

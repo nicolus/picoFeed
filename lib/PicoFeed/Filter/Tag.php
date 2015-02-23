@@ -16,6 +16,17 @@ class Tag
      * @access private
      * @var array
      */
+    private $tag_blacklist = array(
+        'script',
+        'style'
+    );
+
+    /**
+     * Tags whitelist
+     *
+     * @access private
+     * @var array
+     */
     private $tag_whitelist = array(
         'audio',
         'video',
@@ -141,11 +152,15 @@ class Tag
      * @param  string  $data  Input data
      * @return string
      */
-    public function removeScriptTags($data)
+    public function removeBlacklistedTags($data)
     {
         // FIXME: using regex on HTML documents is very hacky, this should be
         // refactored into a dom based solution
-        return preg_replace('/<script(.*?)>(.*?)<\/script>/is', '', $data);
+        foreach ($this->tag_blacklist as $tag) {
+            $data = preg_replace('/<' . $tag . '(.*?)>(.*?)<\/' . $tag . '>/is', '', $data);
+        }
+
+        return $data;
     }
 
 
