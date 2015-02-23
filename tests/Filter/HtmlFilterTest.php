@@ -34,7 +34,7 @@ class HtmlFilterTest extends PHPUnit_Framework_TestCase
 
     public function testClearScriptAttributes()
     {
-        $data = '<div><script>this is the content</script><p>something</p></div><p>hi</p>';
+        $data = '<div><script>this is the content</script><script>blubb content</script><p>something</p></div><p>hi</p>';
 
         $f = new Html($data, 'http://blabla');
         $expected = '<p>something</p><p>hi</p>';
