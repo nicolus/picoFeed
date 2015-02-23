@@ -11,7 +11,7 @@ namespace PicoFeed\Filter;
 class Tag
 {
     /**
-     * Tags whitelist
+     * Tags blacklist
      *
      * @access private
      * @var array
@@ -156,9 +156,8 @@ class Tag
     {
         // FIXME: using regex on HTML documents is very hacky, this should be
         // refactored into a dom based solution
-        foreach ($this->tag_blacklist as $tag) {
-            $data = preg_replace('/<' . $tag . '(.*?)>(.*?)<\/' . $tag . '>/is', '', $data);
-        }
+        $tags = implode('|', $this->tag_blacklist);
+        $data = preg_replace('/<(?:' . $tags . ')(.*?)>(.*?)<\/(?:' . $tags . ')>/is', '', $data);
 
         return $data;
     }
