@@ -118,7 +118,7 @@ class Tag
      */
     public function isSelfClosingTag($tag)
     {
-        return in_array($tag, array('br', 'img'));
+        return $tag === 'br' || $tag === 'img';
     }
 
     /**
