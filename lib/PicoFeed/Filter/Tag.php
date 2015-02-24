@@ -2,6 +2,9 @@
 
 namespace PicoFeed\Filter;
 
+use DOMXpath;
+use PicoFeed\Parser\XmlParser;
+
 /**
  * Tag Filter class
  *
@@ -11,14 +14,14 @@ namespace PicoFeed\Filter;
 class Tag
 {
     /**
-     * Tags blacklist
+     * Tags blacklist (Xpath expressions)
      *
      * @access private
      * @var array
      */
     private $tag_blacklist = array(
-        'script',
-        'style'
+        '//script',
+        '//style',
     );
 
     /**
@@ -154,12 +157,16 @@ class Tag
      */
     public function removeBlacklistedTags($data)
     {
-        // FIXME: using regex on HTML documents is very hacky, this should be
-        // refactored into a dom based solution
-        $tags = implode('|', $this->tag_blacklist);
-        $data = preg_replace('/<(?:' . $tags . ')(.*?)>(.*?)<\/(?:' . $tags . ')>/is', '', $data);
+        $dom = XmlParser::getDomDocument($data);
+        $xpath = new DOMXpath($dom);
 
-        return $data;
+        $nodes = $xpath->query(implode(' | ', $this->tag_blacklist));
+
+        foreach ($nodes as $node) {
+            $node->parentNode->removeChild($node);
+        }
+
+        return $dom->saveXML();
     }
 
 

@@ -147,7 +147,6 @@ class Html
         $this->input = $this->tag->removeBlacklistedTags($this->input);
     }
 
-
     /**
      * Called after XML parsing
      *
