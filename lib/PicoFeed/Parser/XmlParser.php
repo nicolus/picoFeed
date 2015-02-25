@@ -208,6 +208,49 @@ class XmlParser
     }
 
     /**
+     * Extract charset from meta tag
+     *
+     * @static
+     * @access public
+     * @param  string  $data  meta tag content
+     * @return string
+     */
+    public static function findCharset($data)
+    {
+        $result = explode('charset=', $data);
+        return isset($result[1]) ? $result[1] : $data;
+    }
+
+    /**
+     * Get the encoding from a xml tag
+     *
+     * @static
+     * @access public
+     * @param  string  $data  Input data
+     * @return string
+     */
+    public static function getEncodingFromMetaTag($data)
+    {
+        $encoding = '';
+
+        $dom = static::getHtmlDocument($data);
+        $xpath = new DOMXPath($dom);
+
+        $tags = array(
+            '/html/head/meta[translate(@http-equiv, "CENOPTY", "cenopty")="content-type"]/@content', //HTML4, convert upper to lower-case
+            '/html/head/meta/@charset', //HTML5
+        );
+
+        $nodes = $xpath->query(implode(' | ', $tags));
+
+        foreach ($nodes as $node) {
+            $encoding = static::findCharset($node->nodeValue);
+        }
+
+        return $encoding;
+    }
+
+    /**
      * Get xml:lang value
      *
      * @static

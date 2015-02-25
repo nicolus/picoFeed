@@ -276,11 +276,11 @@ class Grabber
         }
 
         if ($this->html) {
+            $html_encoding = XmlParser::getEncodingFromMetaTag($this->html);
 
-            Logger::setMessage(get_called_class().': Fix encoding');
-            Logger::setMessage(get_called_class().': HTTP Encoding "'.$this->encoding.'"');
-
-            $this->html = Encoding::convert($this->html, $this->encoding);
+            // Encode everything in UTF-8
+            Logger::setMessage(get_called_class().': HTTP Encoding "'.$this->encoding.'" ; HTML Encoding "'.$html_encoding.'"');
+            $this->html = Encoding::convert($this->html, $html_encoding ?: $this->encoding);
             $this->html = Filter::stripHeadTags($this->html);
 
             Logger::setMessage(get_called_class().': Content length: '.strlen($this->html).' bytes');
