@@ -123,8 +123,6 @@ class Grabber
      * @var array
      */
     private $stripTags = array(
-        'script',
-        'style',
         'nav',
         'header',
         'footer',
