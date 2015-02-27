@@ -90,10 +90,14 @@ class XmlParser
      * @static
      * @access public
      * @param  string   $input   XML content
-     * @return \DOMNode
+     * @return \DOMNDocument
      */
     public static function getDomDocument($input)
     {
+        if (empty($input)) {
+            return false;
+        }
+
         $dom = self::scanInput($input, function ($in) {
             $dom = new DomDocument;
             $dom->loadXml($in, LIBXML_NONET);
