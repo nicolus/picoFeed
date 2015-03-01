@@ -208,7 +208,7 @@ class Rss20 extends Parser
     {
         $content = XmlParser::getNamespaceValue($entry, $this->namespaces, 'encoded');
 
-        if (empty($content) && $entry->description->count() > 0) {
+        if (trim($content) === '' && $entry->description->count() > 0) {
             $content = (string) $entry->description;
         }
 
