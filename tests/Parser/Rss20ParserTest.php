@@ -172,12 +172,12 @@ class Rss20ParserTest extends PHPUnit_Framework_TestCase
         $parser = new Rss20(file_get_contents('tests/fixtures/rss20.xml'));
         $feed = $parser->execute();
         $this->assertNotEmpty($feed->items);
-        $this->assertEquals(1357006940, $feed->items[1]->getDate()->getTimestamp());
+        $this->assertEquals('2013-01-01', $feed->items[1]->getDate()->format('Y-m-d'));
 
         $parser = new Rss20(file_get_contents('tests/fixtures/fulltextrss.xml'));
         $feed = $parser->execute();
         $this->assertNotEmpty($feed->items);
-        $this->assertEquals(1365781095, $feed->items[0]->getDate()->getTimestamp());
+        $this->assertEquals('2013-04-12', $feed->items[0]->getDate()->format('Y-m-d'));
     }
 
     public function testItemLanguage()
