@@ -20,5 +20,8 @@
     },
     "autoload": {
         "psr-0": {"PicoFeed": "lib/"}
-    }
+    },
+    "bin" : [
+        "picofeed"
+    ]
 }
