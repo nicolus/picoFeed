@@ -176,6 +176,44 @@ catch (PicoFeedException $e) {
 }
 ```
 
+HTTP basic auth
+---------------
+If a feed requires basic auth headers, you can pass them as parameters to the **download** method, e.g.:
+
+```php
+try {
+    $reader = new Reader;
+
+    $user = 'john';
+    $password = 'doe';
+
+    // Provide those values to the download method
+    $resource = $reader->download('http://linuxfr.org/news.atom', '', '', $user, $password);
+
+    // Return true if the remote content has changed
+    if ($resource->isModified()) {
+
+        $parser = $reader->getParser(
+            $resource->getUrl(),
+            $resource->getContent(),
+            $resource->getEncoding()
+        );
+
+        $feed = $parser->execute();
+
+        // Save your feed in your database
+        // ...
+
+    }
+    else {
+
+        echo 'Not modified, nothing to do!';
+    }
+}
+catch (PicoFeedException $e) {
+    // Do something...
+}
+```
 
 Feed and item properties
 ------------------------
