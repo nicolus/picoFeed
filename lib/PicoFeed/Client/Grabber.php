@@ -316,7 +316,13 @@ class Grabber
             try {
 
                 $client = Client::getInstance();
-                $client->setConfig($this->config);
+
+                if ($this->config !== null) {
+                    $client->setConfig($this->config);
+                    $client->setTimeout($this->config->getGrabberTimeout());
+                    $client->setUserAgent($this->config->getGrabberUserAgent());
+                }
+
                 $client->execute($this->url);
 
                 $this->url = $client->getUrl();

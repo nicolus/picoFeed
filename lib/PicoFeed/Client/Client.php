@@ -663,8 +663,8 @@ abstract class Client
     public function setConfig($config)
     {
         if ($config !== null) {
-            $this->setTimeout($config->getGrabberTimeout());
-            $this->setUserAgent($config->getGrabberUserAgent());
+            $this->setTimeout($config->getClientTimeout());
+            $this->setUserAgent($config->getClientUserAgent());
             $this->setMaxRedirections($config->getMaxRedirections());
             $this->setMaxBodySize($config->getMaxBodySize());
             $this->setProxyHostname($config->getProxyHostname());
