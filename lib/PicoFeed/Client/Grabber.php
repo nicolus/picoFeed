@@ -286,7 +286,18 @@ class Grabber
 
             if (! empty($rules)) {
                 Logger::setMessage(get_called_class().': Parse content with rules');
-                $this->parseContentWithRules($rules);
+
+                foreach ($rules as $pattern => $rule) {
+                    $url = new Url($this->url);
+                    $sub_url = $url->getFullPath();
+
+                    if (preg_match($pattern, $sub_url)) {
+                        Logger::setMessage(get_called_class().': Matched url ' . $sub_url);
+                        $this->parseContentWithRules($rule);
+                        break;
+                    }
+                }
+
             }
             else {
                 Logger::setMessage(get_called_class().': Parse content with candidates');
