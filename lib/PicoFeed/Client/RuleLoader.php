@@ -93,7 +93,6 @@ class RuleLoader
     {
         foreach ($files as $file) {
             $filename = $folder.'/'.$file.'.php';
-
             if (file_exists($filename)) {
                 Logger::setMessage(get_called_class().' Load rule: '.$file);
                 return include $filename;
