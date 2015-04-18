@@ -26,13 +26,13 @@ class HtmlFilterTest extends PHPUnit_Framework_TestCase
     public function testFilterRules()
     {
         $html = '<p><a href="http://www.twogag.com/archives/3455" title="559 &#8211; The Cookie">' .
-                '<img src="http://www.twogag.com/comics-rss/2015-04-17-TGAG_559_The_Cookie.jpg" alt="559 &#8211; The Cookie" class="comicthumbnail" title="559 &#8211; The Cookie" /> </a></p>'.
+                '<img src="http://www.twogag.com/comics-rss/2015-04-17-TGAG_559_The_Cookie.jpg" alt="559 &#8211; The Cookie" class="comicthumbnail" title="559 &#8211; The Cookie" /></a></p>'.
                 'I always throw up in hindsight if I find out something I ate was vegan. Twogag&#8217;s super free but if you want to support the comic look no further than the Twogag patreon!';
 
         $filter = new Html($html, 'http://www.twogag.com/');
 
         $expected = '<p><a href="http://www.twogag.com/archives/3455" rel="noreferrer" target="_blank">' .
-                '<img src="http://www.twogag.com/comics/2015-04-17-TGAG_559_The_Cookie.jpg" alt="559 – The Cookie" title="559 – The Cookie"/> </a></p>'.
+                '<img src="http://www.twogag.com/comics/2015-04-17-TGAG_559_The_Cookie.jpg" alt="559 – The Cookie" title="559 – The Cookie"/></a></p>'.
                 'I always throw up in hindsight if I find out something I ate was vegan. Twogag’s super free but if you want to support the comic look no further than the Twogag patreon!';
 
         $this->assertEquals($expected, $filter->execute());
