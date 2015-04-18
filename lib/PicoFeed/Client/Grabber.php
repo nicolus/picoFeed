@@ -3,6 +3,7 @@
 namespace PicoFeed\Client;
 
 use DOMXPath;
+use PicoFeed\Config\Config;
 use PicoFeed\Encoding\Encoding;
 use PicoFeed\Logging\Logger;
 use PicoFeed\Filter\Filter;
@@ -283,7 +284,13 @@ class Grabber
 
             Logger::setMessage(get_called_class().': Content length: '.strlen($this->html).' bytes');
 
-            $ruleLoader = new RuleLoader($this->config);
+            // the constructor should require a config, then this if can be removed
+            if ($this->config === null) {
+                $config = new Config;
+            } else {
+                $config = $this->config;
+            }
+            $ruleLoader = new RuleLoader($config);
             $rules = $ruleLoader->getRules($this->url);
 
             if (! empty($rules)) {

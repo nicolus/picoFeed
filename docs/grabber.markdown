@@ -106,23 +106,25 @@ Example with the BBC website, `www.bbc.co.uk.php`:
 ```php
 <?php
 return array(
-    '%.*%' => array(
-        'test_url' => 'http://www.bbc.co.uk/news/world-middle-east-23911833',
-        'body' => array(
-            '//div[@class="story-body"]',
-        ),
-        'strip' => array(
-            '//script',
-            '//form',
-            '//style',
-            '//*[@class="story-date"]',
-            '//*[@class="story-header"]',
-            '//*[@class="story-related"]',
-            '//*[contains(@class, "byline")]',
-            '//*[contains(@class, "story-feature")]',
-            '//*[@id="video-carousel-container"]',
-            '//*[@id="also-related-links"]',
-            '//*[contains(@class, "share") or contains(@class, "hidden") or contains(@class, "hyper")]',
+    'grabber' => array(
+        '%.*%' => array(
+            'test_url' => 'http://www.bbc.co.uk/news/world-middle-east-23911833',
+            'body' => array(
+                '//div[@class="story-body"]',
+            ),
+            'strip' => array(
+                '//script',
+                '//form',
+                '//style',
+                '//*[@class="story-date"]',
+                '//*[@class="story-header"]',
+                '//*[@class="story-related"]',
+                '//*[contains(@class, "byline")]',
+                '//*[contains(@class, "story-feature")]',
+                '//*[@id="video-carousel-container"]',
+                '//*[@id="also-related-links"]',
+                '//*[contains(@class, "share") or contains(@class, "hidden") or contains(@class, "hyper")]',
+            )
         )
     )
 );
@@ -143,26 +145,28 @@ Let's say you wanted to extract a div with the id **video** if the article point
 
 ```php
 return array(
-    '%^/videos.*%' => array(
-        'test_url' => 'http://comix.com/videos/423',
-        'body' => array(
-            '//div[@id="video"]',
+    'grabber' => array(
+        '%^/videos.*%' => array(
+            'test_url' => 'http://comix.com/videos/423',
+            'body' => array(
+                '//div[@id="video"]',
+            ),
+            'strip' => array()
         ),
-        'strip' => array()
-    ),
-    '%^/podcasts.*%' => array(
-        'test_url' => 'http://comix.com/podcasts/5',
-        'body' => array(
-            '//div[@id="audio"]',
+        '%^/podcasts.*%' => array(
+            'test_url' => 'http://comix.com/podcasts/5',
+            'body' => array(
+                '//div[@id="audio"]',
+            ),
+            'strip' => array()
         ),
-        'strip' => array()
-    ),
-    '%.*%' => array(
-        'test_url' => 'http://comix.com/blog/1',
-        'body' => array(
-            '//div[@id="content"]',
-        ),
-        'strip' => array()
+        '%.*%' => array(
+            'test_url' => 'http://comix.com/blog/1',
+            'body' => array(
+                '//div[@id="content"]',
+            ),
+            'strip' => array()
+        )
     )
 );
 ```

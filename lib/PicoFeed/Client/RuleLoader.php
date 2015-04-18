@@ -43,7 +43,7 @@ class RuleLoader
             $files = $this->getRulesFileList($hostname);
 
             foreach ($this->getRulesFolders() as $folder) {
-                $rule = $this->loadRuleFile($type, $folder, $files);
+                $rule = $this->loadRuleFile($folder, $files);
 
                 if (! empty($rule)) {
                     return $rule;
@@ -57,11 +57,11 @@ class RuleLoader
     /**
      * Get the list of possible rules file names for a given hostname
      *
-     * @access private
+     * @access public
      * @param  string  $hostname  Hostname
      * @return array
      */
-    private function getRulesFileList($hostname)
+    public function getRulesFileList($hostname)
     {
         $files = array($hostname);                 // subdomain.domain.tld
         $parts = explode('.', $hostname);
@@ -84,12 +84,12 @@ class RuleLoader
     /**
      * Load a rule file from the defined folder
      *
-     * @access private
+     * @access public
      * @param  string   $folder     Rule directory
      * @param  array    $files      List of possible file names
      * @return array
      */
-    private function loadRuleFile($folder, array $files)
+    public function loadRuleFile($folder, array $files)
     {
         foreach ($files as $file) {
             $filename = $folder.'/'.$file.'.php';
