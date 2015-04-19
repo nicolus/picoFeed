@@ -6,8 +6,7 @@ return array(
             'body' => array(
                 '//div[@class="KonaBody"]',
             ),
-            'strip' => array(
-            )
-        '%.*%' => array(
+            'strip' => array()
+        )
     )
 );

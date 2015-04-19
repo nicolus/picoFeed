@@ -83,5 +83,4 @@ class RuleLoaderTest extends PHPUnit_Framework_TestCase
         $loader = new RuleLoader(new Config);
         $this->assertEmpty($loader->getRules('http://localhost/foobar'));
     }
-
 }

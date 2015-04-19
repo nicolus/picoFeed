@@ -8,7 +8,6 @@ use PicoFeed\Config\Config;
 
 class GrabberTest extends PHPUnit_Framework_TestCase
 {
-
     /**
      * @group online
      */
@@ -19,10 +18,6 @@ class GrabberTest extends PHPUnit_Framework_TestCase
         $this->assertTrue($grabber->parse());
 
         $grabber = new Grabber('http://www.lemonde.fr/proche-orient/article/2013/08/30/la-france-nouvelle-plus-ancienne-alliee-des-etats-unis_3469218_3218.html');
-        $grabber->download();
-        $this->assertTrue($grabber->parse());
-
-        $grabber = new Grabber('http://www.rue89.com/2013/08/30/faisait-boris-boillon-ex-sarko-boy-350-000-euros-gare-nord-245315');
         $grabber->download();
         $this->assertTrue($grabber->parse());
 

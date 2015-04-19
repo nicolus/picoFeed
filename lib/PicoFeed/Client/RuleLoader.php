@@ -6,7 +6,7 @@ use PicoFeed\Logging\Logger;
 use PicoFeed\Config\Config;
 
 /**
- * Grabber class
+ * RuleLoader class
  *
  * @author  Frederic Guillot
  * @author  Bernhard Posselt
@@ -22,6 +22,12 @@ class RuleLoader
      */
     private $config;
 
+    /**
+     * Constructor
+     *
+     * @access public
+     * @param  \PicoFeed\Config\Config   $config   Config class instance
+     */
     public function __construct(Config $config)
     {
         $this->config = $config;
@@ -118,5 +124,4 @@ class RuleLoader
 
         return $folders;
     }
-
 }

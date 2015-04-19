@@ -270,6 +270,8 @@ class Grabber
      */
     public function parse()
     {
+        // TODO: this method need some refactoring
+
         if ($this->skip_processing) {
             return true;
         }
