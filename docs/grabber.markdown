@@ -22,7 +22,7 @@ use PicoFeed\Client\Grabber;
 
 $grabber = new Grabber($item_url);
 $grabber->download();
-$grabber->parse();
+$grabber->parse(true);
 
 // Get raw HTML content
 echo $grabber->getRawContent();
@@ -79,11 +79,11 @@ Configuration
 ### Enable content grabber for items
 
 - Method name: `enableContentGrabber()`
-- Default value: false (content grabber is disabled by default)
-- Argument value: none
+- Default value: true (also fetch content if rule does not exist)
+- Argument value: bool (true if also websites without rules should be grabbed)
 
 ```php
-$parser->enableContentGrabber();
+$parser->enableContentGrabber(true);
 ```
 
 ### Ignore item urls for the content grabber

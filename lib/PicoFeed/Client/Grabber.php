@@ -266,9 +266,11 @@ class Grabber
      * Parse the HTML content
      *
      * @access public
+     * @param bool $everywhere true if also pages without rules should be
+     * scraped
      * @return bool
      */
-    public function parse()
+    public function parse($everywhere = true)
     {
         // TODO: this method need some refactoring
 
@@ -312,7 +314,7 @@ class Grabber
                 }
 
             }
-            else {
+            elseif ($everywhere) {
                 Logger::setMessage(get_called_class().': Parse content with candidates');
                 $this->parseContentWithCandidates();
             }

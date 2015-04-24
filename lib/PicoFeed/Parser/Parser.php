@@ -82,6 +82,15 @@ abstract class Parser
     private $enable_grabber = false;
 
     /**
+     * Enable the content grabber on all pages
+     *
+     * @access private
+     * @var bool
+     */
+    private $enable_grabber_everywhere = false;
+
+
+    /**
      * Ignore those urls for the content scraper
      *
      * @access private
@@ -241,7 +250,7 @@ abstract class Parser
             $grabber->setConfig($this->config);
             $grabber->download();
 
-            if ($grabber->parse()) {
+            if ($grabber->parse($this->enable_grabber_everywhere)) {
                 $item->content = $grabber->getFilteredContent();
             }
         }
@@ -383,11 +392,14 @@ abstract class Parser
      * Enable the content grabber
      *
      * @access public
+     * @param bool $everywhere true if also pages without rules should be
+     * scraped
      * @return \PicoFeed\Parser\Parser
      */
-    public function enableContentGrabber()
+    public function enableContentGrabber($everywhere = true)
     {
         $this->enable_grabber = true;
+        $this->enable_grabber_everywhere = $everywhere;
     }
 
     /**
