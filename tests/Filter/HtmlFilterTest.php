@@ -164,4 +164,10 @@ x-amz-id-2: DDjqfqz2ZJufzqRAcj1mh+9XvSogrPohKHwXlo8IlkzH67G6w4wnjn9HYgbs4uI0
         $f = new Html('<table><tr></tr></table>', 'http://blabla');
         $this->assertEquals('', $f->execute());
     }
+
+    public function testRemoveMultipleTags()
+    {
+        $f = new Html('<br/><br/><p>toto</p><br/><br/><br/><p>momo</p><br/><br/><br/><br/>', 'http://blabla');
+        $this->assertEquals('<br/><p>toto</p><br/><p>momo</p><br/>', $f->execute());
+    }
 }
