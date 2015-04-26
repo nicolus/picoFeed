@@ -246,11 +246,16 @@ abstract class Parser
     {
         if ($this->enable_grabber && ! in_array($item->getUrl(), $this->grabber_ignore_urls)) {
 
-            $grabber = new Grabber($item->getUrl());
-            $grabber->setConfig($this->config);
-            $grabber->download();
+            $grabber = new Grabber($this->config);
+            $grabber->setUrl($item->getUrl());
 
-            if ($grabber->parse($this->enable_grabber_everywhere)) {
+            if (! $this->enable_grabber_everywhere) {
+                $grabber->disableCandidateParser();
+            }
+
+            $grabber->execute();
+
+            if ($grabber->hasRelevantContent()) {
                 $item->content = $grabber->getFilteredContent();
             }
         }

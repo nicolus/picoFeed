@@ -15,23 +15,38 @@ How the content grabber works?
 Standalone usage
 ----------------
 
+Fetch remote content:
+
 ```php
 <?php
 
 use PicoFeed\Client\Grabber;
 
-$grabber = new Grabber($item_url);
-$grabber->download();
-$grabber->parse(true);
+$grabber = new Grabber; // or with a config object new Grabber(new Config)
+$grabber->setUrl($url);
+$grabber->execute();
 
 // Get raw HTML content
 echo $grabber->getRawContent();
 
 // Get relevant content
-echo $grabber->getContent();
+echo $grabber->getRelevantontent();
 
 // Get filtered relevant content
 echo $grabber->getFilteredContent();
+
+// Return true if there is relevant content
+var_dump($grabber->hasRelevantContent());
+```
+
+Parse HTML content:
+
+```php
+<?php
+
+$grabber = new Grabber; // or with a config object new Grabber(new Config)
+$grabber->setRawContent($html);
+$grabber->execute();
 ```
 
 Fetch full item contents during feed parsing

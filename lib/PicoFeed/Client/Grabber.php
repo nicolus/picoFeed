@@ -50,12 +50,12 @@ class Grabber
     private $encoding = '';
 
     /**
-     * Flag to skip download and parsing
+     * Flag to enable candidates parsing
      *
      * @access private
      * @var boolean
      */
-    private $skip_processing = false;
+    private $enableCandidateParser = true;
 
     /**
      * List of attributes to try to get the content, order is important, generic terms at the end
@@ -143,35 +143,52 @@ class Grabber
      * Constructor
      *
      * @access public
-     * @param  string   $url       Url
-     * @param  string   $html      HTML content
-     * @param  string   $encoding  Charset
+     * @param  \PicoFeed\Config\Config   $config   Config class instance
      */
-    public function __construct($url, $html = '', $encoding = 'utf-8')
+    public function __construct(Config $config = null)
     {
-        $this->url = $url;
-        $this->html = $html;
-        $this->encoding = $encoding;
-
-        $this->handleFiles();
-        $this->handleStreamingVideos();
+        $this->config = $config ?: new Config;
+        Logger::setTimezone($this->config->getTimezone());
     }
 
     /**
-     * Set config object
+     * Disable candidates parsing
      *
-     * @access public
-     * @param  \PicoFeed\Config\Config   $config    Config instance
-     * @return Grabber
+     * @access  public
+     * @return  Grabber
      */
-    public function setConfig($config)
+    public function disableCandidateParser()
     {
-        $this->config = $config;
+        $this->enableCandidateParser = false;
         return $this;
     }
 
     /**
-     * Get URL to download.
+     * Get encoding
+     *
+     * @access  public
+     * @return  string
+     */
+    public function getEncoding()
+    {
+        return $this->encoding;
+    }
+
+    /**
+     * Set encoding
+     *
+     * @access  public
+     * @param   string   $encoding
+     * @return  Grabber
+     */
+    public function setEncoding($encoding)
+    {
+        $this->encoding = $encoding;
+        return $this;
+    }
+
+    /**
+     * Get URL to download
      *
      * @access  public
      * @return  string
@@ -182,21 +199,27 @@ class Grabber
     }
 
     /**
-     * Set URL to download and reset object to use for another grab.
+     * Set URL to download
      *
      * @access  public
      * @param   string  $url    URL
-     * @return  string
+     * @return  Grabber
      */
     public function setUrl($url)
     {
         $this->url = $url;
-        $this->html = "";
-        $this->content = "";
-        $this->encoding = "";
+        return $this;
+    }
 
-        $this->handleFiles();
-        $this->handleStreamingVideos();
+    /**
+     * Return true if the scraper found relevant content
+     *
+     * @access public
+     * @return boolean
+     */
+    public function hasRelevantContent()
+    {
+        return ! empty($this->content);
     }
 
     /**
@@ -205,7 +228,7 @@ class Grabber
      * @access public
      * @return string
      */
-    public function getContent()
+    public function getRelevantContent()
     {
         return $this->content;
     }
@@ -222,6 +245,19 @@ class Grabber
     }
 
     /**
+     * Set raw content (unfiltered)
+     *
+     * @access public
+     * @param  string   $html
+     * @return Grabber
+     */
+    public function setRawContent($html)
+    {
+        $this->html = $html;
+        return $this;
+    }
+
+    /**
      * Get filtered relevant content
      *
      * @access public
@@ -235,17 +271,147 @@ class Grabber
     }
 
     /**
+     * Download the HTML content
+     *
+     * @access public
+     * @return boolean
+     */
+    public function download()
+    {
+        if (! empty($this->url)) {
+
+            // Clear everything
+            $this->html = '';
+            $this->content = '';
+            $this->encoding = '';
+
+            try {
+
+                $client = Client::getInstance();
+                $client->setConfig($this->config);
+                $client->setTimeout($this->config->getGrabberTimeout());
+                $client->setUserAgent($this->config->getGrabberUserAgent());
+                $client->execute($this->url);
+
+                $this->url = $client->getUrl();
+                $this->html = $client->getContent();
+                $this->encoding = $client->getEncoding();
+
+                return true;
+            }
+            catch (ClientException $e) {
+                Logger::setMessage(get_called_class().': '.$e->getMessage());
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * Execute the scraper
+     *
+     * @access public
+     */
+    public function execute()
+    {
+        $this->download();
+
+        if (! $this->skipProcessing()) {
+            $this->prepareHtml();
+            $this->parse();
+        }
+    }
+
+    /**
+     * Returns true if the parsing must be skipped
+     *
+     * @access public
+     * @return boolean
+     */
+    public function skipProcessing()
+    {
+        $handlers = array(
+            'detectStreamingVideos',
+            'detectPdfFiles',
+        );
+
+        foreach ($handlers as $handler) {
+            if ($this->$handler()) {
+                return true;
+            }
+        }
+
+        if (empty($this->html)) {
+            Logger::setMessage(get_called_class().': Raw HTML is empty');
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * Execute the rule or candidate parser
+     *
+     * @access public
+     */
+    public function parse()
+    {
+        $ruleLoader = new RuleLoader($this->config);
+        $rules = $ruleLoader->getRules($this->url);
+
+        if (! empty($rules['grabber'])) {
+
+            Logger::setMessage(get_called_class().': Parse content with rules');
+
+            foreach ($rules['grabber'] as $pattern => $rule) {
+
+                $url = new Url($this->url);
+                $sub_url = $url->getFullPath();
+
+                if (preg_match($pattern, $sub_url)) {
+                    Logger::setMessage(get_called_class().': Matched url '.$sub_url);
+                    $this->parseContentWithRules($rule);
+                    break;
+                }
+            }
+        }
+        else if ($this->enableCandidateParser) {
+            Logger::setMessage(get_called_class().': Parse content with candidates');
+            $this->parseContentWithCandidates();
+        }
+
+        Logger::setMessage(get_called_class().': Content length: '.strlen($this->content).' bytes');
+    }
+
+    /**
+     * Normalize encoding and strip head tag
+     *
+     * @access public
+     */
+    public function prepareHtml()
+    {
+        $html_encoding = XmlParser::getEncodingFromMetaTag($this->html);
+
+        $this->html = Encoding::convert($this->html, $html_encoding ?: $this->encoding);
+        $this->html = Filter::stripHeadTags($this->html);
+
+        Logger::setMessage(get_called_class().': HTTP Encoding "'.$this->encoding.'" ; HTML Encoding "'.$html_encoding.'"');
+    }
+
+    /**
      * Return the Youtube embed player and skip processing
      *
      * @access public
      * @return string
      */
-    public function handleStreamingVideos()
+    public function detectStreamingVideos()
     {
         if (preg_match("#(?<=v=|v\/|vi=|vi\/|youtu.be\/)[a-zA-Z0-9_-]{11}#", $this->url, $matches)) {
             $this->content = '<iframe width="560" height="315" src="//www.youtube.com/embed/'.$matches[0].'" frameborder="0"></iframe>';
-            $this->skip_processing = true;
+            return true;
         }
+
+        return false;
     }
 
     /**
@@ -254,113 +420,9 @@ class Grabber
      * @access public
      * @return string
      */
-    public function handleFiles()
+    public function detectPdfFiles()
     {
-        if (substr($this->url, -3) === 'pdf') {
-            $this->skip_processing = true;
-            Logger::setMessage(get_called_class().': PDF document => processing skipped');
-        }
-    }
-
-    /**
-     * Parse the HTML content
-     *
-     * @access public
-     * @param bool $everywhere true if also pages without rules should be
-     * scraped
-     * @return bool
-     */
-    public function parse($everywhere = true)
-    {
-        // TODO: this method need some refactoring
-
-        if ($this->skip_processing) {
-            return true;
-        }
-
-        if ($this->html) {
-            $html_encoding = XmlParser::getEncodingFromMetaTag($this->html);
-
-            // Encode everything in UTF-8
-            Logger::setMessage(get_called_class().': HTTP Encoding "'.$this->encoding.'" ; HTML Encoding "'.$html_encoding.'"');
-            $this->html = Encoding::convert($this->html, $html_encoding ?: $this->encoding);
-            $this->html = Filter::stripHeadTags($this->html);
-
-            Logger::setMessage(get_called_class().': Content length: '.strlen($this->html).' bytes');
-
-            // the constructor should require a config, then this if can be removed
-            if ($this->config === null) {
-                $config = new Config;
-            } else {
-                $config = $this->config;
-            }
-            $ruleLoader = new RuleLoader($config);
-            $rules = $ruleLoader->getRules($this->url);
-
-            if (! empty($rules)) {
-                Logger::setMessage(get_called_class().': Parse content with rules');
-
-                if (isset($rules['grabber'])) {
-                    foreach ($rules['grabber'] as $pattern => $rule) {
-                        $url = new Url($this->url);
-                        $sub_url = $url->getFullPath();
-
-                        if (preg_match($pattern, $sub_url)) {
-                            Logger::setMessage(get_called_class().': Matched url ' . $sub_url);
-                            $this->parseContentWithRules($rule);
-                            break;
-                        }
-                    }
-                }
-
-            }
-            elseif ($everywhere) {
-                Logger::setMessage(get_called_class().': Parse content with candidates');
-                $this->parseContentWithCandidates();
-            }
-        }
-        else {
-            Logger::setMessage(get_called_class().': No content fetched');
-        }
-
-        Logger::setMessage(get_called_class().': Content length: '.strlen($this->content).' bytes');
-        Logger::setMessage(get_called_class().': Grabber done');
-
-        return $this->content !== '';
-    }
-
-    /**
-     * Download the HTML content
-     *
-     * @access public
-     * @return HTML content
-     */
-    public function download()
-    {
-        if (! $this->skip_processing && $this->url != '') {
-
-            try {
-
-                $client = Client::getInstance();
-
-                if ($this->config !== null) {
-                    $client->setConfig($this->config);
-                    $client->setTimeout($this->config->getGrabberTimeout());
-                    $client->setUserAgent($this->config->getGrabberUserAgent());
-                }
-
-                $client->execute($this->url);
-
-                $this->url = $client->getUrl();
-                $this->html = $client->getContent();
-                $this->encoding = $client->getEncoding();
-            }
-            catch (ClientException $e) {
-                Logger::setMessage(get_called_class().': '.$e->getMessage());
-            }
-        }
-
-        return $this->html;
+        return substr($this->url, -3) === 'pdf';
     }
 
     /**
@@ -371,7 +433,6 @@ class Grabber
      */
     public function parseContentWithRules(array $rules)
     {
-        // Logger::setMessage($this->html);
         $dom = XmlParser::getHtmlDocument('<?xml version="1.0" encoding="UTF-8">'.$this->html);
         $xpath = new DOMXPath($dom);
 
