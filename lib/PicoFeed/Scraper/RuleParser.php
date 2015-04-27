@@ -3,7 +3,6 @@
 namespace PicoFeed\Scraper;
 
 use DOMXPath;
-use PicoFeed\Logging\Logger;
 use PicoFeed\Parser\XmlParser;
 
 /**

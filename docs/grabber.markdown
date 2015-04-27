@@ -33,7 +33,7 @@ $grabber->execute();
 echo $grabber->getRawContent();
 
 // Get relevant content
-echo $grabber->getRelevantontent();
+echo $grabber->getRelevantContent();
 
 // Get filtered relevant content
 echo $grabber->getFilteredContent();
