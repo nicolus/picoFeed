@@ -1,6 +1,6 @@
 <?php
 
-namespace PicoFeed\Client;
+namespace PicoFeed\Scraper;
 
 use PicoFeed\Logging\Logger;
 use PicoFeed\Config\Config;
@@ -10,7 +10,7 @@ use PicoFeed\Config\Config;
  *
  * @author  Frederic Guillot
  * @author  Bernhard Posselt
- * @package Client
+ * @package Scraper
  */
 class RuleLoader
 {

@@ -3,11 +3,11 @@
 namespace PicoFeed\Parser;
 
 use SimpleXMLElement;
+use PicoFeed\Client\Url;
 use PicoFeed\Encoding\Encoding;
 use PicoFeed\Filter\Filter;
 use PicoFeed\Logging\Logger;
-use PicoFeed\Client\Url;
-use PicoFeed\Client\Grabber;
+use PicoFeed\Scraper\Scraper;
 
 /**
  * Base parser class
@@ -246,7 +246,7 @@ abstract class Parser
     {
         if ($this->enable_grabber && ! in_array($item->getUrl(), $this->grabber_ignore_urls)) {
 
-            $grabber = new Grabber($this->config);
+            $grabber = new Scraper($this->config);
             $grabber->setUrl($item->getUrl());
 
             if (! $this->enable_grabber_everywhere) {

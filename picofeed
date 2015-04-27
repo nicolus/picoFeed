@@ -4,7 +4,7 @@
 require_once 'vendor/autoload.php';
 
 use PicoFeed\Config\Config;
-use PicoFeed\Client\Grabber;
+use PicoFeed\Scraper\Scraper;
 use PicoFeed\Reader\Reader;
 use PicoFeed\Logging\Logger;
 use PicoFeed\PicoFeedException;
@@ -81,7 +81,7 @@ function nofilter_item($url, $item_id)
 
 function grabber($url)
 {
-    $grabber = new Grabber(new Config);
+    $grabber = new Scraper(new Config);
     $grabber->setUrl($url);
     $grabber->execute();
 

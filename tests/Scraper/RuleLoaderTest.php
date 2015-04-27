@@ -1,6 +1,6 @@
 <?php
 
-namespace PicoFeed\Client;
+namespace PicoFeed\Scraper;
 
 use PHPUnit_Framework_TestCase;
 use PicoFeed\Config\Config;

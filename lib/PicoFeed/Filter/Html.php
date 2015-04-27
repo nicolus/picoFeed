@@ -4,7 +4,7 @@ namespace PicoFeed\Filter;
 
 use PicoFeed\Config\Config;
 use PicoFeed\Client\Url;
-use PicoFeed\Client\RuleLoader;
+use PicoFeed\Scraper\RuleLoader;
 use PicoFeed\Parser\XmlParser;
 
 /**

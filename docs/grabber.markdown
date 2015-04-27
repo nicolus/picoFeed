@@ -20,9 +20,12 @@ Fetch remote content:
 ```php
 <?php
 
-use PicoFeed\Client\Grabber;
+use PicoFeed\Config\Config;
+use PicoFeed\Scraper\Scraper;
 
-$grabber = new Grabber; // or with a config object new Grabber(new Config)
+$config = new Config;
+
+$grabber = new Scraper($config)
 $grabber->setUrl($url);
 $grabber->execute();
 
@@ -44,7 +47,7 @@ Parse HTML content:
 ```php
 <?php
 
-$grabber = new Grabber; // or with a config object new Grabber(new Config)
+$grabber = new Scraper($config);
 $grabber->setRawContent($html);
 $grabber->execute();
 ```
