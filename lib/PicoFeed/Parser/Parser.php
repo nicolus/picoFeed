@@ -87,8 +87,7 @@ abstract class Parser
      * @access private
      * @var bool
      */
-    private $enable_grabber_everywhere = false;
-
+    private $grabber_needs_rule_file = false;
 
     /**
      * Ignore those urls for the content scraper
@@ -249,7 +248,7 @@ abstract class Parser
             $grabber = new Scraper($this->config);
             $grabber->setUrl($item->getUrl());
 
-            if (! $this->enable_grabber_everywhere) {
+            if ($this->grabber_needs_rule_file) {
                 $grabber->disableCandidateParser();
             }
 
@@ -396,14 +395,14 @@ abstract class Parser
      * Enable the content grabber
      *
      * @access public
-     * @param bool $everywhere true if also pages without rules should be
+     * @param bool $needs_rule_file true if only pages with rule files should be
      * scraped
      * @return \PicoFeed\Parser\Parser
      */
-    public function enableContentGrabber($everywhere = true)
+    public function enableContentGrabber($needs_rule_file = false)
     {
         $this->enable_grabber = true;
-        $this->enable_grabber_everywhere = $everywhere;
+        $this->grabber_needs_rule_file = $needs_rule_file;
     }
 
     /**

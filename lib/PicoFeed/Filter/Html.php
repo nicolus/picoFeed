@@ -167,7 +167,7 @@ class Html
     {
         $this->output = $this->tag->removeEmptyTags($this->output);
         $this->output = $this->filterRules($this->output);
-        $this->output = $this->tag->removeMultipleTags($this->output);
+        $this->output = $this->tag->removeMultipleBreakTags($this->output);
         $this->output = trim($this->output);
     }
 

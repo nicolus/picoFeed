@@ -97,11 +97,11 @@ Configuration
 ### Enable content grabber for items
 
 - Method name: `enableContentGrabber()`
-- Default value: true (also fetch content if rule does not exist)
-- Argument value: bool (true if also websites without rules should be grabbed)
+- Default value: false (also fetch content if no rule file exist)
+- Argument value: bool (true scrape only webpages which have a rule file)
 
 ```php
-$parser->enableContentGrabber(true);
+$parser->enableContentGrabber(false);
 ```
 
 ### Ignore item urls for the content grabber
