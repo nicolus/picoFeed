@@ -2,7 +2,6 @@
 
 namespace PicoFeed\Scraper;
 
-use DOMXPath;
 use PicoFeed\Client\Client;
 use PicoFeed\Client\ClientException;
 use PicoFeed\Client\Url;
@@ -218,8 +217,8 @@ class Scraper
 
                 $client = Client::getInstance();
                 $client->setConfig($this->config);
-                $client->setTimeout($this->config->getScraperTimeout());
-                $client->setUserAgent($this->config->getScraperUserAgent());
+                $client->setTimeout($this->config->getGrabberTimeout());
+                $client->setUserAgent($this->config->getGrabberUserAgent());
                 $client->execute($this->url);
 
                 $this->url = $client->getUrl();
@@ -337,7 +336,7 @@ class Scraper
      * Return the Youtube embed player and skip processing
      *
      * @access public
-     * @return string
+     * @return boolean
      */
     public function detectStreamingVideos()
     {
@@ -353,7 +352,7 @@ class Scraper
      * Skip processing for PDF documents
      *
      * @access public
-     * @return string
+     * @return boolean
      */
     public function detectPdfFiles()
     {

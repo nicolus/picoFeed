@@ -162,6 +162,7 @@ class Curl extends Client
      * Prepare curl proxy context
      *
      * @access private
+     * @param  resource $ch
      * @return resource $ch
      */
     private function prepareProxyContext($ch)
@@ -190,6 +191,7 @@ class Curl extends Client
      * Prepare curl auth context
      *
      * @access private
+     * @param  resource $ch
      * @return resource $ch
      */
     private function prepareAuthContext($ch)
@@ -205,6 +207,7 @@ class Curl extends Client
      * Set write/header functions
      *
      * @access private
+     * @param  resource $ch
      * @return resource $ch
      */
     private function prepareDownloadMode($ch)

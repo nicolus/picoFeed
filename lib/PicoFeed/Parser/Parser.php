@@ -284,7 +284,6 @@ abstract class Parser
      * Generate a unique id for an entry (hash all arguments)
      *
      * @access public
-     * @param  string  $args  Pieces of data to hash
      * @return string
      */
     public function generateId()

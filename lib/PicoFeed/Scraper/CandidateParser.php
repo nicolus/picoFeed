@@ -97,7 +97,6 @@ class CandidateParser implements ParserInterface
      *
      * @access public
      * @param  string   $html
-     * @param  array    $rules
      */
     public function __construct($html)
     {
