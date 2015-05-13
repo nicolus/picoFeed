@@ -23,7 +23,13 @@ class Rss20 extends Parser
      */
     public function getItemsTree(SimpleXMLElement $xml)
     {
-        return $xml->channel->item;
+        $items = array();
+
+        if (isset($xml->channel->item)) {
+            $items = $xml->channel->item;
+        }
+
+        return $items;
     }
 
     /**
