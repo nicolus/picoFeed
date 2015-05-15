@@ -17,12 +17,27 @@ class Rss20 extends Parser
     /**
      * Register all supported namespaces
      *
+     * Standard RSS 1.0 modules
+     *   - Dublin Core (http://purl.org/rss/1.0/modules/dc/)
+     *   - Content (http://purl.org/rss/1.0/modules/content/)
+     *
+     * Additionally we do support:
+     *   - Feedburner (http://rssnamespace.org/feedburner/ext/1.0)
+     *
+     * For broken feeds we do support
+     *   - Atom (http://www.w3.org/2005/Atom)
+     *
      * @access public
      * @param  SimpleXMLElement          $xml     Feed xml
      * @return SimpleXMLElement
      */
     public function registerSupportedNamespaces(SimpleXMLElement $xml)
     {
+        $xml->registerXPathNamespace('dc', 'http://purl.org/rss/1.0/modules/dc/');
+        $xml->registerXPathNamespace('content', 'http://purl.org/rss/1.0/modules/content/');
+        $xml->registerXPathNamespace('feedburner', 'http://rssnamespace.org/feedburner/ext/1.0');
+        $xml->registerXPathNamespace('atom', 'http://www.w3.org/2005/Atom');
+
         return $xml;
     }
 
@@ -31,17 +46,11 @@ class Rss20 extends Parser
      *
      * @access public
      * @param  SimpleXMLElement   $xml   Feed xml
-     * @return SimpleXMLElement
+     * @return SimpleXMLElement[]
      */
     public function getItemsTree(SimpleXMLElement $xml)
     {
-        $items = array();
-
-        if (isset($xml->channel->item)) {
-            $items = $xml->channel->item;
-        }
-
-        return $items;
+        return $xml->xpath('channel/item');
     }
 
     /**
@@ -65,7 +74,8 @@ class Rss20 extends Parser
      */
     public function findSiteUrl(SimpleXMLElement $xml, Feed $feed)
     {
-        $feed->site_url = (string) $xml->channel->link;
+        $site_url = $xml->xpath('channel/link');
+        $feed->site_url = (string) current($site_url);
     }
 
     /**
@@ -77,7 +87,8 @@ class Rss20 extends Parser
      */
     public function findFeedDescription(SimpleXMLElement $xml, Feed $feed)
     {
-        $feed->description = (string) $xml->channel->description;
+        $description = $xml->xpath('channel/description') ?: $xml->xpath('channel/dc:description');
+        $feed->description = (string) current($description);
     }
 
     /**
@@ -89,9 +100,8 @@ class Rss20 extends Parser
      */
     public function findFeedLogo(SimpleXMLElement $xml, Feed $feed)
     {
-        if (isset($xml->channel->image->url)) {
-            $feed->logo = (string) $xml->channel->image->url;
-        }
+        $logo = $xml->xpath('channel/image/url');
+        $feed->logo = (string) current($logo);
     }
 
     /**
@@ -115,7 +125,8 @@ class Rss20 extends Parser
      */
     public function findFeedTitle(SimpleXMLElement $xml, Feed $feed)
     {
-        $feed->title = Filter::stripWhiteSpace((string) $xml->channel->title) ?: $feed->getSiteUrl();
+        $title = $xml->xpath('channel/title') ?: $xml->xpath('channel/dc:title');
+        $feed->title = Filter::stripWhiteSpace((string) current($title)) ?: $feed->getSiteUrl();
     }
 
     /**
@@ -127,7 +138,8 @@ class Rss20 extends Parser
      */
     public function findFeedLanguage(SimpleXMLElement $xml, Feed $feed)
     {
-        $feed->language = isset($xml->channel->language) ? (string) $xml->channel->language : '';
+        $language = $xml->xpath('channel/language') ?: $xml->xpath('channel/dc:language');
+        $feed->language = (string) current($language);
     }
 
     /**
@@ -151,8 +163,12 @@ class Rss20 extends Parser
      */
     public function findFeedDate(SimpleXMLElement $xml, Feed $feed)
     {
-        $date = isset($xml->channel->pubDate) ? $xml->channel->pubDate : $xml->channel->lastBuildDate;
-        $feed->date = $this->date->getDateTime((string) $date);
+        $date = $xml->xpath('channel/pubDate')
+                ?: $xml->xpath('channel/lastBuildDate')
+                ?: $xml->xpath('channel/dc:date')
+                ?: $xml->xpath('channel/date');
+
+        $feed->date = $this->date->getDateTime((string) current($date));
     }
 
     /**
@@ -165,17 +181,18 @@ class Rss20 extends Parser
      */
     public function findItemDate(SimpleXMLElement $entry, Item $item, Feed $feed)
     {
-        $date = XmlParser::getNamespaceValue($entry, $this->namespaces, 'date');
+        $date = $entry->xpath('pubDate')
+                ?: $entry->xpath('dc:date')
+                ?: $entry->xpath('date');
 
-        if (empty($date)) {
-            $date = XmlParser::getNamespaceValue($entry, $this->namespaces, 'updated');
+        if (count($date) > 0) {
+            $date = $this->date->getDateTime((string) current($date));
+        }
+        else {
+            $date = $feed->getDate();
         }
 
-        if (empty($date)) {
-            $date = (string) $entry->pubDate;
-        }
-
-        $item->date = empty($date) ? $feed->getDate() : $this->date->getDateTime($date);
+        $item->date = $date;
     }
 
     /**
@@ -187,11 +204,10 @@ class Rss20 extends Parser
      */
     public function findItemTitle(SimpleXMLElement $entry, Item $item)
     {
-        $item->title = Filter::stripWhiteSpace((string) $entry->title);
-
-        if (empty($item->title)) {
-            $item->title = $item->url;
-        }
+        // TODO: use $this->findItemUrl instead of $item->url; removes the
+        // depenency on call order and is more obvious
+        $title = $entry->xpath('title') ?: $entry->xpath('dc:title');
+        $item->title = Filter::stripWhiteSpace((string) current($title)) ?: (string) $item->url;
     }
 
     /**
@@ -204,16 +220,13 @@ class Rss20 extends Parser
      */
     public function findItemAuthor(SimpleXMLElement $xml, SimpleXMLElement $entry, Item $item)
     {
-        $item->author = XmlParser::getNamespaceValue($entry, $this->namespaces, 'creator');
+        $author = $entry->xpath('author')
+                ?: $entry->xpath('dc:creator')
+                ?: $entry->xpath('creator')
+                ?: $xml->xpath('channel/webMaster')
+                ?: $xml->xpath('channel/managingEditor');
 
-        if (empty($item->author)) {
-            if (isset($entry->author)) {
-                $item->author = (string) $entry->author;
-            }
-            else if (isset($xml->channel->webMaster)) {
-                $item->author = (string) $xml->channel->webMaster;
-            }
-        }
+        $item->author = (string) current($author);
     }
 
     /**
@@ -225,13 +238,13 @@ class Rss20 extends Parser
      */
     public function findItemContent(SimpleXMLElement $entry, Item $item)
     {
-        $content = XmlParser::getNamespaceValue($entry, $this->namespaces, 'encoded');
+        $content = $entry->xpath('content:encoded') ?: $entry->xpath('encoded');
 
-        if (trim($content) === '' && $entry->description->count() > 0) {
-            $content = (string) $entry->description;
+        if (trim((string) current($content)) === '') {
+            $content = $entry->xpath('description') ?: $entry->xpath('dc:description');
         }
 
-        $item->content = $content;
+        $item->content = (string) current($content);
     }
 
     /**
@@ -243,15 +256,16 @@ class Rss20 extends Parser
      */
     public function findItemUrl(SimpleXMLElement $entry, Item $item)
     {
-        $links = array(
-            XmlParser::getNamespaceValue($entry, $this->namespaces, 'origLink'),
-            isset($entry->link) ? (string) $entry->link : '',
-            XmlParser::getNamespaceValue($entry, $this->namespaces, 'link', 'href'),
-            isset($entry->guid) ? (string) $entry->guid : '',
-        );
+        $links = $entry->xpath('link')
+                ?: $entry->xpath('feedburner:origLink')
+                ?: $entry->xpath('atom:link/@href')
+                ?: $entry->xpath('origLink')
+                ?: $entry->xpath('link/@href');
 
         foreach ($links as $link) {
-            if (! empty($link) && filter_var($link, FILTER_VALIDATE_URL) !== false) {
+            $link = (string) $link;
+
+            if ($link !== '' && filter_var($link, FILTER_VALIDATE_URL) !== false) {
                 $item->url = $link;
                 break;
             }
@@ -268,10 +282,12 @@ class Rss20 extends Parser
      */
     public function findItemId(SimpleXMLElement $entry, Item $item, Feed $feed)
     {
-        $id = (string) $entry->guid;
+        $id = $entry->xpath('guid')
+                ?: $entry->xpath('dc:identifier')
+                ?: $entry->xpath('identifier');
 
-        if ($id) {
-            $item->id = $this->generateId($id);
+        if (count($id) > 0) {
+            $item->id = $this->generateId((string) current($id));
         }
         else {
             $item->id = $this->generateId(
@@ -290,17 +306,15 @@ class Rss20 extends Parser
      */
     public function findItemEnclosure(SimpleXMLElement $entry, Item $item, Feed $feed)
     {
-        if (isset($entry->enclosure)) {
+        // TODO: register Namespaces
+        $url = $entry->xpath('feedburner:origEnclosureLink')
+                ?: $entry->xpath('enclosure/@url')
+                ?: $entry->xpath('origEnclosureLink');
 
-            $item->enclosure_url = XmlParser::getNamespaceValue($entry->enclosure, $this->namespaces, 'origEnclosureLink');
+        $type = $entry->xpath('enclosure/@type');
 
-            if (empty($item->enclosure_url)) {
-                $item->enclosure_url = isset($entry->enclosure['url']) ? (string) $entry->enclosure['url'] : '';
-            }
-
-            $item->enclosure_type = isset($entry->enclosure['type']) ? (string) $entry->enclosure['type'] : '';
-            $item->enclosure_url = Url::resolve($item->enclosure_url, $feed->getSiteUrl());
-        }
+        $item->enclosure_url = Url::resolve((string) current($url), $feed->getSiteUrl());
+        $item->enclosure_type = (string) current($type);
     }
 
     /**
@@ -313,6 +327,7 @@ class Rss20 extends Parser
      */
     public function findItemLanguage(SimpleXMLElement $entry, Item $item, Feed $feed)
     {
-        $item->language = $feed->language;
+        $language = $entry->xpath('dc:language') ?: $entry->xpath('language');
+        $item->language = (string) current($language) ?: $feed->language;
     }
 }
