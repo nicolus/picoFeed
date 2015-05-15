@@ -141,6 +141,7 @@ abstract class Parser
         }
 
         $this->namespaces = $xml->getNamespaces(true);
+        $xml = $this->registerSupportedNamespaces($xml);
 
         $feed = new Feed;
 
@@ -159,6 +160,8 @@ abstract class Parser
         $this->findFeedIcon($xml, $feed);
 
         foreach ($this->getItemsTree($xml) as $entry) {
+
+            $entry = $this->registerSupportedNamespaces($entry);
 
             $item = new Item;
             $item->xml = $entry;
@@ -416,6 +419,15 @@ abstract class Parser
     {
         $this->grabber_ignore_urls = $urls;
     }
+
+    /**
+     * Register all supported namespaces
+     *
+     * @access public
+     * @param  SimpleXMLElement          $xml     Feed xml
+     * @return SimpleXMLElement
+     */
+    public abstract function registerSupportedNamespaces(SimpleXMLElement $xml);
 
     /**
      * Find the feed url

@@ -15,6 +15,18 @@ use PicoFeed\Client\Url;
 class Rss20 extends Parser
 {
     /**
+     * Register all supported namespaces
+     *
+     * @access public
+     * @param  SimpleXMLElement          $xml     Feed xml
+     * @return SimpleXMLElement
+     */
+    public function registerSupportedNamespaces(SimpleXMLElement $xml)
+    {
+        return $xml;
+    }
+
+    /**
      * Get the path to the items XML tree
      *
      * @access public

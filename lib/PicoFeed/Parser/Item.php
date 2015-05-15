@@ -118,6 +118,8 @@ class Item
     /**
      * Get specific XML tag or attribute value
      *
+     * TODO: Add proper namespace support
+     *
      * @access public
      * @param  string  $tag           Tag name (examples: guid, media:content)
      * @param  string  $attribute     Tag attribute
