@@ -16,6 +16,7 @@ class Encoding
         }
 
         // convert input to utf-8; ignore malformed characters
-        return iconv($encoding, 'UTF-8//IGNORE', $input);
+        // suppress notice if input encoding is unknown/unsupported
+        return @iconv($encoding, 'UTF-8//IGNORE', $input);
     }
 }
