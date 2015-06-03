@@ -1,13 +1,8 @@
 <?php
 return array(
-    'grabber' => array(
-        '%/comic.*%' => array(
-            'test_url' => 'http://www.loadingartist.com/comic/lifted-spirits/',
-            'body' => array(
-	        '//div[@class="comic"]',
-		'//article'
-		),
-            'strip' => array(),
+    'filter' => array(
+        '%.*%' => array(
+            '%-\\d+x\\d+%' => "",
         )
     )
 );
