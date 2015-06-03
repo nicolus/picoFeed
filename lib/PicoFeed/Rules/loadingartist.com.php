@@ -3,7 +3,10 @@ return array(
     'grabber' => array(
         '%/comic.*%' => array(
             'test_url' => 'http://www.loadingartist.com/comic/lifted-spirits/',
-            'body' => array('//div[@class="comic"]'),
+            'body' => array(
+	        '//div[@class="comic"]',
+		'//article'
+		),
             'strip' => array(),
         )
     )
