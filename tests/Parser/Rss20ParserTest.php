@@ -257,14 +257,6 @@ class Rss20ParserTest extends PHPUnit_Framework_TestCase
         $this->assertNotEmpty($feed->items);
         $this->assertEquals('http://geekstammtisch.de/#GST001', $feed->items[1]->getUrl());
 
-        $parser = new Rss20(file_get_contents('tests/fixtures/lincoln_loop.xml'));
-        $feed = $parser->execute();
-        $this->assertNotEmpty($feed->items);
-
-        $parser = new Rss20(file_get_contents('tests/fixtures/next_inpact_full.xml'));
-        $feed = $parser->execute();
-        $this->assertNotEmpty($feed->items);
-
         $parser = new Rss20(file_get_contents('tests/fixtures/jeux-linux.fr.xml'));
         $feed = $parser->execute();
         $this->assertNotEmpty($feed->items);

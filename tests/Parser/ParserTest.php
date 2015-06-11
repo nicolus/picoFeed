@@ -33,4 +33,15 @@ class ParserTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('Blandine Grosjean', XmlParser::getNamespaceValue($xml->channel->item[0], $namespaces, 'creator'));
         $this->assertEquals('Pierre-Carl Langlais', XmlParser::getNamespaceValue($xml->channel->item[1], $namespaces, 'creator'));
     }
+
+    public function testFeedsWithInvalidCharacters()
+    {
+        $parser = new Rss20(file_get_contents('tests/fixtures/lincoln_loop.xml'));
+        $feed = $parser->execute();
+        $this->assertNotEmpty($feed->items);
+
+        $parser = new Rss20(file_get_contents('tests/fixtures/next_inpact_full.xml'));
+        $feed = $parser->execute();
+        $this->assertNotEmpty($feed->items);
+    }
 }

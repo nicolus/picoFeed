@@ -117,9 +117,6 @@ abstract class Parser
         // Encode everything in UTF-8
         Logger::setMessage(get_called_class().': HTTP Encoding "'.$http_encoding.'" ; XML Encoding "'.$xml_encoding.'"');
         $this->content = Encoding::convert($this->content, $xml_encoding ?: $http_encoding);
-
-        // Workarounds
-        $this->content = Filter::normalizeData($this->content);
     }
 
     /**
@@ -134,10 +131,16 @@ abstract class Parser
 
         $xml = XmlParser::getSimpleXml($this->content);
 
-        if ($xml === false) {
-            Logger::setMessage(get_called_class().': XML parsing error');
-            Logger::setMessage(XmlParser::getErrors());
-            throw new MalformedXmlException('XML parsing error');
+        if (($xml) === false) {
+            Logger::setMessage(get_called_class().': Applying XML workarounds');
+            $this->content = Filter::normalizeData($this->content);
+            $xml = XmlParser::getSimpleXml($this->content);
+
+            if ($xml === false) {
+                Logger::setMessage(get_called_class().': XML parsing error');
+                Logger::setMessage(XmlParser::getErrors());
+                throw new MalformedXmlException('XML parsing error');
+            }
         }
 
         $this->namespaces = $xml->getNamespaces(true);

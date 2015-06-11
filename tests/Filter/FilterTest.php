@@ -90,4 +90,36 @@ class FilterTest extends PHPUnit_Framework_TestCase
         $f->setConfig($config);
         $this->assertEquals('<p>Testboo</p>', $f->execute());
     }
+
+    public function testNormalizeData()
+    {
+        // invalid data link escape control character
+        $this->assertEquals('<xml>random text</xml>', Filter::normalizeData("<xml>random\x10 text</xml>"));
+        $this->assertEquals('<xml>random text</xml>', Filter::normalizeData("<xml>random&#x10; text</xml>"));
+        $this->assertEquals('<xml>random text</xml>', Filter::normalizeData("<xml>random&#16; text</xml>"));
+
+        // invalid unit seperator control character (lower and upper case)
+        $this->assertEquals('<xml>random text</xml>', Filter::normalizeData("<xml>random\x1f text</xml>"));
+        $this->assertEquals('<xml>random text</xml>', Filter::normalizeData("<xml>random\x1F text</xml>"));
+        $this->assertEquals('<xml>random text</xml>', Filter::normalizeData("<xml>random&#x1f; text</xml>"));
+        $this->assertEquals('<xml>random text</xml>', Filter::normalizeData("<xml>random&#x1F; text</xml>"));
+        $this->assertEquals('<xml>random text</xml>', Filter::normalizeData("<xml>random&#31; text</xml>"));
+
+        /*
+         * Do not test invalid multibyte characters. The output depends on php
+         * version and character.
+         *
+         * php 5.3: always null
+         * php >5.3: sometime null, sometimes the stripped string
+         */
+
+        // invalid backspace control character + valid multibyte character
+        $this->assertEquals('<xml>“random“ text</xml>', Filter::normalizeData("<xml>\xe2\x80\x9crandom\xe2\x80\x9c\x08 text</xml>"));
+        $this->assertEquals('<xml>&#x201C;random&#x201C; text</xml>', Filter::normalizeData("<xml>&#x201C;random&#x201C;&#x08; text</xml>"));
+        $this->assertEquals('<xml>&#8220;random&#8220; text</xml>', Filter::normalizeData("<xml>&#8220;random&#8220;&#08; text</xml>"));
+
+        // do not convert valid entities to utf-8 character
+        $this->assertEquals('<xml attribute="&#34;value&#34;">random text</xml>', Filter::normalizeData('<xml attribute="&#34;value&#34;">random text</xml>'));
+        $this->assertEquals('<xml attribute="&#x22;value&#x22;">random text</xml>', Filter::normalizeData('<xml attribute="&#x22;value&#x22;">random text</xml>'));
+    }
 }
