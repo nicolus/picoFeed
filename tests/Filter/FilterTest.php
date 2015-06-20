@@ -37,9 +37,6 @@ class FilterTest extends PHPUnit_Framework_TestCase
         $data = file_get_contents('tests/fixtures/sametmax.xml');
         $this->assertEquals('<rss', substr(Filter::stripXmlTag($data), 0, 4));
 
-        $data = file_get_contents('tests/fixtures/grotte_barbu.xml');
-        $this->assertEquals('<rss', substr(Filter::stripXmlTag($data), 0, 4));
-
         $data = file_get_contents('tests/fixtures/ibash.ru.xml');
         $this->assertEquals('<rss', substr(Filter::stripXmlTag($data), 0, 4));
 

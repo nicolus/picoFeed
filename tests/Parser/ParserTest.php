@@ -65,4 +65,18 @@ class ParserTest extends PHPUnit_Framework_TestCase
         $feed = $parser->execute();
         $this->assertNotEmpty($feed->items);
     }
+
+    public function testHTTPEncodingFallbackIsUsed()
+    {
+        $parser = new Rss20(file_get_contents('tests/fixtures/cercle.psy.xml'), 'iso-8859-1');
+        $feed = $parser->execute();
+        $this->assertNotEmpty($feed->items);
+    }
+
+    public function testFeedURLFallbackIsUsed()
+    {
+        $parser = new Atom(file_get_contents('tests/fixtures/atom_empty_feed.xml'), '', 'https://feeds.wikipedia.org/category/Russian-language_literature.xml');
+        $feed = $parser->execute();
+        $this->assertEquals('https://feeds.wikipedia.org/category/Russian-language_literature.xml', $feed->getFeedUrl());
+    }
 }
