@@ -20,7 +20,7 @@ class Rss10ParserTest extends PHPUnit_Framework_TestCase
     {
         $parser = new Rss10(file_get_contents('tests/fixtures/rss_10.xml'));
         $feed = $parser->execute();
-        $this->assertCount(3, $feed->items);
+        $this->assertCount(2, $feed->items);
 
         $parser = new Rss10(file_get_contents('tests/fixtures/rss_10_no_default_namespace.xml'));
         $feed = $parser->execute();
@@ -88,6 +88,22 @@ class Rss10ParserTest extends PHPUnit_Framework_TestCase
     public function testFindFeedLogo()
     {
         $parser = new Rss10(file_get_contents('tests/fixtures/rss_10.xml'));
+        $feed = $parser->execute();
+        $this->assertEquals('https://ru.wikipedia.org/static/images/project-logos/ruwiki.png', $feed->getLogo());
+
+        $parser = new Rss10(file_get_contents('tests/fixtures/rss_10_no_default_namespace.xml'));
+        $feed = $parser->execute();
+        $this->assertEquals('https://ru.wikipedia.org/static/images/project-logos/ruwiki.png', $feed->getLogo());
+
+        $parser = new Rss10(file_get_contents('tests/fixtures/rss_10_prefixed.xml'));
+        $feed = $parser->execute();
+        $this->assertEquals('https://ru.wikipedia.org/static/images/project-logos/ruwiki.png', $feed->getLogo());
+
+        $parser = new Rss10(file_get_contents('tests/fixtures/rss_10_empty_channel.xml'));
+        $feed = $parser->execute();
+        $this->assertEquals('', $feed->getLogo());
+
+        $parser = new Rss10(file_get_contents('tests/fixtures/rss_10_empty_feed.xml'));
         $feed = $parser->execute();
         $this->assertEquals('', $feed->getLogo());
     }
@@ -198,8 +214,7 @@ class Rss10ParserTest extends PHPUnit_Framework_TestCase
         $parser = new Rss10(file_get_contents('tests/fixtures/rss_10.xml'));
         $feed = $parser->execute();
         $this->assertEquals('https://en.wikipedia.org/wiki/War_and_Peace', $feed->items[0]->getUrl()); // <rss:link>
-        $this->assertEquals('https://en.wikipedia.org/wiki/Crime_and_Punishment', $feed->items[1]->getUrl()); // <atom:link>
-        $this->assertEquals('https://en.wikipedia.org/wiki/Doctor_Zhivago_(novel)', $feed->items[2]->getUrl()); // <feedburner:origLink>
+        $this->assertEquals('https://en.wikipedia.org/wiki/Crime_and_Punishment', $feed->items[1]->getUrl()); // <feedburner:origLink>
 
         $parser = new Rss10(file_get_contents('tests/fixtures/rss_10_no_default_namespace.xml'));
         $feed = $parser->execute();
@@ -211,13 +226,12 @@ class Rss10ParserTest extends PHPUnit_Framework_TestCase
 
         $parser = new Rss10(file_get_contents('tests/fixtures/rss_10_element_preference.xml'));
         $feed = $parser->execute();
-        $this->assertEquals('https://en.wikipedia.org/wiki/War_and_Peace', $feed->items[0]->getUrl()); // <feedburner:origLink> is preferred over <rss:link>, <atom:link>, <guid>
-        $this->assertEquals('https://en.wikipedia.org/wiki/Crime_and_Punishment', $feed->items[1]->getUrl()); // <rss:link> is preferred over <atom:link>, <guid>
+        $this->assertEquals('https://en.wikipedia.org/wiki/War_and_Peace', $feed->items[0]->getUrl()); // <feedburner:origLink> is preferred over <rss:link>
 
         $parser = new Rss10(file_get_contents('tests/fixtures/rss_10_fallback_on_invalid_item_values.xml'));
         $feed = $parser->execute();
-        $this->assertEquals('https://en.wikipedia.org/wiki/', $feed->items[3]->getUrl()); // <rss:link>, <atom:link>, <feedburner:origLink> and <guid> are invalid URI
-        $this->assertEquals('https://en.wikipedia.org/wiki/War_and_Peace', $feed->items[0]->getUrl()); // <feedburner:origLink> can fallback till <atom:link>
+        $this->assertEquals('https://en.wikipedia.org/wiki/', $feed->items[3]->getUrl()); // <rss:link> and <feedburner:origLink> are invalid URI
+        $this->assertEquals('https://en.wikipedia.org/wiki/War_and_Peace', $feed->items[0]->getUrl()); // <feedburner:origLink> can fallback to <rss:link>
 
         $parser = new Rss10(file_get_contents('tests/fixtures/rss_10_empty_item.xml'));
         $feed = $parser->execute();

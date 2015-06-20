@@ -14,9 +14,9 @@
     </channel>
     <item>
         <feedburner:origLink>b67e7afb-80be-4b23-8c42-67b970e2baa7</feedburner:origLink>
-        <atom:link type="text/html" rel="https://wikipedia.org/deep-link" href="
+        <link>
 	    	https://en.wikipedia.org/wiki/War_and_Peace
-        "/>
+        </link>
     </item>
     <item>
         <content:encoded><![CDATA[
@@ -38,7 +38,6 @@
     </item>
     <item>
         <link>b67e7afb-80be-4b23-8c42-67b970e2baa7</link>
-        <atom:link type="text/html" rel="https://wikipedia.org/deep-link" href="b67e7afb-80be-4b23-8c42-67b970e2baa7"/>
         <feedburner:origLink>b67e7afb-80be-4b23-8c42-67b970e2baa7</feedburner:origLink>
     </item>
 </rdf:RDF>

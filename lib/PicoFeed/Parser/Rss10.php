@@ -21,7 +21,6 @@ class Rss10 extends Parser
         'dc' => 'http://purl.org/dc/elements/1.1/',
         'content' => 'http://purl.org/rss/1.0/modules/content/',
         'feedburner' => 'http://rssnamespace.org/feedburner/ext/1.0',
-        'atom' => 'http://www.w3.org/2005/Atom'
     );
 
     /**
@@ -88,8 +87,8 @@ class Rss10 extends Parser
      */
     public function findFeedLogo(SimpleXMLElement $xml, Feed $feed)
     {
-        $logo = XmlParser::getXPathResult($xml, 'rss:channel/rss:image/rss:url', $this->namespaces)
-                ?: XmlParser::getXPathResult($xml, 'channel/image/url');
+        $logo = XmlParser::getXPathResult($xml, 'rss:image/rss:url', $this->namespaces)
+                ?: XmlParser::getXPathResult($xml, 'image/url');
 
         $feed->logo = (string) current($logo);
     }
@@ -173,10 +172,7 @@ class Rss10 extends Parser
      */
     public function findItemDate(SimpleXMLElement $entry, Item $item, Feed $feed)
     {
-        $date = XmlParser::getXPathResult($entry, 'dc:date', $this->namespaces)
-                ?: XmlParser::getXPathResult($entry, 'atom:updated', $this->namespaces)
-                 ?: XmlParser::getXPathResult($entry, 'rss:pubDate', $this->namespaces)
-                ?: XmlParser::getXPathResult($entry, 'pubDate');
+        $date = XmlParser::getXPathResult($entry, 'dc:date', $this->namespaces);
 
         $item->date = empty($date) ? $feed->getDate() : $this->date->getDateTime((string) current($date));
     }
@@ -207,10 +203,8 @@ class Rss10 extends Parser
     public function findItemAuthor(SimpleXMLElement $xml, SimpleXMLElement $entry, Item $item)
     {
         $author = XmlParser::getXPathResult($entry, 'dc:creator', $this->namespaces)
-                  ?: XmlParser::getXPathResult($entry, 'rss:author', $this->namespaces)
-                  ?: XmlParser::getXPathResult($entry, 'author')
-                  ?: XmlParser::getXPathResult($xml, 'rss:channel/rss:webMaster', $this->namespaces)
-                  ?: XmlParser::getXPathResult($xml, 'channel/webMaster');
+                  ?: XmlParser::getXPathResult($xml, 'rss:channel/dc:creator', $this->namespaces)
+                  ?: XmlParser::getXPathResult($xml, 'channel/dc:creator', $this->namespaces);
 
         $item->author = (string) current($author);
     }
@@ -245,9 +239,7 @@ class Rss10 extends Parser
     {
         $links = array_merge(
             XmlParser::getXPathResult($entry, 'feedburner:origLink', $this->namespaces),
-            XmlParser::getXPathResult($entry, 'rss:link', $this->namespaces) ?: XmlParser::getXPathResult($entry, 'link'),
-            XmlParser::getXPathResult($entry, 'atom:link/@href', $this->namespaces),
-            XmlParser::getXPathResult($entry, 'rss:guid', $this->namespaces) ?: XmlParser::getXPathResult($entry, 'guid')
+            XmlParser::getXPathResult($entry, 'rss:link', $this->namespaces) ?: XmlParser::getXPathResult($entry, 'link')
         );
 
         foreach ($links as $link) {

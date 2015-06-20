@@ -20,19 +20,12 @@
         <link>https://en.wikipedia.org/wiki/Category:Russian-language_literature</link>
     </channel>
     <item>
-        <atom:link type="text/html" rel="https://wikipedia.org/deep-link" href="https://www.github.com/picofeed/atom/pre"/>
         <link>https://www.github.com/picofeed/link/pre</link>
         <feedburner:origLink>
 	    	https://en.wikipedia.org/wiki/War_and_Peace</feedburner:origLink>
         <link>https://www.github.com/picofeed/link/post</link>
-        <atom:link type="text/html" rel="https://wikipedia.org/deep-link" href="https://www.github.com/picofeed/atom/post"/>
     </item>
     <item>
-        <atom:link type="text/html" rel="https://wikipedia.org/deep-link" href="https://www.github.com/picofeed/atom/pre"/>
-        <link>
-	    	https://en.wikipedia.org/wiki/Crime_and_Punishment
-        </link>
-        <atom:link type="text/html" rel="https://wikipedia.org/deep-link" href="https://www.github.com/picofeed/atom/post"/>
         <description>description pre</description>
         <content:encoded><![CDATA[<h1>
 История  создания

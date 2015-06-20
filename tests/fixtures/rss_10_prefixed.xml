@@ -21,6 +21,11 @@
         <dc:date>2015-06-05T00:05:00+03:00</dc:date>
         <dc:language>ru</dc:language>
     </rss:channel>
+    <rss:image>
+        <rss:title>Википедия — свободная энциклопедия</rss:title>
+        <rss:link>https://ru.wikipedia.org</rss:link>
+        <rss:url>https://ru.wikipedia.org/static/images/project-logos/ruwiki.png</rss:url>
+    </rss:image>
     <rss:item>
         <rss:title>
 	    	Война  и

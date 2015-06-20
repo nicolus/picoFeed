@@ -20,6 +20,11 @@
         <dc:date>2015-06-05T00:05:00+03:00</dc:date>
         <dc:language>ru</dc:language>
     </channel>
+    <image>
+        <title>Википедия — свободная энциклопедия</title>
+        <link>https://ru.wikipedia.org</link>
+        <url>https://ru.wikipedia.org/static/images/project-logos/ruwiki.png</url>
+    </image>
     <item>
         <dc:date>2015-06-05T00:02:00+03:00</dc:date>
         <dc:creator>Лев  Николаевич Толсто́й</dc:creator>
@@ -36,9 +41,6 @@
 с семейством в Россию.</description>
     </item>
     <item>
-        <atom:link type="text/html" rel="https://wikipedia.org/deep-link" href="
-	    	https://en.wikipedia.org/wiki/Crime_and_Punishment
-	    "/>
         <content:encoded><![CDATA[<h1>
 История  создания
 </h1>
