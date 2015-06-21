@@ -5,7 +5,7 @@ Versions
 --------
 
 - Development version: master
-- Stable version: v0.1.3
+- Stable version: v0.1.4
 
 Installation with Composer
 --------------------------
@@ -15,7 +15,7 @@ Configure your `composer.json`:
 ```json
 {
     "require": {
-        "fguillot/picofeed": "0.1.3"
+        "fguillot/picofeed": "0.1.4"
     }
 }
 ```
@@ -23,7 +23,7 @@ Configure your `composer.json`:
 Or simply:
 
 ```bash
-composer require fguillot/picofeed:0.1.3
+composer require fguillot/picofeed:0.1.4
 ```
 
 And download the code:
