@@ -295,6 +295,8 @@ class Rss20 extends Parser
      */
     public function findItemLanguage(SimpleXMLElement $entry, Item $item, Feed $feed)
     {
-        $item->language = $feed->language;
+        $language = XmlParser::getXPathResult($entry, 'dc:language', $this->namespaces);
+
+        $item->language = (string) current($language) ?: $feed->language;
     }
 }

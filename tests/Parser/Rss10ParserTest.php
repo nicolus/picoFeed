@@ -280,7 +280,12 @@ class Rss10ParserTest extends PHPUnit_Framework_TestCase
     {
         $parser = new Rss10(file_get_contents('tests/fixtures/rss_10.xml'));
         $feed = $parser->execute();
-        $this->assertEquals('ru', $feed->items[0]->getLanguage());
+        $this->assertEquals('bg', $feed->items[0]->getLanguage()); // item language
+        $this->assertEquals('ru', $feed->items[1]->getLanguage()); // fallback to feed language
+
+        $parser = new Rss10(file_get_contents('tests/fixtures/rss_10_empty_item.xml'));
+        $feed = $parser->execute();
+        $this->assertEquals('', $feed->items[0]->getAuthor());
     }
 
     public function testFindItemAuthor()
