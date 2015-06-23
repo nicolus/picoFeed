@@ -124,6 +124,11 @@ class Rss20ParserTest extends PHPUnit_Framework_TestCase
         $feed = $parser->execute();
         $this->assertEquals(1433451900, $feed->getDate()->getTimestamp());
 
+        // prefer most recent date and not a particular date element
+        $parser = new Rss20(file_get_contents('tests/fixtures/rss_20_element_preference.xml'));
+        $feed = $parser->execute();
+        $this->assertEquals(1433455500, $feed->getDate()->getTimestamp());
+
         $parser = new Rss20(file_get_contents('tests/fixtures/rss_20_empty_channel.xml'));
         $feed = $parser->execute();
         $this->assertEquals(time(), $feed->getDate()->getTimestamp(), '', 1);

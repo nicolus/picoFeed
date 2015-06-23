@@ -146,10 +146,21 @@ class Rss20 extends Parser
      */
     public function findFeedDate(SimpleXMLElement $xml, Feed $feed)
     {
-        $date = XmlParser::getXPathResult($xml, 'channel/pubDate')
-                ?: XmlParser::getXPathResult($xml, 'channel/lastBuildDate');
+        $publish_date = XmlParser::getXPathResult($xml, 'channel/pubDate');
+        $update_date = XmlParser::getXPathResult($xml, 'channel/lastBuildDate');
 
-        $feed->date = $this->date->getDateTime((string) current($date));
+        $published = ! empty($publish_date) ? $this->date->getDateTime((string) current($publish_date)) : null;
+        $updated = ! empty($update_date) ? $this->date->getDateTime((string) current($update_date)) : null;
+
+        if ($published === null && $updated === null) {
+            $feed->date = $this->date->getCurrentDateTime(); // We use the current date if there is no date for the feed
+        }
+        else if ($published !== null && $updated !== null) {
+            $feed->date = max($published, $updated); // We use the most recent date between published and updated
+        }
+        else {
+            $feed->date = $updated ?: $published;
+        }
     }
 
     /**
