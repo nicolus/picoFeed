@@ -19,8 +19,6 @@
             <link>https://www.github.com/picofeed/link/post</link>
             <atom:link type="text/html" rel="https://wikipedia.org/deep-link" href="https://www.github.com/picofeed/atom/post"/>
             <guid>https://www.github.com/picofeed/guid/post</guid>
-            <dc:date>2015-06-05T00:02:00+03:00</dc:date>
-            <pubDate>Fri, 05 Jun 2015 00:03:00 +0300</pubDate>
             <author>author post</author>
             <dc:creator>Лев  Николаевич Толсто́й</dc:creator>
             <author>author pre</author>
