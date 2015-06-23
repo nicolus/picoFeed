@@ -192,7 +192,8 @@ class Rss20 extends Parser
     {
         $author = XmlParser::getXPathResult($entry, 'dc:creator', $this->namespaces)
                   ?: XmlParser::getXPathResult($entry, 'author')
-                  ?: XmlParser::getXPathResult($xml, 'channel/webMaster');
+                  ?: XmlParser::getXPathResult($xml, 'channel/dc:creator', $this->namespaces)
+                  ?: XmlParser::getXPathResult($xml, 'channel/managingEditor');
 
         $item->author = (string) current($author);
     }

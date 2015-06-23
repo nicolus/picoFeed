@@ -9,8 +9,10 @@
     xmlns:feedburner="http://rssnamespace.org/feedburner/ext/1.0">
 
     <channel>
+        <dc:creator>Вики  педии - свободной энциклопедии</dc:creator>
         <item>
             <dc:creator>Лев  Николаевич Толсто́й</dc:creator>
         </item>
+        <item/>
     </channel>
 </rss>

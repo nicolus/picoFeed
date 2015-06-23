@@ -239,11 +239,13 @@ class Rss20ParserTest extends PHPUnit_Framework_TestCase
         $parser = new Rss20(file_get_contents('tests/fixtures/rss_20_dc.xml'));
         $feed = $parser->execute();
         $this->assertEquals('Лев  Николаевич Толсто́й', $feed->items[0]->getAuthor());
+        $this->assertEquals('Вики  педии - свободной энциклопедии', $feed->items[1]->getAuthor());
 
         // <dc:creator> is preferred over <author>
         $parser = new Rss20(file_get_contents('tests/fixtures/rss_20_element_preference.xml'));
         $feed = $parser->execute();
         $this->assertEquals('Лев  Николаевич Толсто́й', $feed->items[0]->getAuthor());
+        $this->assertEquals('Вики  педии - свободной энциклопедии', $feed->items[1]->getAuthor());
 
         $parser = new Rss20(file_get_contents('tests/fixtures/rss_20_empty_item.xml'));
         $feed = $parser->execute();
