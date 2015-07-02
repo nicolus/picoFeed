@@ -127,7 +127,10 @@ class Atom extends Parser
      */
     public function findFeedLanguage(SimpleXMLElement $xml, Feed $feed)
     {
-        $feed->language = XmlParser::getXmlLang($this->content);
+        $language = XmlParser::getXPathResult($xml, '*[not(self::atom:entry)]/@xml:lang', $this->namespaces)
+                    ?: XmlParser::getXPathResult($xml, '@xml:lang');
+
+        $feed->language = (string) current($language);
     }
 
     /**

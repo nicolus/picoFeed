@@ -207,6 +207,16 @@ class AtomParserTest extends PHPUnit_Framework_TestCase
         $feed = $parser->execute();
         $this->assertEquals('ru', $feed->getLanguage());
 
+        // do not use lang from entry or descendant of entry
+        $parser = new Atom('<feed xmlns="http://www.w3.org/2005/Atom"><entry xml:lang="ru"><title xml:lang="ru"/></entry></feed>');
+        $feed = $parser->execute();
+        $this->assertEquals('', $feed->getLanguage());
+
+        // do not use lang from entry or descendant of entry (prefixed)
+        $parser = new Atom('<feed xmlns:atom="http://www.w3.org/2005/Atom"><atom:entry xml:lang="ru"><atom:title xml:lang="ru"/></atom:entry></feed>');
+        $feed = $parser->execute();
+        $this->assertEquals('', $feed->getLanguage());
+
         $parser = new Atom(file_get_contents('tests/fixtures/atom_no_default_namespace.xml'));
         $feed = $parser->execute();
         $this->assertEquals('ru', $feed->getLanguage());
