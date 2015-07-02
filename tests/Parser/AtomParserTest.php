@@ -404,7 +404,7 @@ class AtomParserTest extends PHPUnit_Framework_TestCase
         $this->assertTrue(strpos($feed->items[0]->getContent(), "В наброске  предисловия к «Войне и миру» Толстой\nписал, что в 1856 г.") === 0);
         $this->assertTrue(strpos($feed->items[1]->getContent(), "<h1>\nИстория  создания\n</h1>\n<p>\nОсенью \n<a href=\"/wiki/1865_%D0%B3%D0%BE%D0%B4\"") === 0);
         $this->assertTrue(strpos($feed->items[2]->getContent(), "<h1>\nДоктор Живаго\n</h1>\n<p>\n<b>«До́ктор Жива́го»</b> ") === 0);
-        $this->assertTrue(strpos($feed->items[3]->getContent(), "<content><h1>\nГерой нашего времени\n</h1>\n<p>\n<b>«Геро́й на́шего вре́мени»</b> \n(написан в 1838—1840) — знаменитый роман \n<a href=\"/wiki/%D0%9B") === 0);
+        $this->assertTrue(strpos($feed->items[3]->getContent(), "<h1>\nГерой нашего времени\n</h1><p>\n<b>«Геро́й на́шего вре́мени»</b> \n(написан в 1838—1840) — знаменитый роман \n<a href=\"/wiki/%D0%9B") === 0);
 
         $parser = new Atom(file_get_contents('tests/fixtures/atom_no_default_namespace.xml'));
         $parser->disableContentFiltering();
@@ -412,7 +412,7 @@ class AtomParserTest extends PHPUnit_Framework_TestCase
         $this->assertTrue(strpos($feed->items[0]->getContent(), "В наброске  предисловия к «Войне и миру» Толстой\nписал, что в 1856 г.") === 0);
         $this->assertTrue(strpos($feed->items[1]->getContent(), "<h1>\nИстория  создания\n</h1>\n<p>\nОсенью \n<a href=\"/wiki/1865_%D0%B3%D0%BE%D0%B4\"") === 0);
         $this->assertTrue(strpos($feed->items[2]->getContent(), "<h1>\nДоктор Живаго\n</h1>\n<p>\n<b>«До́ктор Жива́го»</b> ") === 0);
-        $this->assertTrue(strpos($feed->items[3]->getContent(), "<content><h1>\nГерой нашего времени\n</h1>\n<p>\n<b>«Геро́й на́шего вре́мени»</b> \n(написан в 1838—1840) — знаменитый роман \n<a href=\"/wiki/%D0%9B") === 0);
+        $this->assertTrue(strpos($feed->items[3]->getContent(), "<h1>\nГерой нашего времени\n</h1><p>\n<b>«Геро́й на́шего вре́мени»</b> \n(написан в 1838—1840) — знаменитый роман \n<a href=\"/wiki/%D0%9B") === 0);
 
         $parser = new Atom(file_get_contents('tests/fixtures/atom_prefixed.xml'));
         $parser->disableContentFiltering();
@@ -420,7 +420,7 @@ class AtomParserTest extends PHPUnit_Framework_TestCase
         $this->assertTrue(strpos($feed->items[0]->getContent(), "В наброске  предисловия к «Войне и миру» Толстой\nписал, что в 1856 г.") === 0);
         $this->assertTrue(strpos($feed->items[1]->getContent(), "<h1>\nИстория  создания\n</h1>\n<p>\nОсенью \n<a href=\"/wiki/1865_%D0%B3%D0%BE%D0%B4\"") === 0);
         $this->assertTrue(strpos($feed->items[2]->getContent(), "<h1>\nДоктор Живаго\n</h1>\n<p>\n<b>«До́ктор Жива́го»</b> ") === 0);
-        $this->assertTrue(strpos($feed->items[3]->getContent(), "<atom:content><h1>\nГерой нашего времени\n</h1>\n<p>\n<b>«Геро́й на́шего вре́мени»</b> \n(написан в 1838—1840) — знаменитый роман \n<a href=\"/wiki/%D0%9B") === 0);
+        $this->assertTrue(strpos($feed->items[3]->getContent(), "<h1>\nГерой нашего времени\n</h1><p>\n<b>«Геро́й на́шего вре́мени»</b> \n(написан в 1838—1840) — знаменитый роман \n<a href=\"/wiki/%D0%9B") === 0);
 
         // <content> is preferred over <summary>
         $parser = new Atom(file_get_contents('tests/fixtures/atom_element_preference.xml'));

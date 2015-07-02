@@ -367,7 +367,13 @@ class Atom extends Parser
         );
 
         if (! empty($content) && count($content->children())) {
-            return (string) $content->asXML();
+            $xml_string = '';
+
+            foreach($content->children() as $child) {
+                $xml_string .= $child->asXML();
+            }
+
+            return $xml_string;
         }
         else if (trim((string) $content) !== '') {
             return (string) $content;
