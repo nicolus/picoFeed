@@ -428,6 +428,11 @@ class AtomParserTest extends PHPUnit_Framework_TestCase
         $feed = $parser->execute();
         $this->assertTrue(strpos($feed->items[1]->getContent(), "<h1>\nИстория  создания\n</h1>\n<p>\nОсенью \n<a href=\"/wiki/1865_%D0%B3%D0%BE%D0%B4\"") === 0);
 
+        $parser = new Atom(file_get_contents('tests/fixtures/atom_fallback_on_invalid_item_values.xml'));
+        $parser->disableContentFiltering();
+        $feed = $parser->execute();
+        $this->assertTrue(strpos($feed->items[1]->getContent(), "Осенью 1865 года, потеряв  все свои\nденьги в казино") === 0); // <content> => <summary>
+
         $parser = new Atom(file_get_contents('tests/fixtures/atom_empty_item.xml'));
         $feed = $parser->execute();
         $this->assertEquals('', $feed->items[0]->getContent());

@@ -361,18 +361,16 @@ class Atom extends Parser
      */
     private function getContent(SimpleXMLElement $entry)
     {
-        $content = XmlParser::getXPathResult($entry, 'atom:content', $this->namespaces)
-                   ?: XmlParser::getXPathResult($entry, 'content');
+        $content = current(
+            XmlParser::getXPathResult($entry, 'atom:content', $this->namespaces)
+            ?: XmlParser::getXPathResult($entry, 'content')
+        );
 
-        if (! empty($content)) {
-            $content = current($content);
-
-            if (count($content->children())) {
-                return (string) $content->asXML();
-            }
-            else {
-                return (string) $content;
-            }
+        if (! empty($content) && count($content->children())) {
+            return (string) $content->asXML();
+        }
+        else if (trim((string) $content) !== '') {
+            return (string) $content;
         }
 
         $summary = XmlParser::getXPathResult($entry, 'atom:summary', $this->namespaces)
