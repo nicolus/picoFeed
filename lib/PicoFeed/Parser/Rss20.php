@@ -239,6 +239,7 @@ class Rss20 extends Parser
         );
 
         foreach ($links as $link) {
+            $link = trim($link);
             if (! empty($link) && filter_var($link, FILTER_VALIDATE_URL) !== false) {
                 $item->url = $link;
                 break;
