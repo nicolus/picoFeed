@@ -9,10 +9,8 @@
     xmlns:feedburner="http://rssnamespace.org/feedburner/ext/1.0">
 
     <channel>
-        <link>https://en.wikipedia.org/wiki/Category:Russian-language_literature</link>
         <item>
-            <feedburner:origLink>b67e7afb-80be-4b23-8c42-67b970e2baa7</feedburner:origLink>
-            <guid>https://en.wikipedia.org/wiki/War_and_Peace</guid>
+            <guid>b67e7afb-80be-4b23-8c42-67b970e2baa7</guid>
         </item>
         <item>
             <content:encoded><![CDATA[
@@ -31,12 +29,6 @@
             <title>
 		    	
             </title>
-        </item>
-        <item>
-            <guid>b67e7afb-80be-4b23-8c42-67b970e2baa7</guid>
-            <link>b67e7afb-80be-4b23-8c42-67b970e2baa7</link>
-            <atom:link type="text/html" rel="https://wikipedia.org/deep-link" href="b67e7afb-80be-4b23-8c42-67b970e2baa7"/>
-            <feedburner:origLink>b67e7afb-80be-4b23-8c42-67b970e2baa7</feedburner:origLink>
         </item>
     </channel>
 </rss>

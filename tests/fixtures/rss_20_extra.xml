@@ -10,5 +10,21 @@
 
     <channel>
         <lastBuildDate>Fri, 05 Jun 2015 00:05:00 +0300</lastBuildDate>
+        <link>/wiki/Category:Russian-language_literature</link>
+        <item>
+            <link>
+	        	/wiki/War_and_Peace
+            </link>
+        </item>
+        <item>
+            <atom:link type="text/html" rel="https://wikipedia.org/deep-link" href="
+	        	/wiki/Crime_and_Punishment
+	    	"/>
+        </item>
+        <item>
+            <feedburner:origLink>
+	        	/wiki/Doctor_Zhivago_(novel)
+            </feedburner:origLink>
+        </item>
     </channel>
 </rss>

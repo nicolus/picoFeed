@@ -236,19 +236,19 @@ class Rss20 extends Parser
      */
     public function findItemUrl(SimpleXMLElement $entry, Item $item)
     {
-        $links = array_merge(
-            XmlParser::getXPathResult($entry, 'feedburner:origLink', $this->namespaces),
-            XmlParser::getXPathResult($entry, 'link'),
-            XmlParser::getXPathResult($entry, 'atom:link/@href', $this->namespaces),
-            XmlParser::getXPathResult($entry, 'guid')
-        );
+        $link = XmlParser::getXPathResult($entry, 'feedburner:origLink', $this->namespaces)
+                 ?: XmlParser::getXPathResult($entry, 'link')
+                 ?: XmlParser::getXPathResult($entry, 'atom:link/@href', $this->namespaces);
 
-        foreach ($links as $link) {
-            $link = trim((string) $link);
+        if (! empty($link)) {
+            $item->url = trim((string) current($link));
+        }
+        else {
+            $link = XmlParser::getXPathResult($entry, 'guid');
+            $link = trim((string) current($link));
 
-            if (! empty($link) && filter_var($link, FILTER_VALIDATE_URL) !== false) {
+            if (filter_var($link, FILTER_VALIDATE_URL) !== false) {
                 $item->url = $link;
-                break;
             }
         }
     }

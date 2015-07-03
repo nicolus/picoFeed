@@ -128,6 +128,10 @@ class Rss10ParserTest extends PHPUnit_Framework_TestCase
         $feed = $parser->execute();
         $this->assertEquals('https://en.wikipedia.org/wiki/Category:Russian-language_literature', $feed->getSiteUrl());
 
+        $parser = new Rss10(file_get_contents('tests/fixtures/rss_10_extra.xml'), '', 'https://feeds.wikipedia.org/category/Russian-language_literature.xml'); // relative url
+        $feed = $parser->execute();
+        $this->assertEquals('https://feeds.wikipedia.org/wiki/Category:Russian-language_literature', $feed->getSiteUrl());
+
         $parser = new Rss10(file_get_contents('tests/fixtures/rss_10_no_default_namespace.xml'));
         $feed = $parser->execute();
         $this->assertEquals('https://en.wikipedia.org/wiki/Category:Russian-language_literature', $feed->getSiteUrl());
@@ -216,6 +220,12 @@ class Rss10ParserTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('https://en.wikipedia.org/wiki/War_and_Peace', $feed->items[0]->getUrl()); // <rss:link>
         $this->assertEquals('https://en.wikipedia.org/wiki/Crime_and_Punishment', $feed->items[1]->getUrl()); // <feedburner:origLink>
 
+        // relative urls
+        $parser = new Rss10(file_get_contents('tests/fixtures/rss_10_extra.xml'), '', 'https://feeds.wikipedia.org/category/Russian-language_literature.xml');
+        $feed = $parser->execute();
+        $this->assertEquals('https://feeds.wikipedia.org/wiki/War_and_Peace', $feed->items[0]->getUrl()); // <rss:link>
+        $this->assertEquals('https://feeds.wikipedia.org/wiki/Crime_and_Punishment', $feed->items[1]->getUrl()); // <feedburner:origLink>
+
         $parser = new Rss10(file_get_contents('tests/fixtures/rss_10_no_default_namespace.xml'));
         $feed = $parser->execute();
         $this->assertEquals('https://en.wikipedia.org/wiki/War_and_Peace', $feed->items[0]->getUrl()); // <rss:link>
@@ -227,11 +237,6 @@ class Rss10ParserTest extends PHPUnit_Framework_TestCase
         $parser = new Rss10(file_get_contents('tests/fixtures/rss_10_element_preference.xml'));
         $feed = $parser->execute();
         $this->assertEquals('https://en.wikipedia.org/wiki/War_and_Peace', $feed->items[0]->getUrl()); // <feedburner:origLink> is preferred over <rss:link>
-
-        $parser = new Rss10(file_get_contents('tests/fixtures/rss_10_fallback_on_invalid_item_values.xml'));
-        $feed = $parser->execute();
-        $this->assertEquals('https://en.wikipedia.org/wiki/', $feed->items[3]->getUrl()); // <rss:link> and <feedburner:origLink> are invalid URI
-        $this->assertEquals('https://en.wikipedia.org/wiki/War_and_Peace', $feed->items[0]->getUrl()); // <feedburner:origLink> can fallback to <rss:link>
 
         $parser = new Rss10(file_get_contents('tests/fixtures/rss_10_empty_item.xml'));
         $feed = $parser->execute();

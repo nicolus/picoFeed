@@ -237,19 +237,11 @@ class Rss10 extends Parser
      */
     public function findItemUrl(SimpleXMLElement $entry, Item $item)
     {
-        $links = array_merge(
-            XmlParser::getXPathResult($entry, 'feedburner:origLink', $this->namespaces),
-            XmlParser::getXPathResult($entry, 'rss:link', $this->namespaces) ?: XmlParser::getXPathResult($entry, 'link')
-        );
+        $link = XmlParser::getXPathResult($entry, 'feedburner:origLink', $this->namespaces)
+                ?: XmlParser::getXPathResult($entry, 'rss:link', $this->namespaces)
+                ?: XmlParser::getXPathResult($entry, 'link');
 
-        foreach ($links as $link) {
-            $link = trim((string) $link);
-
-            if ($link !== '' && filter_var($link, FILTER_VALIDATE_URL) !== false) {
-                $item->url = $link;
-                break;
-            }
-        }
+        $item->url = trim((string) current($link));
     }
 
     /**
