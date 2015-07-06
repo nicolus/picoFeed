@@ -23,17 +23,6 @@ class ParserTest extends PHPUnit_Framework_TestCase
         $this->assertFalse(Parser::isLanguageRTL('ru'));
     }
 
-    public function testNamespaceValue()
-    {
-        $xml = XmlParser::getSimpleXml(file_get_contents('tests/fixtures/rue89.xml'));
-        $this->assertNotFalse($xml);
-        $namespaces = $xml->getNamespaces(true);
-
-        $parser = new Rss20('');
-        $this->assertEquals('Blandine Grosjean', XmlParser::getNamespaceValue($xml->channel->item[0], $namespaces, 'creator'));
-        $this->assertEquals('Pierre-Carl Langlais', XmlParser::getNamespaceValue($xml->channel->item[1], $namespaces, 'creator'));
-    }
-
     public function testFeedsWithInvalidCharacters()
     {
         $parser = new Rss20(file_get_contents('tests/fixtures/lincoln_loop.xml'));
