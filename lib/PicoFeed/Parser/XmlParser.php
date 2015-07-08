@@ -288,4 +288,40 @@ class XmlParser
 
         return '';
     }
+
+    /**
+     * Rewrite XPath query to use namespace-uri and local-name derived from prefix
+     *
+     * @param string               $query                   XPath query
+     * @param array                $ns                      Prefix to namespace URI mapping
+     * @return string
+     */
+    public static function replaceXPathPrefixWithNamespaceURI($query, array $ns) {
+        return preg_replace_callback('/([A-Z0-9]+):([A-Z0-9]+)/iu', function($matches) use($ns) {
+            // don't try to map the special prefix XML
+            if (strtolower($matches[1]) === 'xml') {
+                return $matches[0];
+            }
+
+            return '*[namespace-uri()="'.$ns[$matches[1]].'" and local-name()="'.$matches[2].'"]';
+        },
+        $query);
+    }
+
+    /**
+     * Get the result elements of a XPath query
+     *
+     * @param \SimpleXMLElement    $xml                     XML element
+     * @param string               $query                   XPath query
+     * @param array                $ns                      Prefix to namespace URI mapping
+     * @return \SimpleXMLElement
+     */
+    public static function getXPathResult(SimpleXMLElement $xml, $query, array $ns = array())
+    {
+        if (! empty($ns)) {
+            $query = static::replaceXPathPrefixWithNamespaceURI($query, $ns);
+        }
+
+        return $xml->xpath($query);
+    }
 }
