@@ -58,7 +58,7 @@ class FilterTest extends PHPUnit_Framework_TestCase
         $data = file_get_contents('tests/fixtures/lagrange.xml');
         $this->assertEquals('<feed', substr(Filter::stripXmlTag($data), 0, 5));
 
-        $data = file_get_contents('tests/fixtures/atom.xml');
+        $data = file_get_contents('tests/fixtures/googleblog.xml');
         $this->assertEquals('<feed', substr(trim(Filter::stripXmlTag($data)), 0, 5));
 
         $data = file_get_contents('tests/fixtures/atomsample.xml');
