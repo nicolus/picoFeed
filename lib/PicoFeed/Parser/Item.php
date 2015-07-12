@@ -198,7 +198,7 @@ class Item
      * Get date
      *
      * @access public
-     * $return integer
+     * $return \DateTime
      */
     public function getDate()
     {
