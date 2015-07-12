@@ -58,12 +58,20 @@ abstract class Parser
     protected $fallback_url = '';
 
     /**
-     * XML namespaces
+     * XML namespaces supported by parser
      *
      * @access protected
      * @var array
      */
     protected $namespaces = array();
+
+    /**
+     * XML namespaces used in document
+     *
+     * @access protected
+     * @var array
+     */
+    protected $used_namespaces = array();
 
     /**
      * Enable the content filtering
@@ -143,7 +151,8 @@ abstract class Parser
             }
         }
 
-        $this->namespaces = $xml->getNamespaces(true);
+        $this->used_namespaces = $xml->getNamespaces(true);
+        $xml = $this->registerSupportedNamespaces($xml);
 
         $feed = new Feed;
 
@@ -163,9 +172,11 @@ abstract class Parser
 
         foreach ($this->getItemsTree($xml) as $entry) {
 
+            $entry = $this->registerSupportedNamespaces($entry);
+
             $item = new Item;
             $item->xml = $entry;
-            $item->namespaces = $this->namespaces;
+            $item->namespaces = $this->used_namespaces;
 
             $this->findItemAuthor($xml, $entry, $item);
 
@@ -418,6 +429,22 @@ abstract class Parser
     public function setGrabberIgnoreUrls(array $urls)
     {
         $this->grabber_ignore_urls = $urls;
+    }
+
+    /**
+     * Register all supported namespaces to be used within an xpath query
+     *
+     * @access public
+     * @param  SimpleXMLElement          $xml     Feed xml
+     * @return SimpleXMLElement
+     */
+    public function registerSupportedNamespaces(SimpleXMLElement $xml)
+    {
+        foreach ($this->namespaces as $prefix => $ns) {
+            $xml->registerXPathNamespace($prefix, $ns);
+        }
+
+        return $xml;
     }
 
     /**

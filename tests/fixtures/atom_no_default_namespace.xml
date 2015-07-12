@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed
-    xmlns="http://www.w3.org/2005/Atom"
     xmlns:openSearch="http://a9.com/-/spec/opensearch/1.1/"
     xmlns:blogger="http://schemas.google.com/blogger/2008"
     xmlns:georss="http://www.georss.org/georss"
@@ -44,7 +43,7 @@
         <id>urn:uuid:32117a95-0962-4826-8aee-1ea7ddd94bec</id>
         <link href="https://en.wikipedia.org/wiki/Crime_and_Punishment"/>
         <published>2015-06-05T00:02:00+03:00</published>
-        <content type="html"><![CDATA[<h1>
+        <content><![CDATA[<h1>
 История  создания
 </h1>
 <p>
@@ -65,7 +64,7 @@
 </p>]]></content>
     </entry>
     <entry>
-        <content type="html">&lt;h1&gt;
+        <content>&lt;h1&gt;
 Доктор Живаго
 &lt;/h1&gt;
 &lt;p&gt;
