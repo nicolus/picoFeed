@@ -3,12 +3,13 @@ namespace PicoFeed\Filter;
 
 use PHPUnit_Framework_TestCase;
 
+use PicoFeed\Config\Config;
 
 class TagFilterTest extends PHPUnit_Framework_TestCase
 {
     public function testAllowedTag()
     {
-        $tag = new Tag;
+        $tag = new Tag(new Config);
 
         $this->assertTrue($tag->isAllowed('p', array('class' => 'test')));
         $this->assertTrue($tag->isAllowed('img', array('class' => 'test')));
@@ -19,7 +20,7 @@ class TagFilterTest extends PHPUnit_Framework_TestCase
 
     public function testHtml()
     {
-        $tag = new Tag;
+        $tag = new Tag(new Config);
 
         $this->assertEquals('<p>', $tag->openHtmlTag('p'));
         $this->assertEquals('<img src="test" alt="truc"/>', $tag->openHtmlTag('img', 'src="test" alt="truc"'));
