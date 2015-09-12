@@ -9,16 +9,6 @@ use PicoFeed\Config\Config;
 
 class AttributeFilterTest extends PHPUnit_Framework_TestCase
 {
-    public function testFilterEmptyAttribute()
-    {
-        $filter = new Attribute(new Url('http://google.com'));
-
-        $this->assertTrue($filter->filterEmptyAttribute('abbr', 'title', 'test'));
-        $this->assertFalse($filter->filterEmptyAttribute('abbr', 'title', ''));
-        $this->assertEquals(array('title' => 'test'), $filter->filter('abbr', array('title' => 'test')));
-        $this->assertEquals(array(), $filter->filter('abbr', array('title' => '')));
-    }
-
     public function testFilterAllowedAttribute()
     {
         $filter = new Attribute(new Url('http://google.com'));
@@ -127,6 +117,15 @@ class AttributeFilterTest extends PHPUnit_Framework_TestCase
         $this->assertFalse($filter->filterIframeAttribute('iframe', 'src', '//www.bidule.com/test'));
 
         $this->assertEquals(array('src' => 'https://www.youtube.com/test'), $filter->filter('iframe', array('src' => '//www.youtube.com/test')));
+    }
+
+    public function testAllowIframeFullscreen()
+    {
+        $filter = new Attribute(new Url('http://google.com'));
+
+        $attrs = $filter->filter('iframe', array('allowfullscreen' => 'allowfullscreen', 'class' => 'test'));
+
+        $this->assertEquals(array('allowfullscreen' => 'allowfullscreen'), $attrs);
     }
 
     public function testRemoveYouTubeAutoplay()
