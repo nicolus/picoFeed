@@ -79,12 +79,12 @@ class ClientTest extends PHPUnit_Framework_TestCase
     public function testCacheLastModified()
     {
         $client = Client::getInstance();
-        $client->setUrl('http://miniflux.net/humans.txt');
+        $client->setUrl('http://miniflux.net/robots.txt');
         $client->execute();
         $lastmod = $client->getLastModified();
 
         $client = Client::getInstance();
-        $client->setUrl('http://miniflux.net/humans.txt');
+        $client->setUrl('http://miniflux.net/robots.txt');
         $client->setLastModified($lastmod);
         $client->execute();
 
@@ -97,13 +97,13 @@ class ClientTest extends PHPUnit_Framework_TestCase
     public function testCacheBoth()
     {
         $client = Client::getInstance();
-        $client->setUrl('http://miniflux.net/humans.txt');
+        $client->setUrl('http://miniflux.net/robots.txt');
         $client->execute();
         $lastmod = $client->getLastModified();
         $etag = $client->getEtag();
 
         $client = Client::getInstance();
-        $client->setUrl('http://miniflux.net/humans.txt');
+        $client->setUrl('http://miniflux.net/robots.txt');
         $client->setLastModified($lastmod);
         $client->setEtag($etag);
         $client->execute();
