@@ -58,7 +58,7 @@ class HttpHeaders implements ArrayAccess
 
         foreach ($lines as $line) {
 
-            if (strpos($line, 'HTTP') === 0) {
+            if (strpos($line, 'HTTP/1') === 0) {
                 $headers = array();
                 $status = (int) substr($line, 9, 3);
             }
