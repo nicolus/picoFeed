@@ -4,6 +4,7 @@ namespace PicoFeed\Client;
 
 use LogicException;
 use PicoFeed\Logging\Logger;
+use PicoFeed\Config\Config;
 
 /**
  * Client class
@@ -660,7 +661,7 @@ abstract class Client
      * @param  \PicoFeed\Config\Config  $config   Config instance
      * @return \PicoFeed\Client\Client
      */
-    public function setConfig($config)
+    public function setConfig(Config $config)
     {
         if ($config !== null) {
             $this->setTimeout($config->getClientTimeout());

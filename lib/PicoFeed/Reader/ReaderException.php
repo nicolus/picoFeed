@@ -4,7 +4,6 @@ namespace PicoFeed\Reader;
 
 use PicoFeed\PicoFeedException;
 
-
 /**
  * ReaderException Exception
  *

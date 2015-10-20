@@ -71,7 +71,7 @@ class Import
      * @access public
      * @param  SimpleXMLElement   $tree   XML node
      */
-    public function parseEntries($tree)
+    public function parseEntries(SimpleXMLElement $tree)
     {
         if (isset($tree->outline)) {
 

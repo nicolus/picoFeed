@@ -4,7 +4,6 @@ namespace PicoFeed\Parser;
 
 use Closure;
 use DomDocument;
-use DOMXPath;
 use SimpleXmlElement;
 
 /**

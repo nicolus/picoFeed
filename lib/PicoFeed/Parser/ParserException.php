@@ -4,7 +4,6 @@ namespace PicoFeed\Parser;
 
 use PicoFeed\PicoFeedException;
 
-
 /**
  * ParserException Exception
  *

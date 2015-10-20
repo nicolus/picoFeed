@@ -22,7 +22,7 @@ return array(
                 '//img[contains(@src, "1x1")]',
                 '//a[contains(@href, "creativecommons")]',
                 '//a[@href="#start-of-content"]',
-                '//ul[@id="article-tags"],
+                '//ul[@id="article-tags"]',
             ),
         )
     )
