@@ -159,7 +159,7 @@ class XmlParser
      *
      * @return string
      */
-    public static function HtmlToXml($html)
+    public static function htmlToXml($html)
     {
         $dom = self::getHtmlDocument('<?xml version="1.0" encoding="UTF-8">'.$html);
 

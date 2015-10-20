@@ -79,7 +79,7 @@ class Html
     public function __construct($html, $website)
     {
         $this->config = new Config();
-        $this->input = XmlParser::HtmlToXml($html);
+        $this->input = XmlParser::htmlToXml($html);
         $this->output = '';
         $this->tag = new Tag($this->config);
         $this->website = $website;
