@@ -1,12 +1,13 @@
 <?php
+
 namespace PicoFeed\Client;
 
 use PHPUnit_Framework_TestCase;
 
-
 class HttpHeadersTest extends PHPUnit_Framework_TestCase
 {
-    public function testHttpHeadersSet() {
+    public function testHttpHeadersSet()
+    {
         $headers = new HttpHeaders(array('Content-Type' => 'test'));
         $this->assertEquals('test', $headers['content-typE']);
         $this->assertTrue(isset($headers['ConTent-Type']));
@@ -36,7 +37,7 @@ class HttpHeadersTest extends PHPUnit_Framework_TestCase
             "\r\n",
         );
 
-        list($status, ) = HttpHeaders::parse($headers);
+        list($status) = HttpHeaders::parse($headers);
         $this->assertEquals(200, $status);
     }
 
@@ -72,7 +73,7 @@ class HttpHeadersTest extends PHPUnit_Framework_TestCase
             "Content-Encoding: gzip\r\n",
         );
 
-        list($status, ) = HttpHeaders::parse($headers);
+        list($status) = HttpHeaders::parse($headers);
         $this->assertEquals(200, $status);
     }
 }

@@ -1,11 +1,10 @@
 <?php
+
 namespace PicoFeed\Filter;
 
 use PHPUnit_Framework_TestCase;
-
 use PicoFeed\Client\Url;
 use PicoFeed\Config\Config;
-
 
 class AttributeFilterTest extends PHPUnit_Framework_TestCase
 {
@@ -61,6 +60,7 @@ class AttributeFilterTest extends PHPUnit_Framework_TestCase
 
         $filter->setImageProxyCallback(function ($image_url) {
             $key = hash_hmac('sha1', $image_url, 'secret');
+
             return 'https://mypublicproxy/'.$key.'/'.rawurlencode($image_url);
         });
 
@@ -203,7 +203,7 @@ class AttributeFilterTest extends PHPUnit_Framework_TestCase
 
     public function testImageProxyWithHTTPLink()
     {
-        $config = new Config;
+        $config = new Config();
         $config->setFilterImageProxyUrl('http://myproxy/?url=%s');
 
         $f = Filter::html('<p>Image <img src="http://localhost/image.png" alt="My Image"/></p>', 'http://foo');
@@ -217,7 +217,7 @@ class AttributeFilterTest extends PHPUnit_Framework_TestCase
 
     public function testImageProxyWithHTTPSLink()
     {
-        $config = new Config;
+        $config = new Config();
         $config->setFilterImageProxyUrl('http://myproxy/?url=%s');
 
         $f = Filter::html('<p>Image <img src="https://localhost/image.png" alt="My Image"/></p>', 'http://foo');
@@ -231,7 +231,7 @@ class AttributeFilterTest extends PHPUnit_Framework_TestCase
 
     public function testImageProxyLimitedToUnknownProtocol()
     {
-        $config = new Config;
+        $config = new Config();
         $config->setFilterImageProxyUrl('http://myproxy/?url=%s');
         $config->setFilterImageProxyProtocol('tripleX');
 
@@ -246,7 +246,7 @@ class AttributeFilterTest extends PHPUnit_Framework_TestCase
 
     public function testImageProxyLimitedToHTTPwithHTTPLink()
     {
-        $config = new Config;
+        $config = new Config();
         $config->setFilterImageProxyUrl('http://myproxy/?url=%s');
         $config->setFilterImageProxyProtocol('http');
 
@@ -261,7 +261,7 @@ class AttributeFilterTest extends PHPUnit_Framework_TestCase
 
     public function testImageProxyLimitedToHTTPwithHTTPSLink()
     {
-        $config = new Config;
+        $config = new Config();
         $config->setFilterImageProxyUrl('http://myproxy/?url=%s');
         $config->setFilterImageProxyProtocol('http');
 
@@ -276,7 +276,7 @@ class AttributeFilterTest extends PHPUnit_Framework_TestCase
 
     public function testImageProxyLimitedToHTTPSwithHTTPLink()
     {
-        $config = new Config;
+        $config = new Config();
         $config->setFilterImageProxyUrl('http://myproxy/?url=%s');
         $config->setFilterImageProxyProtocol('https');
 
@@ -291,7 +291,7 @@ class AttributeFilterTest extends PHPUnit_Framework_TestCase
 
     public function testImageProxyLimitedToHTTPSwithHTTPSLink()
     {
-        $config = new Config;
+        $config = new Config();
         $config->setFilterImageProxyUrl('http://myproxy/?url=%s');
         $config->setFilterImageProxyProtocol('https');
 
@@ -306,9 +306,10 @@ class AttributeFilterTest extends PHPUnit_Framework_TestCase
 
     public function testsetFilterImageProxyCallback()
     {
-        $config = new Config;
+        $config = new Config();
         $config->setFilterImageProxyCallback(function ($image_url) {
             $key = hash_hmac('sha1', $image_url, 'secret');
+
             return 'https://mypublicproxy/'.$key.'/'.rawurlencode($image_url);
         });
 

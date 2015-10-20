@@ -8,7 +8,7 @@ class DateParserTest extends PHPUnit_Framework_TestCase
 {
     public function testParseDate()
     {
-        $parser = new DateParser;
+        $parser = new DateParser();
 
         date_default_timezone_set('UTC');
 

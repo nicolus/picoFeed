@@ -1,8 +1,8 @@
 <?php
+
 namespace PicoFeed\Serialization;
 
 use PHPUnit_Framework_TestCase;
-
 
 class ExportTest extends PHPUnit_Framework_TestCase
 {
@@ -19,7 +19,7 @@ class ExportTest extends PHPUnit_Framework_TestCase
                 'description' => 'Optional description',
                 'site_url' => 'http://petitcodeur.fr/',
                 'feed_url' => 'http://petitcodeur.fr/feed.xml',
-            )
+            ),
         );
 
         $export = new Export($feeds);
@@ -46,7 +46,7 @@ class ExportTest extends PHPUnit_Framework_TestCase
                     'description' => 'Optional description',
                     'site_url' => 'http://petitcodeur.fr/',
                     'feed_url' => 'http://petitcodeur.fr/feed.xml',
-                )
+                ),
             ),
             'another category' => array(
                 array(
@@ -54,8 +54,8 @@ class ExportTest extends PHPUnit_Framework_TestCase
                     'description' => 'Optional description',
                     'site_url' => 'http://youpi.ici/',
                     'feed_url' => 'http://youpi.ici/feed.xml',
-                )
-            )
+                ),
+            ),
         );
 
         $export = new Export($feeds);

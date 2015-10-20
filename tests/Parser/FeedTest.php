@@ -8,7 +8,7 @@ class FeedTest extends PHPUnit_Framework_TestCase
 {
     public function testLangRTL()
     {
-        $item = new Feed;
+        $item = new Feed();
         $item->language = 'fr_FR';
         $this->assertFalse($item->isRTL());
 

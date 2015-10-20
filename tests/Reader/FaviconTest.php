@@ -3,13 +3,12 @@
 namespace PicoFeed\Reader;
 
 use PHPUnit_Framework_TestCase;
-use PicoFeed\Client\Url;
 
 class FaviconTest extends PHPUnit_Framework_TestCase
 {
     public function testExtract()
     {
-        $favicon = new Favicon;
+        $favicon = new Favicon();
 
         $html = '<!DOCTYPE html><html><head>
                 <link rel="icon" href="http://example.com/myicon.ico" />
@@ -82,7 +81,7 @@ class FaviconTest extends PHPUnit_Framework_TestCase
      */
     public function testExists()
     {
-        $favicon = new Favicon;
+        $favicon = new Favicon();
 
         $this->assertTrue($favicon->exists('https://miniflux.net/favicon.ico'));
         $this->assertFalse($favicon->exists('http://minicoders.com/favicon.ico'));
@@ -95,7 +94,7 @@ class FaviconTest extends PHPUnit_Framework_TestCase
      */
     public function testFind_inMeta()
     {
-        $favicon = new Favicon;
+        $favicon = new Favicon();
 
         // favicon in meta
         $this->assertEquals(
@@ -119,7 +118,7 @@ class FaviconTest extends PHPUnit_Framework_TestCase
 
     public function testFind_noIcons()
     {
-        $favicon = new Favicon;
+        $favicon = new Favicon();
 
         $this->assertEquals(
             '',
@@ -134,7 +133,7 @@ class FaviconTest extends PHPUnit_Framework_TestCase
      */
     public function testFind_directLinkFirst()
     {
-        $favicon = new Favicon;
+        $favicon = new Favicon();
 
         $this->assertEquals(
             'http://miniflux.net/assets/img/touch-icon-ipad.png',
@@ -149,10 +148,10 @@ class FaviconTest extends PHPUnit_Framework_TestCase
      */
     public function testFind_fallsBackToExtract()
     {
-        $favicon = new Favicon;
+        $favicon = new Favicon();
         $this->assertEquals(
             'http://miniflux.net/assets/img/favicon.png',
-            $favicon->find('http://miniflux.net','/nofavicon.ico')
+            $favicon->find('http://miniflux.net', '/nofavicon.ico')
         );
 
         $this->assertNotEmpty($favicon->getContent());
@@ -163,7 +162,7 @@ class FaviconTest extends PHPUnit_Framework_TestCase
      */
     public function testDataUri()
     {
-        $favicon = new Favicon;
+        $favicon = new Favicon();
 
         $this->assertEquals(
             'http://miniflux.net/assets/img/favicon.png',
@@ -180,7 +179,7 @@ class FaviconTest extends PHPUnit_Framework_TestCase
      */
     public function testDataUri_withBadContentType()
     {
-        $favicon = new Favicon;
+        $favicon = new Favicon();
         $this->assertNotEmpty($favicon->find('http://www.lemonde.fr/'));
         $expected = 'data:image/x-icon;base64,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';
         $this->assertEquals($expected, $favicon->getDataUri());
