@@ -18,7 +18,7 @@ class HttpHeadersTest extends PHPUnit_Framework_TestCase
 
     public function testParseWithMultipleOccurrenceOfHTTP()
     {
-        $headers = array(
+        $lines = array(
             "HTTP/1.1 200 OK\r\n",
             "Server: cloudflare-nginx\r\n",
             "Date: Sun, 18 Oct 2015 20:48:32 GMT\r\n",
@@ -37,8 +37,11 @@ class HttpHeadersTest extends PHPUnit_Framework_TestCase
             "\r\n",
         );
 
-        list($status) = HttpHeaders::parse($headers);
+        list($status, $headers) = HttpHeaders::parse($lines);
         $this->assertEquals(200, $status);
+        $this->assertArrayHasKey('Server', $headers);
+        $this->assertArrayHasKey('HTTPS', $headers);
+        $this->assertEquals('cloudflare-nginx', $headers['server']);
     }
 
     public function testParseWithMultipleRedirections()
@@ -75,5 +78,16 @@ class HttpHeadersTest extends PHPUnit_Framework_TestCase
 
         list($status) = HttpHeaders::parse($headers);
         $this->assertEquals(200, $status);
+    }
+
+    public function testParseWithEmptyHeaderValue()
+    {
+        $headers = array(
+            "HTTP/1.1 301 OK\r\n",
+            "Pragma:",
+        );
+
+        list($status) = HttpHeaders::parse($headers);
+        $this->assertEquals(301, $status);
     }
 }

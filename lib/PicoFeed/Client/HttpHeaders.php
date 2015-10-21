@@ -60,7 +60,7 @@ class HttpHeaders implements ArrayAccess
             if (strpos($line, 'HTTP/1') === 0) {
                 $headers = array();
                 $status = (int) substr($line, 9, 3);
-            } elseif (strpos($line, ':') !== false) {
+            } elseif (strpos($line, ': ') !== false) {
                 list($name, $value) = explode(': ', $line);
                 if ($value) {
                     $headers[trim($name)] = trim($value);
