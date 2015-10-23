@@ -653,4 +653,16 @@ abstract class Client
 
         return $this;
     }
+
+    /**
+     * Return true if the HTTP status code is a redirection
+     *
+     * @access protected
+     * @param  integer  $code
+     * @return boolean
+     */
+    public function isRedirection($code)
+    {
+        return $code == 301 || $code == 302 || $code == 303 || $code == 307;
+    }
 }

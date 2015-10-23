@@ -295,7 +295,7 @@ class Curl extends Client
 
         list($status, $headers) = HttpHeaders::parse(explode("\n", $this->response_headers[$this->response_headers_count - 1]));
 
-        if ($follow_location && ($status == 301 || $status == 302)) {
+        if ($follow_location && $this->isRedirection($status)) {
             return $this->handleRedirection($headers['Location']);
         }
 
@@ -332,7 +332,7 @@ class Curl extends Client
 
             $result = $this->doRequest(false);
 
-            if ($result['status'] == 301 || $result['status'] == 302) {
+            if ($this->isRedirection($result['status'])) {
                 $this->url = Url::resolve($result['headers']['Location'], $this->url);
                 $this->body = '';
                 $this->body_length = 0;
