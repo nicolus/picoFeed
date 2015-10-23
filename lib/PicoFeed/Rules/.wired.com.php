@@ -11,7 +11,7 @@ return array(
                 '//*[@id="linker_widget"]',
                 '//*[@class="credit"]',
                 '//div[@data-js="slideCount"]',
-                '//span[@class="visually-hidden"]',
+                '//*[contains(@class="visually-hidden")]',
                 '//*[@data-slide-number="_endslate"]',
                 '//*[@id="related"]',
                 '//*[contains(@class, "bio")]',
