@@ -42,6 +42,19 @@ class XmlParser
     }
 
     /**
+     * @return true if it a vulnerable php-fpm version is used
+     */
+    public static function isRunningVulnerableFpm()
+    {
+        $isUnpatched = version_compare(PHP_VERSION, '5.5.22', 'lt') || (
+            version_compare(PHP_VERSION, '5.6', 'gte') &&
+            version_compare(PHP_VERSION, '5.6.6', 'lt')
+        );
+
+        return substr(php_sapi_name(), 0, 3) === 'fpm' && $isUnpatched;
+    }
+
+    /**
      * Scan the input for XXE attacks.
      *
      * @param string  $input    Unsafe input
@@ -53,7 +66,7 @@ class XmlParser
      */
     private static function scanInput($input, Closure $callback)
     {
-        $isRunningFpm = substr(php_sapi_name(), 0, 3) === 'fpm';
+        $isRunningFpm = self::isRunningVulnerableFpm();
 
         if ($isRunningFpm) {
 
