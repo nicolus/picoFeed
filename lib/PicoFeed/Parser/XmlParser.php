@@ -44,14 +44,14 @@ class XmlParser
     /**
      * @return true if it a vulnerable php-fpm version is used
      */
-    public static function isRunningVulnerableFpm()
+    private static function isRunningVulnerableFpm()
     {
-        $isUnpatched = version_compare(PHP_VERSION, '5.5.22', 'lt') || (
+        $isUnpatchedPhp = version_compare(PHP_VERSION, '5.5.22', 'lt') || (
             version_compare(PHP_VERSION, '5.6', 'gte') &&
             version_compare(PHP_VERSION, '5.6.6', 'lt')
         );
 
-        return substr(php_sapi_name(), 0, 3) === 'fpm' && $isUnpatched;
+        return substr(php_sapi_name(), 0, 3) === 'fpm' && $isUnpatchedPhp;
     }
 
     /**
