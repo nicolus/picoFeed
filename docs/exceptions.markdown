@@ -20,7 +20,7 @@ All exceptions inherits from the standard `Exception` class.
 
 - `PicoFeed\Parser\ParserException`: Base exception class for the Parser class
 - `PicoFeed\Parser\MalformedXmlException`: XML Parser error
-- `PicoFeed\Parser\XmlEntityException`: Thrown on systems with php-fpm and a vulernable PHP version to prevent XXE
+- `PicoFeed\Parser\XmlEntityException`: Thrown if XML entities are used in order to prevent XXE, subclass of MalformedXmlException
 
 ### Reader Exceptions
 
