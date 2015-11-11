@@ -88,6 +88,9 @@ class XmlParserTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('', XmlParser::getEncodingFromXmlTag("<?xml version='1.0'?><?xml-stylesheet"));
     }
 
+    /**
+     * @expectedException PicoFeed\Parser\XmlEntityException
+     */
     public function testScanForXEE()
     {
         $xml = <<<XML
@@ -98,27 +101,26 @@ class XmlParserTest extends PHPUnit_Framework_TestCase
 </results>
 XML;
 
-        $this->assertFalse(XmlParser::getDomDocument($xml));
+        XmlParser::getDomDocument($xml);
     }
 
+    /**
+     * @expectedException PicoFeed\Parser\XmlEntityException
+     */
     public function testScanForXXE()
     {
-        $file = tempnam(sys_get_temp_dir(), 'PicoFeed_XmlParser');
-        file_put_contents($file, 'Content Injection');
-
         $xml = <<<XML
 <?xml version="1.0"?>
 <!DOCTYPE root
 [
-<!ENTITY foo SYSTEM "file://$file">
+<!ENTITY foo SYSTEM "file://test">
 ]>
 <results>
     <result>&foo;</result>
 </results>
 XML;
 
-        $this->assertFalse(XmlParser::getDomDocument($xml));
-        unlink($file);
+        XmlParser::getDomDocument($xml);
     }
 
     public function testScanSimpleXML()
