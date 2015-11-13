@@ -285,17 +285,15 @@ class Curl extends Client
     /**
      * Do the HTTP request.
      *
-     * @param bool $follow_location Flag used when there is an open_basedir restriction
-     *
      * @return array HTTP response ['body' => ..., 'status' => ..., 'headers' => ...]
      */
-    public function doRequest($follow_location = true)
+    public function doRequest()
     {
         $this->executeContext();
 
         list($status, $headers) = HttpHeaders::parse(explode("\n", $this->response_headers[$this->response_headers_count - 1]));
 
-        if ($follow_location && $this->isRedirection($status)) {
+        if ($this->isRedirection($status)) {
             return $this->handleRedirection($headers['Location']);
         }
 
@@ -307,7 +305,7 @@ class Curl extends Client
     }
 
     /**
-     * Handle manually redirections when there is an open base dir restriction.
+     * Handle HTTP redirects
      *
      * @param string $location Redirected URL
      *
@@ -330,7 +328,7 @@ class Curl extends Client
                 throw new MaxRedirectException('Maximum number of redirections reached');
             }
 
-            $result = $this->doRequest(false);
+            $result = $this->doRequest();
 
             if ($this->isRedirection($result['status'])) {
                 $this->url = Url::resolve($result['headers']['Location'], $this->url);
