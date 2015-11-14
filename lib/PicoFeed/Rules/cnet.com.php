@@ -30,6 +30,10 @@ return array(
             '//div[contains(@class,"ad-")]',
             '//div[@section="shortcodeGallery"]',
             ),
-        )
-    )
+        ),
+            ),
+
+
+        ),
+    ),
 );
