@@ -8,7 +8,7 @@ class ItemTest extends PHPUnit_Framework_TestCase
 {
     public function testLangRTL()
     {
-        $item = new Item;
+        $item = new Item();
         $item->language = 'fr_FR';
         $this->assertFalse($item->isRTL());
 

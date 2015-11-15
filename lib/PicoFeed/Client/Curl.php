@@ -5,54 +5,49 @@ namespace PicoFeed\Client;
 use PicoFeed\Logging\Logger;
 
 /**
- * cURL HTTP client
+ * cURL HTTP client.
  *
  * @author  Frederic Guillot
- * @package Client
  */
 class Curl extends Client
 {
     /**
-     * HTTP response body
+     * HTTP response body.
      *
-     * @access private
      * @var string
      */
     private $body = '';
 
     /**
-     * Body size
+     * Body size.
      *
-     * @access private
-     * @var integer
+     * @var int
      */
     private $body_length = 0;
 
     /**
-     * HTTP response headers
+     * HTTP response headers.
      *
-     * @access private
      * @var array
      */
     private $response_headers = array();
 
     /**
-     * Counter on the number of header received
+     * Counter on the number of header received.
      *
-     * @access private
-     * @var integer
+     * @var int
      */
     private $response_headers_count = 0;
 
     /**
-     * cURL callback to read the HTTP body
+     * cURL callback to read the HTTP body.
      *
      * If the function return -1, curl stop to read the HTTP response
      *
-     * @access public
-     * @param  resource  $ch       cURL handler
-     * @param  string    $buffer   Chunk of data
-     * @return integer   Length of the buffer
+     * @param resource $ch     cURL handler
+     * @param string   $buffer Chunk of data
+     *
+     * @return int Length of the buffer
      */
     public function readBody($ch, $buffer)
     {
@@ -69,23 +64,21 @@ class Curl extends Client
     }
 
     /**
-     * cURL callback to read HTTP headers
+     * cURL callback to read HTTP headers.
      *
-     * @access public
-     * @param  resource  $ch       cURL handler
-     * @param  string    $buffer   Header line
-     * @return integer   Length of the buffer
+     * @param resource $ch     cURL handler
+     * @param string   $buffer Header line
+     *
+     * @return int Length of the buffer
      */
     public function readHeaders($ch, $buffer)
     {
         $length = strlen($buffer);
 
         if ($buffer === "\r\n" || $buffer === "\n") {
-            $this->response_headers_count++;
-        }
-        else {
-
-            if (! isset($this->response_headers[$this->response_headers_count])) {
+            ++$this->response_headers_count;
+        } else {
+            if (!isset($this->response_headers[$this->response_headers_count])) {
                 $this->response_headers[$this->response_headers_count] = '';
             }
 
@@ -96,47 +89,43 @@ class Curl extends Client
     }
 
     /**
-     * cURL callback to passthrough the HTTP status header to the client
-     *
-     * @access public
-     * @param  resource  $ch       cURL handler
-     * @param  string    $buffer   Header line
-     * @return integer   Length of the buffer
-     */
-    public function passthroughHeaders($ch, $buffer)
-    {
-        list($status, $headers) = HttpHeaders::parse(array($buffer));
-
-        if ($status !== 0) {
-            header(':', true, $status);
-        }
-        elseif (isset($headers['Content-Type'])) {
-            header($buffer);
-        }
-
-        return $this->readHeaders($ch, $buffer);
-    }
-
-    /**
-     * cURL callback to passthrough the HTTP body to the client
+     * cURL callback to passthrough the HTTP body to the client.
      *
      * If the function return -1, curl stop to read the HTTP response
      *
-     * @access public
-     * @param  resource  $ch       cURL handler
-     * @param  string    $buffer   Chunk of data
-     * @return integer   Length of the buffer
+     * @param resource $ch     cURL handler
+     * @param string   $buffer Chunk of data
+     *
+     * @return int Length of the buffer
      */
     public function passthroughBody($ch, $buffer)
     {
+        // do it only at the beginning of a transmission
+        if ($this->body_length === 0) {
+            list($status, $headers) = HttpHeaders::parse(explode("\n", $this->response_headers[$this->response_headers_count - 1]));
+
+            if ($this->isRedirection($status)) {
+                return $this->handleRedirection($headers['Location']);
+            }
+
+            header($status);
+
+            if (isset($headers['Content-Type'])) {
+                header('Content-Type:' .$headers['Content-Type']);
+            }
+        }
+
+        $length = strlen($buffer);
+        $this->body_length += $length;
+
         echo $buffer;
-        return strlen($buffer);
+
+        return $length;
     }
 
     /**
-     * Prepare HTTP headers
+     * Prepare HTTP headers.
      *
-     * @access private
      * @return string[]
      */
     private function prepareHeaders()
@@ -159,16 +148,15 @@ class Curl extends Client
     }
 
     /**
-     * Prepare curl proxy context
+     * Prepare curl proxy context.
      *
-     * @access private
-     * @param  resource $ch
+     * @param resource $ch
+     *
      * @return resource $ch
      */
     private function prepareProxyContext($ch)
     {
         if ($this->proxy_hostname) {
-
             Logger::setMessage(get_called_class().' Proxy: '.$this->proxy_hostname.':'.$this->proxy_port);
 
             curl_setopt($ch, CURLOPT_PROXYPORT, $this->proxy_port);
@@ -178,8 +166,7 @@ class Curl extends Client
             if ($this->proxy_username) {
                 Logger::setMessage(get_called_class().' Proxy credentials: Yes');
                 curl_setopt($ch, CURLOPT_PROXYUSERPWD, $this->proxy_username.':'.$this->proxy_password);
-            }
-            else {
+            } else {
                 Logger::setMessage(get_called_class().' Proxy credentials: No');
             }
         }
@@ -188,10 +175,10 @@ class Curl extends Client
     }
 
     /**
-     * Prepare curl auth context
+     * Prepare curl auth context.
      *
-     * @access private
-     * @param  resource $ch
+     * @param resource $ch
+     *
      * @return resource $ch
      */
     private function prepareAuthContext($ch)
@@ -204,10 +191,10 @@ class Curl extends Client
     }
 
     /**
-     * Set write/header functions
+     * Set write/header functions.
      *
-     * @access private
-     * @param  resource $ch
+     * @param resource $ch
+     *
      * @return resource $ch
      */
     private function prepareDownloadMode($ch)
@@ -217,8 +204,6 @@ class Curl extends Client
 
         if ($this->isPassthroughEnabled()) {
             $write_function = 'passthroughBody';
-            $header_function = 'passthroughHeaders';
-
         }
 
         curl_setopt($ch, CURLOPT_WRITEFUNCTION, array($this, $write_function));
@@ -228,9 +213,8 @@ class Curl extends Client
     }
 
     /**
-     * Prepare curl context
+     * Prepare curl context.
      *
-     * @access private
      * @return resource
      */
     private function prepareContext()
@@ -266,9 +250,7 @@ class Curl extends Client
     }
 
     /**
-     * Execute curl context
-     *
-     * @access private
+     * Execute curl context.
      */
     private function executeContext()
     {
@@ -297,34 +279,32 @@ class Curl extends Client
     }
 
     /**
-     * Do the HTTP request
+     * Do the HTTP request.
      *
-     * @access public
-     * @param  bool    $follow_location    Flag used when there is an open_basedir restriction
-     * @return array                       HTTP response ['body' => ..., 'status' => ..., 'headers' => ...]
+     * @return array HTTP response ['body' => ..., 'status' => ..., 'headers' => ...]
      */
-    public function doRequest($follow_location = true)
+    public function doRequest()
     {
         $this->executeContext();
 
         list($status, $headers) = HttpHeaders::parse(explode("\n", $this->response_headers[$this->response_headers_count - 1]));
 
-        if ($follow_location && ($status == 301 || $status == 302)) {
+        if ($this->isRedirection($status)) {
             return $this->handleRedirection($headers['Location']);
         }
 
         return array(
             'status' => $status,
             'body' => $this->body,
-            'headers' => $headers
+            'headers' => $headers,
         );
     }
 
     /**
-     * Handle manually redirections when there is an open base dir restriction
+     * Handle HTTP redirects
      *
-     * @access private
-     * @param  string     $location       Redirected URL
+     * @param string $location Redirected URL
+     *
      * @return array
      */
     private function handleRedirection($location)
@@ -338,23 +318,21 @@ class Curl extends Client
         $this->response_headers_count = 0;
 
         while (true) {
-
-            $nb_redirects++;
+            ++$nb_redirects;
 
             if ($nb_redirects >= $this->max_redirects) {
                 throw new MaxRedirectException('Maximum number of redirections reached');
             }
 
-            $result = $this->doRequest(false);
+            $result = $this->doRequest();
 
-            if ($result['status'] == 301 || $result['status'] == 302) {
+            if ($this->isRedirection($result['status'])) {
                 $this->url = Url::resolve($result['headers']['Location'], $this->url);
                 $this->body = '';
                 $this->body_length = 0;
                 $this->response_headers = array();
                 $this->response_headers_count = 0;
-            }
-            else {
+            } else {
                 break;
             }
         }
@@ -363,14 +341,14 @@ class Curl extends Client
     }
 
     /**
-     * Handle cURL errors (throw individual exceptions)
+     * Handle cURL errors (throw individual exceptions).
      *
      * We don't use constants because they are not necessary always available
      * (depends of the version of libcurl linked to php)
      *
      * @see    http://curl.haxx.se/libcurl/c/libcurl-errors.html
-     * @access private
-     * @param  integer     $errno    cURL error code
+     *
+     * @param int $errno cURL error code
      */
     private function handleError($errno)
     {

@@ -1,8 +1,8 @@
 <?php
+
 namespace PicoFeed\Syndication;
 
 use PHPUnit_Framework_TestCase;
-
 
 class Rss20WriterTest extends PHPUnit_Framework_TestCase
 {
@@ -15,7 +15,7 @@ class Rss20WriterTest extends PHPUnit_Framework_TestCase
         $writer->author = array(
             'name' => 'Me',
             'url' => 'http://me',
-            'email' => 'me@here'
+            'email' => 'me@here',
         );
 
         $writer->items[] = array(
@@ -23,7 +23,7 @@ class Rss20WriterTest extends PHPUnit_Framework_TestCase
             'updated' => strtotime('-2 days'),
             'url' => 'http://foo/bar',
             'summary' => 'Super summary',
-            'content' => '<p>content</p>'
+            'content' => '<p>content</p>',
         );
 
         $writer->items[] = array(
@@ -34,12 +34,12 @@ class Rss20WriterTest extends PHPUnit_Framework_TestCase
             'content' => '<p>content 2 &nbsp; &copy; 2015</p>',
             'author' => array(
                 'name' => 'Me too',
-            )
+            ),
         );
 
         $writer->items[] = array(
             'title' => 'My article 3',
-            'url' => 'http://foo/bar3'
+            'url' => 'http://foo/bar3',
         );
 
         $generated_output = $writer->execute();

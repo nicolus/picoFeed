@@ -1,10 +1,9 @@
 <?php
+
 namespace PicoFeed\Filter;
 
 use PHPUnit_Framework_TestCase;
-
 use PicoFeed\Config\Config;
-
 
 class FilterTest extends PHPUnit_Framework_TestCase
 {
@@ -80,7 +79,7 @@ class FilterTest extends PHPUnit_Framework_TestCase
         $f->attribute->setIframeWhitelist(array('http://www.kickstarter.com'));
         $this->assertEmpty($f->execute());
 
-        $config = new Config;
+        $config = new Config();
         $config->setFilterWhitelistedTags(array('p' => array('title')));
 
         $f = Filter::html('<p>Test<strong>boo</strong></p>', 'http://blabla');
@@ -92,15 +91,15 @@ class FilterTest extends PHPUnit_Framework_TestCase
     {
         // invalid data link escape control character
         $this->assertEquals('<xml>random text</xml>', Filter::normalizeData("<xml>random\x10 text</xml>"));
-        $this->assertEquals('<xml>random text</xml>', Filter::normalizeData("<xml>random&#x10; text</xml>"));
-        $this->assertEquals('<xml>random text</xml>', Filter::normalizeData("<xml>random&#16; text</xml>"));
+        $this->assertEquals('<xml>random text</xml>', Filter::normalizeData('<xml>random&#x10; text</xml>'));
+        $this->assertEquals('<xml>random text</xml>', Filter::normalizeData('<xml>random&#16; text</xml>'));
 
         // invalid unit seperator control character (lower and upper case)
         $this->assertEquals('<xml>random text</xml>', Filter::normalizeData("<xml>random\x1f text</xml>"));
         $this->assertEquals('<xml>random text</xml>', Filter::normalizeData("<xml>random\x1F text</xml>"));
-        $this->assertEquals('<xml>random text</xml>', Filter::normalizeData("<xml>random&#x1f; text</xml>"));
-        $this->assertEquals('<xml>random text</xml>', Filter::normalizeData("<xml>random&#x1F; text</xml>"));
-        $this->assertEquals('<xml>random text</xml>', Filter::normalizeData("<xml>random&#31; text</xml>"));
+        $this->assertEquals('<xml>random text</xml>', Filter::normalizeData('<xml>random&#x1f; text</xml>'));
+        $this->assertEquals('<xml>random text</xml>', Filter::normalizeData('<xml>random&#x1F; text</xml>'));
+        $this->assertEquals('<xml>random text</xml>', Filter::normalizeData('<xml>random&#31; text</xml>'));
 
         /*
          * Do not test invalid multibyte characters. The output depends on php
@@ -112,8 +111,8 @@ class FilterTest extends PHPUnit_Framework_TestCase
 
         // invalid backspace control character + valid multibyte character
         $this->assertEquals('<xml>“random“ text</xml>', Filter::normalizeData("<xml>\xe2\x80\x9crandom\xe2\x80\x9c\x08 text</xml>"));
-        $this->assertEquals('<xml>&#x201C;random&#x201C; text</xml>', Filter::normalizeData("<xml>&#x201C;random&#x201C;&#x08; text</xml>"));
-        $this->assertEquals('<xml>&#8220;random&#8220; text</xml>', Filter::normalizeData("<xml>&#8220;random&#8220;&#08; text</xml>"));
+        $this->assertEquals('<xml>&#x201C;random&#x201C; text</xml>', Filter::normalizeData('<xml>&#x201C;random&#x201C;&#x08; text</xml>'));
+        $this->assertEquals('<xml>&#8220;random&#8220; text</xml>', Filter::normalizeData('<xml>&#8220;random&#8220;&#08; text</xml>'));
 
         // do not convert valid entities to utf-8 character
         $this->assertEquals('<xml attribute="&#34;value&#34;">random text</xml>', Filter::normalizeData('<xml attribute="&#34;value&#34;">random text</xml>'));

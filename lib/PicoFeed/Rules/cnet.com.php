@@ -1,4 +1,5 @@
 <?php
+
 return array(
     'grabber' => array(
 		 '%^/products.*%' => array(
@@ -31,9 +32,12 @@ return array(
             '//div[@section="shortcodeGallery"]',
             ),
         ),
+<<<<<<< HEAD
             ),
 
 
         ),
+=======
+>>>>>>> 456b13bbfb81f9d39f0b74b624b68ad02478b20a
     ),
 );

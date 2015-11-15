@@ -15,7 +15,8 @@
         "ext-dom": "*",
         "ext-xml": "*",
         "ext-libxml": "*",
-        "ext-SimpleXML": "*"
+        "ext-SimpleXML": "*",
+        "zendframework/zendxml": "^1.0"
     },
     "suggest": {
         "ext-curl": "PicoFeed will use cURL if present"

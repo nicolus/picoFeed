@@ -12,7 +12,7 @@ matrix:
   fast_finish: true
 
 before_script:
-  - composer dump-autoload
+  - composer install
 
 script:
   - phpunit
