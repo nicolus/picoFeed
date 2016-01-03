@@ -14,6 +14,7 @@ return array(
                 '//p[@class="small"]',
                 '//p[@style="font-weight: bold; font-size: 14px;"]',
                 '//div[@class="author"]',
+				'//div[@class="ad_container"]',
 	    )
         )
     )
