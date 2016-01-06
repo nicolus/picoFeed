@@ -30,6 +30,7 @@ class Favicon
         'image/x-icon',
         'image/jpeg',
         'image/jpg',
+        'image/svg+xml'
     );
 
     /**
