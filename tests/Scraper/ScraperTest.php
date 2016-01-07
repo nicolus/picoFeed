@@ -59,13 +59,13 @@ class ScraperTest extends PHPUnit_Framework_TestCase
     public function testGrabContentRegex()
     {
         $grabber = new Scraper(new Config());
-        $grabber->setUrl('http://penny-arcade.com/comic/2015/04/13/101-part-one');
+        $grabber->setUrl('https://penny-arcade.com/comic/2015/04/13/101-part-one');
         $grabber->execute();
 
         $this->assertTrue($grabber->hasRelevantContent());
-        $this->assertEquals('<img src="http://art.penny-arcade.com/photos/i-tBMHkzG/0/1050x10000/i-tBMHkzG-1050x10000.jpg" alt="101, Part One"/>', $grabber->getRelevantContent());
+        $this->assertEquals('<img src="https://art.penny-arcade.com/photos/i-tBMHkzG/0/1050x10000/i-tBMHkzG-1050x10000.jpg" alt="101, Part One"/>', $grabber->getRelevantContent());
 
-        $grabber->setUrl('http://penny-arcade.com/news/post/2015/04/15/101-part-two');
+        $grabber->setUrl('https://penny-arcade.com/news/post/2015/04/15/101-part-two');
         $grabber->execute();
 
         $this->assertTrue($grabber->hasRelevantContent());
