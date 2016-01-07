@@ -23,13 +23,6 @@ class FaviconTest extends PHPUnit_Framework_TestCase
 
         $this->assertEquals(array('http://example.com/myicon.ico'), $favicon->extract($html));
 
-        // icon part of another string
-        $html = '<!DOCTYPE html><html><head>
-                <link rel="fluid-icon" href="http://example.com/myicon.ico" />
-                </head><body><p>boo</p></body></html>';
-
-        $this->assertEquals(array('http://example.com/myicon.ico'), $favicon->extract($html));
-
         // with other attributes present
         $html = '<!DOCTYPE html><html><head>
                 <link rel="icon" type="image/vnd.microsoft.icon" href="http://example.com/image.ico" />
