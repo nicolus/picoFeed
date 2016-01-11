@@ -10,6 +10,7 @@ return array(
                 '//div[@class="col-6 ratings"]',
                 '//div[@id="editorReview"]',
             ),
+            'next_page' => '//span[@section="nextpage"]/a[@href]',
             'strip' => array(
                 '//script',
                 '//a[@class="clickToEnlarge"]',
@@ -25,6 +26,7 @@ return array(
             '//p[@itemprop="description"]',
             '//div[@itemprop="articleBody"]',
             ),
+            'next_page' => '//span[@section="nextpage"]/a[@href]',
             'strip' => array(
                 '//script',
                 '//a[@class="clickToEnlarge"]',
