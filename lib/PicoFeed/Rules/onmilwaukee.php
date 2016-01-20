@@ -12,7 +12,7 @@ return array(
                 '//div[contains(@class, "-ad")]',
                 '//div[contains(@class, "_ad")]',
                 '//div[@id="pub_wrapper"]',
-                '//div[conatins(@class, "share_tools")]',
+                '//div[contains(@class, "share_tools")]',
                 '//div[@class="clearfix"]',
                 '//div[contains(@class,"image_control")]',
                 '//section[@class="ribboned"]',
