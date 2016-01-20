@@ -8,8 +8,8 @@ return array(
                 '//div[@class="section-body"]',
             ),
             'strip' => array(
-            '//*[contains(@class, "-related")]',
-            '//*[contains(@class, "social")]',
+                '//*[contains(@class, "-related")]',
+                '//*[contains(@class, "social")]',
             ),
         ),
     ),

@@ -7,7 +7,6 @@ return array(
             'body' => array(
                 '//div[@class="messageContent"]',
             ),
-            'body' => '//div[@class="messageContent"]',
             'strip' => array(
                 '//aside',
             ),
