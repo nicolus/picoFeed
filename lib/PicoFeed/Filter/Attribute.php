@@ -130,6 +130,7 @@ class Attribute
         'http://www.dailymotion.com',
         'https://www.dailymotion.com',
         'http://vk.com',
+        'https://vk.com',
     );
 
     /**
