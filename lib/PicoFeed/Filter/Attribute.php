@@ -129,6 +129,7 @@ class Attribute
         'https://player.vimeo.com',
         'http://www.dailymotion.com',
         'https://www.dailymotion.com',
+        'https://vk.com',
     );
 
     /**
