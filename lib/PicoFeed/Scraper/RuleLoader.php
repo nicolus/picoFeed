@@ -111,11 +111,13 @@ class RuleLoader
      */
     public function getRulesFolders()
     {
-        $folders = array(__DIR__.'/../Rules');
+        $folders = array();
 
         if ($this->config !== null && $this->config->getGrabberRulesFolder() !== null) {
             $folders[] = $this->config->getGrabberRulesFolder();
         }
+
+        $folders[] = __DIR__ . '/../Rules';
 
         return $folders;
     }

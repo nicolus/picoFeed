@@ -26,8 +26,8 @@ class RuleLoaderTest extends PHPUnit_Framework_TestCase
 
         $this->assertNotEmpty($dirs);
         $this->assertCount(2, $dirs);
-        $this->assertTrue(strpos($dirs[0], '/../Rules') !== false);
-        $this->assertEquals('/foobar/rules', $dirs[1]);
+        $this->assertTrue(strpos($dirs[1], '/../Rules') !== false);
+        $this->assertEquals('/foobar/rules', $dirs[0]);
 
         // No custom path with empty config object
         $loader = new RuleLoader(new Config());
