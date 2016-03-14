@@ -108,7 +108,7 @@ class Curl extends Client
                 return $this->handleRedirection($headers['Location']);
             }
 
-            header($status);
+            header(':', true, $status);
 
             if (isset($headers['Content-Type'])) {
                 header('Content-Type:' .$headers['Content-Type']);
