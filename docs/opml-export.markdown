@@ -12,7 +12,7 @@ $feeds = array(
         'title' => 'Site title',
         'description' => 'Optional description',
         'site_url' => 'http://petitcodeur.fr/',
-        'site_feed' => 'http://petitcodeur.fr/feed.xml'
+        'feed_url' => 'http://petitcodeur.fr/feed.xml'
     )
 );
 
@@ -34,7 +34,7 @@ $feeds = array(
             'title' => 'Site title',
             'description' => 'Optional description',
             'site_url' => 'http://petitcodeur.fr/',
-            'site_feed' => 'http://petitcodeur.fr/feed.xml'
+            'feed_url' => 'http://petitcodeur.fr/feed.xml'
         )
     )
 );
