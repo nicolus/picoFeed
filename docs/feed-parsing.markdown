@@ -285,7 +285,7 @@ print_r ($values);
 Get value of namespaced tag:
 
 ```php
-if (array_key_exists('wfw', $feed->items[0]->namespaces)) {
+if ($feed->items[0]->hasNamespace('wfw')) {
     $values = $feed->items[1]->getTag('wfw:commentRss');
     print_r ($values);
 }
@@ -294,7 +294,7 @@ if (array_key_exists('wfw', $feed->items[0]->namespaces)) {
 Get attribute value of a namespaced tag:
 
 ```php
-if (array_key_exists('media', $feed->items[0]->namespaces)) {
+if ($feed->items[0]->hasNamespace('media')) {
     $values = $feed->items[0]->getTag('media:content', 'url');
     print_r ($values);
 }

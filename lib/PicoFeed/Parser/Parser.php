@@ -2,12 +2,15 @@
 
 namespace PicoFeed\Parser;
 
+use PicoFeed\Processor\ContentFilterProcessor;
+use PicoFeed\Processor\ContentGeneratorProcessor;
+use PicoFeed\Processor\ItemPostProcessor;
+use PicoFeed\Processor\ScraperProcessor;
 use SimpleXMLElement;
 use PicoFeed\Client\Url;
 use PicoFeed\Encoding\Encoding;
 use PicoFeed\Filter\Filter;
 use PicoFeed\Logging\Logger;
-use PicoFeed\Scraper\Scraper;
 
 /**
  * Base parser class.
@@ -66,32 +69,12 @@ abstract class Parser
     protected $used_namespaces = array();
 
     /**
-     * Enable the content filtering.
+     * Item Post Processor instance
      *
-     * @var bool
+     * @access private
+     * @var ItemPostProcessor
      */
-    private $enable_filter = true;
-
-    /**
-     * Enable the content grabber.
-     *
-     * @var bool
-     */
-    private $enable_grabber = false;
-
-    /**
-     * Enable the content grabber on all pages.
-     *
-     * @var bool
-     */
-    private $grabber_needs_rule_file = false;
-
-    /**
-     * Ignore those urls for the content scraper.
-     *
-     * @var array
-     */
-    private $grabber_ignore_urls = array();
+    private $itemPostProcessor;
 
     /**
      * Constructor.
@@ -112,6 +95,10 @@ abstract class Parser
         // Encode everything in UTF-8
         Logger::setMessage(get_called_class().': HTTP Encoding "'.$http_encoding.'" ; XML Encoding "'.$xml_encoding.'"');
         $this->content = Encoding::convert($this->content, $xml_encoding ?: $http_encoding);
+
+        $this->itemPostProcessor = new ItemPostProcessor($this->config);
+        $this->itemPostProcessor->register(new ContentGeneratorProcessor($this->config));
+        $this->itemPostProcessor->register(new ContentFilterProcessor($this->config));
     }
 
     /**
@@ -173,15 +160,11 @@ abstract class Parser
 
             // Id generation can use the item url/title/content (order is important)
             $this->findItemId($entry, $item, $feed);
-
             $this->findItemDate($entry, $item, $feed);
             $this->findItemEnclosure($entry, $item, $feed);
             $this->findItemLanguage($entry, $item, $feed);
 
-            // Order is important (avoid double filtering)
-            $this->filterItemContent($feed, $item);
-            $this->scrapWebsite($item);
-
+            $this->itemPostProcessor->execute($feed, $item);
             $feed->items[] = $item;
         }
 
@@ -230,43 +213,14 @@ abstract class Parser
     }
 
     /**
-     * Fetch item content with the content grabber.
+     * Get Item Post Processor instance
      *
-     * @param Item $item Item object
+     * @access public
+     * @return ItemPostProcessor
      */
-    public function scrapWebsite(Item $item)
+    public function getItemPostProcessor()
     {
-        if ($this->enable_grabber && !in_array($item->getUrl(), $this->grabber_ignore_urls)) {
-            $grabber = new Scraper($this->config);
-            $grabber->setUrl($item->getUrl());
-
-            if ($this->grabber_needs_rule_file) {
-                $grabber->disableCandidateParser();
-            }
-
-            $grabber->execute();
-
-            if ($grabber->hasRelevantContent()) {
-                $item->content = $grabber->getFilteredContent();
-            }
-        }
-    }
-
-    /**
-     * Filter HTML for entry content.
-     *
-     * @param Feed $feed Feed object
-     * @param Item $item Item object
-     */
-    public function filterItemContent(Feed $feed, Item $item)
-    {
-        if ($this->isFilteringEnabled()) {
-            $filter = Filter::html($item->getContent(), $feed->getSiteUrl());
-            $filter->setConfig($this->config);
-            $item->content = $filter->execute();
-        } else {
-            Logger::setMessage(get_called_class().': Content filtering disabled');
-        }
+        return $this->itemPostProcessor;
     }
 
     /**
@@ -354,7 +308,6 @@ abstract class Parser
     public function setConfig($config)
     {
         $this->config = $config;
-
         return $this;
     }
 
@@ -365,21 +318,8 @@ abstract class Parser
      */
     public function disableContentFiltering()
     {
-        $this->enable_filter = false;
-    }
-
-    /**
-     * Return true if the content filtering is enabled.
-     *
-     * @return bool
-     */
-    public function isFilteringEnabled()
-    {
-        if ($this->config === null) {
-            return $this->enable_filter;
-        }
-
-        return $this->config->getContentFiltering($this->enable_filter);
+        $this->itemPostProcessor->unregister('PicoFeed\Processor\ContentFilterProcessor');
+        return $this;
     }
 
     /**
@@ -392,8 +332,14 @@ abstract class Parser
      */
     public function enableContentGrabber($needs_rule_file = false)
     {
-        $this->enable_grabber = true;
-        $this->grabber_needs_rule_file = $needs_rule_file;
+        $processor = new ScraperProcessor($this->config);
+
+        if ($needs_rule_file) {
+            $processor->getScraper()->disableCandidateParser();
+        }
+
+        $this->itemPostProcessor->register($processor);
+        return $this;
     }
 
     /**
@@ -405,7 +351,8 @@ abstract class Parser
      */
     public function setGrabberIgnoreUrls(array $urls)
     {
-        $this->grabber_ignore_urls = $urls;
+        $this->itemPostProcessor->getProcessor('PicoFeed\Processor\ScraperProcessor')->ignoreUrls($urls);
+        return $this;
     }
 
     /**

@@ -79,7 +79,6 @@ class Scraper
     public function disableCandidateParser()
     {
         $this->enableCandidateParser = false;
-
         return $this;
     }
 
@@ -227,6 +226,10 @@ class Scraper
      */
     public function execute()
     {
+        $this->content = '';
+        $this->html = '';
+        $this->encoding = '';
+
         $this->download();
 
         if (!$this->skipProcessing()) {
@@ -287,17 +290,14 @@ class Scraper
 
                 if (preg_match($pattern, $sub_url)) {
                     Logger::setMessage(get_called_class().': Matched url '.$sub_url);
-
                     return new RuleParser($this->html, $rule);
                 }
             }
         } elseif ($this->enableCandidateParser) {
             Logger::setMessage(get_called_class().': Parse content with candidates');
-
-            return new CandidateParser($this->html);
         }
 
-        return;
+        return new CandidateParser($this->html);
     }
 
     /**

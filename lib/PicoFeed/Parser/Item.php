@@ -103,6 +103,18 @@ class Item
     public $namespaces = array();
 
     /**
+     * Check if a XML namespace exists
+     *
+     * @access public
+     * @param  string $namespace
+     * @return bool
+     */
+    public function hasNamespace($namespace)
+    {
+        return array_key_exists($namespace, $this->namespaces);
+    }
+
+    /**
      * Get specific XML tag or attribute value.
      *
      * @param string $tag       Tag name (examples: guid, media:content)
@@ -184,6 +196,19 @@ class Item
     public function getContent()
     {
         return $this->content;
+    }
+
+    /**
+     * Set content
+     *
+     * @access public
+     * @param  string $value
+     * @return Item
+     */
+    public function setContent($value)
+    {
+        $this->content = $value;
+        return $this;
     }
 
     /**

@@ -32,12 +32,6 @@ class ScraperTest extends PHPUnit_Framework_TestCase
         $grabber->setUrl('http://arstechnica.com/information-technology/2013/08/sysadmin-security-fail-nsa-finds-snowden-hijacked-officials-logins/');
         $grabber->execute();
         $this->assertTrue($grabber->hasRelevantContent());
-
-        $grabber = new Scraper(new Config());
-        $grabber->disableCandidateParser();
-        $grabber->setUrl('http://linuxfr.org/news/grammalecte-correcteur-grammatical');
-        $grabber->execute();
-        $this->assertFalse($grabber->hasRelevantContent());
     }
 
     /**
