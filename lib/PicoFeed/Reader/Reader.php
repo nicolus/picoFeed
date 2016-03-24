@@ -163,7 +163,6 @@ class Reader
 
         $parser = new $className($content, $encoding, $url);
         $parser->setHashAlgo($this->config->getParserHashAlgo());
-        $parser->setTimezone($this->config->getTimezone());
         $parser->setConfig($this->config);
 
         return $parser;

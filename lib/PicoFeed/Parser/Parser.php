@@ -31,7 +31,7 @@ abstract class Parser
      *
      * @var \PicoFeed\Parser\DateParser
      */
-    protected $date;
+    private $dateParser;
 
     /**
      * Hash algorithm used to generate item id, any value supported by PHP, see hash_algos().
@@ -85,7 +85,6 @@ abstract class Parser
      */
     public function __construct($content, $http_encoding = '', $fallback_url = '')
     {
-        $this->date = new DateParser();
         $this->fallback_url = $fallback_url;
         $xml_encoding = XmlParser::getEncodingFromXmlTag($content);
 
@@ -224,6 +223,21 @@ abstract class Parser
     }
 
     /**
+     * Get DateParser instance
+     *
+     * @access public
+     * @return DateParser
+     */
+    public function getDateParser()
+    {
+        if ($this->dateParser === null) {
+            return new DateParser($this->config);
+        }
+
+        return $this->dateParser;
+    }
+
+    /**
      * Generate a unique id for an entry (hash all arguments).
      *
      * @return string
@@ -270,31 +284,11 @@ abstract class Parser
      * Set Hash algorithm used for id generation.
      *
      * @param string $algo Algorithm name
-     *
      * @return \PicoFeed\Parser\Parser
      */
     public function setHashAlgo($algo)
     {
         $this->hash_algo = $algo ?: $this->hash_algo;
-
-        return $this;
-    }
-
-    /**
-     * Set a different timezone.
-     *
-     * @see    http://php.net/manual/en/timezones.php
-     *
-     * @param string $timezone Timezone
-     *
-     * @return \PicoFeed\Parser\Parser
-     */
-    public function setTimezone($timezone)
-    {
-        if ($timezone) {
-            $this->date->timezone = $timezone;
-        }
-
         return $this;
     }
 
