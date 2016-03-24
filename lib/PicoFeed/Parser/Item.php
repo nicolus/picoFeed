@@ -124,12 +124,10 @@ class Item
      */
     public function getTag($tag, $attribute = '')
     {
-        // convert to xPath attribute query
         if ($attribute !== '') {
             $attribute = '/@'.$attribute;
         }
 
-        // construct query
         $query = './/'.$tag.$attribute;
         $elements = XmlParser::getXPathResult($this->xml, $query, $this->namespaces);
 
@@ -167,11 +165,27 @@ class Item
     }
 
     /**
-     * Get url.
+     * Get URL
+     *
+     * @access public
+     * @return string
      */
     public function getUrl()
     {
         return $this->url;
+    }
+
+    /**
+     * Set URL
+     *
+     * @access public
+     * @param  string $url
+     * @return Item
+     */
+    public function setUrl($url)
+    {
+        $this->url = $url;
+        return $this;
     }
 
     /**

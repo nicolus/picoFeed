@@ -22,6 +22,7 @@ class ContentGeneratorProcessor extends Base implements ItemProcessorInterface
      */
     protected $generators = array(
         'youtube',
+        'file',
     );
 
     /**

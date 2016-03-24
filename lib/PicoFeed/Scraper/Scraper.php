@@ -213,44 +213,14 @@ class Scraper extends Base
         $this->encoding = '';
 
         $this->download();
+        $this->prepareHtml();
 
-        if (!$this->skipProcessing()) {
-            $this->prepareHtml();
+        $parser = $this->getParser();
 
-            $parser = $this->getParser();
-
-            if ($parser !== null) {
-                $this->content = $parser->execute();
-                Logger::setMessage(get_called_class().': Content length: '.strlen($this->content).' bytes');
-            }
+        if ($parser !== null) {
+            $this->content = $parser->execute();
+            Logger::setMessage(get_called_class().': Content length: '.strlen($this->content).' bytes');
         }
-    }
-
-    /**
-     * Returns true if the parsing must be skipped.
-     *
-     * @return bool
-     */
-    public function skipProcessing()
-    {
-        $handlers = array(
-            'detectStreamingVideos',
-            'detectPdfFiles',
-        );
-
-        foreach ($handlers as $handler) {
-            if ($this->$handler()) {
-                return true;
-            }
-        }
-
-        if (empty($this->html)) {
-            Logger::setMessage(get_called_class().': Raw HTML is empty');
-
-            return true;
-        }
-
-        return false;
     }
 
     /**
@@ -293,31 +263,5 @@ class Scraper extends Base
         $this->html = Filter::stripHeadTags($this->html);
 
         Logger::setMessage(get_called_class().': HTTP Encoding "'.$this->encoding.'" ; HTML Encoding "'.$html_encoding.'"');
-    }
-
-    /**
-     * Return the Youtube embed player and skip processing.
-     *
-     * @return bool
-     */
-    public function detectStreamingVideos()
-    {
-        if (preg_match("#(?<=v=|v\/|vi=|vi\/|youtu.be\/)[a-zA-Z0-9_-]{11}#", $this->url, $matches)) {
-            $this->content = '<iframe width="560" height="315" src="//www.youtube.com/embed/'.$matches[0].'" frameborder="0"></iframe>';
-
-            return true;
-        }
-
-        return false;
-    }
-
-    /**
-     * Skip processing for PDF documents.
-     *
-     * @return bool
-     */
-    public function detectPdfFiles()
-    {
-        return substr($this->url, -3) === 'pdf';
     }
 }
