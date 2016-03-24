@@ -2,8 +2,8 @@
 
 namespace PicoFeed\Scraper;
 
+use PicoFeed\Base;
 use PicoFeed\Logging\Logger;
-use PicoFeed\Config\Config;
 
 /**
  * RuleLoader class.
@@ -11,25 +11,8 @@ use PicoFeed\Config\Config;
  * @author  Frederic Guillot
  * @author  Bernhard Posselt
  */
-class RuleLoader
+class RuleLoader extends Base
 {
-    /**
-     * Config object.
-     *
-     * @var \PicoFeed\Config\Config
-     */
-    private $config;
-
-    /**
-     * Constructor.
-     *
-     * @param \PicoFeed\Config\Config $config Config class instance
-     */
-    public function __construct(Config $config)
-    {
-        $this->config = $config;
-    }
-
     /**
      * Get the rules for an URL.
      *

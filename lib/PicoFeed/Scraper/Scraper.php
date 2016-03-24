@@ -2,10 +2,10 @@
 
 namespace PicoFeed\Scraper;
 
+use PicoFeed\Base;
 use PicoFeed\Client\Client;
 use PicoFeed\Client\ClientException;
 use PicoFeed\Client\Url;
-use PicoFeed\Config\Config;
 use PicoFeed\Encoding\Encoding;
 use PicoFeed\Filter\Filter;
 use PicoFeed\Logging\Logger;
@@ -16,7 +16,7 @@ use PicoFeed\Parser\XmlParser;
  *
  * @author  Frederic Guillot
  */
-class Scraper
+class Scraper extends Base
 {
     /**
      * URL.
@@ -52,24 +52,6 @@ class Scraper
      * @var bool
      */
     private $enableCandidateParser = true;
-
-    /**
-     * Config object.
-     *
-     * @var \PicoFeed\Config\Config
-     */
-    private $config;
-
-    /**
-     * Constructor.
-     *
-     * @param \PicoFeed\Config\Config $config Config class instance
-     */
-    public function __construct(Config $config)
-    {
-        $this->config = $config;
-        Logger::setTimezone($this->config->getTimezone());
-    }
 
     /**
      * Disable candidates parsing.
