@@ -15,6 +15,8 @@ All exceptions inherits from the standard `Exception` class.
 - `PicoFeed\Client\MaxRedirectException`: Maximum of HTTP redirections reached
 - `PicoFeed\Client\MaxSizeException`: The response size exceeds to maximum allowed
 - `PicoFeed\Client\TimeoutException`: Connection timeout
+- `PicoFeed\Client\ForbiddenException`: Thrown for HTTP 403, meaning that the user does not have the rights to access the feed
+- `PicoFeed\Client\UnauthorizedException`: Thrown for HTTP 401, meaning that the user did not provide credentials or provided wrong credentials
 
 ### Parser Exceptions
 
