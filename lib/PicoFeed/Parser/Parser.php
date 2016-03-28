@@ -80,6 +80,13 @@ abstract class Parser
     private $enable_grabber = false;
 
     /**
+     * Holds the Scraper instance
+     *
+     * @var Scraper
+     */
+    private $grabber = null;
+
+    /**
      * Enable the content grabber on all pages.
      *
      * @var bool
@@ -230,6 +237,16 @@ abstract class Parser
     }
 
     /**
+     * Retrurn Graber instance
+     *
+     * @return Scraper
+     */
+    public function getGrabber()
+    {
+        return $this->grabber;
+    }
+
+    /**
      * Fetch item content with the content grabber.
      *
      * @param Item $item Item object
@@ -237,17 +254,17 @@ abstract class Parser
     public function scrapWebsite(Item $item)
     {
         if ($this->enable_grabber && !in_array($item->getUrl(), $this->grabber_ignore_urls)) {
-            $grabber = new Scraper($this->config);
-            $grabber->setUrl($item->getUrl());
+            $this->grabber = new Scraper($this->config);
+            $this->grabber->setUrl($item->getUrl());
 
             if ($this->grabber_needs_rule_file) {
-                $grabber->disableCandidateParser();
+                $this->grabber->disableCandidateParser();
             }
 
-            $grabber->execute();
+            $this->grabber->execute();
 
-            if ($grabber->hasRelevantContent()) {
-                $item->content = $grabber->getFilteredContent();
+            if ($this->grabber->hasRelevantContent()) {
+                $item->content = $this->grabber->getFilteredContent();
             }
         }
     }
