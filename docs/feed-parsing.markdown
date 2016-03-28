@@ -178,7 +178,7 @@ catch (PicoFeedException $e) {
 
 HTTP basic auth
 ---------------
-If a feed requires basic auth headers, you can pass them as parameters to the **download** method, e.g.:
+If a feed requires basic auth headers, you can pass them as parameters to the **download** or **discover** method, e.g.:
 
 ```php
 try {
@@ -189,6 +189,9 @@ try {
 
     // Provide those values to the download method
     $resource = $reader->download('http://linuxfr.org/news.atom', '', '', $user, $password);
+
+    // or
+    $resource = $reader->discover('http://linuxfr.org/news.atom', '', '', $user, $password);
 
     // Return true if the remote content has changed
     if ($resource->isModified()) {
@@ -214,6 +217,11 @@ catch (PicoFeedException $e) {
     // Do something...
 }
 ```
+
+To check if the authorization was successful you can test for the following thrown exceptions (see [exceptions](exceptions.markdown)):
+
+* **ForbiddenException**
+* **UnauthorizedException**
 
 Custom regex filters
 --------------------
@@ -285,7 +293,7 @@ print_r ($values);
 Get value of namespaced tag:
 
 ```php
-if (array_key_exists('wfw', $feed->items[0]->namespaces)) {
+if ($feed->items[0]->hasNamespace('wfw')) {
     $values = $feed->items[1]->getTag('wfw:commentRss');
     print_r ($values);
 }
@@ -294,7 +302,7 @@ if (array_key_exists('wfw', $feed->items[0]->namespaces)) {
 Get attribute value of a namespaced tag:
 
 ```php
-if (array_key_exists('media', $feed->items[0]->namespaces)) {
+if ($feed->items[0]->hasNamespace('media')) {
     $values = $feed->items[0]->getTag('media:content', 'url');
     print_r ($values);
 }

@@ -15,7 +15,7 @@ class StreamTest extends PHPUnit_Framework_TestCase
         $client->setUrl('http://www.reddit.com/r/dwarffortress/.rss');
         $result = $client->doRequest();
 
-        $this->assertEquals('</rss>', substr($result['body'], -6));
+        $this->assertEquals('</feed>', substr($result['body'], -7));
     }
 
     /**

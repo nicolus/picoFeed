@@ -2,11 +2,11 @@
 
 namespace PicoFeed\Reader;
 
-use DOMXpath;
+use DOMXPath;
+use PicoFeed\Base;
 use PicoFeed\Client\Client;
 use PicoFeed\Client\ClientException;
 use PicoFeed\Client\Url;
-use PicoFeed\Config\Config;
 use PicoFeed\Logging\Logger;
 use PicoFeed\Parser\XmlParser;
 
@@ -17,7 +17,7 @@ use PicoFeed\Parser\XmlParser;
  *
  * @author  Frederic Guillot
  */
-class Favicon
+class Favicon extends Base
 {
     /**
      * Valid types for favicon (supported by browsers).
@@ -30,14 +30,8 @@ class Favicon
         'image/x-icon',
         'image/jpeg',
         'image/jpg',
+        'image/svg+xml'
     );
-
-    /**
-     * Config class instance.
-     *
-     * @var \PicoFeed\Config\Config
-     */
-    private $config;
 
     /**
      * Icon binary content.
@@ -52,16 +46,6 @@ class Favicon
      * @var string
      */
     private $content_type = '';
-
-    /**
-     * Constructor.
-     *
-     * @param \PicoFeed\Config\Config $config Config class instance
-     */
-    public function __construct(Config $config = null)
-    {
-        $this->config = $config ?: new Config();
-    }
 
     /**
      * Get the icon file content (available only after the download).
@@ -195,7 +179,7 @@ class Favicon
         $dom = XmlParser::getHtmlDocument($html);
 
         $xpath = new DOMXpath($dom);
-        $elements = $xpath->query("//link[contains(@rel, 'icon') and not(contains(@rel, 'apple'))]");
+        $elements = $xpath->query('//link[@rel="icon" or @rel="shortcut icon" or @rel="icon shortcut"]');
 
         for ($i = 0; $i < $elements->length; ++$i) {
             $icons[] = $elements->item($i)->getAttribute('href');

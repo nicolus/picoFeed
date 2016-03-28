@@ -211,7 +211,7 @@ abstract class Client
 
         $this->status_code = $response['status'];
         $this->handleNotModifiedResponse($response);
-        $this->handleNotFoundResponse($response);
+        $this->handleErrorResponse($response);
         $this->handleNormalResponse($response);
 
         return $this;
@@ -222,7 +222,7 @@ abstract class Client
      *
      * @param array $response Client response
      */
-    public function handleNotModifiedResponse(array $response)
+    protected function handleNotModifiedResponse(array $response)
     {
         if ($response['status'] == 304) {
             $this->is_modified = false;
@@ -238,13 +238,18 @@ abstract class Client
     }
 
     /**
-     * Handle not found response.
+     * Handle Http Error codes
      *
      * @param array $response Client response
      */
-    public function handleNotFoundResponse(array $response)
+    protected function handleErrorResponse(array $response)
     {
-        if ($response['status'] == 404) {
+        $status = $response['status'];
+        if ($status == 401) {
+            throw new UnauthorizedException('Wrong or missing credentials');
+        } else if ($status == 403) {
+            throw new ForbiddenException('Not allowed to access resource');
+        } else if ($status == 404) {
             throw new InvalidUrlException('Resource not found');
         }
     }
@@ -254,7 +259,7 @@ abstract class Client
      *
      * @param array $response Client response
      */
-    public function handleNormalResponse(array $response)
+    protected function handleNormalResponse(array $response)
     {
         if ($response['status'] == 200) {
             $this->content = $response['body'];
