@@ -335,8 +335,10 @@ abstract class Parser
     /**
      * Enable the content grabber.
      *
-     * @param bool $needs_rule_file true if only pages with rule files should be
-     *                              scraped
+     * @param bool          $needs_rule_file true if only pages with rule files should be
+     *                                       scraped
+     * @param null|\Closure $scraperCallback Callback function that gets called for each
+     *                                       scraper execution
      *
      * @return \PicoFeed\Parser\Parser
      */
