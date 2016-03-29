@@ -6,7 +6,6 @@ use PicoFeed\Processor\ContentFilterProcessor;
 use PicoFeed\Processor\ContentGeneratorProcessor;
 use PicoFeed\Processor\ItemPostProcessor;
 use PicoFeed\Processor\ScraperProcessor;
-use PicoFeed\Scraper\Scraper;
 use SimpleXMLElement;
 use PicoFeed\Client\Url;
 use PicoFeed\Encoding\Encoding;
@@ -315,21 +314,6 @@ abstract class Parser
     {
         $this->itemPostProcessor->unregister('PicoFeed\Processor\ContentFilterProcessor');
         return $this;
-    }
-
-    /**
-     * Return registered Scraper instance from itemPostProcessor. Returns null if no scraper is registered.
-     *
-     * @return null|Scraper
-     */
-    public function getGrabber()
-    {
-        if ($this->itemPostProcessor->hasProcessor('PicoFeed\Processor\ScraperProcessor'))
-        {
-            return $this->itemPostProcessor->getProcessor('PicoFeed\Processor\ScraperProcessor')->getScraper();
-        }
-
-        return null;
     }
 
     /**
