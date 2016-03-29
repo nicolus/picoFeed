@@ -61,4 +61,19 @@ class ScraperTest extends PHPUnit_Framework_TestCase
         $this->assertTrue(is_array($feed->items));
         $this->assertTrue(strpos($feed->items[0]->content, '<img') >= 0);
     }
+
+    /**
+     * @group online
+     */
+    public function testContentGrabberCallback()
+    {
+        $reader = new Reader();
+        $client = $reader->download('http://www.egscomics.com/rss.php');
+        $parser = $reader->getParser($client->getUrl(), $client->getContent(), $client->getEncoding());
+        $that   = $this;
+        $parser->enableContentGrabber(false, function($feed, $item, $scraper) use ($that) {
+            $this->assertInstanceOf('PicoFeed\Scraper\Scraper', $scraper);
+        });
+        $parser->execute();
+    }
 }

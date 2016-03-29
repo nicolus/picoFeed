@@ -340,12 +340,17 @@ abstract class Parser
      *
      * @return \PicoFeed\Parser\Parser
      */
-    public function enableContentGrabber($needs_rule_file = false)
+    public function enableContentGrabber($needs_rule_file = false, $scraperCallback = null)
     {
         $processor = new ScraperProcessor($this->config);
 
         if ($needs_rule_file) {
             $processor->getScraper()->disableCandidateParser();
+        }
+
+        if ($scraperCallback !== null)
+        {
+            $processor->setExecutionCallback($scraperCallback);
         }
 
         $this->itemPostProcessor->register($processor);
