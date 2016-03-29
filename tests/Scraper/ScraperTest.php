@@ -72,7 +72,7 @@ class ScraperTest extends PHPUnit_Framework_TestCase
         $parser = $reader->getParser($client->getUrl(), $client->getContent(), $client->getEncoding());
         $that   = $this;
         $parser->enableContentGrabber(false, function($feed, $item, $scraper) use ($that) {
-            $this->assertInstanceOf('PicoFeed\Scraper\Scraper', $scraper);
+            $that->assertInstanceOf('PicoFeed\Scraper\Scraper', $scraper);
         });
         $parser->execute();
     }
