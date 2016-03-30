@@ -18,6 +18,7 @@ return array(
                 '//section[@class="ribboned"]',
                 '//div[contains(@class,"sidebar")]',
                 '//aside[@class="article_tag_list"]',
+                '//section[contains(@id, "more_posts")]',
             ),
         ),
     ),
