@@ -227,10 +227,6 @@ class ReaderTest extends PHPUnit_Framework_TestCase
         $this->assertInstanceOf('PicoFeed\Parser\Rss20', $reader->getParser($client->getUrl(), $client->getContent(), $client->getEncoding()));
 
         $reader = new Reader();
-        $client = $reader->discover('http://planete-jquery.fr');
-        $this->assertInstanceOf('PicoFeed\Parser\Rss10', $reader->getParser($client->getUrl(), $client->getContent(), $client->getEncoding()));
-
-        $reader = new Reader();
         $client = $reader->discover('http://cabinporn.com/');
         $this->assertEquals('http://cabinporn.com/rss', $client->getUrl());
         $this->assertInstanceOf('PicoFeed\Parser\Rss20', $reader->getParser($client->getUrl(), $client->getContent(), $client->getEncoding()));
