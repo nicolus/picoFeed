@@ -2,6 +2,7 @@
 
 namespace PicoFeed\Processor;
 
+use Closure;
 use PicoFeed\Base;
 use PicoFeed\Parser\Feed;
 use PicoFeed\Parser\Item;
@@ -19,6 +20,26 @@ class ScraperProcessor extends Base implements ItemProcessorInterface
     private $scraper;
 
     /**
+     * Callback function for each scraper execution
+     *
+     * @var Closure
+     */
+    private $executionCallback;
+
+    /**
+     * Add a new execution callback
+     *
+     * @access public
+     * @param  Closure $executionCallback
+     * @return $this
+     */
+    public function setExecutionCallback(Closure $executionCallback)
+    {
+        $this->executionCallback = $executionCallback;
+        return $this;
+    }
+
+    /**
      * Execute Item Processor
      *
      * @access public
@@ -32,6 +53,10 @@ class ScraperProcessor extends Base implements ItemProcessorInterface
             $scraper = $this->getScraper();
             $scraper->setUrl($item->getUrl());
             $scraper->execute();
+
+            if ($this->executionCallback && is_callable($this->executionCallback)) {
+                call_user_func($this->executionCallback, $feed, $item, $scraper);
+            }
 
             if ($scraper->hasRelevantContent()) {
                 $item->setContent($scraper->getFilteredContent());

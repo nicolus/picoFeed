@@ -71,6 +71,18 @@ class ItemPostProcessor extends Base
     }
 
     /**
+     * Checks wheather a specific processor is registered or not
+     *
+     * @access public
+     * @param  string $class
+     * @return bool
+     */
+    public function hasProcessor($class)
+    {
+        return isset($this->processors[$class]);
+    }
+
+    /**
      * Get Processor instance
      *
      * @access public
