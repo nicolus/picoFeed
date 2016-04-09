@@ -374,7 +374,7 @@ class Curl extends Client
             case 83: // CURLE_SSL_ISSUER_ERROR
                 $msg = 'Invalid SSL certificate caused by CURL error number: ' .
                         $errno . ': ' . curl_strerror($errno);
-                throw new InvalidCertificateException($msg);
+                throw new InvalidCertificateException($msg, $errno);
             case 47: // CURLE_TOO_MANY_REDIRECTS
                 throw new MaxRedirectException('Maximum number of redirections reached');
             case 63: // CURLE_FILESIZE_EXCEEDED
