@@ -354,15 +354,15 @@ class Curl extends Client
     {
         switch ($errno) {
             case 78: // CURLE_REMOTE_FILE_NOT_FOUND
-                throw new InvalidUrlException('Resource not found');
+                throw new InvalidUrlException('Resource not found', $errno);
             case 6:  // CURLE_COULDNT_RESOLVE_HOST
-                throw new InvalidUrlException('Unable to resolve hostname');
+                throw new InvalidUrlException('Unable to resolve hostname', $errno);
             case 7:  // CURLE_COULDNT_CONNECT
-                throw new InvalidUrlException('Unable to connect to the remote host');
+                throw new InvalidUrlException('Unable to connect to the remote host', $errno);
             case 23: // CURLE_WRITE_ERROR
-                throw new MaxSizeException('Maximum response size exceeded');
+                throw new MaxSizeException('Maximum response size exceeded', $errno);
             case 28: // CURLE_OPERATION_TIMEDOUT
-                throw new TimeoutException('Operation timeout');
+                throw new TimeoutException('Operation timeout', $errno);
             case 35: // CURLE_SSL_CONNECT_ERROR
             case 51: // CURLE_PEER_FAILED_VERIFICATION
             case 58: // CURLE_SSL_CERTPROBLEM
@@ -376,11 +376,11 @@ class Curl extends Client
                         $errno;
                 throw new InvalidCertificateException($msg, $errno);
             case 47: // CURLE_TOO_MANY_REDIRECTS
-                throw new MaxRedirectException('Maximum number of redirections reached');
+                throw new MaxRedirectException('Maximum number of redirections reached', $errno);
             case 63: // CURLE_FILESIZE_EXCEEDED
-                throw new MaxSizeException('Maximum response size exceeded');
+                throw new MaxSizeException('Maximum response size exceeded', $errno);
             default:
-                throw new InvalidUrlException('Unable to fetch the URL');
+                throw new InvalidUrlException('Unable to fetch the URL', $errno);
         }
     }
 }
