@@ -32,7 +32,8 @@ class Rss10 extends Parser
     public function getItemsTree(SimpleXMLElement $xml)
     {
         return XmlParser::getXPathResult($xml, 'rss:item', $this->namespaces)
-               ?: XmlParser::getXPathResult($xml, 'item');
+            ?: XmlParser::getXPathResult($xml, 'item')
+            ?: $xml->item;
     }
 
     /**
@@ -54,10 +55,11 @@ class Rss10 extends Parser
      */
     public function findSiteUrl(SimpleXMLElement $xml, Feed $feed)
     {
-        $site_url = XmlParser::getXPathResult($xml, 'rss:channel/rss:link', $this->namespaces)
-                    ?: XmlParser::getXPathResult($xml, 'channel/link');
+        $value = XmlParser::getXPathResult($xml, 'rss:channel/rss:link', $this->namespaces)
+            ?: XmlParser::getXPathResult($xml, 'channel/link')
+            ?: $xml->channel->link;
 
-        $feed->site_url = (string) current($site_url);
+        $feed->site_url = XmlParser::getValue($value);
     }
 
     /**
@@ -69,9 +71,10 @@ class Rss10 extends Parser
     public function findFeedDescription(SimpleXMLElement $xml, Feed $feed)
     {
         $description = XmlParser::getXPathResult($xml, 'rss:channel/rss:description', $this->namespaces)
-                       ?: XmlParser::getXPathResult($xml, 'channel/description');
+            ?: XmlParser::getXPathResult($xml, 'channel/description')
+            ?: $xml->channel->description;
 
-        $feed->description = (string) current($description);
+        $feed->description = XmlParser::getValue($description);
     }
 
     /**
@@ -83,9 +86,9 @@ class Rss10 extends Parser
     public function findFeedLogo(SimpleXMLElement $xml, Feed $feed)
     {
         $logo = XmlParser::getXPathResult($xml, 'rss:image/rss:url', $this->namespaces)
-                ?: XmlParser::getXPathResult($xml, 'image/url');
+            ?: XmlParser::getXPathResult($xml, 'image/url');
 
-        $feed->logo = (string) current($logo);
+        $feed->logo = XmlParser::getValue($logo);
     }
 
     /**
@@ -108,9 +111,10 @@ class Rss10 extends Parser
     public function findFeedTitle(SimpleXMLElement $xml, Feed $feed)
     {
         $title = XmlParser::getXPathResult($xml, 'rss:channel/rss:title', $this->namespaces)
-                 ?: XmlParser::getXPathResult($xml, 'channel/title');
+            ?: XmlParser::getXPathResult($xml, 'channel/title')
+            ?: $xml->channel->title;
 
-        $feed->title = Filter::stripWhiteSpace((string) current($title)) ?: $feed->getSiteUrl();
+        $feed->title = Filter::stripWhiteSpace(XmlParser::getValue($title)) ?: $feed->getSiteUrl();
     }
 
     /**
@@ -124,7 +128,7 @@ class Rss10 extends Parser
         $language = XmlParser::getXPathResult($xml, 'rss:channel/dc:language', $this->namespaces)
                     ?: XmlParser::getXPathResult($xml, 'channel/dc:language', $this->namespaces);
 
-        $feed->language = (string) current($language);
+        $feed->language = XmlParser::getValue($language);
     }
 
     /**
@@ -149,7 +153,7 @@ class Rss10 extends Parser
         $date = XmlParser::getXPathResult($xml, 'rss:channel/dc:date', $this->namespaces)
                 ?: XmlParser::getXPathResult($xml, 'channel/dc:date', $this->namespaces);
 
-        $feed->date = $this->getDateParser()->getDateTime((string) current($date));
+        $feed->date = $this->getDateParser()->getDateTime(XmlParser::getValue($date));
     }
 
     /**
@@ -163,7 +167,7 @@ class Rss10 extends Parser
     {
         $date = XmlParser::getXPathResult($entry, 'dc:date', $this->namespaces);
 
-        $item->date = empty($date) ? $feed->getDate() : $this->getDateParser()->getDateTime((string) current($date));
+        $item->date = empty($date) ? $feed->getDate() : $this->getDateParser()->getDateTime(XmlParser::getValue($date));
     }
 
     /**
@@ -175,9 +179,10 @@ class Rss10 extends Parser
     public function findItemTitle(SimpleXMLElement $entry, Item $item)
     {
         $title = XmlParser::getXPathResult($entry, 'rss:title', $this->namespaces)
-                 ?: XmlParser::getXPathResult($entry, 'title');
+            ?: XmlParser::getXPathResult($entry, 'title')
+            ?: $entry->title;
 
-        $item->title = Filter::stripWhiteSpace((string) current($title)) ?: $item->url;
+        $item->title = Filter::stripWhiteSpace(XmlParser::getValue($title)) ?: $item->url;
     }
 
     /**
@@ -193,7 +198,7 @@ class Rss10 extends Parser
                   ?: XmlParser::getXPathResult($xml, 'rss:channel/dc:creator', $this->namespaces)
                   ?: XmlParser::getXPathResult($xml, 'channel/dc:creator', $this->namespaces);
 
-        $item->author = (string) current($author);
+        $item->author = XmlParser::getValue($author);
     }
 
     /**
@@ -206,12 +211,13 @@ class Rss10 extends Parser
     {
         $content = XmlParser::getXPathResult($entry, 'content:encoded', $this->namespaces);
 
-        if (trim((string) current($content)) === '') {
+        if (XmlParser::getValue($content) === '') {
             $content = XmlParser::getXPathResult($entry, 'rss:description', $this->namespaces)
-                       ?: XmlParser::getXPathResult($entry, 'description');
+                ?: XmlParser::getXPathResult($entry, 'description')
+                ?: $entry->description;
         }
 
-        $item->content = (string) current($content);
+        $item->content = XmlParser::getValue($content);
     }
 
     /**
@@ -223,10 +229,11 @@ class Rss10 extends Parser
     public function findItemUrl(SimpleXMLElement $entry, Item $item)
     {
         $link = XmlParser::getXPathResult($entry, 'feedburner:origLink', $this->namespaces)
-                ?: XmlParser::getXPathResult($entry, 'rss:link', $this->namespaces)
-                ?: XmlParser::getXPathResult($entry, 'link');
+            ?: XmlParser::getXPathResult($entry, 'rss:link', $this->namespaces)
+            ?: XmlParser::getXPathResult($entry, 'link')
+            ?: $entry->link;
 
-        $item->url = trim((string) current($link));
+        $item->url = XmlParser::getValue($link);
     }
 
     /**
@@ -265,6 +272,6 @@ class Rss10 extends Parser
     {
         $language = XmlParser::getXPathResult($entry, 'dc:language', $this->namespaces);
 
-        $item->language = (string) current($language) ?: $feed->language;
+        $item->language = XmlParser::getValue($language) ?: $feed->language;
     }
 }

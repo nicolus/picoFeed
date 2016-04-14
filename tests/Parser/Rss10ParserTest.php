@@ -6,11 +6,10 @@ use PHPUnit_Framework_TestCase;
 
 class Rss10ParserTest extends PHPUnit_Framework_TestCase
 {
-    /**
-     * @expectedException PicoFeed\Parser\MalformedXmlException
-     */
     public function testBadInput()
     {
+        $this->setExpectedException('PicoFeed\Parser\MalformedXmlException');
+
         $parser = new Rss10('boo');
         $parser->execute();
     }
@@ -31,7 +30,11 @@ class Rss10ParserTest extends PHPUnit_Framework_TestCase
 
         $parser = new Rss10(file_get_contents('tests/fixtures/rss_10_empty_feed.xml'));
         $feed = $parser->execute();
-        $this->assertEquals(array(), $feed->items);
+        $this->assertSame(array(), $feed->items);
+
+        $parser = new Rss10(file_get_contents('tests/fixtures/heise.rdf'));
+        $feed = $parser->execute();
+        $this->assertCount(60, $feed->items);
     }
 
     public function testFindFeedTitle()
@@ -59,6 +62,10 @@ class Rss10ParserTest extends PHPUnit_Framework_TestCase
         $parser = new Rss10(file_get_contents('tests/fixtures/rss_10_empty_feed.xml'));
         $feed = $parser->execute();
         $this->assertEquals('', $feed->getTitle());
+
+        $parser = new Rss10(file_get_contents('tests/fixtures/heise.rdf'));
+        $feed = $parser->execute();
+        $this->assertEquals('heise online News', $feed->getTitle());
     }
 
     public function testFindFeedDescription()
@@ -82,6 +89,10 @@ class Rss10ParserTest extends PHPUnit_Framework_TestCase
         $parser = new Rss10(file_get_contents('tests/fixtures/rss_10_empty_feed.xml'));
         $feed = $parser->execute();
         $this->assertEquals('', $feed->getDescription());
+
+        $parser = new Rss10(file_get_contents('tests/fixtures/heise.rdf'));
+        $feed = $parser->execute();
+        $this->assertEquals('Nachrichten nicht nur aus der Welt der Computer', $feed->getDescription());
     }
 
     public function testFindFeedLogo()
@@ -146,6 +157,10 @@ class Rss10ParserTest extends PHPUnit_Framework_TestCase
         $parser = new Rss10(file_get_contents('tests/fixtures/rss_10_empty_feed.xml'));
         $feed = $parser->execute();
         $this->assertEquals('', $feed->getSiteUrl());
+
+        $parser = new Rss10(file_get_contents('tests/fixtures/heise.rdf'));
+        $feed = $parser->execute();
+        $this->assertEquals('http://www.heise.de/newsticker/', $feed->getSiteUrl());
     }
 
     public function testFindFeedId()
@@ -153,6 +168,10 @@ class Rss10ParserTest extends PHPUnit_Framework_TestCase
         $parser = new Rss10(file_get_contents('tests/fixtures/rss_10.xml'));
         $feed = $parser->execute();
         $this->assertEquals('https://en.wikipedia.org/wiki/Category:Russian-language_literature', $feed->getId());
+
+        $parser = new Rss10(file_get_contents('tests/fixtures/heise.rdf'));
+        $feed = $parser->execute();
+        $this->assertEquals('http://www.heise.de/newsticker/', $feed->getId());
     }
 
     public function testFindFeedDate()
@@ -210,6 +229,10 @@ class Rss10ParserTest extends PHPUnit_Framework_TestCase
         $parser = new Rss10(file_get_contents('tests/fixtures/rss_10_empty_item.xml'));
         $feed = $parser->execute();
         $this->assertEquals('e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855', $feed->items[0]->getId());
+
+        $parser = new Rss10(file_get_contents('tests/fixtures/heise.rdf'));
+        $feed = $parser->execute();
+        $this->assertEquals('86f8961705a56fed5f46ff1a013a2429f4de3d617048b8151e7f6fa0a2abb985', $feed->items[0]->getId());
     }
 
     public function testFindItemUrl()
@@ -240,6 +263,10 @@ class Rss10ParserTest extends PHPUnit_Framework_TestCase
         $parser = new Rss10(file_get_contents('tests/fixtures/rss_10_empty_item.xml'));
         $feed = $parser->execute();
         $this->assertEquals('', $feed->items[0]->getUrl());
+
+        $parser = new Rss10(file_get_contents('tests/fixtures/heise.rdf'));
+        $feed = $parser->execute();
+        $this->assertEquals('http://www.heise.de/newsticker/meldung/Facebook-f8-Kuenstliche-Intelligenz-raeumt-den-Newsfeed-auf-3173304.html?wt_mc=rss.ho.beitrag.rdf', $feed->items[0]->getUrl());
     }
 
     public function testFindItemTitle()
@@ -263,6 +290,10 @@ class Rss10ParserTest extends PHPUnit_Framework_TestCase
         $parser = new Rss10(file_get_contents('tests/fixtures/rss_10_empty_item.xml'));
         $feed = $parser->execute();
         $this->assertEquals('', $feed->items[0]->getTitle());
+
+        $parser = new Rss10(file_get_contents('tests/fixtures/heise.rdf'));
+        $feed = $parser->execute();
+        $this->assertEquals('Facebook f8: Künstliche Intelligenz räumt den Newsfeed auf', $feed->items[0]->getTitle());
     }
 
     /*
@@ -339,6 +370,11 @@ class Rss10ParserTest extends PHPUnit_Framework_TestCase
         $parser->disableContentFiltering();
         $feed = $parser->execute();
         $this->assertEquals('', $feed->items[0]->getContent());
+
+        $parser = new Rss10(file_get_contents('tests/fixtures/heise.rdf'));
+        $feed = $parser->execute();
+        $this->assertEquals('<p>Die Keynotes des zweiten Tags von Facebooks Entwicklerkonferenz haben gezeigt, an wievielen Stellen das Unternehmen künstliche Intelligenz bereits einsetzt oder damit experimentiert.</p>', $feed->items[0]->getContent());
+
     }
 
     public function testFindItemEnclosure()

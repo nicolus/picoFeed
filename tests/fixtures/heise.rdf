@@ -1,0 +1,375 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns="http://my.netscape.com/rdf/simple/0.9/">
+	<channel>
+ 	 <title>heise online News</title>
+ 	 <link>http://www.heise.de/newsticker/</link>
+ 	 <description>Nachrichten nicht nur aus der Welt der Computer</description>
+	</channel>
+
+
+	<item>
+		<title>Facebook f8: Künstliche Intelligenz räumt den Newsfeed auf</title>
+		<link>http://www.heise.de/newsticker/meldung/Facebook-f8-Kuenstliche-Intelligenz-raeumt-den-Newsfeed-auf-3173304.html?wt_mc=rss.ho.beitrag.rdf</link>
+			<description>Die Keynotes des zweiten Tags von Facebooks Entwicklerkonferenz haben gezeigt, an wievielen Stellen das Unternehmen künstliche Intelligenz bereits einsetzt oder damit experimentiert.</description>
+	</item>
+
+	<item>
+		<title>SEUCK 2016: Wettbewerb für C64-Spieleentwickler</title>
+		<link>http://www.heise.de/newsticker/meldung/SEUCK-2016-Wettbewerb-fuer-C64-Spieleentwickler-3173231.html?wt_mc=rss.ho.beitrag.rdf</link>
+			<description>Wem der Name SEUCK noch etwas sagt, kann ab sofort seine Fähigkeiten beim C64-Spieledesign auf die Probe stellen. Noch bis zum 30. November 2016 läuft der diesjährige Shooter-Wettbewerb, der sowohl Einsteigern, als auch Profis eine Chance bietet.</description>
+	</item>
+
+	<item>
+		<title>Privacy Shield: EU-Datenschützer sehen Nachbesserungsbedarf bei Datentransfer mit USA</title>
+		<link>http://www.heise.de/newsticker/meldung/Privacy-Shield-EU-Datenschuetzer-sehen-Nachbesserungsbedarf-bei-Datentransfer-mit-USA-3173251.html?wt_mc=rss.ho.beitrag.rdf</link>
+			<description>Die neue Rahmenvereinbarung zwischen EU und USA zum Datentransfer von Unternehmen lässt aus Sicht von Datenschützern noch einiges zu wünschen übrig. Die Bundesdatenschutzbeauftragte Andrea Voßhoff stimmt ihnen zu.</description>
+	</item>
+
+	<item>
+		<title>Facebook f8: Web-Speicher, schnelleres Teilen und vielseitigeres Graph API</title>
+		<link>http://www.heise.de/newsticker/meldung/Facebook-f8-Web-Speicher-schnelleres-Teilen-und-vielseitigeres-Graph-API-3173191.html?wt_mc=rss.ho.beitrag.rdf</link>
+			<description>Neben den großen Ankündigungen - etwa den Instant Articles und der Messenger Platform - hat Facebook am ersten Tag der f8 noch weitere Funktionen und Dienste vorgestellt. Eine Auswahl weiterer Neuerungen für Entwickler und Anwender im Schnelldurchlauf.</description>
+	</item>
+
+	<item>
+		<title>USB-Typ-C-Buchse soll analoge Klinkenstecker ersetzen</title>
+		<link>http://www.heise.de/newsticker/meldung/USB-Typ-C-Buchse-soll-analoge-Klinkenstecker-ersetzen-3173050.html?wt_mc=rss.ho.beitrag.rdf</link>
+			<description>Über Typ-C-Buchsen lassen sich nicht nur USB-Daten, sondern auch DisplayPort- und Thunderbolt-Signale schicken. Künftig soll die Buchse auch den bislang üblichen analogen Klinkenstecker ablösen.</description>
+	</item>
+
+	<item>
+		<title>Sicherheitsforscher: Timeserver-Spoof schickt iPad ins Koma</title>
+		<link>http://www.heise.de/newsticker/meldung/Sicherheitsforscher-Timeserver-Spoof-schickt-iPad-ins-Koma-3173229.html?wt_mc=rss.ho.beitrag.rdf</link>
+			<description>Ein Angreifer mit Kontrolle über einen WLAN-Hotspot kann iPads zurück in das Jahr 1970 schicken und das Gerät dadurch außer Gefecht setzen, berichten Sicherheitsforscher. Erst iOS 9.3.1 sorgt angeblich für Abhilfe.</description>
+	</item>
+
+	<item>
+		<title>Nokia-Beschäftigte protestieren gegen Einschnitte</title>
+		<link>http://www.heise.de/newsticker/meldung/Nokia-Beschaeftigte-protestieren-gegen-Einschnitte-3173208.html?wt_mc=rss.ho.beitrag.rdf</link>
+			<description>Die Gewerkschaft IG Metall will die anstehenden Stellenstreichungen beim Telecom-Ausrüster nicht hinnehmen. Das Unternehmen stehe blendend da, meint sie.</description>
+	</item>
+
+	<item>
+		<title>Madeira: Unternehmensplanung aus Microsofts Public Cloud</title>
+		<link>http://www.heise.de/newsticker/meldung/Madeira-Unternehmensplanung-aus-Microsofts-Public-Cloud-3173173.html?wt_mc=rss.ho.beitrag.rdf</link>
+			<description>Mit dem neuen Public-Cloud-Dienst Madeira richtet sich Microsoft an KMUs. Sie sollen künftig ihr Geschäft direkt in Outlook planen können, ohne je den Client verlassen zu müssen. Zunächst startet der Dienst als Preview in den USA.</description>
+	</item>
+
+	<item>
+		<title>Toyota entwirft ein Elektroauto für die &quot;Generation Z&quot;</title>
+		<link>http://www.heise.de/newsticker/meldung/Toyota-entwirft-ein-Elektroauto-fuer-die-Generation-Z-3173103.html?wt_mc=rss.ho.beitrag.rdf</link>
+			<description>Ein Auto für Jungunternehmer, die es gut für Freizeitfahrten, aber auch für Karrierezwecke verwenden können: Das kam heraus nach einer Kooperation von Toyota USA mit Studierenden der Clemson University.</description>
+	</item>
+
+	<item>
+		<title>Screensaver bei Debian: Software mit Verfallsdatum</title>
+		<link>http://www.heise.de/newsticker/meldung/Screensaver-bei-Debian-Software-mit-Verfallsdatum-3172970.html?wt_mc=rss.ho.beitrag.rdf</link>
+			<description>Wer ein aktuelles Debian mit grafischem Desktop benutzt, erhält dieser Tage eine Warnung, dass der Screensaver sehr alt sei. Dahinter verbirgt sich ein Problem, das über den konkreten Fall hinausweist.</description>
+	</item>
+
+	<item>
+		<title>Urheberrecht auf Steuercodes? Konkurrent GDC verklagt Dolby </title>
+		<link>http://www.heise.de/newsticker/meldung/Urheberrecht-auf-Steuercodes-Konkurrent-GDC-verklagt-Dolby-3172187.html?wt_mc=rss.ho.beitrag.rdf</link>
+			<description>GDC, Anbieter von Hardware und Software für Digitalkinos, hat Dolby verklagt. Es geht um nicht nur um Steuercodes, sondern auch um Monopole und die 3D-Soundformate Dolby Atmos und DTS:X.</description>
+	</item>
+
+	<item>
+		<title>EU an Apple: Rückführung von Auslandsvermögen beendet Steuerverfahren nicht</title>
+		<link>http://www.heise.de/newsticker/meldung/EU-an-Apple-Rueckfuehrung-von-Auslandsvermoegen-beendet-Steuerverfahren-nicht-3172975.html?wt_mc=rss.ho.beitrag.rdf</link>
+			<description>Apple hat einem Bericht zufolge vor, einen Teil des massiven Auslandsvermögens in die USA zu überführen. Dieser Schritt werde die Steuerprüfung in Irland nicht verhindern, betonte die EU-Wettbewerbskommissarin.</description>
+	</item>
+
+	<item>
+		<title>Tarifeinigung zwischen Telekom und Verdi: Insgesamt 4,3 Prozent Gehalt</title>
+		<link>http://www.heise.de/newsticker/meldung/Tarifeinigung-zwischen-Telekom-und-Verdi-Insgesamt-4-3-Prozent-Gehalt-3172113.html?wt_mc=rss.ho.beitrag.rdf</link>
+			<description>Rückwirkend soll es zum 1. April 2016 2,2 Prozent mehr Geld für Telekom-Mitarbeiter geben, ab 2017 dann noch mal weitere 2,1 Prozent. Darauf einigten sich Verdi und die Deutsche Telekom.</description>
+	</item>
+
+	<item>
+		<title>Bundesbank-Vorstand sieht keine überzeugenden Argumente für Abschaffung des 500-Euro-Scheins</title>
+		<link>http://www.heise.de/newsticker/meldung/Bundesbank-Vorstand-sieht-keine-ueberzeugenden-Argumente-fuer-Abschaffung-des-500-Euro-Scheins-3172884.html?wt_mc=rss.ho.beitrag.rdf</link>
+			<description>&quot;Das Argument der Bekämpfung von Schwarzarbeit, Steuerhinterziehung, Geldwäsche oder Kriminalität greift nicht&quot;, sagte Bundesband-Vorstand Carl-Ludwig Thiele.</description>
+	</item>
+
+	<item>
+		<title>Amazon Kindle Oasis: Leichter und schlanker E-Reader mit Akku-Hülle für 290 Euro</title>
+		<link>http://www.heise.de/newsticker/meldung/Amazon-Kindle-Oasis-Leichter-und-schlanker-E-Reader-mit-Akku-Huelle-fuer-290-Euro-3172812.html?wt_mc=rss.ho.beitrag.rdf</link>
+			<description>Leichter, dünner und trotzdem ausdauernder: Amazon lagert bei seinem neuen E-Reader Kindle Oasis dafür einen Teil des Akkus in die mitgelieferte Hülle aus. Ein asymmetrisches Gehäuse mit Hardware-Tasten soll das Lesen mit nur einer Hand verbessern.</description>
+	</item>
+
+	<item>
+		<title>Oculus-Rift-Marathon: Wir spielen alle 52 verfügbaren Titel am Stück</title>
+		<link>http://www.heise.de/newsticker/meldung/Oculus-Rift-Marathon-Wir-spielen-alle-52-verfuegbaren-Titel-am-Stueck-3172930.html?wt_mc=rss.ho.beitrag.rdf</link>
+			<description>Nach seinem sechseinhalbstündigen Marathon mit der HTC Vive nimmt sich c't-Redakteur Jan-Keno Janssen am Mittwochnachmittag die Oculus Rift vor. Ab 17 Uhr spielt er alle im Oculus Store verfügbaren Titel an – live.</description>
+	</item>
+
+	<item>
+		<title>DDoS-Angriffe auf Strato: Joomla- und WordPress-Installationen betroffen </title>
+		<link>http://www.heise.de/newsticker/meldung/DDoS-Angriffe-auf-Strato-Joomla-und-WordPress-Installationen-betroffen-3172914.html?wt_mc=rss.ho.beitrag.rdf</link>
+			<description>Seit Dienstagabend berichten Strato-Kunden von Problemen beim Einloggen auf ihre Joomla- und WordPress-Webseiten. Mittlerweile sollen Gegenmaßnahmen greifen.</description>
+	</item>
+
+	<item>
+		<title>l+f: Bankräuber mit Aluhut</title>
+		<link>http://www.heise.de/newsticker/meldung/l-f-Bankraeuber-mit-Aluhut-3172080.html?wt_mc=rss.ho.beitrag.rdf</link>
+			<description>Bankräuber wollten, komplett in Alufolie gekleidet, die Bewegungssensoren einer Bank überlisten. Ein kurzer Test zeigt: Die Idee ist gar nicht so schlecht.</description>
+	</item>
+
+	<item>
+		<title>GEZ-Gebühr soll sinken – vorerst</title>
+		<link>http://www.heise.de/newsticker/meldung/GEZ-Gebuehr-soll-sinken-vorerst-3172891.html?wt_mc=rss.ho.beitrag.rdf</link>
+			<description>Die Kommission zur Ermittlung des Finanzbedarfs der Rundfunkanstalten will den Rundfunkbeitrag für die kommenden vier Jahre um 30 Cent pro Monat senken. Doch danach könnte es &quot;richtig teuer&quot; werden.</description>
+	</item>
+
+	<item>
+		<title>Nur 72 Stunden: Erpressungs-Trojaner Jigsaw droht, Dateien zu löschen</title>
+		<link>http://www.heise.de/newsticker/meldung/Nur-72-Stunden-Erpressungs-Trojaner-Jigsaw-droht-Dateien-zu-loeschen-3172217.html?wt_mc=rss.ho.beitrag.rdf</link>
+			<description>Um seine Opfer unter Druck zu setzen das Lösegeld zu zahlen, soll der Verschlüsselungs-Trojaner Jigsaw stündlich Dateien löschen, bis die Forderung beglichen ist. Glücklicherweise gibt es bereits ein kostenloses Entschlüsselungs-Tool.</description>
+	</item>
+
+	<item>
+		<title>Verleger bauen Digitalgeschäft aus – und bringen auch viele neue Print-Titel</title>
+		<link>http://www.heise.de/newsticker/meldung/Verleger-bauen-Digitalgeschaeft-aus-und-bringen-auch-viele-neue-Print-Titel-3172407.html?wt_mc=rss.ho.beitrag.rdf</link>
+			<description>Die Printtitel sind für Zeitschriftenverlage immer noch das Kerngeschäft. Aber die digitalen Angebote legen zu. Viele Verlagshäuser wollen sich in dem Bereich noch deutlich mehr engagieren.</description>
+	</item>
+
+	<item>
+		<title>Smart Meter: Experten zerpflücken Gesetzentwurf für intelligente Stromzähler</title>
+		<link>http://www.heise.de/newsticker/meldung/Smart-Meter-Experten-zerpfluecken-Gesetzentwurf-fuer-intelligente-Stromzaehler-3172235.html?wt_mc=rss.ho.beitrag.rdf</link>
+			<description>In einer Anhörung im Bundestag war nur ein großer Übertragungsnetzbetreiber rundum glücklich mit dem Regierungsentwurf zur &quot;Digitalisierung der Energiewende&quot;. Vorteile für Verbraucher zeichneten sich so gut wie nicht ab.</description>
+	</item>
+
+	<item>
+		<title>PowerDVD 16: Streaming und Fernsehmodus, aber keine Ultra HD Blu-ray</title>
+		<link>http://www.heise.de/newsticker/meldung/PowerDVD-16-Streaming-und-Fernsehmodus-aber-keine-Ultra-HD-Blu-ray-3171161.html?wt_mc=rss.ho.beitrag.rdf</link>
+			<description>CyberLinks neue PowerDVD-Version streamt auf Apple TV, Chromecast und Roku. Außerdem spielt es 3D-Videos jenseits von Blu-ray Discs und DSD-Audiostreams. Wer jedoch Ultra HD Blu-ray abspielen will, muss sich gedulden.</description>
+	</item>
+
+	<item>
+		<title>Bundesregierung will Rechtssicherheit für autonomes Fahren schaffen</title>
+		<link>http://www.heise.de/newsticker/meldung/Bundesregierung-will-Rechtssicherheit-fuer-autonomes-Fahren-schaffen-3172184.html?wt_mc=rss.ho.beitrag.rdf</link>
+			<description>Die Bundesregierung will Regeln für das automatisierte Fahren einführen und damit Rechtssicherheit schaffen.</description>
+	</item>
+
+	<item>
+		<title>HTML 5.1: Spezifikation soll bis September fertig sein – und jeder kann mitmachen</title>
+		<link>http://www.heise.de/newsticker/meldung/HTML-5-1-Spezifikation-soll-bis-September-fertig-sein-und-jeder-kann-mitmachen-3171803.html?wt_mc=rss.ho.beitrag.rdf</link>
+			<description>Der kommende Webstandard für HTML entsteht erstmals öffentlich auf GitHub. Das World Wide Web Consortium hat die Spezifikation als Arbeitsversion veröffentlicht und bittet die Community um Mitwirkung.</description>
+	</item>
+
+	<item>
+		<title>JavaScript: Studie propagiert Node.js als universelle Entwicklungsplattform</title>
+		<link>http://www.heise.de/newsticker/meldung/JavaScript-Studie-propagiert-Node-js-als-universelle-Entwicklungsplattform-3171958.html?wt_mc=rss.ho.beitrag.rdf</link>
+			<description>Nicht sonderlich verwunderlich wird das serverseitige JavaScript-Framework durch die Node.js Foundation als zentrale Plattform für die Entwicklung von Web-, IoT- und Enterprise-Anwendungen gesehen.</description>
+	</item>
+
+	<item>
+		<title>Google &quot;Ziele&quot;: Kalender-App übernimmt die Terminplanung</title>
+		<link>http://www.heise.de/newsticker/meldung/Google-Ziele-Kalender-App-uebernimmt-die-Terminplanung-3172116.html?wt_mc=rss.ho.beitrag.rdf</link>
+			<description>Google Kalender soll mit der neuen Funktion „Ziele“  helfen, Vorsätze wie &quot;mehr Sport treiben&quot; oder &quot;wöchentlich mit der Mutter telefonieren&quot; besser umzusetzen.</description>
+	</item>
+
+	<item>
+		<title>Lytro Cinema - Lichtfeld-Kamera mit 755 Megapixel und 40k-Video</title>
+		<link>http://www.heise.de/newsticker/meldung/Lytro-Cinema-Lichtfeld-Kamera-mit-755-Megapixel-und-40k-Video-3171998.html?wt_mc=rss.ho.beitrag.rdf</link>
+			<description>Lytros neue Lichtfeldkamera für TV-Produzenten ermöglicht eine Auflösung von 755 Megapixel, 40k-Video, bietet 300 FPS, erzeugt einen Datenstrom von 400 Gigabytes pro Sekunde und soll im Verleih mindestens 125.000 US-Dollar kosten.</description>
+	</item>
+
+	<item>
+		<title>Let's Encrypt ist der Beta-Phase entwachsen</title>
+		<link>http://www.heise.de/newsticker/meldung/Let-s-Encrypt-ist-der-Beta-Phase-entwachsen-3172045.html?wt_mc=rss.ho.beitrag.rdf</link>
+			<description>Die Zertifizierungsstelle Let's Encrypt verabschiedet sich von der Beta-Phase und hat sich neue Sponsoren ins Boot geholt.</description>
+	</item>
+
+	<item>
+		<title>Bitkom: Stress mit der Passwort-Flut</title>
+		<link>http://www.heise.de/newsticker/meldung/Bitkom-Stress-mit-der-Passwort-Flut-3171943.html?wt_mc=rss.ho.beitrag.rdf</link>
+			<description>Viele Deutsche sind genervt von der Vielzahl ihrer Passwörter. Gleichzeitig wissen nicht alle über den richtigen Umgang damit Bescheid. Die Bitkom gibt Ratschläge dazu.</description>
+	</item>
+
+	<item>
+		<title>Deutsche Telekom: Smart-Home-System Qivicon erneut ausgefallen</title>
+		<link>http://www.heise.de/newsticker/meldung/Deutsche-Telekom-Smart-Home-System-Qivicon-erneut-ausgefallen-3171968.html?wt_mc=rss.ho.beitrag.rdf</link>
+			<description>Ende September 2015 legte ein Server-Ausfall das Smart-Home-System Qivicon der Deutschen Telekom lahm. Nun ist es wieder seit mehr als 24 Stunden ausgefallen.
+</description>
+	</item>
+
+	<item>
+		<title>Patchday: Microsoft stopft 13 Lücken, Adobe lässt es ruhig angehen</title>
+		<link>http://www.heise.de/newsticker/meldung/Patchday-Microsoft-stopft-13-Luecken-Adobe-laesst-es-ruhig-angehen-3171881.html?wt_mc=rss.ho.beitrag.rdf</link>
+			<description>Microsoft stellt Sicherheitspatches für sechs als kritisch und sieben als wichtig eingestufte Schwachstellen in Windows &amp; Co. bereit. Adobe flickt diesen Monat lediglich jeweils eine kritische und wichtige Lücke.</description>
+	</item>
+
+	<item>
+		<title>Kiruna: Start der Bremer Öko-Rakete erneut verschoben</title>
+		<link>http://www.heise.de/newsticker/meldung/Kiruna-Start-der-Bremer-Oeko-Rakete-erneut-verschoben-3171946.html?wt_mc=rss.ho.beitrag.rdf</link>
+			<description>Schon das zweite Mal musste der Start der Bremer ZEpHyR-Rakete verschoben werden. Erst war der Wind zu stark, nun gab es technische Probleme. Die &quot;Öko-Rakete&quot; wird von Paraffin und flüssigem Sauerstoff angetrieben.  </description>
+	</item>
+
+	<item>
+		<title>iPad-Variante von WhatsApp liegt auf Eis</title>
+		<link>http://www.heise.de/newsticker/meldung/iPad-Variante-von-WhatsApp-liegt-auf-Eis-3171795.html?wt_mc=rss.ho.beitrag.rdf</link>
+			<description>Jan Koum, Firmenchef bei dem Messengerdienst, hält nichts davon, die iOS-App ans Tablet-Format anzupassen. Das iPad ist ihm nicht mobil genug.</description>
+	</item>
+
+	<item>
+		<title>Big Data: Apache Storm macht den Sprung auf Version 1.0</title>
+		<link>http://www.heise.de/newsticker/meldung/Big-Data-Apache-Storm-macht-den-Sprung-auf-Version-1-0-3171859.html?wt_mc=rss.ho.beitrag.rdf</link>
+			<description>Die Entwickler des Konkurrenten der Apache-Projekte Spark und Flink versprechen für das erste große Release des Big-Data-Projekts ein deutlich besseres Verhalten gegenüber den bisherigen Versionen.</description>
+	</item>
+
+	<item>
+		<title>Software AG legt guten Jahresauftakt hin</title>
+		<link>http://www.heise.de/newsticker/meldung/Software-AG-legt-guten-Jahresauftakt-hin-3171894.html?wt_mc=rss.ho.beitrag.rdf</link>
+			<description>Das Jahr 2016 startet gut für die Software AG. Teilweise wurden die Schätzungen von Experten deutlich übertroffen. </description>
+	</item>
+
+	<item>
+		<title>Apple vs. FBI: Professionelle Hacker sollen dem FBI geholfen haben</title>
+		<link>http://www.heise.de/newsticker/meldung/Apple-vs-FBI-Professionelle-Hacker-sollen-dem-FBI-geholfen-haben-3171841.html?wt_mc=rss.ho.beitrag.rdf</link>
+			<description>Angeblich soll nicht die israelische Firma Cellebrite dem FBI geholfen haben, das iPhone des San-Bernardino-Attentäters zu knacken – professionelle Hacker hätten eine bisher unbekannte Schwachstelle verkauft. Apple will nicht nachhaken. </description>
+	</item>
+
+	<item>
+		<title>Chinesische Forscher experimentieren erneut an Genen menschlicher Embryos</title>
+		<link>http://www.heise.de/newsticker/meldung/Chinesische-Forscher-experimentieren-erneut-an-Genen-menschlicher-Embryos-3169246.html?wt_mc=rss.ho.beitrag.rdf</link>
+			<description>Das Thema ist ethisch überaus heikel, doch die Erforschung geht weiter: Erneut haben Wissenschaftler aus China versucht, Eingriffe in das Genom von menschlichen Embryos vorzunehmen.</description>
+	</item>
+
+	<item>
+		<title>Windkraftbranche fürchtet jahrelange Delle bei Energiewende</title>
+		<link>http://www.heise.de/newsticker/meldung/Windkraftbranche-fuerchtet-jahrelange-Delle-bei-Energiewende-3171866.html?wt_mc=rss.ho.beitrag.rdf</link>
+			<description>Die Bundesregierung plant eine Reform des Erneuerbaren Energiegesetzes (EEG). Die Windkraftbranche ist unzufrieden: Es gibt ausreichend Gesprächsstoff.</description>
+	</item>
+
+	<item>
+		<title>Entwicklerkonferenz f8: Facebook gibt Instant Articles für alle frei</title>
+		<link>http://www.heise.de/newsticker/meldung/Entwicklerkonferenz-f8-Facebook-gibt-Instant-Articles-fuer-alle-frei-3171835.html?wt_mc=rss.ho.beitrag.rdf</link>
+			<description>Facebook wird zur Publishing-Plattform: Die seit geraumer Zeit im Betatest befindlichen Instant Articles verkürzen die Ladezeit auf Mobilgeräten massiv - und werden daher auch öfter geklickt.</description>
+	</item>
+
+	<item>
+		<title>Panama Papers: Ermittler nehmen Kanzlei Mossack Fonseca ins Visier</title>
+		<link>http://www.heise.de/newsticker/meldung/Panama-Papers-Ermittler-nehmen-Kanzlei-Mossack-Fonseca-ins-Visier-3171829.html?wt_mc=rss.ho.beitrag.rdf</link>
+			<description>Bislang stellte sich die Anwaltsfirma als Opfer dar, jetzt rückt sie selbst in den Fokus der Justiz. Die Ermittler prüfen, ob die Kanzlei in illegale Geschäfte verwickelt war. Es beteiligen sich auch Datenexperten an den Untersuchungen. </description>
+	</item>
+
+	<item>
+		<title>Router auf FreeBSD-Basis: pfSense Version 2.3 freigegeben</title>
+		<link>http://www.heise.de/newsticker/meldung/Router-auf-FreeBSD-Basis-pfSense-Version-2-3-freigegeben-3171790.html?wt_mc=rss.ho.beitrag.rdf</link>
+			<description>Die FreeBSD-Distribution pfSense für Router und Firewalls ist in Version 2.3 erschienen. Neben einer vollständig neuen Oberfläche für den Browser gibt es auch viele Änderungen am System selbst.</description>
+	</item>
+
+	<item>
+		<title>Exos Aerospace: Neuer Anbieter für Weltraum-Touristen</title>
+		<link>http://www.heise.de/newsticker/meldung/Exos-Aerospace-Neuer-Anbieter-fuer-Weltraum-Touristen-3171805.html?wt_mc=rss.ho.beitrag.rdf</link>
+			<description>Wie Virgin Galactic will auch Exos Aerospace Touristen von Neumexiko ins All befördern. Für den Spaceport America wäre das ein eminent wichtiger Kunde, finanziell und politisch.</description>
+	</item>
+
+	<item>
+		<title>iX-Workshop zu Backup mit VMware und Hyper-V</title>
+		<link>http://www.heise.de/newsticker/meldung/iX-Workshop-zu-Backup-mit-VMware-und-Hyper-V-3162863.html?wt_mc=rss.ho.beitrag.rdf</link>
+			<description>Das mehrtägige Seminar zum Thema Backup und Restore in virtualisierten Umgebungen wird Mitte Juni in Nürnberg wiederholt. </description>
+	</item>
+
+	<item>
+		<title>Entwicklerkonferenz f8: Direkt auf Facebook streamen</title>
+		<link>http://www.heise.de/newsticker/meldung/Entwicklerkonferenz-f8-Direkt-auf-Facebook-streamen-3171787.html?wt_mc=rss.ho.beitrag.rdf</link>
+			<description>Videos sind für Facebook offenbar enorm wichtig. So gab das Unternehmen das Live-API für Drittanbieter frei und stellte eine 360-Grad-Kamera als Open Source vor.</description>
+	</item>
+
+	<item>
+		<title>Facebook f8: Konversations-Kommerz mit dem Messenger</title>
+		<link>http://www.heise.de/newsticker/meldung/Facebook-f8-Konversations-Kommerz-mit-dem-Messenger-3171777.html?wt_mc=rss.ho.beitrag.rdf</link>
+			<description>Facebook bohrt seinen Messenger zur Anwendungsplattform auf. Insbesondere Online-Händler sollen darauf einen besseren Zugang zu ihren Kunden finden.</description>
+	</item>
+
+	<item>
+		<title>Entwicklerkonferenz Facebook f8: Das Alles-für-alle-Netz</title>
+		<link>http://www.heise.de/newsticker/meldung/Entwicklerkonferenz-Facebook-f8-Das-Alles-fuer-alle-Netz-3171766.html?wt_mc=rss.ho.beitrag.rdf</link>
+			<description>Nichts Geringeres als seine - sehr ambitionierte - Agenda für die nächsten zehn Jahre präsentierte Facebook-CEO Mark Zuckerberg bei der Eröffnung der Entwicklerkonferenz f8.</description>
+	</item>
+
+	<item>
+		<title>Badlock: Patches schließen Lücken in Windows und Samba-Servern</title>
+		<link>http://www.heise.de/newsticker/meldung/Badlock-Patches-schliessen-Luecken-in-Windows-und-Samba-Servern-3171016.html?wt_mc=rss.ho.beitrag.rdf</link>
+			<description>Mit dem aktuellen Patch-Day hat Microsoft im Windows-Server eine Lücke geschlossen, die auch in Samba klafft und die von den Entwicklern der freien Server-Alternative entdeckt worden ist. Sie betrifft nicht das SMB-Protokoll, sondern RPC-Dienste.</description>
+	</item>
+
+	<item>
+		<title>Skype for Business: Content Sharing für die Android-App</title>
+		<link>http://www.heise.de/newsticker/meldung/Skype-for-Business-Content-Sharing-fuer-die-Android-App-3171749.html?wt_mc=rss.ho.beitrag.rdf</link>
+			<description>Mit einem Update der Android- und iOS-Apps erweitert Microsoft sein Skype for Business. So können Nutzer nun das Bild ihres Desktop und der Applikationen teilen, genannt Content Sharing.</description>
+	</item>
+
+	<item>
+		<title>Weg für EU-Fluggastdaten und Datenschutz ist frei</title>
+		<link>http://www.heise.de/newsticker/meldung/Weg-fuer-EU-Fluggastdaten-und-Datenschutz-ist-frei-3171747.html?wt_mc=rss.ho.beitrag.rdf</link>
+			<description>Datenschutzreform und Speicherung von Fluggastdaten – bei zwei umstrittenen Themen dürfte das Europaparlament diese Woche grünes Licht geben. Eine Vorentscheidung ist gefallen.</description>
+	</item>
+
+	<item>
+		<title>&quot;Starshot&quot;: Nano-Raumschiffe sollen in 20 Jahren zu Alpha Centauri rasen</title>
+		<link>http://www.heise.de/newsticker/meldung/Starshot-Nano-Raumschiffe-sollen-in-20-Jahren-zu-Alpha-Centauri-rasen-3171729.html?wt_mc=rss.ho.beitrag.rdf</link>
+			<description>Erst vor kurzem hatte ein Physiker ein Konzept vorgestellt, um winzige Raumschiffe in vergleichsweise kurzer Zeit zu anderen Sternen zu schicken. Nun investiert ein russischer Milliardär 100 Millionen US-Dollar, um daraus Realität werden zu lassen.</description>
+	</item>
+
+	<item>
+		<title>Zugunglück von Bad Aibling: Fahrdienstleiter soll am Handy gespielt haben</title>
+		<link>http://www.heise.de/newsticker/meldung/Zugunglueck-von-Bad-Aibling-Fahrdienstleiter-soll-am-Handy-gespielt-haben-3171722.html?wt_mc=rss.ho.beitrag.rdf</link>
+			<description>Die Nachricht der Ermittler ist ein Paukenschlag: Unmittelbar vor dem Zugunglück von Bad Aibling hat der Fahrdienstleiter am Handy Computerspiele gespielt. Nun sitzt er wegen fahrlässiger Tötung in Untersuchungshaft.</description>
+	</item>
+
+	<item>
+		<title>Messenger Telegram erweitert seine Chatbot-Funktionen</title>
+		<link>http://www.heise.de/newsticker/meldung/Messenger-Telegram-erweitert-seine-Chatbot-Funktionen-3171704.html?wt_mc=rss.ho.beitrag.rdf</link>
+			<description>Bots können jetzt Multimedia-Dateien versenden und Nachrichten abhängig vom Benutzer-Input nachträglich verändern.</description>
+	</item>
+
+	<item>
+		<title>Führungsstreit bei Media-Saturn – Kellerhals unterliegt vor BGH</title>
+		<link>http://www.heise.de/newsticker/meldung/Fuehrungsstreit-bei-Media-Saturn-Kellerhals-unterliegt-vor-BGH-3170915.html?wt_mc=rss.ho.beitrag.rdf</link>
+			<description>Minderheitseigner Erich Kellerhals unterliegt im Machtkampf bei Media-Saturn erneut in einem Rechtsstreit. Es ging um Entscheidungen für Filial-Standorte.</description>
+	</item>
+
+	<item>
+		<title>Bundesregierung lässt Infrastruktur für Trusted Computing erforschen</title>
+		<link>http://www.heise.de/newsticker/meldung/Bundesregierung-laesst-Infrastruktur-fuer-Trusted-Computing-erforschen-3171123.html?wt_mc=rss.ho.beitrag.rdf</link>
+			<description>Das Bundeswirtschaftsministerium schreibt ein Forschungsvorhaben über den Aufbau alternativer Zertifizierungsinfrastrukturen für vertrauenswürdige Datenverarbeitung aus.</description>
+	</item>
+
+	<item>
+		<title>HTC 10: High-End-Smartphone mit Alu-Gehäuse und Ultrapixel</title>
+		<link>http://www.heise.de/newsticker/meldung/HTC-10-High-End-Smartphone-mit-Alu-Gehaeuse-und-Ultrapixel-3170110.html?wt_mc=rss.ho.beitrag.rdf</link>
+			<description>HTC hält bei seinem neuen Spitzenmodell &quot;10&quot; an alten Werten fest: Unter anderem gehören Metallgehäuse und Ultrapixel-Kamera zur Ausstattung. Das Smartphone könnte den Neuanfang markieren, den der Hersteller braucht.</description>
+	</item>
+
+	<item>
+		<title>30 Jahre: Gesellschaft für Informatik feiert Fachgruppe &quot;Frauen und Informatik&quot;</title>
+		<link>http://www.heise.de/newsticker/meldung/30-Jahre-Gesellschaft-fuer-Informatik-feiert-Fachgruppe-Frauen-und-Informatik-3171041.html?wt_mc=rss.ho.beitrag.rdf</link>
+			<description>1986 gründete sich innerhalb der Gesellschaft für Informatik die Fachgruppe Frauen und Informatik. Zum Jubiläum findet ein öffentlicher Empfang statt. Trotz der 30 Jahre Erfahrung gibt es laut GI noch immer viel zu tun.</description>
+	</item>
+
+	<item>
+		<title>Google will Barrieren in Android abbauen und unterstützt Projekte für behinderte Menschen</title>
+		<link>http://www.heise.de/newsticker/meldung/Google-will-Barrieren-in-Android-abbauen-und-unterstuetzt-Projekte-fuer-behinderte-Menschen-3171014.html?wt_mc=rss.ho.beitrag.rdf</link>
+			<description>Android N soll sich von Menschen mit Behinderung noch einfacher bedienen lassen. In einem Wettbewerb fördert Google außerdem Projekte für Menschen mit körperlichen Einschränkungen.</description>
+	</item>
+
+	<item>
+		<title>Dank Streaming: Musikbranche mit erstem Umsatzplus seit Jahren </title>
+		<link>http://www.heise.de/newsticker/meldung/Dank-Streaming-Musikbranche-mit-erstem-Umsatzplus-seit-Jahren-3171139.html?wt_mc=rss.ho.beitrag.rdf</link>
+			<description>Erstmals seit fast 20 Jahren verbucht die globale Musikindustrie wieder steigende Erlöse. Doch Ärger mit Gratis-Angeboten im Netz vergällt der Branche die Freude darüber.</description>
+	</item>
+
+	<item>
+		<title>iPhone-Entsperr-Tool: Apple plant wohl keine Klage auf Herausgabe</title>
+		<link>http://www.heise.de/newsticker/meldung/iPhone-Entsperr-Tool-Apple-plant-wohl-keine-Klage-auf-Herausgabe-3171022.html?wt_mc=rss.ho.beitrag.rdf</link>
+			<description>Apple will die Schwachstelle, die das FBI mit Hilfe einer Dritt-Firma zum Zugriff auf das iPhone eines Attentäters verwendet hat, offenbar nicht auf juristischem Wege in Erfahrung bringen. Die Lücke habe wohl nur eine &quot;kurze Haltbarkeit&quot;.
+</description>
+	</item>
+
+
+
+</rdf:RDF>
+

@@ -4,7 +4,6 @@ namespace PicoFeed\Parser;
 
 use DomDocument;
 use SimpleXmlElement;
-use Exception;
 
 use ZendXml\Security;
 
@@ -21,9 +20,7 @@ class XmlParser
      * Get a SimpleXmlElement instance or return false.
      *
      * @static
-     *
      * @param string $input XML content
-     *
      * @return mixed
      */
     public static function getSimpleXml($input)
@@ -35,9 +32,7 @@ class XmlParser
      * Get a DomDocument instance or return false.
      *
      * @static
-     *
      * @param string $input XML content
-     *
      * @return \DOMDocument
      */
     public static function getDomDocument($input)
@@ -59,6 +54,7 @@ class XmlParser
     /**
      * Small wrapper around ZendXml to turn their exceptions into picoFeed
      * exceptions
+     *
      * @param $input the xml to load
      * @param $dom   pass in a dom document or use null/omit if simpleXml should
      * be used
@@ -76,9 +72,7 @@ class XmlParser
      * Load HTML document by using a DomDocument instance or return false on failure.
      *
      * @static
-     *
      * @param string $input XML content
-     *
      * @return \DOMDocument
      */
     public static function getHtmlDocument($input)
@@ -112,7 +106,6 @@ class XmlParser
     public static function htmlToXml($html)
     {
         $dom = self::getHtmlDocument('<?xml version="1.0" encoding="UTF-8">'.$html);
-
         return $dom->saveXML($dom->getElementsByTagName('body')->item(0));
     }
 
@@ -120,7 +113,6 @@ class XmlParser
      * Get XML parser errors.
      *
      * @static
-     *
      * @return string
      */
     public static function getErrors()
@@ -143,9 +135,7 @@ class XmlParser
      * Get the encoding from a xml tag.
      *
      * @static
-     *
      * @param string $data Input data
-     *
      * @return string
      */
     public static function getEncodingFromXmlTag($data)
@@ -172,9 +162,7 @@ class XmlParser
      * Get the charset from a meta tag.
      *
      * @static
-     *
      * @param string $data Input data
-     *
      * @return string
      */
     public static function getEncodingFromMetaTag($data)
@@ -193,7 +181,6 @@ class XmlParser
      *
      * @param string $query XPath query
      * @param array  $ns    Prefix to namespace URI mapping
-     *
      * @return string
      */
     public static function replaceXPathPrefixWithNamespaceURI($query, array $ns)
@@ -215,8 +202,7 @@ class XmlParser
      * @param \SimpleXMLElement $xml   XML element
      * @param string            $query XPath query
      * @param array             $ns    Prefix to namespace URI mapping
-     *
-     * @return \SimpleXMLElement
+     * @return \SimpleXMLElement[]
      */
     public static function getXPathResult(SimpleXMLElement $xml, $query, array $ns = array())
     {
@@ -225,5 +211,26 @@ class XmlParser
         }
 
         return $xml->xpath($query);
+    }
+
+    /**
+     * Get the first Xpath result or SimpleXMLElement value
+     *
+     * @static
+     * @access public
+     * @param  mixed $value
+     * @return string
+     */
+    public static function getValue($value)
+    {
+        $result = '';
+
+        if (is_array($value) && count($value) > 0) {
+            $result = (string) $value[0];
+        } elseif (is_a($value, 'SimpleXMLElement')) {
+            return $result = (string) $value;
+        }
+
+        return trim($result);
     }
 }
