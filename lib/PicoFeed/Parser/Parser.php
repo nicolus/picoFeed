@@ -180,9 +180,9 @@ abstract class Parser
     public function checkFeedUrl(Feed $feed)
     {
         if ($feed->getFeedUrl() === '') {
-            $feed->feed_url = $this->fallback_url;
+            $feed->feedUrl = $this->fallback_url;
         } else {
-            $feed->feed_url = Url::resolve($feed->getFeedUrl(), $this->fallback_url);
+            $feed->feedUrl = Url::resolve($feed->getFeedUrl(), $this->fallback_url);
         }
     }
 
@@ -194,9 +194,9 @@ abstract class Parser
     public function checkSiteUrl(Feed $feed)
     {
         if ($feed->getSiteUrl() === '') {
-            $feed->site_url = Url::base($feed->getFeedUrl());
+            $feed->siteUrl = Url::base($feed->getFeedUrl());
         } else {
-            $feed->site_url = Url::resolve($feed->getSiteUrl(), $this->fallback_url);
+            $feed->siteUrl = Url::resolve($feed->getSiteUrl(), $this->fallback_url);
         }
     }
 

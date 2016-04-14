@@ -42,14 +42,14 @@ class Feed
      *
      * @var string
      */
-    public $feed_url = '';
+    public $feedUrl = '';
 
     /**
      * Site url.
      *
      * @var string
      */
-    public $site_url = '';
+    public $siteUrl = '';
 
     /**
      * Feed date.
@@ -86,7 +86,7 @@ class Feed
     {
         $output = '';
 
-        foreach (array('id', 'title', 'feed_url', 'site_url', 'language', 'description', 'logo') as $property) {
+        foreach (array('id', 'title', 'feedUrl', 'siteUrl', 'language', 'description', 'logo') as $property) {
             $output .= 'Feed::'.$property.' = '.$this->$property.PHP_EOL;
         }
 
@@ -139,7 +139,7 @@ class Feed
      */
     public function getFeedUrl()
     {
-        return $this->feed_url;
+        return $this->feedUrl;
     }
 
     /**
@@ -147,7 +147,7 @@ class Feed
      */
     public function getSiteUrl()
     {
-        return $this->site_url;
+        return $this->siteUrl;
     }
 
     /**
@@ -190,5 +190,125 @@ class Feed
     public function isRTL()
     {
         return Parser::isLanguageRTL($this->language);
+    }
+
+    /**
+     * Set feed items.
+     *
+     * @param  Item[] $items
+     * @return Feed
+     */
+    public function setItems(array $items)
+    {
+        $this->items = $items;
+        return $this;
+    }
+
+    /**
+     * Set feed id.
+     *
+     * @param  string $id
+     * @return Feed
+     */
+    public function setId($id)
+    {
+        $this->id = $id;
+        return $this;
+    }
+
+    /**
+     * Set feed title.
+     *
+     * @param string $title
+     * @return Feed
+     */
+    public function setTitle($title)
+    {
+        $this->title = $title;
+        return $this;
+    }
+
+    /**
+     * Set feed description.
+     *
+     * @param string $description
+     * @return Feed
+     */
+    public function setDescription($description)
+    {
+        $this->description = $description;
+        return $this;
+    }
+
+    /**
+     * Set feed url.
+     *
+     * @param string $feedUrl
+     * @return Feed
+     */
+    public function setFeedUrl($feedUrl)
+    {
+        $this->feedUrl = $feedUrl;
+        return $this;
+    }
+
+    /**
+     * Set feed website url.
+     *
+     * @param string $siteUrl
+     * @return Feed
+     */
+    public function setSiteUrl($siteUrl)
+    {
+        $this->siteUrl = $siteUrl;
+        return $this;
+    }
+
+    /**
+     * Set feed date.
+     *
+     * @param \DateTime $date
+     * @return Feed
+     */
+    public function setDate($date)
+    {
+        $this->date = $date;
+        return $this;
+    }
+
+    /**
+     * Set feed language.
+     *
+     * @param string $language
+     * @return Feed
+     */
+    public function setLanguage($language)
+    {
+        $this->language = $language;
+        return $this;
+    }
+
+    /**
+     * Set feed logo.
+     *
+     * @param string $logo
+     * @return Feed
+     */
+    public function setLogo($logo)
+    {
+        $this->logo = $logo;
+        return $this;
+    }
+
+    /**
+     * Set feed icon.
+     *
+     * @param string $icon
+     * @return Feed
+     */
+    public function setIcon($icon)
+    {
+        $this->icon = $icon;
+        return $this;
     }
 }
