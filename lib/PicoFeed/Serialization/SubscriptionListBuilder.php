@@ -35,6 +35,19 @@ class SubscriptionListBuilder
     }
 
     /**
+     * Get object instance
+     *
+     * @static
+     * @access public
+     * @param  SubscriptionList $subscriptionList
+     * @return SubscriptionListBuilder
+     */
+    public static function create(SubscriptionList $subscriptionList)
+    {
+        return new static($subscriptionList);
+    }
+
+    /**
      * Build OPML feed
      *
      * @access public

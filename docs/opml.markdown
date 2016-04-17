@@ -33,7 +33,7 @@ echo $opmlBuilder->build();
 
 - The constructor of the class `SubscriptionListBuilder` takes a `SubscriptionList` object as argument
 - The method `build()` serialize the object to OPML as a string
-- You can also save the content to a file by using `$opmlBuilder->build('/path/to/feeds.opml`);`
+- You can also save the content to a file by using `$opmlBuilder->build('/path/to/feeds.opml');`
 
 SubscriptionList Object
 -----------------------

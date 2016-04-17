@@ -23,9 +23,6 @@ class SubscriptionListBuilderTest extends PHPUnit_Framework_TestCase
             )
         ;
 
-        $opmlBuilder = new SubscriptionListBuilder($subscriptionList);
-        $opml = $opmlBuilder->build();
-
         $expected = '<?xml version="1.0" encoding="UTF-8"?>
 <opml version="1.0">
   <head/>
@@ -36,7 +33,7 @@ class SubscriptionListBuilderTest extends PHPUnit_Framework_TestCase
 </opml>
 ';
 
-        $this->assertEquals($expected, $opml);
+        $this->assertEquals($expected, SubscriptionListBuilder::create($subscriptionList)->build());
     }
 
     public function testWithoutCategories()

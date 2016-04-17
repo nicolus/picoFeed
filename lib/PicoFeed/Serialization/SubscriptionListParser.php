@@ -39,6 +39,7 @@ class SubscriptionListParser
     /**
      * Get object instance
      *
+     * @static
      * @access public
      * @param  string $data
      * @return SubscriptionListParser

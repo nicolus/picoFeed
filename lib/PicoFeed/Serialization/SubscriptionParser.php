@@ -44,6 +44,7 @@ class SubscriptionParser
     /**
      * Get object instance
      *
+     * @static
      * @access public
      * @param  SimpleXMLElement $parentElement
      * @param  SimpleXMLElement $outlineElement
