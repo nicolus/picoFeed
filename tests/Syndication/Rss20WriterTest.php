@@ -2,84 +2,66 @@
 
 namespace PicoFeed\Syndication;
 
+use DateTime;
 use PHPUnit_Framework_TestCase;
 
 class Rss20WriterTest extends PHPUnit_Framework_TestCase
 {
     public function testWriter()
     {
-        $writer = new Rss20();
-        $writer->title = 'My site';
-        $writer->site_url = 'http://boo/';
-        $writer->feed_url = 'http://boo/feed.atom';
-        $writer->author = array(
-            'name' => 'Me',
-            'url' => 'http://me',
-            'email' => 'me@here',
-        );
+        $feedBuilder = Rss20FeedBuilder::create()
+            ->withTitle('My website')
+            ->withAuthor('FooBar', 'foo@bar')
+            ->withFeedUrl('https://feed_url/')
+            ->withSiteUrl('https://site_url/')
+            ->withDate(new DateTime());
 
-        $writer->items[] = array(
-            'title' => 'My article 1',
-            'updated' => strtotime('-2 days'),
-            'url' => 'http://foo/bar',
-            'summary' => 'Super summary',
-            'content' => '<p>content</p>',
-        );
+        for ($i = 1; $i <= 2; $i++) {
+            $feedBuilder
+                ->withItem(Rss20ItemBuilder::create($feedBuilder)
+                    ->withTitle('My article '.$i)
+                    ->withUrl('https://site_url/article'.$i)
+                    ->withAuthor('John Doe', 'john@doe')
+                    ->withPublishedDate(new DateTime())
+                    ->withSummary('My article summary '.$i)
+                    ->withContent('<p>My article content '.$i.'</p>')
+                );
+        }
 
-        $writer->items[] = array(
-            'title' => 'My article 2',
-            'updated' => strtotime('-1 day'),
-            'url' => 'http://foo/bar2',
-            'summary' => 'Super summary 2',
-            'content' => '<p>content 2 &nbsp; &copy; 2015</p>',
-            'author' => array(
-                'name' => 'Me too',
-            ),
-        );
+        $xml = $feedBuilder->build();
 
-        $writer->items[] = array(
-            'title' => 'My article 3',
-            'url' => 'http://foo/bar3',
-        );
-
-        $generated_output = $writer->execute();
-
-        $expected_output = '<?xml version="1.0" encoding="UTF-8"?>
+        $expected = '<?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <generator>PicoFeed (https://github.com/fguillot/picoFeed)</generator>
-    <title>My site</title>
-    <description>My site</description>
+    <title>My website</title>
+    <description>My website</description>
     <pubDate>'.date(DATE_RSS).'</pubDate>
-    <atom:link href="http://boo/feed.atom" rel="self" type="application/rss+xml"/>
-    <link>http://boo/</link>
-    <webMaster>me@here (Me)</webMaster>
+    <webMaster>foo@bar (FooBar)</webMaster>
+    <link>https://site_url/</link>
+    <atom:link href="https://feed_url/" rel="self" type="application/rss+xml"/>
     <item>
+      <guid isPermaLink="true">https://site_url/article1</guid>
       <title>My article 1</title>
-      <link>http://foo/bar</link>
-      <guid isPermaLink="true">http://foo/bar</guid>
-      <pubDate>'.date(DATE_RSS, strtotime('-2 days')).'</pubDate>
-      <description>Super summary</description>
-      <content:encoded><![CDATA[<p>content</p>]]></content:encoded>
-    </item>
-    <item>
-      <title>My article 2</title>
-      <link>http://foo/bar2</link>
-      <guid isPermaLink="true">http://foo/bar2</guid>
-      <pubDate>'.date(DATE_RSS, strtotime('-1 day')).'</pubDate>
-      <description>Super summary 2</description>
-      <content:encoded><![CDATA[<p>content 2 &nbsp; &copy; 2015</p>]]></content:encoded>
-    </item>
-    <item>
-      <title>My article 3</title>
-      <link>http://foo/bar3</link>
-      <guid isPermaLink="true">http://foo/bar3</guid>
+      <link>https://site_url/article1</link>
       <pubDate>'.date(DATE_RSS).'</pubDate>
+      <author>john@doe (John Doe)</author>
+      <description>My article summary 1</description>
+      <content:encoded><![CDATA[<p>My article content 1</p>]]></content:encoded>
+    </item>
+    <item>
+      <guid isPermaLink="true">https://site_url/article2</guid>
+      <title>My article 2</title>
+      <link>https://site_url/article2</link>
+      <pubDate>'.date(DATE_RSS).'</pubDate>
+      <author>john@doe (John Doe)</author>
+      <description>My article summary 2</description>
+      <content:encoded><![CDATA[<p>My article content 2</p>]]></content:encoded>
     </item>
   </channel>
 </rss>
 ';
 
-        $this->assertEquals($expected_output, $generated_output);
+        $this->assertEquals($expected, $xml);
     }
 }

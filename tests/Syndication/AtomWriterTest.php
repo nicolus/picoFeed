@@ -2,89 +2,80 @@
 
 namespace PicoFeed\Syndication;
 
+use DateTime;
 use PHPUnit_Framework_TestCase;
 
 class AtomWriterTest extends PHPUnit_Framework_TestCase
 {
     public function testWriter()
     {
-        $writer = new Atom();
-        $writer->title = 'My site';
-        $writer->site_url = 'http://boo/';
-        $writer->feed_url = 'http://boo/feed.atom';
-        $writer->author = array(
-            'name' => 'Me',
-            'url' => 'http://me',
-            'email' => 'me@here',
-        );
+        $feedBuilder = AtomFeedBuilder::create()
+            ->withTitle('My website')
+            ->withAuthor('FooBar', 'foo@bar', 'https://foobar/')
+            ->withFeedUrl('https://feed_url/')
+            ->withSiteUrl('https://site_url/')
+            ->withDate(new DateTime());
 
-        $writer->items[] = array(
-            'title' => 'My article 1',
-            'updated' => strtotime('-2 days'),
-            'url' => 'http://foo/bar',
-            'summary' => 'Super summary',
-            'content' => '<p>content</p>',
-        );
+        for ($i = 1; $i <= 2; $i++) {
+            $feedBuilder
+                ->withItem(AtomItemBuilder::create($feedBuilder)
+                    ->withTitle('My article '.$i)
+                    ->withUrl('https://site_url/article'.$i)
+                    ->withAuthor('John Doe', 'john@doe', 'https://johndoe/')
+                    ->withPublishedDate(new DateTime())
+                    ->withUpdatedDate(new DateTime())
+                    ->withSummary('My article summary '.$i)
+                    ->withContent('<p>My article content '.$i.'</p>')
+                );
+        }
 
-        $writer->items[] = array(
-            'title' => 'My article 2',
-            'updated' => strtotime('-1 day'),
-            'url' => 'http://foo/bar2',
-            'summary' => 'Super summary 2',
-            'content' => '<p>content 2 &nbsp; &copy; 2015</p>',
-            'author' => array(
-                'name' => 'Me too',
-            ),
-        );
+        $xml = $feedBuilder->build();
 
-        $writer->items[] = array(
-            'title' => 'My article 3',
-            'url' => 'http://foo/bar3',
-        );
 
-        $generated_output = $writer->execute();
-
-        $expected_output = '<?xml version="1.0" encoding="UTF-8"?>
+        $expected = '<?xml version="1.0" encoding="UTF-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
   <generator uri="https://github.com/fguillot/picoFeed">PicoFeed</generator>
-  <title>My site</title>
-  <id>http://boo/</id>
+  <title>My website</title>
+  <id>https://feed_url/</id>
   <updated>'.date(DATE_ATOM).'</updated>
-  <link rel="alternate" type="text/html" href="http://boo/"/>
-  <link rel="self" type="application/atom+xml" href="http://boo/feed.atom"/>
+  <link rel="alternate" type="text/html" href="https://site_url/"/>
+  <link rel="self" type="application/atom+xml" href="https://feed_url/"/>
   <author>
-    <name>Me</name>
-    <email>me@here</email>
-    <uri>http://me</uri>
+    <name>FooBar</name>
+    <email>foo@bar</email>
+    <uri>https://foobar/</uri>
   </author>
   <entry>
+    <id>https://site_url/article1</id>
     <title>My article 1</title>
-    <id>http://foo/bar</id>
-    <updated>'.date(DATE_ATOM, strtotime('-2 days')).'</updated>
-    <link rel="alternate" type="text/html" href="http://foo/bar"/>
-    <summary>Super summary</summary>
-    <content type="html"><![CDATA[<p>content</p>]]></content>
-  </entry>
-  <entry>
-    <title>My article 2</title>
-    <id>http://foo/bar2</id>
-    <updated>'.date(DATE_ATOM, strtotime('-1 day')).'</updated>
-    <link rel="alternate" type="text/html" href="http://foo/bar2"/>
-    <summary>Super summary 2</summary>
-    <content type="html"><![CDATA[<p>content 2 &nbsp; &copy; 2015</p>]]></content>
-    <author>
-      <name>Me too</name>
-    </author>
-  </entry>
-  <entry>
-    <title>My article 3</title>
-    <id>http://foo/bar3</id>
+    <link rel="alternate" type="text/html" href="https://site_url/article1"/>
     <updated>'.date(DATE_ATOM).'</updated>
-    <link rel="alternate" type="text/html" href="http://foo/bar3"/>
+    <published>'.date(DATE_ATOM).'</published>
+    <author>
+      <name>John Doe</name>
+      <email>john@doe</email>
+      <uri>https://johndoe/</uri>
+    </author>
+    <summary>My article summary 1</summary>
+    <content type="html"><![CDATA[<p>My article content 1</p>]]></content>
+  </entry>
+  <entry>
+    <id>https://site_url/article2</id>
+    <title>My article 2</title>
+    <link rel="alternate" type="text/html" href="https://site_url/article2"/>
+    <updated>'.date(DATE_ATOM).'</updated>
+    <published>'.date(DATE_ATOM).'</published>
+    <author>
+      <name>John Doe</name>
+      <email>john@doe</email>
+      <uri>https://johndoe/</uri>
+    </author>
+    <summary>My article summary 2</summary>
+    <content type="html"><![CDATA[<p>My article content 2</p>]]></content>
   </entry>
 </feed>
 ';
 
-        $this->assertEquals($expected_output, $generated_output);
+        $this->assertEquals($expected, $xml);
     }
 }

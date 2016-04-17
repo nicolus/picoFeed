@@ -1,74 +1,65 @@
-Feed creation
-=============
+Syndication
+===========
 
-PicoFeed can also generate Atom and RSS feeds.
+PicoFeed can also generate Atom and RSS 2.0 feeds.
 
-Generate RSS 2.0 feed
-----------------------
+Generate RSS 2.0 Feed
+---------------------
 
 ```php
-use PicoFeed\Syndication\Rss20;
+<?php
 
-$writer = new Rss20();
-$writer->title = 'My site';
-$writer->site_url = 'http://boo/';
-$writer->feed_url = 'http://boo/feed.atom';
-$writer->author = array(
-    'name' => 'Me',
-    'url' => 'http://me',
-    'email' => 'me@here'
-);
+use PicoFeed\Syndication\Rss20FeedBuilder;
+use PicoFeed\Syndication\Rss20ItemBuilder;
 
-$writer->items[] = array(
-    'title' => 'My article 1',
-    'updated' => strtotime('-2 days'),
-    'url' => 'http://foo/bar',
-    'summary' => 'Super summary',
-    'content' => '<p>content</p>'
-);
+$feedBuilder = Rss20FeedBuilder::create()
+    ->withTitle('My website')
+    ->withAuthor('FooBar', 'foo@bar')
+    ->withFeedUrl('https://feed_url/')
+    ->withSiteUrl('https://site_url/')
+    ->withDate(new DateTime());
 
-$writer->items[] = array(
-    'title' => 'My article 2',
-    'updated' => strtotime('-1 day'),
-    'url' => 'http://foo/bar2',
-    'summary' => 'Super summary 2',
-    'content' => '<p>content 2 &nbsp; &copy; 2015</p>',
-    'author' => array(
-        'name' => 'Me too',
-    )
-);
+$feedBuilder
+    ->withItem(Rss20ItemBuilder::create($feedBuilder)
+        ->withTitle('My article')
+        ->withUrl('https://site_url/article')
+        ->withAuthor('John Doe', 'john@doe')
+        ->withPublishedDate(new DateTime())
+        ->withSummary('My article summary')
+        ->withContent('<p>My article content</p>')
+    );
 
-$writer->items[] = array(
-    'title' => 'My article 3',
-    'url' => 'http://foo/bar3'
-);
-
-echo $writer->execute();
+echo $feedBuilder->build();
 ```
 
-Generate Atom feed
+You can also write the feed content directly to a file with `$feedBuilder->build('/path/to/feed.xml');`.
+
+Generate Atom Feed
 ------------------
 
 ```php
-use PicoFeed\Syndication\Atom;
+<?php
 
-$writer = new Atom();
-$writer->title = 'My site';
-$writer->site_url = 'http://boo/';
-$writer->feed_url = 'http://boo/feed.atom';
-$writer->author = array(
-    'name' => 'Me',
-    'url' => 'http://me',
-    'email' => 'me@here'
-);
+use PicoFeed\Syndication\AtomFeedBuilder;
+use PicoFeed\Syndication\AtomItemBuilder;
 
-$writer->items[] = array(
-    'title' => 'My article 1',
-    'updated' => strtotime('-2 days'),
-    'url' => 'http://foo/bar',
-    'summary' => 'Super summary',
-    'content' => '<p>content</p>'
-);
+$feedBuilder = AtomFeedBuilder::create()
+    ->withTitle('My website')
+    ->withAuthor('FooBar', 'foo@bar', 'https://foobar/')
+    ->withFeedUrl('https://feed_url/')
+    ->withSiteUrl('https://site_url/')
+    ->withDate(new DateTime());
 
-echo $writer->execute();
+$feedBuilder
+    ->withItem(AtomItemBuilder::create($feedBuilder)
+        ->withTitle('My article')
+        ->withUrl('https://site_url/article')
+        ->withAuthor('John Doe', 'john@doe', 'https://johndoe/')
+        ->withPublishedDate(new DateTime())
+        ->withUpdatedDate(new DateTime())
+        ->withSummary('My article summary')
+        ->withContent('<p>My article content</p>')
+    );
+
+echo $feedBuilder->build();
 ```
