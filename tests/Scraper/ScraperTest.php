@@ -14,11 +14,6 @@ class ScraperTest extends PHPUnit_Framework_TestCase
     public function testUrlScraper()
     {
         $grabber = new Scraper(new Config());
-        $grabber->setUrl('http://theonion.com.feedsportal.com/c/34529/f/632231/s/309a7fe4/sc/20/l/0L0Stheonion0N0Carticles0Cobama0Ethrows0Eup0Eright0Ethere0Eduring0Esyria0Emeeting0H336850C/story01.htm');
-        $grabber->execute();
-        $this->assertTrue($grabber->hasRelevantContent());
-
-        $grabber = new Scraper(new Config());
         $grabber->setUrl('http://www.lemonde.fr/proche-orient/article/2013/08/30/la-france-nouvelle-plus-ancienne-alliee-des-etats-unis_3469218_3218.html');
         $grabber->execute();
         $this->assertTrue($grabber->hasRelevantContent());
