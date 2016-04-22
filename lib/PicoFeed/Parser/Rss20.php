@@ -9,6 +9,7 @@ use PicoFeed\Client\Url;
 /**
  * RSS 2.0 Parser.
  *
+ * @package PicoFeed\Parser
  * @author  Frederic Guillot
  */
 class Rss20 extends Parser

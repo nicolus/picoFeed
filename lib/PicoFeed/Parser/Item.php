@@ -5,6 +5,7 @@ namespace PicoFeed\Parser;
 /**
  * Feed Item.
  *
+ * @package PicoFeed\Parser
  * @author  Frederic Guillot
  */
 class Item

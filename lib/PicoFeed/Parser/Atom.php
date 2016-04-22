@@ -9,6 +9,7 @@ use PicoFeed\Client\Url;
 /**
  * Atom parser.
  *
+ * @package PicoFeed\Parser
  * @author  Frederic Guillot
  */
 class Atom extends Parser

@@ -8,6 +8,7 @@ use PicoFeed\Filter\Filter;
 /**
  * RSS 1.0 parser.
  *
+ * @package PicoFeed\Parser
  * @author  Frederic Guillot
  */
 class Rss10 extends Parser
