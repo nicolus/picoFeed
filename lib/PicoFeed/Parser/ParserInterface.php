@@ -128,13 +128,22 @@ interface ParserInterface
     public function findItemId(SimpleXMLElement $entry, Item $item, Feed $feed);
 
     /**
-     * Find the item date.
+     * Find the item published date.
      *
      * @param SimpleXMLElement      $entry Feed item
      * @param Item                  $item  Item object
      * @param Feed $feed  Feed object
      */
-    public function findItemDate(SimpleXMLElement $entry, Item $item, Feed $feed);
+    public function findItemPublishedDate(SimpleXMLElement $entry, Item $item, Feed $feed);
+
+    /**
+     * Find the item updated date.
+     *
+     * @param SimpleXMLElement      $entry Feed item
+     * @param Item                  $item  Item object
+     * @param Feed $feed  Feed object
+     */
+    public function findItemUpdatedDate(SimpleXMLElement $entry, Item $item, Feed $feed);
 
     /**
      * Find the item content.

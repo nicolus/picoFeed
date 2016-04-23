@@ -158,17 +158,29 @@ class Rss10 extends Parser
     }
 
     /**
-     * Find the item date.
+     * Find the item published date.
      *
      * @param SimpleXMLElement      $entry Feed item
      * @param Item                  $item  Item object
      * @param \PicoFeed\Parser\Feed $feed  Feed object
      */
-    public function findItemDate(SimpleXMLElement $entry, Item $item, Feed $feed)
+    public function findItemPublishedDate(SimpleXMLElement $entry, Item $item, Feed $feed)
     {
         $date = XmlParser::getXPathResult($entry, 'dc:date', $this->namespaces);
 
-        $item->setDate(empty($date) ? $feed->getDate() : $this->getDateParser()->getDateTime(XmlParser::getValue($date)));
+        $item->setPublishedDate(!empty($date) ? $this->getDateParser()->getDateTime(XmlParser::getValue($date)) : null);
+    }
+
+    /**
+     * Find the item updated date.
+     *
+     * @param SimpleXMLElement      $entry Feed item
+     * @param Item                  $item  Item object
+     * @param \PicoFeed\Parser\Feed $feed  Feed object
+     */
+    public function findItemUpdatedDate(SimpleXMLElement $entry, Item $item, Feed $feed)
+    {
+        $item->setUpdatedDate(null); // No updated date in RSS 1.0 specifications
     }
 
     /**
