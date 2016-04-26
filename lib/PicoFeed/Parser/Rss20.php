@@ -175,7 +175,10 @@ class Rss20 extends Parser
      */
     public function findItemUpdatedDate(SimpleXMLElement $entry, Item $item, Feed $feed)
     {
-        $item->setUpdatedDate(null); // No updated date in RSS 2.0 specifications
+        if ($item->publishedDate === null) {
+            $this->findItemPublishedDate($entry, $item, $feed);
+        }
+        $item->setUpdatedDate($item->getPublishedDate()); // No updated date in RSS 2.0 specifications
     }
 
     /**
