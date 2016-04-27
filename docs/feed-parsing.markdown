@@ -263,7 +263,9 @@ $feed->getItems();           // List of item objects
 $feed->items[0]->getId();                      // Item unique id (hash)
 $feed->items[0]->getTitle();                   // Item title
 $feed->items[0]->getUrl();                     // Item url
-$feed->items[0]->getDate();                    // Item published date (DateTime object)
+$feed->items[0]->getDate();                    // Item most recent date between published and updated (DateTime object)
+$feed->items[0]->getPublishedDate();           // Item published date (DateTime object)
+$feed->items[0]->getUpdatedDate();             // Item updated date (DateTime object)
 $feed->items[0]->getLanguage();                // Item language
 $feed->items[0]->getAuthor();                  // Item author
 $feed->items[0]->getEnclosureUrl();            // Enclosure url
