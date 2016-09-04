@@ -12,13 +12,13 @@ class CurlTest extends PHPUnit_Framework_TestCase
     public function testDownload()
     {
         $client = new Curl();
-        $client->setUrl('http://miniflux.net/index.html');
+        $client->setUrl('http://miniflux.net/');
         $result = $client->doRequest();
 
         $this->assertTrue(is_array($result));
         $this->assertEquals(200, $result['status']);
         $this->assertEquals('<!DOC', substr($result['body'], 0, 5));
-        $this->assertEquals('text/html; charset=utf-8', $result['headers']['Content-Type']);
+        $this->assertEquals('text/html; charset=UTF-8', $result['headers']['Content-Type']);
     }
 
     /**
