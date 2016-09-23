@@ -12,6 +12,7 @@ return array(
                 '//style',
                 '//div[@class="socials"]',
                 '//div[@id="cr_1"]',
+                '//div[@class="related_items"]',
             ),
         ),
     ),
