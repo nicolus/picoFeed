@@ -31,6 +31,7 @@ class Stream extends Client
 
         if ($this->etag) {
             $headers[] = 'If-None-Match: '.$this->etag;
+            $headers[] = 'A-IM: feed';
         }
 
         if ($this->last_modified) {
