@@ -319,6 +319,15 @@ class AtomParserTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(1433451720, $feed->items[1]->getDate()->getTimestamp());
         $this->assertEquals(1433451900, $feed->items[2]->getDate()->getTimestamp());
 
+        $this->assertEquals(1433451720, $feed->items[0]->getUpdatedDate()->getTimestamp());
+        $this->assertEquals(1433451720, $feed->items[0]->getPublishedDate()->getTimestamp());
+
+        $this->assertEquals(1433451720, $feed->items[1]->getUpdatedDate()->getTimestamp());
+        $this->assertEquals(1433451720, $feed->items[1]->getPublishedDate()->getTimestamp());
+
+        $this->assertEquals(1433451900, $feed->items[2]->getUpdatedDate()->getTimestamp());
+        $this->assertEquals(1433451900, $feed->items[2]->getPublishedDate()->getTimestamp());
+
         $parser = new Atom(file_get_contents('tests/fixtures/atom_no_default_namespace.xml'));
         $feed = $parser->execute();
         $this->assertEquals(1433451720, $feed->items[0]->getDate()->getTimestamp());
