@@ -224,6 +224,12 @@ class Rss20ParserTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(1433451720, $feed->items[0]->getDate()->getTimestamp()); // item date
         $this->assertEquals(1433451900, $feed->items[1]->getDate()->getTimestamp()); // fallback to feed date
 
+        $this->assertEquals(1433451720, $feed->items[0]->getUpdatedDate()->getTimestamp()); // item date
+        $this->assertEquals(1433451720, $feed->items[0]->getPublishedDate()->getTimestamp()); // item date
+
+        $this->assertEquals(1433451900, $feed->items[1]->getUpdatedDate()->getTimestamp()); // fallback to feed date
+        $this->assertEquals(1433451900, $feed->items[1]->getPublishedDate()->getTimestamp()); // fallback to feed date
+
         $parser = new Rss20(file_get_contents('tests/fixtures/rss_20_empty_item.xml'));
         $feed = $parser->execute();
         $this->assertEquals(time(), $feed->items[0]->getDate()->getTimestamp(), 1);
