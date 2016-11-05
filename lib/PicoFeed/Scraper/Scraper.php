@@ -33,6 +33,20 @@ class Scraper extends Base
     private $content = '';
 
     /**
+     * Relevant collected content.
+     *
+     * @var string
+     */
+    private $pagecontent = '';
+
+    /**
+     * Are there more pages.
+     *
+     * @var bool
+     */
+    private $more = false;
+
+    /**
      * HTML content.
      *
      * @var string
@@ -208,22 +222,42 @@ class Scraper extends Base
      */
     public function execute()
     {
-        $this->content = '';
+        if(!$this->more){
+            $this->pagecontent = '';
+
+        }
         $this->html = '';
         $this->encoding = '';
-
+        $this->content = '';
         $this->download();
         $this->prepareHtml();
 
         $parser = $this->getParser();
 
         if ($parser !== null) {
-            $parser->findNExtLink();
+
             $this->content = $parser->execute();
+            $this->pagecontent .= $this->content;
+            //echo($this->content);
+            if($nextLink = $this->getAbsoluteURL($parser->findNextLink())){
+                $this->more = true;
+                //echo $nextLink;
+                $this->setUrl($nextLink);
+                $this->execute();
+            }
+            else{
+                $this->more = false;
+                $this->content = $this->pagecontent;
+            }
             Logger::setMessage(get_called_class().': Content length: '.strlen($this->content).' bytes');
         }
 
-        echo($this->content);
+
+    }
+
+    public function getAbsoluteURL($url){
+        $pos = strpos($this->url,substr($url,0,10));
+        return substr($this->url,0,$pos).$url;
     }
 
     /**
