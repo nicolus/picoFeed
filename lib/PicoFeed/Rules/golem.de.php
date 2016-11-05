@@ -11,7 +11,11 @@ return array(
                 ),
             'next_page' => array(
                 '//a[@id="atoc_next"]'
-            )
+            ),
+            'strip' => array(
+                '//header[@class="cluster-header"]/a',
+                '//div[@id="iqadtile4"]',
+            ),
         ),
     ),
 );
