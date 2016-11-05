@@ -7,7 +7,11 @@ return array(
             'body' => array(
                 '//header[@class="cluster-header"]',
                 '//div[@class="formatted"]',
+
             ),
+            'next_page' => array(
+                '//a[@id="atoc_next"]'
+            )
         ),
     ),
 );

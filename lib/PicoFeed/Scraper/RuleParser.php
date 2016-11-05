@@ -80,4 +80,37 @@ class RuleParser implements ParserInterface
 
         return $content;
     }
+
+    /**
+     * Fetch next link based on Xpath rules.
+     */
+    public function findNextLink()
+    {
+        $content = '';
+
+        if (isset($this->rules['next_page']) && is_array($this->rules['next_page'])) {
+            foreach ($this->rules['next_page'] as $pattern) {
+
+                //echo $pattern;
+                //echo "hallo welt<br />";
+                $nodes = $this->xpath->query($pattern);
+                //var_dump($nodes);
+
+                if ($nodes !== false && $nodes->length > 0) {
+                    foreach ($nodes as $node) {
+                        $content .= $this->dom->saveXML($node);
+                    }
+                }
+            }
+        }
+
+        $link = $this->extractLink($content);
+        return $link;
+    }
+
+    private function extractLink($a){
+        $pattern = '/href="(.*?)"/';
+        preg_match($pattern, $a, $url);
+        return $url[1];
+    }
 }

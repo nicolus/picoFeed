@@ -10,4 +10,6 @@ interface ParserInterface
      * @return string
      */
     public function execute();
+
+    public function findNextLink();
 }

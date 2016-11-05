@@ -218,9 +218,12 @@ class Scraper extends Base
         $parser = $this->getParser();
 
         if ($parser !== null) {
+            $parser->findNExtLink();
             $this->content = $parser->execute();
             Logger::setMessage(get_called_class().': Content length: '.strlen($this->content).' bytes');
         }
+
+        echo($this->content);
     }
 
     /**
