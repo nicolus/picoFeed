@@ -44,7 +44,7 @@ class Scraper extends Base
      *
      * @var bool
      */
-    private $more = false;
+    private $morePages = false;
 
     /**
      * HTML content.
@@ -222,7 +222,7 @@ class Scraper extends Base
      */
     public function execute()
     {
-        if(!$this->more){
+        if(!$this->morePages){
             $this->pagecontent = '';
 
         }
@@ -238,15 +238,14 @@ class Scraper extends Base
 
             $this->content = $parser->execute();
             $this->pagecontent .= $this->content;
-            //echo($this->content);
+            // check if there is a link to next page and recursively get content
             if($nextLink = $this->getAbsoluteURL($parser->findNextLink())){
-                $this->more = true;
-                //echo $nextLink;
+                $this->morePages = true;
                 $this->setUrl($nextLink);
                 $this->execute();
             }
             else{
-                $this->more = false;
+                $this->morePages = false;
                 $this->content = $this->pagecontent;
             }
             Logger::setMessage(get_called_class().': Content length: '.strlen($this->content).' bytes');
@@ -255,7 +254,13 @@ class Scraper extends Base
 
     }
 
+    /**
+     * convert relative url to absolute url
+     *
+     * @return url including domain
+     */
     public function getAbsoluteURL($url){
+        // ToDo check if $url already includes domain an find better method to add domain
         $pos = strpos($this->url,substr($url,0,10));
         return substr($this->url,0,$pos).$url;
     }

@@ -109,6 +109,9 @@ class RuleParser implements ParserInterface
         return $link;
     }
 
+    /**
+     * get href from <a> tag
+     */
     private function extractLink($a){
         $pattern = '/href="(.*?)"/';
         preg_match($pattern, $a, $url);

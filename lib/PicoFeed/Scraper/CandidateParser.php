@@ -243,6 +243,11 @@ class CandidateParser implements ParserInterface
         }
     }
 
+    public function findNextLink()
+    {
+        return false;
+    }
+
     /**
      * Return false if the node should not be removed.
      *
