@@ -67,6 +67,8 @@ class Tag extends Base
         'abbr',
         'iframe',
         'q',
+        'sup',
+        'sub',
     );
 
     /**
