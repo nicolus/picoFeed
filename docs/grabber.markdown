@@ -114,6 +114,11 @@ $parser->enableContentGrabber(false);
 $parser->setGrabberIgnoreUrls(['http://foo', 'http://bar']);
 ```
 
+### Set maximum of recursions (pages) for multi page articles
+- Method name: `setMaxRecursions();`
+- Default value: 25
+- Argument value: integer
+
 How to write a grabber rules file?
 ----------------------------------
 
