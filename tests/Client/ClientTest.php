@@ -56,6 +56,23 @@ class ClientTest extends PHPUnit_Framework_TestCase
     /**
      * @group online
      */
+    public function testMultipleDownload()
+    {
+        $client = Client::getInstance();
+        $client->setUrl('http://miniflux.net/');
+        $result = $client->doRequest();
+
+        $body = $result['body'];
+        $headers = $result['headers'];
+        $result = $client->doRequest();
+
+        $this->assertEquals($body, $result['body']);
+        $this->assertEquals($headers, $result['headers']);
+    }
+
+    /**
+     * @group online
+     */
     public function testCacheEtag()
     {
         $client = Client::getInstance();

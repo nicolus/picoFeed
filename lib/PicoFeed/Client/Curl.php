@@ -200,6 +200,9 @@ class Curl extends Client
      */
     private function prepareDownloadMode($ch)
     {
+        $this->body = '';
+        $this->response_headers = array();
+        $this->response_headers_count = 0;
         $write_function = 'readBody';
         $header_function = 'readHeaders';
 
