@@ -42,6 +42,7 @@ class Tag extends Base
         'td',
         'tbody',
         'thead',
+        'h1',
         'h2',
         'h3',
         'h4',
