@@ -12,9 +12,8 @@ php:
 
 matrix:
   allow_failures:
-  - php:
-     - hhvm
-     - 7.1
+    - php: hhvm
+    - php: 7.1
   fast_finish: true
 
 before_script:
