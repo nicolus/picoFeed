@@ -65,7 +65,7 @@ class StreamTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException PicoFeed\Client\InvalidUrlException
+     * @expectedException \PicoFeed\Client\InvalidUrlException
      */
     public function testBadUrl()
     {

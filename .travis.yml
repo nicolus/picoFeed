@@ -19,4 +19,4 @@ before_script:
   - composer install
 
 script:
-  - phpunit --exclude-group online
+  - ./vendor/bin/phpunit --exclude-group online
