@@ -19,6 +19,7 @@
         "zendframework/zendxml": "^1.0"
     },
     "require-dev" : {
+        "phpdocumentor/reflection-docblock": "2.0.4",
         "phpunit/phpunit" : "4.8.26"
     },
     "suggest": {
