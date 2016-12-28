@@ -2,6 +2,7 @@
 
 namespace PicoFeed\Client;
 
+use DateTime;
 use PHPUnit_Framework_TestCase;
 
 class ClientTest extends PHPUnit_Framework_TestCase
@@ -158,5 +159,40 @@ class ClientTest extends PHPUnit_Framework_TestCase
         $client->setUrl('http://miniflux.net/');
         $client->execute();
         $this->assertEquals('text/html; charset=utf-8', $client->getContentType());
+    }
+
+    public function testExpirationWithExpiresHeader()
+    {
+        $client = Client::getInstance();
+        $headers = new HttpHeaders(array('Expires' => 'Fri, 30 Dec 2016 22:58:52 GMT'));
+        $this->assertEquals(new DateTime('Fri, 30 Dec 2016 22:58:52 GMT'), $client->parseExpiration($headers));
+    }
+
+    public function testExpirationWithCacheControlHeaderAndZeroMaxAge()
+    {
+        $client = Client::getInstance();
+        $headers = new HttpHeaders(array('cache-control' => 'private, max-age=0, no-cache'));
+        $this->assertEquals(new DateTime(), $client->parseExpiration($headers));
+    }
+
+    public function testExpirationWithCacheControlHeaderAndNotEmptyMaxAge()
+    {
+        $client = Client::getInstance();
+        $headers = new HttpHeaders(array('cache-control' => 'private, max-age=600'));
+        $this->assertEquals(new DateTime('+600 seconds'), $client->parseExpiration($headers));
+    }
+
+    public function testExpirationWithCacheControlHeaderAndOnlyMaxAge()
+    {
+        $client = Client::getInstance();
+        $headers = new HttpHeaders(array('cache-control' => 'max-age=300'));
+        $this->assertEquals(new DateTime('+300 seconds'), $client->parseExpiration($headers));
+    }
+
+    public function testExpirationWithCacheControlHeaderAndNotEmptySMaxAge()
+    {
+        $client = Client::getInstance();
+        $headers = new HttpHeaders(array('cache-control' => 'no-transform,public,max-age=300,s-maxage=900'));
+        $this->assertEquals(new DateTime('+900 seconds'), $client->parseExpiration($headers));
     }
 }
