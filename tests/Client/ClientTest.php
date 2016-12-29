@@ -168,6 +168,13 @@ class ClientTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(new DateTime('Fri, 30 Dec 2016 22:58:52 GMT'), $client->parseExpiration($headers));
     }
 
+    public function testExpirationWithExpiresHeaderAtZero()
+    {
+        $client = Client::getInstance();
+        $headers = new HttpHeaders(array('Expires' => '0'));
+        $this->assertEquals(new DateTime(), $client->parseExpiration($headers));
+    }
+
     public function testExpirationWithCacheControlHeaderAndZeroMaxAge()
     {
         $client = Client::getInstance();

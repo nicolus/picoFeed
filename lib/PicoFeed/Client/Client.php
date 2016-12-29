@@ -694,7 +694,7 @@ abstract class Client
             }
         }
 
-        if (isset($headers['Expires'])) {
+        if (! empty($headers['Expires'])) {
             return new DateTime($headers['Expires']);
         }
 
