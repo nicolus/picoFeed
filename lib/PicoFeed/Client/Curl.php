@@ -111,7 +111,7 @@ class Curl extends Client
             }
 
             // Do not work with PHP-FPM
-            if (substr(PHP_SAPI, 0, 3) !== 'cgi') {
+            if (strpos(PHP_SAPI, 'cgi') !== false) {
                 header(':', true, $status);
             }
 
