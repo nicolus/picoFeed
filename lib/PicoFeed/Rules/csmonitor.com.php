@@ -8,8 +8,8 @@ return array(
             '//article',
             ),
             'strip' => array(
-                '//script',
                 '//h1',
+                '//span[@id="breadcrumb"]',
                 '//div[@id="head-tag"]',
                 '//div[@id="byline"]',
                 '//div[@id="right-column"]',
