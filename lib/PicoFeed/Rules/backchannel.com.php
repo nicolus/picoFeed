@@ -5,14 +5,13 @@ return array(
         '%.*%' => array(
             'test_url' => 'https://medium.com/lessons-learned/917b8b63ae3e',
             'body' => array(
-                '//div[@class="section-content"]',
+                '//div[contains(@class,"section-inner")]',
             ),
             'strip' => array(
                 '//div[contains(@class,"metabar")]',
                 '//img[contains(@class,"thumbnail")]',
                 '//h1',
-                '//div[@class="aspectRatioPlaceholder-fill"]',
-                '//footer'
+                '//p[contains(@class,"graf-after--h4")]'
             ),
         ),
     ),
