@@ -5,10 +5,14 @@ return array(
         '%.*%' => array(
             'test_url' => 'http://www.economist.com/blogs/buttonwood/2017/02/mixed-signals?fsrc=rss',
             'body' => array(
-                '//div[starts-with(@class,"main-content")]',
+                '//div[@class="blog-post__inner"]',
             ),
             'strip' => array(
-                '//aside[@class="main-content-container"]',
+                '//aside',
+                '//div[@class="blog-post__asideable-wrapper"]',
+                '//div[@class="video-player__wrapper"]',
+                '//div[contains(@class,"blog-post__siblings-list-aside")]',
+                '//div[contains(@class,"blog-post__asideable-content")]'
             ),
         ),
     ),
