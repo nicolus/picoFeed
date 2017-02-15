@@ -22,23 +22,6 @@ class CurlTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @group online
-     */
-    public function testMultipleDownload()
-    {
-        $client = new Curl();
-        $client->setUrl('http://miniflux.net/');
-        $result = $client->doRequest();
-
-        $body = $result['body'];
-        $headers = $result['headers'];
-        $result = $client->doRequest();
-
-        $this->assertEquals($body, $result['body']);
-        $this->assertEquals($headers, $result['headers']);
-    }
-
-    /**
      * @runInSeparateProcess
      * @group online
      */
@@ -53,7 +36,7 @@ class CurlTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException PicoFeed\Client\InvalidCertificateException
+     * @expectedException \PicoFeed\Client\InvalidCertificateException
      * @group online
      */
     public function testSSL()
@@ -64,7 +47,7 @@ class CurlTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException PicoFeed\Client\InvalidUrlException
+     * @expectedException \PicoFeed\Client\InvalidUrlException
      */
     public function testBadUrl()
     {

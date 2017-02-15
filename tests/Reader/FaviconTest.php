@@ -77,8 +77,7 @@ class FaviconTest extends PHPUnit_Framework_TestCase
         $favicon = new Favicon();
 
         $this->assertTrue($favicon->exists('https://miniflux.net/favicon.ico'));
-        $this->assertFalse($favicon->exists('http://minicoders.com/favicon.ico'));
-        $this->assertFalse($favicon->exists('http://blabla'));
+        $this->assertFalse($favicon->exists('http://foobar'));
         $this->assertFalse($favicon->exists(''));
     }
 
@@ -96,29 +95,6 @@ class FaviconTest extends PHPUnit_Framework_TestCase
         );
 
         $this->assertNotEmpty($favicon->getContent());
-    }
-
-//    public function testFind_inRootDir()
-//    {
-//        // favicon not in meta, only in website root (need example page)
-//        $favicon = new Favicon;
-//
-//        $this->assertEquals(
-//            'http://minicoders.com/favicon.ico',
-//            $favicon->find('http://minicoders.com')
-//        );
-//    }
-
-    public function testFind_noIcons()
-    {
-        $favicon = new Favicon();
-
-        $this->assertEquals(
-            '',
-            $favicon->find('http://minicoders.com')
-        );
-
-        $this->assertEmpty($favicon->getContent());
     }
 
     /**
