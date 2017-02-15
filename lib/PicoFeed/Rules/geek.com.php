@@ -11,6 +11,7 @@ return array(
             ),
             'strip' => array(
             '//span[@class="red"]',
+            '//div[@class="on-target"]'
             ),
         ),
     ),
