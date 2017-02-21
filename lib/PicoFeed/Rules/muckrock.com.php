@@ -8,9 +8,13 @@ return array(
                 '//div[@class="content"]',
             ),
             'strip' => array(
+                '//div[@class="newsletter-widget"]',
+                '//div[@class="contributors"]',
+                '//time',
                 '//h1',
                 '//div[@class="secondary"]',
                 '//aside',
+                '//div[@class="articles__related"]'
             ),
         ),
     ),

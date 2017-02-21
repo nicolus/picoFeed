@@ -11,6 +11,7 @@ return array(
                 '//div[contains(@class,"metabar")]',
                 '//img[contains(@class,"thumbnail")]',
                 '//h1',
+                '//blockquote',
                 '//div[@class="aspectRatioPlaceholder-fill"]',
                 '//footer'
             ),

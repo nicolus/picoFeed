@@ -8,14 +8,15 @@ return array(
             '//div[@class="l-cf-twocol l-panel"]',
             ),
             'strip' => array(
-                '//div[contains(@class,"l-top"]',
-                '//div[contains(@class,"video-embed"]',
-                '//div[contains(@class,"pane-node-title"]',
-                '//div[contains(@class,"pane-node-authors-date"]',
-                '//div[contains(@class,"-share"]',
-                '//div[contains(@class,"cboxes"]',
+                '//div[contains(@class,"l-top")]',
+                '//div[contains(@class,"video-embed")]',
+                '//div[contains(@class,"pane-node-title")]',
+                '//div[contains(@class,"pane-node-authors-date")]',
+                '//div[contains(@class,"-share")]',
+                '//div[contains(@class,"cboxes")]',
                 '//aside'
             ),
         ),
     ),
 );
+

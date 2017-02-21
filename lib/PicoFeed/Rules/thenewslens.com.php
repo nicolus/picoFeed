@@ -8,7 +8,7 @@ return array(
                 '//div[@class="article-section"]',
             ),
             'strip' => array(
-                '//div[contains(@class="ad-container")]',
+                '//div[contains(@class,"ad-")]',
                 '//div[@class="article-title-box"]',
                 '//div[@class="function-box"]',
                 '//p/span',
