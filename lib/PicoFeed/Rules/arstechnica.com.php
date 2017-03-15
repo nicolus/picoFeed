@@ -10,6 +10,7 @@ return array(
             'strip' => array(
                 '//h4[@class="post-upperdek"]',
                 '//h1',
+                '//div[@class="gallery shortcode-gallery"]',
                 '//section[@class="post-meta"]',
                 '//figcaption',
                 '//aside',

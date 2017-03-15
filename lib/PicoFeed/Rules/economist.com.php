@@ -11,6 +11,7 @@ return array(
                 '//aside',
                 '//div[@class="blog-post__asideable-wrapper"]',
                 '//div[@class="video-player__wrapper"]',
+                '//div[contains(@class,"latest-updates-panel__container")]',
                 '//div[contains(@class,"blog-post__siblings-list-aside")]',
                 '//div[contains(@class,"blog-post__asideable-content")]'
             ),
