@@ -9,14 +9,15 @@ return array(
             'strip' => array(
                 '//h4[@class="post-upperdek"]',
                 '//h1',
-                '//div[@class="gallery shortcode-gallery"]',
+                '//ul[@class="lSPager lSGallery"]',
+                '//div[@class="lSAction"]',
                 '//section[@class="post-meta"]',
                 '//figcaption',
                 '//aside',
                 '//div[@class="gallery-image-credit"]',
                 '//section[@class="article-author"]',
                 '//*[contains(@id,"social-")]',
-                '//div[contains(@id,"footer")]'
+                '//div[contains(@id,"footer")]',
             ),
         ),
     ),

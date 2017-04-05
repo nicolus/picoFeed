@@ -8,6 +8,7 @@ return array(
                 '//figure/figcaption/span',
                 '//div/p[@itemprop="description"]',
                 '//div[@class="article-body"]',
+                '//ul[@class="photos"]',
             ),
             'strip' => array(
                 '//aside[@class="callout"]',

@@ -18,6 +18,7 @@ return array(
                 '//table[contains(@class,"in-article-item")]',
                 '//div[@data-embed-type="Brightcove"]',
                 '//div[@class="QuoteContainer"]',
+                '//div[@class="BottomByLine"]',
             ),
         ),
     ),
