@@ -163,6 +163,7 @@ abstract class Parser implements ParserInterface
             $this->findItemDate($entry, $item, $feed);
             $this->findItemEnclosure($entry, $item, $feed);
             $this->findItemLanguage($entry, $item, $feed);
+            $this->findItemCategories($entry, $item, $feed);
 
             $this->itemPostProcessor->execute($feed, $item);
             $feed->items[] = $item;

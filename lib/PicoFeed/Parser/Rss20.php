@@ -302,4 +302,18 @@ class Rss20 extends Parser
         $language = XmlParser::getXPathResult($entry, 'dc:language', $this->namespaces);
         $item->setLanguage(XmlParser::getValue($language) ?: $feed->getLanguage());
     }
+
+    /**
+     * Find the item categories.
+     *
+     * @param SimpleXMLElement      $entry Feed item
+     * @param Item $item  Item object
+     * @param Feed $feed  Feed object
+     */
+    public function findItemCategories(SimpleXMLElement $entry, Item $item, Feed $feed)
+    {
+        $categories = XmlParser::getXPathResult($entry, 'category');
+        $item->setCategoriesFromXml($categories);
+    }
+
 }

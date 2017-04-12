@@ -378,6 +378,28 @@ class AtomParserTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('', $feed->items[0]->getLanguage());
     }
 
+    public function testItemCategories()
+    {
+        $parser = new Atom(file_get_contents('tests/fixtures/atom.xml'));
+        $feed = $parser->execute();
+        $categories = $feed->items[0]->getCategories();
+        $this->assertEquals($categories[0], 'Война и мир');
+
+        $parser = new Atom(file_get_contents('tests/fixtures/atom_no_default_namespace.xml'));
+        $feed = $parser->execute();
+        $categories = $feed->items[0]->getCategories();
+        $this->assertEquals($categories[0], 'Война и мир');
+
+        $parser = new Atom(file_get_contents('tests/fixtures/atom_prefixed.xml'));
+        $feed = $parser->execute();
+        $categories = $feed->items[0]->getCategories();
+        $this->assertEquals($categories[0], 'Война и мир');
+
+        $parser = new Atom(file_get_contents('tests/fixtures/atom_empty_item.xml'));
+        $feed = $parser->execute();
+        $this->assertEmpty($feed->items[0]->getCategories());
+    }
+
     public function testItemAuthor()
     {
         // items[0] === item author

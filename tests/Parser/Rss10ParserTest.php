@@ -329,6 +329,18 @@ class Rss10ParserTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('', $feed->items[0]->getAuthor());
     }
 
+    public function testFindItemCategories()
+    {
+        $parser = new Rss10(file_get_contents('tests/fixtures/rss_10.xml'));
+        $feed = $parser->execute();
+        $categories = $feed->items[0]->getCategories();
+        $this->assertEquals($categories[0], 'Война и мир');
+
+        $parser = new Rss10(file_get_contents('tests/fixtures/rss_10_empty_item.xml'));
+        $feed = $parser->execute();
+        $this->assertEmpty($feed->items[0]->getCategories());
+    }
+
     public function testFindItemAuthor()
     {
         // items[0] === item author
