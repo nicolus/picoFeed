@@ -289,6 +289,20 @@ class Atom extends Parser
     }
 
     /**
+     * Find the item categories.
+     *
+     * @param SimpleXMLElement      $entry Feed item
+     * @param Item $item  Item object
+     * @param Feed $feed  Feed object
+     */
+    public function findItemCategories(SimpleXMLElement $entry, Item $item, Feed $feed)
+    {
+        $categories = XmlParser::getXPathResult($entry, 'atom:category/@term', $this->namespaces)
+                 ?: XmlParser::getXPathResult($entry, 'category/@term');
+        $item->setCategoriesFromXml($categories);
+    }
+
+    /**
      * Get the URL from a link tag.
      *
      * @param SimpleXMLElement $xml XML tag

@@ -247,6 +247,18 @@ class Rss20ParserTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('', $feed->items[0]->getLanguage());
     }
 
+    public function testFindItemCategories()
+    {
+        $parser = new Rss20(file_get_contents('tests/fixtures/rss_20.xml'));
+        $feed = $parser->execute();
+        $categories = $feed->items[0]->getCategories();
+        $this->assertEquals($categories[0], 'Война и мир');
+
+        $parser = new Rss20(file_get_contents('tests/fixtures/rss_20_empty_item.xml'));
+        $feed = $parser->execute();
+        $this->assertEmpty($feed->items[0]->getCategories());
+    }
+
     public function testFindItemAuthor()
     {
         // items[0] === item author
