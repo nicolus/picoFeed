@@ -24,6 +24,7 @@ class DateParserTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(1360054941, $parser->getDateTime('2013-02-05T09:02:21.880-08:00')->getTimestamp(), '', 1);
         $this->assertEquals(1286834400, $parser->getDateTime('Tue, 12 Oct 2010 00:00:00 IST')->getTimestamp(), '', 1);
         $this->assertEquals('2014-12-15 19:49', $parser->getDateTime('15 Dec 2014 19:49:07 +0100')->format('Y-m-d H:i'));
+        $this->assertEquals('2017-04-28 21:18:00', $parser->getDateTime('Friday, 28 Apr 2017 21:18:00')->format('Y-m-d H:i:s'));
         $this->assertEquals('2012-05-15', $parser->getDateTime('Tue, 15 May 2012 24:05:00 UTC')->format('Y-m-d'));
         $this->assertEquals('2013-09-12', $parser->getDateTime('Thu, 12 Sep 2013 7:00:00 UTC')->format('Y-m-d'));
         $this->assertEquals('2012-01-31', $parser->getDateTime('01.31.2012')->format('Y-m-d'));
