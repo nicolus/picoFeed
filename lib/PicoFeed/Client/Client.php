@@ -107,6 +107,13 @@ abstract class Client
     protected $password = '';
 
     /**
+     * CURL options.
+     *
+     * @var string
+     */
+    protected $additional_curl_options = array();
+
+    /**
      * Client connection timeout.
      *
      * @var int
@@ -627,6 +634,21 @@ abstract class Client
     }
 
     /**
+     * Set the CURL options.
+     *
+     * @param array of curl options in format array( $curlOp1 => $curlVal1, $curlOp2 => $curlVal2 )
+     *
+     * @return \PicoFeed\Client\Client
+     */
+    public function setAdditionalCurlOptions($options)
+    {
+        $this->additional_curl_options = $options?: $this->additional_curl_options;
+
+        return $this;
+    }
+
+
+    /**
      * Enable the passthrough mode.
      *
      * @return \PicoFeed\Client\Client
@@ -668,6 +690,7 @@ abstract class Client
             $this->setProxyPort($config->getProxyPort());
             $this->setProxyUsername($config->getProxyUsername());
             $this->setProxyPassword($config->getProxyPassword());
+            $this->setAdditionalCurlOptions($config->getAdditionalCurlOptions());
         }
 
         return $this;

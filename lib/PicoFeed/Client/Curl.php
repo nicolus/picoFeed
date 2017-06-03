@@ -217,6 +217,20 @@ class Curl extends Client
     }
 
     /**
+     * Set additional CURL options.
+     *
+     * @param resource $ch
+     *
+     * @return resource $ch
+     */
+    private function prepareAdditionalCurlOptions($ch){
+        foreach( $this->additional_curl_options as $c_op => $c_val ){
+            curl_setopt($ch, $c_op, $c_val);
+        }
+        return $ch;
+    }
+
+    /**
      * Prepare curl context.
      *
      * @return resource
@@ -249,6 +263,7 @@ class Curl extends Client
         $ch = $this->prepareDownloadMode($ch);
         $ch = $this->prepareProxyContext($ch);
         $ch = $this->prepareAuthContext($ch);
+        $ch = $this->prepareAdditionalCurlOptions($ch);
 
         return $ch;
     }
