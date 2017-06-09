@@ -25,7 +25,7 @@ use PicoFeed\Scraper\Scraper;
 
 $config = new Config;
 
-$grabber = new Scraper($config)
+$grabber = new Scraper($config);
 $grabber->setUrl($url);
 $grabber->execute();
 
