@@ -36,7 +36,7 @@ $config->setClientTimeout(20); // 20 seconds
 ### User Agent
 
 - Method name: `setClientUserAgent()`
-- Default value: `PicoFeed (https://github.com/fguillot/picoFeed)`
+- Default value: `PicoFeed (https://github.com/miniflux/picoFeed)`
 - Argument value: string
 
 ```php
@@ -119,7 +119,7 @@ $config->setGrabberTimeout(20); // 20 seconds
 ### User Agent
 
 - Method name: `setGrabberUserAgent()`
-- Default value: `PicoFeed (https://github.com/fguillot/picoFeed)`
+- Default value: `PicoFeed (https://github.com/miniflux/picoFeed)`
 - Argument value: string
 
 ```php

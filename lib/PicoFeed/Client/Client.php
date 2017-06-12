@@ -118,7 +118,7 @@ abstract class Client
      *
      * @var string
      */
-    protected $user_agent = 'PicoFeed (https://github.com/fguillot/picoFeed)';
+    protected $user_agent = 'PicoFeed (https://github.com/miniflux/picoFeed)';
 
     /**
      * Real URL used (can be changed after a HTTP redirect).

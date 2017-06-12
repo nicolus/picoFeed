@@ -24,7 +24,7 @@ class StreamTest extends PHPUnit_Framework_TestCase
     public function testDownload()
     {
         $client = new Stream();
-        $client->setUrl('https://github.com/fguillot/picoFeed');
+        $client->setUrl('https://github.com/miniflux/picoFeed');
         $result = $client->doRequest();
 
         $this->assertEquals(200, $result['status']);
@@ -65,7 +65,7 @@ class StreamTest extends PHPUnit_Framework_TestCase
     {
         if (function_exists('gzdecode')) {
             $client = new Stream();
-            $client->setUrl('https://github.com/fguillot/picoFeed');
+            $client->setUrl('https://github.com/miniflux/picoFeed');
             $result = $client->doRequest();
 
             $this->assertEquals('gzip', $result['headers']['Content-Encoding']);

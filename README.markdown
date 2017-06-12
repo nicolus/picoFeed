@@ -3,7 +3,7 @@ PicoFeed
 
 PicoFeed was originally developed for [Miniflux](http://miniflux.net), a minimalist and open source news reader.
 
-[![Build Status](https://travis-ci.org/fguillot/picoFeed.svg?branch=master)](https://travis-ci.org/fguillot/picoFeed)
+[![Build Status](https://travis-ci.org/miniflux/picoFeed.svg?branch=master)](https://travis-ci.org/miniflux/picoFeed)
 
 Features
 --------

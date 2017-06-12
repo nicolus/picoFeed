@@ -64,11 +64,9 @@ class ClientTest extends PHPUnit_Framework_TestCase
         $result = $client->doRequest();
 
         $body = $result['body'];
-        $headers = $result['headers'];
         $result = $client->doRequest();
 
         $this->assertEquals($body, $result['body']);
-        $this->assertEquals($headers, $result['headers']);
     }
 
     /**

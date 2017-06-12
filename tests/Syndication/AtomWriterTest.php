@@ -34,7 +34,7 @@ class AtomWriterTest extends PHPUnit_Framework_TestCase
 
         $expected = '<?xml version="1.0" encoding="UTF-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
-  <generator uri="https://github.com/fguillot/picoFeed">PicoFeed</generator>
+  <generator uri="https://github.com/miniflux/picoFeed">PicoFeed</generator>
   <title>My website</title>
   <id>https://feed_url/</id>
   <updated>'.date(DATE_ATOM).'</updated>

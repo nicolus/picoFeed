@@ -197,4 +197,4 @@ return array(
 List of content grabber rules
 -----------------------------
 
-Rules are stored inside the directory [lib/PicoFeed/Rules](https://github.com/fguillot/picoFeed/tree/master/lib/PicoFeed/Rules)
+Rules are stored inside the directory [lib/PicoFeed/Rules](https://github.com/miniflux/picoFeed/tree/master/lib/PicoFeed/Rules)
