@@ -3,12 +3,7 @@ PicoFeed
 
 PicoFeed was originally developed for [Miniflux](http://miniflux.net), a minimalist and open source news reader.
 
-However, this library can be used inside any project.
-PicoFeed is tested with a lot of different feeds and it's simple and easy to use.
-
 [![Build Status](https://travis-ci.org/fguillot/picoFeed.svg?branch=master)](https://travis-ci.org/fguillot/picoFeed)
-
-[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/fguillot/picoFeed/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/fguillot/picoFeed/?branch=master)
 
 Features
 --------
