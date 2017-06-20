@@ -103,8 +103,8 @@ abstract class Parser implements ParserInterface
 
     /**
      * Parse the document.
-     *
-     * @return \PicoFeed\Parser\Feed
+     * @return Feed
+     * @throws MalformedXmlException
      */
     public function execute()
     {
@@ -279,9 +279,7 @@ abstract class Parser implements ParserInterface
      * Return true if the given language is "Right to Left".
      *
      * @static
-     *
      * @param string $language Language: fr-FR, en-US
-     *
      * @return bool
      */
     public static function isLanguageRTL($language)
@@ -324,7 +322,6 @@ abstract class Parser implements ParserInterface
      * Set config object.
      *
      * @param \PicoFeed\Config\Config $config Config instance
-     *
      * @return \PicoFeed\Parser\Parser
      */
     public function setConfig($config)
@@ -352,7 +349,6 @@ abstract class Parser implements ParserInterface
      *                                       scraped
      * @param null|\Closure $scraperCallback Callback function that gets called for each
      *                                       scraper execution
-     *
      * @return \PicoFeed\Parser\Parser
      */
     public function enableContentGrabber($needsRuleFile = false, $scraperCallback = null)
@@ -375,7 +371,6 @@ abstract class Parser implements ParserInterface
      * Set ignored URLs for the content grabber.
      *
      * @param array $urls URLs
-     *
      * @return \PicoFeed\Parser\Parser
      */
     public function setGrabberIgnoreUrls(array $urls)
@@ -388,7 +383,6 @@ abstract class Parser implements ParserInterface
      * Register all supported namespaces to be used within an xpath query.
      *
      * @param SimpleXMLElement $xml Feed xml
-     *
      * @return SimpleXMLElement
      */
     public function registerSupportedNamespaces(SimpleXMLElement $xml)
@@ -399,6 +393,4 @@ abstract class Parser implements ParserInterface
 
         return $xml;
     }
-
-
 }

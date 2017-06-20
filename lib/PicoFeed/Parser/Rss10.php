@@ -27,8 +27,7 @@ class Rss10 extends Parser
      * Get the path to the items XML tree.
      *
      * @param SimpleXMLElement $xml Feed xml
-     *
-     * @return SimpleXMLElement
+     * @return SimpleXMLElement[]
      */
     public function getItemsTree(SimpleXMLElement $xml)
     {
