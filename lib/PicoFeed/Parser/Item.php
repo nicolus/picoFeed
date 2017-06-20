@@ -318,7 +318,7 @@ class Item
     /**
      * Get categories.
      *
-     * @return string
+     * @return array
      */
     public function getCategories()
     {
