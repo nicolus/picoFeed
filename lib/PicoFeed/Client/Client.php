@@ -109,7 +109,7 @@ abstract class Client
     /**
      * CURL options.
      *
-     * @var string
+     * @var array
      */
     protected $additional_curl_options = array();
 
@@ -330,7 +330,6 @@ abstract class Client
      * Find content type from response headers.
      *
      * @param array $response Client response
-     *
      * @return string
      */
     public function findContentType(array $response)
@@ -346,7 +345,6 @@ abstract class Client
     public function findCharset()
     {
         $result = explode('charset=', $this->content_type);
-
         return isset($result[1]) ? $result[1] : '';
     }
 
@@ -355,7 +353,6 @@ abstract class Client
      *
      * @param array  $response Client response
      * @param string $header   Header name
-     *
      * @return string
      */
     public function getHeader(array $response, $header)
@@ -367,13 +364,11 @@ abstract class Client
      * Set the Last-Modified HTTP header.
      *
      * @param string $last_modified Header value
-     *
-     * @return \PicoFeed\Client\Client
+     * @return $this
      */
     public function setLastModified($last_modified)
     {
         $this->last_modified = $last_modified;
-
         return $this;
     }
 
@@ -391,13 +386,11 @@ abstract class Client
      * Set the value of the Etag HTTP header.
      *
      * @param string $etag Etag HTTP header value
-     *
-     * @return \PicoFeed\Client\Client
+     * @return $this
      */
     public function setEtag($etag)
     {
         $this->etag = $etag;
-
         return $this;
     }
 
@@ -497,13 +490,11 @@ abstract class Client
      * Set connection timeout.
      *
      * @param int $timeout Connection timeout
-     *
-     * @return \PicoFeed\Client\Client
+     * @return $this
      */
     public function setTimeout($timeout)
     {
         $this->timeout = $timeout ?: $this->timeout;
-
         return $this;
     }
 
@@ -511,13 +502,11 @@ abstract class Client
      * Set a custom user agent.
      *
      * @param string $user_agent User Agent
-     *
-     * @return \PicoFeed\Client\Client
+     * @return $this
      */
     public function setUserAgent($user_agent)
     {
         $this->user_agent = $user_agent ?: $this->user_agent;
-
         return $this;
     }
 
@@ -525,13 +514,11 @@ abstract class Client
      * Set the maximum number of HTTP redirections.
      *
      * @param int $max Maximum
-     *
-     * @return \PicoFeed\Client\Client
+     * @return $this
      */
     public function setMaxRedirections($max)
     {
         $this->max_redirects = $max ?: $this->max_redirects;
-
         return $this;
     }
 
@@ -539,13 +526,11 @@ abstract class Client
      * Set the maximum size of the HTTP body.
      *
      * @param int $max Maximum
-     *
-     * @return \PicoFeed\Client\Client
+     * @return $this
      */
     public function setMaxBodySize($max)
     {
         $this->max_body_size = $max ?: $this->max_body_size;
-
         return $this;
     }
 
@@ -553,13 +538,11 @@ abstract class Client
      * Set the proxy hostname.
      *
      * @param string $hostname Proxy hostname
-     *
-     * @return \PicoFeed\Client\Client
+     * @return $this
      */
     public function setProxyHostname($hostname)
     {
         $this->proxy_hostname = $hostname ?: $this->proxy_hostname;
-
         return $this;
     }
 
@@ -567,13 +550,11 @@ abstract class Client
      * Set the proxy port.
      *
      * @param int $port Proxy port
-     *
-     * @return \PicoFeed\Client\Client
+     * @return $this
      */
     public function setProxyPort($port)
     {
         $this->proxy_port = $port ?: $this->proxy_port;
-
         return $this;
     }
 
@@ -581,13 +562,11 @@ abstract class Client
      * Set the proxy username.
      *
      * @param string $username Proxy username
-     *
-     * @return \PicoFeed\Client\Client
+     * @return $this
      */
     public function setProxyUsername($username)
     {
         $this->proxy_username = $username ?: $this->proxy_username;
-
         return $this;
     }
 
@@ -595,13 +574,11 @@ abstract class Client
      * Set the proxy password.
      *
      * @param string $password Password
-     *
-     * @return \PicoFeed\Client\Client
+     * @return $this
      */
     public function setProxyPassword($password)
     {
         $this->proxy_password = $password ?: $this->proxy_password;
-
         return $this;
     }
 
@@ -610,12 +587,11 @@ abstract class Client
      *
      * @param string $username Basic Auth username
      *
-     * @return \PicoFeed\Client\Client
+     * @return $this
      */
     public function setUsername($username)
     {
         $this->username = $username ?: $this->username;
-
         return $this;
     }
 
@@ -624,26 +600,23 @@ abstract class Client
      *
      * @param string $password Basic Auth Password
      *
-     * @return \PicoFeed\Client\Client
+     * @return $this
      */
     public function setPassword($password)
     {
         $this->password = $password ?: $this->password;
-
         return $this;
     }
 
     /**
      * Set the CURL options.
      *
-     * @param array of curl options in format array( $curlOp1 => $curlVal1, $curlOp2 => $curlVal2 )
-     *
-     * @return \PicoFeed\Client\Client
+     * @param array $options
+     * @return $this
      */
-    public function setAdditionalCurlOptions($options)
+    public function setAdditionalCurlOptions(array $options)
     {
-        $this->additional_curl_options = $options?: $this->additional_curl_options;
-
+        $this->additional_curl_options = $options ?: $this->additional_curl_options;
         return $this;
     }
 
@@ -651,24 +624,22 @@ abstract class Client
     /**
      * Enable the passthrough mode.
      *
-     * @return \PicoFeed\Client\Client
+     * @return $this
      */
     public function enablePassthroughMode()
     {
         $this->passthrough = true;
-
         return $this;
     }
 
     /**
      * Disable the passthrough mode.
      *
-     * @return \PicoFeed\Client\Client
+     * @return $this
      */
     public function disablePassthroughMode()
     {
         $this->passthrough = false;
-
         return $this;
     }
 
@@ -676,8 +647,7 @@ abstract class Client
      * Set config object.
      *
      * @param \PicoFeed\Config\Config $config Config instance
-     *
-     * @return \PicoFeed\Client\Client
+     * @return $this
      */
     public function setConfig(Config $config)
     {
@@ -690,7 +660,7 @@ abstract class Client
             $this->setProxyPort($config->getProxyPort());
             $this->setProxyUsername($config->getProxyUsername());
             $this->setProxyPassword($config->getProxyPassword());
-            $this->setAdditionalCurlOptions($config->getAdditionalCurlOptions());
+            $this->setAdditionalCurlOptions($config->getAdditionalCurlOptions() ?: array());
         }
 
         return $this;
