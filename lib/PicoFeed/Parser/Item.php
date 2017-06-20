@@ -482,9 +482,8 @@ class Item
                     $categories
                 )
             );
-        } else {
-            $categories = array();
         }
+        
         return $this;
     }
 
