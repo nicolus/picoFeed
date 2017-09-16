@@ -4,6 +4,7 @@ namespace PicoFeed\Client;
 
 use DateTime;
 use Exception;
+use GuzzleHttp\ClientInterface;
 use LogicException;
 use PicoFeed\Logging\Logger;
 use PicoFeed\Config\Config;
@@ -13,7 +14,7 @@ use PicoFeed\Config\Config;
  *
  * @author  Frederic Guillot
  */
-abstract class Client
+class Client
 {
     /**
      * Flag that say if the resource have been modified.
@@ -170,13 +171,37 @@ abstract class Client
     protected $passthrough = false;
 
     /**
+     * Http client used to make requests
+     *
+     * @var \GuzzleHttp\Client
+     */
+    private $httpClient;
+
+    /**
      * Do the HTTP request.
      *
      * @abstract
      *
      * @return array
      */
-    abstract public function doRequest();
+    public function doRequest(){
+
+        $request = $this->httpClient->get($this->url,[
+
+        ]);
+
+        return [
+            'status' => $request->getStatusCode(),
+            'body' => $request->getBody()->getContents(),
+            'headers' => $request->getHeaders(),
+        ];
+    }
+
+    public function __construct(\GuzzleHttp\Client $httpClient)
+    {
+        $this->httpClient = $httpClient;
+    }
+
 
     /**
      * Get client instance: curl or stream driver.
@@ -187,11 +212,7 @@ abstract class Client
      */
     public static function getInstance()
     {
-        if (function_exists('curl_init')) {
-            return new Curl();
-        } elseif (ini_get('allow_url_fopen')) {
-            return new Stream();
-        }
+        return new self(new \GuzzleHttp\Client([]));
 
         throw new LogicException('You must have "allow_url_fopen=1" or curl extension installed');
     }
