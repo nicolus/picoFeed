@@ -5,9 +5,11 @@ namespace PicoFeed\Client;
 use DateTime;
 use Exception;
 use GuzzleHttp\ClientInterface;
+use GuzzleHttp\Psr7\Response;
 use LogicException;
 use PicoFeed\Logging\Logger;
 use PicoFeed\Config\Config;
+use Psr\Http\Message\ResponseInterface;
 
 /**
  * Client class.
@@ -180,24 +182,20 @@ class Client
     /**
      * Do the HTTP request.
      *
-     * @abstract
-     *
-     * @return array
+     * @return ResponseInterface
      */
-    public function doRequest(){
+    public function doRequest()
+    {
+        $res = $this->httpClient->get($this->url);
 
-        $request = $this->httpClient->get($this->url,[
+        if ($this->isPassthroughEnabled()) {
+            echo $res->getBody()->getContents();
+        }
 
-        ]);
-
-        return [
-            'status' => $request->getStatusCode(),
-            'body' => $request->getBody()->getContents(),
-            'headers' => $request->getHeaders(),
-        ];
+        else return $res;
     }
 
-    public function __construct(\GuzzleHttp\Client $httpClient)
+    public function __construct(\GuzzleHttp\Client $httpClient = null)
     {
         $this->httpClient = $httpClient;
     }
@@ -245,13 +243,14 @@ class Client
         Logger::setMessage(get_called_class().' Last-Modified provided: '.$this->last_modified);
 
         $response = $this->doRequest();
+        if ($response) {
+            $this->handleNotModifiedResponse($response);
+            $this->handleErrorResponse($response);
+            $this->handleNormalResponse($response);
+            $this->expiration = $this->parseExpiration($response);
+        }
 
-        $this->status_code = $response['status'];
-        $this->handleNotModifiedResponse($response);
-        $this->handleErrorResponse($response);
-        $this->handleNormalResponse($response);
 
-        $this->expiration = $this->parseExpiration($response['headers']);
         Logger::setMessage(get_called_class().' Expiration: '.$this->expiration->format(DATE_ISO8601));
 
         return $this;
@@ -259,17 +258,16 @@ class Client
 
     /**
      * Handle not modified response.
-     *
-     * @param array $response Client response
+     * @param ResponseInterface $response
      */
-    protected function handleNotModifiedResponse(array $response)
+    protected function handleNotModifiedResponse(ResponseInterface $response)
     {
-        if ($response['status'] == 304) {
+        if ($response->getStatusCode() == 304) {
             $this->is_modified = false;
-        } elseif ($response['status'] == 200) {
+        } elseif ($response->getStatusCode() == 200) {
             $this->is_modified = $this->hasBeenModified($response, $this->etag, $this->last_modified);
-            $this->etag = $this->getHeader($response, 'ETag');
-            $this->last_modified = $this->getHeader($response, 'Last-Modified');
+            $this->etag = $response->getHeader('ETag')[0];
+            $this->last_modified = $response->getHeader('ETag')[0];
         }
 
         if ($this->is_modified === false) {
@@ -280,14 +278,14 @@ class Client
     /**
      * Handle Http Error codes
      *
-     * @param array $response Client response
+     * @param ResponseInterface $response
      * @throws ForbiddenException
      * @throws InvalidUrlException
      * @throws UnauthorizedException
      */
-    protected function handleErrorResponse(array $response)
+    protected function handleErrorResponse(ResponseInterface $response)
     {
-        $status = $response['status'];
+        $status = $response->getStatusCode();
         if ($status == 401) {
             throw new UnauthorizedException('Wrong or missing credentials');
         } else if ($status == 403) {
@@ -300,12 +298,12 @@ class Client
     /**
      * Handle normal response.
      *
-     * @param array $response Client response
+     * @param ResponseInterface $response Client response
      */
-    protected function handleNormalResponse(array $response)
+    protected function handleNormalResponse(ResponseInterface $response)
     {
-        if ($response['status'] == 200) {
-            $this->content = $response['body'];
+        if ($response->getStatusCode() == 200) {
+            $this->content = $response->getBody()->getContents();
             $this->content_type = $this->findContentType($response);
             $this->encoding = $this->findCharset();
         }
@@ -314,13 +312,12 @@ class Client
     /**
      * Check if a request has been modified according to the parameters.
      *
-     * @param array  $response
+     * @param ResponseInterface $response
      * @param string $etag
      * @param string $lastModified
-     *
      * @return bool
      */
-    private function hasBeenModified($response, $etag, $lastModified)
+    private function hasBeenModified(ResponseInterface $response, $etag, $lastModified)
     {
         $headers = array(
             'Etag' => $etag,
@@ -330,8 +327,8 @@ class Client
         // Compare the values for each header that is present
         $presentCacheHeaderCount = 0;
         foreach ($headers as $key => $value) {
-            if (isset($response['headers'][$key])) {
-                if ($response['headers'][$key] !== $value) {
+            if ($response->getHeader($key)[0]) {
+                if ($response->getHeader($key)[0] !== $value) {
                     return true;
                 }
                 ++$presentCacheHeaderCount;
@@ -350,12 +347,12 @@ class Client
     /**
      * Find content type from response headers.
      *
-     * @param array $response Client response
+     * @param ResponseInterface $response Client response
      * @return string
      */
-    public function findContentType(array $response)
+    public function findContentType(ResponseInterface $response)
     {
-        return strtolower($this->getHeader($response, 'Content-Type'));
+        return strtolower($response->getHeader('content-type')[0]);
     }
 
     /**
@@ -378,7 +375,7 @@ class Client
      */
     public function getHeader(array $response, $header)
     {
-        return isset($response['headers'][$header]) ? $response['headers'][$header] : '';
+        return isset($response['headers'][$header]) ? $response['headers'][$header][0] : '';
     }
 
     /**
@@ -699,20 +696,20 @@ class Client
         return $code == 301 || $code == 302 || $code == 303 || $code == 307;
     }
 
-    public function parseExpiration(HttpHeaders $headers)
+    public function parseExpiration(ResponseInterface $response)
     {
         try {
 
-            if (isset($headers['Cache-Control'])) {
-                if (preg_match('/s-maxage=(\d+)/', $headers['Cache-Control'], $matches)) {
+            if ($cacheControl = $response->getHeader('Cache-Control')[0]) {
+                if (preg_match('/s-maxage=(\d+)/', $cacheControl, $matches)) {
                     return new DateTime('+' . $matches[1] . ' seconds');
-                } else if (preg_match('/max-age=(\d+)/', $headers['Cache-Control'], $matches)) {
+                } else if (preg_match('/max-age=(\d+)/', $cacheControl, $matches)) {
                     return new DateTime('+' . $matches[1] . ' seconds');
                 }
             }
 
-            if (! empty($headers['Expires'])) {
-                return new DateTime($headers['Expires']);
+            if ($expires = $response->getHeader('Expires')[0]) {
+                return new DateTime($expires);
             }
         } catch (Exception $e) {
             Logger::setMessage('Unable to parse expiration date: '.$e->getMessage());
