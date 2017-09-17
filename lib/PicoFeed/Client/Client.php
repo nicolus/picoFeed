@@ -5,10 +5,6 @@ namespace PicoFeed\Client;
 use DateTime;
 use Exception;
 use GuzzleHttp\ClientInterface;
-use GuzzleHttp\HandlerStack;
-use GuzzleHttp\Psr7\Response;
-use Kevinrob\GuzzleCache\CacheMiddleware;
-use LogicException;
 use PicoFeed\Logging\Logger;
 use PicoFeed\Config\Config;
 use Psr\Http\Message\ResponseInterface;
@@ -232,9 +228,9 @@ class Client
             $this->url = $url;
         }
 
-        Logger::setMessage(get_called_class().' Fetch URL: '.$this->url);
-        Logger::setMessage(get_called_class().' Etag provided: '.$this->etag);
-        Logger::setMessage(get_called_class().' Last-Modified provided: '.$this->last_modified);
+        Logger::setMessage(get_called_class() . ' Fetch URL: ' . $this->url);
+        Logger::setMessage(get_called_class() . ' Etag provided: ' . $this->etag);
+        Logger::setMessage(get_called_class() . ' Last-Modified provided: ' . $this->last_modified);
 
         $response = $this->doRequest();
         if ($response) {
@@ -247,7 +243,7 @@ class Client
         }
 
 
-        Logger::setMessage(get_called_class().' Expiration: '.$this->expiration->format(DATE_ISO8601));
+        Logger::setMessage(get_called_class() . ' Expiration: ' . $this->expiration->format(DATE_ISO8601));
 
         return $this;
     }
@@ -267,7 +263,7 @@ class Client
         }
 
         if ($this->is_modified === false) {
-            Logger::setMessage(get_called_class().' Resource not modified');
+            Logger::setMessage(get_called_class() . ' Resource not modified');
         }
     }
 
@@ -345,8 +341,8 @@ class Client
     /**
      * Get header value from a client response.
      *
-     * @param array  $response Client response
-     * @param string $header   Header name
+     * @param array $response Client response
+     * @param string $header Header name
      * @return string
      */
     public function getHeader(array $response, $header)
@@ -664,7 +660,7 @@ class Client
      * Return true if the HTTP status code is a redirection
      *
      * @access protected
-     * @param  integer  $code
+     * @param  integer $code
      * @return boolean
      */
     public function isRedirection($code)
@@ -688,7 +684,7 @@ class Client
                 return new DateTime($expires);
             }
         } catch (Exception $e) {
-            Logger::setMessage('Unable to parse expiration date: '.$e->getMessage());
+            Logger::setMessage('Unable to parse expiration date: ' . $e->getMessage());
         }
 
         return new DateTime();
