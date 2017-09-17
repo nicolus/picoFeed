@@ -5,7 +5,9 @@ namespace PicoFeed\Client;
 use DateTime;
 use Exception;
 use GuzzleHttp\ClientInterface;
+use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Psr7\Response;
+use Kevinrob\GuzzleCache\CacheMiddleware;
 use LogicException;
 use PicoFeed\Logging\Logger;
 use PicoFeed\Config\Config;
@@ -189,7 +191,7 @@ class Client
         return $this->httpClient->get($this->url);
     }
 
-    public function __construct(\GuzzleHttp\Client $httpClient = null)
+    public function __construct(ClientInterface $httpClient = null)
     {
         $this->httpClient = $httpClient;
     }
@@ -240,8 +242,6 @@ class Client
                 echo $response->getBody()->getContents();
             };
 
-            $this->handleNotModifiedResponse($response);
-            $this->handleErrorResponse($response);
             $this->handleNormalResponse($response);
             $this->expiration = $this->parseExpiration($response);
         }
@@ -262,32 +262,12 @@ class Client
             $this->is_modified = false;
         } elseif ($response->getStatusCode() == 200) {
             $this->is_modified = $this->hasBeenModified($response, $this->etag, $this->last_modified);
-            $this->etag = $response->getHeader('ETag')[0];
-            $this->last_modified = $response->getHeader('Last-Modified')[0];
+            $this->etag = $response->getHeader('ETag')[0] ?? null;
+            $this->last_modified = $response->getHeader('Last-Modified')[0] ?? null;
         }
 
         if ($this->is_modified === false) {
             Logger::setMessage(get_called_class().' Resource not modified');
-        }
-    }
-
-    /**
-     * Handle Http Error codes
-     *
-     * @param ResponseInterface $response
-     * @throws ForbiddenException
-     * @throws InvalidUrlException
-     * @throws UnauthorizedException
-     */
-    protected function handleErrorResponse(ResponseInterface $response)
-    {
-        $status = $response->getStatusCode();
-        if ($status == 401) {
-            throw new UnauthorizedException('Wrong or missing credentials');
-        } else if ($status == 403) {
-            throw new ForbiddenException('Not allowed to access resource');
-        } else if ($status == 404) {
-            throw new InvalidUrlException('Resource not found');
         }
     }
 
@@ -323,7 +303,7 @@ class Client
         // Compare the values for each header that is present
         $presentCacheHeaderCount = 0;
         foreach ($headers as $key => $value) {
-            if ($response->getHeader($key)[0]) {
+            if (!empty($response->getHeader($key)[0])) {
                 if ($response->getHeader($key)[0] !== $value) {
                     return true;
                 }
