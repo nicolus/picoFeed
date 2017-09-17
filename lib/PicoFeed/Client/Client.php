@@ -186,13 +186,7 @@ class Client
      */
     public function doRequest()
     {
-        $res = $this->httpClient->get($this->url);
-
-        if ($this->isPassthroughEnabled()) {
-            echo $res->getBody()->getContents();
-        }
-
-        else return $res;
+        return $this->httpClient->get($this->url);
     }
 
     public function __construct(\GuzzleHttp\Client $httpClient = null)
@@ -242,6 +236,10 @@ class Client
 
         $response = $this->doRequest();
         if ($response) {
+            if ($this->isPassthroughEnabled()) {
+                echo $response->getBody()->getContents();
+            };
+
             $this->handleNotModifiedResponse($response);
             $this->handleErrorResponse($response);
             $this->handleNormalResponse($response);
@@ -265,7 +263,7 @@ class Client
         } elseif ($response->getStatusCode() == 200) {
             $this->is_modified = $this->hasBeenModified($response, $this->etag, $this->last_modified);
             $this->etag = $response->getHeader('ETag')[0];
-            $this->last_modified = $response->getHeader('ETag')[0];
+            $this->last_modified = $response->getHeader('Last-Modified')[0];
         }
 
         if ($this->is_modified === false) {
