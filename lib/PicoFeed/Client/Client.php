@@ -211,8 +211,6 @@ class Client
     public static function getInstance()
     {
         return new self(new \GuzzleHttp\Client([]));
-
-        throw new LogicException('You must have "allow_url_fopen=1" or curl extension installed');
     }
 
     /**
