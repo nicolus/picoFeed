@@ -284,13 +284,12 @@ class Attribute
     /**
      * Return true if the value is not integer (remove attributes that should have an integer value).
      *
-     * @param string $tag       Tag name
      * @param string $attribute Attribute name
      * @param string $value     Attribute value
      *
      * @return bool
      */
-    public function filterIntegerAttribute($tag, $attribute, $value)
+    public function filterIntegerAttribute($attribute, $value)
     {
         if (in_array($attribute, $this->integer_attributes)) {
             return ctype_digit($value);

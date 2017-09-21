@@ -24,10 +24,10 @@ class AttributeFilterTest extends PHPUnit_Framework_TestCase
     {
         $filter = new Attribute(new Url('http://google.com'));
 
-        $this->assertTrue($filter->filterIntegerAttribute('abbr', 'title', 'test'));
-        $this->assertTrue($filter->filterIntegerAttribute('iframe', 'width', '0'));
-        $this->assertTrue($filter->filterIntegerAttribute('iframe', 'width', '450'));
-        $this->assertFalse($filter->filterIntegerAttribute('iframe', 'width', 'test'));
+        $this->assertTrue($filter->filterIntegerAttribute('title', 'test'));
+        $this->assertTrue($filter->filterIntegerAttribute('width', '0'));
+        $this->assertTrue($filter->filterIntegerAttribute('width', '450'));
+        $this->assertFalse($filter->filterIntegerAttribute('width', 'test'));
 
         $this->assertEquals(array('width' => '10', 'src' => 'https://www.youtube.com/test'), $filter->filter('iframe', array('width' => '10', 'src' => 'http://www.youtube.com/test')));
         $this->assertEquals(array('src' => 'https://www.youtube.com/test'), $filter->filter('iframe', array('width' => 'test', 'src' => 'http://www.youtube.com/test')));
