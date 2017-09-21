@@ -73,31 +73,31 @@ class AttributeFilterTest extends PHPUnit_Framework_TestCase
     {
         $filter = new Attribute(new Url('http://www.la-grange.net'));
         $url = '/2014/08/03/4668-noisettes';
-        $this->assertTrue($filter->rewriteAbsoluteUrl('a', 'href', $url));
+        $this->assertTrue($filter->rewriteAbsoluteUrl('href', $url));
         $this->assertEquals('http://www.la-grange.net/2014/08/03/4668-noisettes', $url);
 
         $filter = new Attribute(new Url('http://google.com'));
 
         $url = 'test';
-        $this->assertTrue($filter->rewriteAbsoluteUrl('a', 'href', $url));
+        $this->assertTrue($filter->rewriteAbsoluteUrl('href', $url));
         $this->assertEquals('http://google.com/test', $url);
 
         $url = 'http://127.0.0.1:8000/test';
-        $this->assertTrue($filter->rewriteAbsoluteUrl('img', 'src', $url));
+        $this->assertTrue($filter->rewriteAbsoluteUrl('src', $url));
         $this->assertEquals('http://127.0.0.1:8000/test', $url);
 
         $url = '//example.com';
-        $this->assertTrue($filter->rewriteAbsoluteUrl('a', 'href', $url));
+        $this->assertTrue($filter->rewriteAbsoluteUrl('href', $url));
         $this->assertEquals('http://example.com/', $url);
 
         $filter = new Attribute(new Url('https://google.com'));
         $url = '//example.com/?youpi';
-        $this->assertTrue($filter->rewriteAbsoluteUrl('a', 'href', $url));
+        $this->assertTrue($filter->rewriteAbsoluteUrl('href', $url));
         $this->assertEquals('https://example.com/?youpi', $url);
 
         $filter = new Attribute(new Url('https://127.0.0.1:8000/here/'));
         $url = 'image.png?v=2';
-        $this->assertTrue($filter->rewriteAbsoluteUrl('a', 'href', $url));
+        $this->assertTrue($filter->rewriteAbsoluteUrl('href', $url));
         $this->assertEquals('https://127.0.0.1:8000/here/image.png?v=2', $url);
 
         $filter = new Attribute(new Url('https://truc/'));
@@ -150,8 +150,8 @@ class AttributeFilterTest extends PHPUnit_Framework_TestCase
     {
         $filter = new Attribute(new Url('http://google.com'));
 
-        $this->assertTrue($filter->filterBlacklistResourceAttribute('a', 'href', 'http://google.fr/'));
-        $this->assertFalse($filter->filterBlacklistResourceAttribute('a', 'href', 'http://res3.feedsportal.com/truc'));
+        $this->assertTrue($filter->filterBlacklistResourceAttribute('href', 'http://google.fr/'));
+        $this->assertFalse($filter->filterBlacklistResourceAttribute('href', 'http://res3.feedsportal.com/truc'));
 
         $this->assertEquals(array('href' => 'http://google.fr/'), $filter->filter('a', array('href' => 'http://google.fr/')));
         $this->assertEquals(array(), $filter->filter('a', array('href' => 'http://res3.feedsportal.com/')));
@@ -161,9 +161,9 @@ class AttributeFilterTest extends PHPUnit_Framework_TestCase
     {
         $filter = new Attribute(new Url('http://google.com'));
 
-        $this->assertTrue($filter->filterProtocolUrlAttribute('a', 'href', 'http://google.fr/'));
-        $this->assertFalse($filter->filterProtocolUrlAttribute('a', 'href', 'bla://google.fr/'));
-        $this->assertFalse($filter->filterProtocolUrlAttribute('a', 'href', 'javascript:alert("test")'));
+        $this->assertTrue($filter->filterProtocolUrlAttribute('href', 'http://google.fr/'));
+        $this->assertFalse($filter->filterProtocolUrlAttribute('href', 'bla://google.fr/'));
+        $this->assertFalse($filter->filterProtocolUrlAttribute('href', 'javascript:alert("test")'));
 
         $this->assertEquals(array('href' => 'http://google.fr/'), $filter->filter('a', array('href' => 'http://google.fr/')));
         $this->assertEquals(array(), $filter->filter('a', array('href' => 'bla://google.fr/')));

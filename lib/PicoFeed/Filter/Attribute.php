@@ -325,13 +325,12 @@ class Attribute
     /**
      * Return true if the resource is not blacklisted (remove blacklisted resource attributes).
      *
-     * @param string $tag       Tag name
      * @param string $attribute Attribute name
      * @param string $value     Attribute value
      *
      * @return bool
      */
-    public function filterBlacklistResourceAttribute($tag, $attribute, $value)
+    public function filterBlacklistResourceAttribute($attribute, $value)
     {
         if ($this->isResource($attribute) && $this->isBlacklistedMedia($value)) {
             return false;
@@ -343,13 +342,12 @@ class Attribute
     /**
      * Convert all relative links to absolute url.
      *
-     * @param string $tag       Tag name
      * @param string $attribute Attribute name
      * @param string $value     Attribute value
      *
      * @return bool
      */
-    public function rewriteAbsoluteUrl($tag, $attribute, &$value)
+    public function rewriteAbsoluteUrl($attribute, &$value)
     {
         if ($this->isResource($attribute)) {
             $value = Url::resolve($value, $this->website);
@@ -422,13 +420,12 @@ class Attribute
     /**
      * Return true if the scheme is authorized.
      *
-     * @param string $tag       Tag name
      * @param string $attribute Attribute name
      * @param string $value     Attribute value
      *
      * @return bool
      */
-    public function filterProtocolUrlAttribute($tag, $attribute, $value)
+    public function filterProtocolUrlAttribute($attribute, $value)
     {
         if ($this->isResource($attribute) && !$this->isAllowedProtocol($value)) {
             return false;
