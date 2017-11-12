@@ -2,14 +2,14 @@
 return array(
     'grabber' => array(
         '%.*%' => array(
-            'test_url' => 'https://www.theverge.com/2017/10/20/16512178/alphabet-project-loon-puerto-rico-lte-balloons-disaster-relief-connectivity',
+            'test_url' => 'https://www.theverge.com/2017/11/11/16624298/mindhunter-netflix-show-david-fincher-review',
             'body' => array(
-		'//div[@class="c-entry-hero__header-wrap"]',
-		'//span[@class="e-image__inner"]',
-		'//div[@class="c-entry-content"]',
+                '//figure[@class="e-image e-image--hero"]/span[@class="e-image__inner"]',
+                '//div[@class="c-entry-content"]',
             ),
             'strip' => array(
-                '//div[@class="c-entry-hero__meta"]',
+                '//div[@class="c-related-list"]',
+                '//div[@class="c-page-title"]',
             )
         ),
     ),
