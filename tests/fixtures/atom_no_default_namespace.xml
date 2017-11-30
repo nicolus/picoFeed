@@ -22,6 +22,7 @@
     <updated>2015-06-05T00:05:00+03:00</updated>
     <author>
         <name>Вики  педии - свободной энциклопедии</name>
+        <uri>https://en.wikipedia.org/</uri>
     </author>
     <entry>
         <title>
@@ -30,6 +31,7 @@
         </title>
         <author>
             <name>Лев  Николаевич Толсто́й</name>
+            <uri>https://en.wikipedia.org/wiki/Leo_Tolstoy</uri>
         </author>
         <link rel="alternate" href="https://en.wikipedia.org/wiki/War_and_Peace"/>
         <updated>2015-06-05T00:02:00+03:00</updated>
