@@ -1,6 +1,6 @@
 {
     "name": "miniflux/picofeed",
-    "description": "Modern library to handle RSS/Atom feeds",
+    "description": "RSS/Atom parsing library (not maintained)",
     "homepage": "https://github.com/miniflux/picoFeed",
     "type": "library",
     "license": "MIT",
