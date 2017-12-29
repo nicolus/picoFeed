@@ -173,10 +173,10 @@ class Item
             $output .= 'Item::'.$property.' = '.$this->$property.PHP_EOL;
         }
 
-        $publishedDate = $this->publishedDate != null ? $this->publishedDate->format(DATE_RFC822) : null;
-        $updatedDate = $this->updatedDate != null ? $this->updatedDate->format(DATE_RFC822) : null;
+        $publishedDate = $this->publishedDate !== null ? $this->publishedDate->format(DATE_RFC822) : null;
+        $updatedDate = $this->updatedDate !== null ? $this->updatedDate->format(DATE_RFC822) : null;
 
-        $categoryString = $this->categories != null ? implode(',', $this->categories) : null;
+        $categoryString = $this->categories !== null ? implode(',', $this->categories) : null;
 
         $output .= 'Item::date = '.$this->date->format(DATE_RFC822).PHP_EOL;
         $output .= 'Item::publishedDate = '.$publishedDate.PHP_EOL;

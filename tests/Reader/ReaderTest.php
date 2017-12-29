@@ -35,23 +35,6 @@ class ReaderTest extends PHPUnit_Framework_TestCase
         $this->assertNotEmpty($feed);
     }
 
-    /**
-     * @group online
-     */
-    public function testDownloadCache()
-    {
-        $reader = new Reader();
-        $resource = $reader->download('http://linuxfr.org/robots.txt');
-        $this->assertTrue($resource->isModified());
-
-        $lastModified = $resource->getLastModified();
-        $etag = $resource->getEtag();
-
-        $reader = new Reader();
-        $resource = $reader->download('http://linuxfr.org/robots.txt', $lastModified, $etag);
-        $this->assertFalse($resource->isModified());
-    }
-
     public function testDetectFormat()
     {
         $reader = new Reader();
