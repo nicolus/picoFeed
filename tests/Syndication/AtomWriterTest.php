@@ -3,9 +3,9 @@
 namespace PicoFeed\Syndication;
 
 use DateTime;
-use PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
 
-class AtomWriterTest extends PHPUnit_Framework_TestCase
+class AtomWriterTest extends TestCase
 {
     public function testWriter()
     {

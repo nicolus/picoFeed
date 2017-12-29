@@ -2,10 +2,10 @@
 
 namespace PicoFeed\Generator;
 
-use PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
 use PicoFeed\Parser\Item;
 
-class YoutubeContentGeneratorTest extends PHPUnit_Framework_TestCase
+class YoutubeContentGeneratorTest extends TestCase
 {
     public function testGenerateHtmlFromXmlContent()
     {

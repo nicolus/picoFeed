@@ -2,9 +2,9 @@
 
 namespace PicoFeed\Parser;
 
-use PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
 
-class DateParserTest extends PHPUnit_Framework_TestCase
+class DateParserTest extends TestCase
 {
     public function testParseDate()
     {

@@ -2,9 +2,9 @@
 
 namespace PicoFeed\Reader;
 
-use PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
 
-class ReaderTest extends PHPUnit_Framework_TestCase
+class ReaderTest extends TestCase
 {
     public function testPrependScheme()
     {
