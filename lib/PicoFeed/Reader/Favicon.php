@@ -101,7 +101,6 @@ class Favicon extends Base
     public function download($url)
     {
         $client = new Client($this->httpClient);
-        $client->setConfig($this->config);
 
         Logger::setMessage(get_called_class().' Download => '.$url);
 

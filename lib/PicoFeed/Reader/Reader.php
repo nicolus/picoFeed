@@ -3,6 +3,7 @@
 namespace PicoFeed\Reader;
 
 use DOMXPath;
+use GuzzleHttp\ClientInterface;
 use PicoFeed\Base;
 use PicoFeed\Client\Client;
 use PicoFeed\Client\Url;
@@ -21,52 +22,37 @@ class Reader extends Base
      *
      * @var array
      */
-    private $formats = array(
+    private $formats = [
         'Atom' => '//feed',
         'Rss20' => '//rss[@version="2.0"]',
         'Rss92' => '//rss[@version="0.92"]',
         'Rss91' => '//rss[@version="0.91"]',
         'Rss10' => '//rdf',
-    );
-
+    ];
     /**
      * Download a feed (no discovery).
      *
-     * @param string $url           Feed url
-     * @param string $last_modified Last modified HTTP header
-     * @param string $etag          Etag HTTP header
-     * @param string $username      HTTP basic auth username
-     * @param string $password      HTTP basic auth password
+     * @param string $url Feed url
      *
      * @return \PicoFeed\Client\Client
      */
-    public function download($url, $last_modified = '', $etag = '', $username = '', $password = '')
+    public function download($url)
     {
         $url = $this->prependScheme($url);
 
-        return Client::getInstance()
-                        ->setConfig($this->config)
-                        ->setLastModified($last_modified)
-                        ->setEtag($etag)
-                        ->setUsername($username)
-                        ->setPassword($password)
-                        ->execute($url);
+        return $this->client->execute($url);
     }
 
     /**
      * Discover and download a feed.
      *
      * @param string $url Feed or website url
-     * @param string $last_modified Last modified HTTP header
-     * @param string $etag Etag HTTP header
-     * @param string $username HTTP basic auth username
-     * @param string $password HTTP basic auth password
      * @return Client
      * @throws SubscriptionNotFoundException
      */
-    public function discover($url, $last_modified = '', $etag = '', $username = '', $password = '')
+    public function discover($url)
     {
-        $client = $this->download($url, $last_modified, $etag, $username, $password);
+        $client = $this->download($url);
 
         // It's already a feed or the feed was not modified
         if (!$client->isModified() || $this->detectFormat($client->getContent())) {
@@ -80,29 +66,29 @@ class Reader extends Base
             throw new SubscriptionNotFoundException('Unable to find a subscription');
         }
 
-        return $this->download($links[0], $last_modified, $etag, $username, $password);
+        return $this->download($links[0]);
     }
 
     /**
      * Find feed urls inside a HTML document.
      *
-     * @param string $url  Website url
+     * @param string $url Website url
      * @param string $html HTML content
      *
      * @return array List of feed links
      */
     public function find($url, $html)
     {
-        Logger::setMessage(get_called_class().': Try to discover subscriptions');
+        Logger::setMessage(get_called_class() . ': Try to discover subscriptions');
 
         $dom = XmlParser::getHtmlDocument($html);
         $xpath = new DOMXPath($dom);
-        $links = array();
+        $links = [];
 
-        $queries = array(
+        $queries = [
             '//link[@type="application/rss+xml"]',
             '//link[@type="application/atom+xml"]',
-        );
+        ];
 
         foreach ($queries as $query) {
             $nodes = $xpath->query($query);
@@ -119,7 +105,7 @@ class Reader extends Base
             }
         }
 
-        Logger::setMessage(get_called_class().': '.implode(', ', $links));
+        Logger::setMessage(get_called_class() . ': ' . implode(', ', $links));
 
         return $links;
     }
@@ -141,8 +127,9 @@ class Reader extends Base
             throw new UnsupportedFeedFormatException('Unable to detect feed format');
         }
 
-        $className = '\PicoFeed\Parser\\'.$format;
+        $className = '\PicoFeed\Parser\\' . $format;
 
+        /** @var \PicoFeed\Parser\Parser $parser */
         $parser = new $className($content, $encoding, $url);
         $parser->setHashAlgo($this->config->getParserHashAlgo());
         $parser->setConfig($this->config);
@@ -181,7 +168,7 @@ class Reader extends Base
     public function prependScheme($url)
     {
         if (!preg_match('%^https?://%', $url)) {
-            $url = 'http://'.$url;
+            $url = 'http://' . $url;
         }
 
         return $url;

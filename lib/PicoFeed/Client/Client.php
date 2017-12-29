@@ -66,69 +66,6 @@ class Client
     protected $expiration = null;
 
     /**
-     * Proxy hostname.
-     *
-     * @var string
-     */
-    protected $proxy_hostname = '';
-
-    /**
-     * Proxy port.
-     *
-     * @var int
-     */
-    protected $proxy_port = 3128;
-
-    /**
-     * Proxy username.
-     *
-     * @var string
-     */
-    protected $proxy_username = '';
-
-    /**
-     * Proxy password.
-     *
-     * @var string
-     */
-    protected $proxy_password = '';
-
-    /**
-     * Basic auth username.
-     *
-     * @var string
-     */
-    protected $username = '';
-
-    /**
-     * Basic auth password.
-     *
-     * @var string
-     */
-    protected $password = '';
-
-    /**
-     * CURL options.
-     *
-     * @var array
-     */
-    protected $additional_curl_options = array();
-
-    /**
-     * Client connection timeout.
-     *
-     * @var int
-     */
-    protected $timeout = 10;
-
-    /**
-     * User-agent.
-     *
-     * @var string
-     */
-    protected $user_agent = 'PicoFeed (https://github.com/miniflux/picoFeed)';
-
-    /**
      * Real URL used (can be changed after a HTTP redirect).
      *
      * @var string
@@ -141,20 +78,6 @@ class Client
      * @var string
      */
     protected $content = '';
-
-    /**
-     * Number maximum of HTTP redirections to avoid infinite loops.
-     *
-     * @var int
-     */
-    protected $max_redirects = 5;
-
-    /**
-     * Maximum size of the HTTP body response.
-     *
-     * @var int
-     */
-    protected $max_body_size = 2097152; // 2MB
 
     /**
      * HTTP response status code.
@@ -189,9 +112,8 @@ class Client
 
     public function __construct(ClientInterface $httpClient = null)
     {
-        $this->httpClient = $httpClient;
+        $this->httpClient = $httpClient ?: new \GuzzleHttp\Client();
     }
-
 
     /**
      * Get client instance: curl or stream driver.
@@ -238,7 +160,7 @@ class Client
                 echo $response->getBody()->getContents();
             };
 
-            $this->handleNormalResponse($response);
+            $this->handleResponse($response);
             $this->expiration = $this->parseExpiration($response);
         }
 
@@ -248,72 +170,19 @@ class Client
         return $this;
     }
 
-    /**
-     * Handle not modified response.
-     * @param ResponseInterface $response
-     */
-    protected function handleNotModifiedResponse(ResponseInterface $response)
-    {
-        if ($response->getStatusCode() == 304) {
-            $this->is_modified = false;
-        } elseif ($response->getStatusCode() == 200) {
-            $this->is_modified = $this->hasBeenModified($response, $this->etag, $this->last_modified);
-            $this->etag = $response->getHeader('ETag')[0] ?? null;
-            $this->last_modified = $response->getHeader('Last-Modified')[0] ?? null;
-        }
-
-        if ($this->is_modified === false) {
-            Logger::setMessage(get_called_class() . ' Resource not modified');
-        }
-    }
 
     /**
      * Handle normal response.
      *
      * @param ResponseInterface $response Client response
      */
-    protected function handleNormalResponse(ResponseInterface $response)
+    protected function handleResponse(ResponseInterface $response)
     {
         if ($response->getStatusCode() == 200) {
             $this->content = $response->getBody()->getContents();
             $this->content_type = $this->findContentType($response);
             $this->encoding = $this->findCharset();
         }
-    }
-
-    /**
-     * Check if a request has been modified according to the parameters.
-     *
-     * @param ResponseInterface $response
-     * @param string $etag
-     * @param string $lastModified
-     * @return bool
-     */
-    private function hasBeenModified(ResponseInterface $response, $etag, $lastModified)
-    {
-        $headers = array(
-            'Etag' => $etag,
-            'Last-Modified' => $lastModified,
-        );
-
-        // Compare the values for each header that is present
-        $presentCacheHeaderCount = 0;
-        foreach ($headers as $key => $value) {
-            if (!empty($response->getHeader($key)[0])) {
-                if ($response->getHeader($key)[0] !== $value) {
-                    return true;
-                }
-                ++$presentCacheHeaderCount;
-            }
-        }
-
-        // If at least one header is present and the values match, the response
-        // was not modified
-        if ($presentCacheHeaderCount > 0) {
-            return false;
-        }
-
-        return true;
     }
 
     /**
@@ -477,141 +346,6 @@ class Client
     }
 
     /**
-     * Set connection timeout.
-     *
-     * @param int $timeout Connection timeout
-     * @return $this
-     */
-    public function setTimeout($timeout)
-    {
-        $this->timeout = $timeout ?: $this->timeout;
-        return $this;
-    }
-
-    /**
-     * Set a custom user agent.
-     *
-     * @param string $user_agent User Agent
-     * @return $this
-     */
-    public function setUserAgent($user_agent)
-    {
-        $this->user_agent = $user_agent ?: $this->user_agent;
-        return $this;
-    }
-
-    /**
-     * Set the maximum number of HTTP redirections.
-     *
-     * @param int $max Maximum
-     * @return $this
-     */
-    public function setMaxRedirections($max)
-    {
-        $this->max_redirects = $max ?: $this->max_redirects;
-        return $this;
-    }
-
-    /**
-     * Set the maximum size of the HTTP body.
-     *
-     * @param int $max Maximum
-     * @return $this
-     */
-    public function setMaxBodySize($max)
-    {
-        $this->max_body_size = $max ?: $this->max_body_size;
-        return $this;
-    }
-
-    /**
-     * Set the proxy hostname.
-     *
-     * @param string $hostname Proxy hostname
-     * @return $this
-     */
-    public function setProxyHostname($hostname)
-    {
-        $this->proxy_hostname = $hostname ?: $this->proxy_hostname;
-        return $this;
-    }
-
-    /**
-     * Set the proxy port.
-     *
-     * @param int $port Proxy port
-     * @return $this
-     */
-    public function setProxyPort($port)
-    {
-        $this->proxy_port = $port ?: $this->proxy_port;
-        return $this;
-    }
-
-    /**
-     * Set the proxy username.
-     *
-     * @param string $username Proxy username
-     * @return $this
-     */
-    public function setProxyUsername($username)
-    {
-        $this->proxy_username = $username ?: $this->proxy_username;
-        return $this;
-    }
-
-    /**
-     * Set the proxy password.
-     *
-     * @param string $password Password
-     * @return $this
-     */
-    public function setProxyPassword($password)
-    {
-        $this->proxy_password = $password ?: $this->proxy_password;
-        return $this;
-    }
-
-    /**
-     * Set the username.
-     *
-     * @param string $username Basic Auth username
-     *
-     * @return $this
-     */
-    public function setUsername($username)
-    {
-        $this->username = $username ?: $this->username;
-        return $this;
-    }
-
-    /**
-     * Set the password.
-     *
-     * @param string $password Basic Auth Password
-     *
-     * @return $this
-     */
-    public function setPassword($password)
-    {
-        $this->password = $password ?: $this->password;
-        return $this;
-    }
-
-    /**
-     * Set the CURL options.
-     *
-     * @param array $options
-     * @return $this
-     */
-    public function setAdditionalCurlOptions(array $options)
-    {
-        $this->additional_curl_options = $options ?: $this->additional_curl_options;
-        return $this;
-    }
-
-
-    /**
      * Enable the passthrough mode.
      *
      * @return $this
@@ -630,29 +364,6 @@ class Client
     public function disablePassthroughMode()
     {
         $this->passthrough = false;
-        return $this;
-    }
-
-    /**
-     * Set config object.
-     *
-     * @param \PicoFeed\Config\Config $config Config instance
-     * @return $this
-     */
-    public function setConfig(Config $config)
-    {
-        if ($config !== null) {
-            $this->setTimeout($config->getClientTimeout());
-            $this->setUserAgent($config->getClientUserAgent());
-            $this->setMaxRedirections($config->getMaxRedirections());
-            $this->setMaxBodySize($config->getMaxBodySize());
-            $this->setProxyHostname($config->getProxyHostname());
-            $this->setProxyPort($config->getProxyPort());
-            $this->setProxyUsername($config->getProxyUsername());
-            $this->setProxyPassword($config->getProxyPassword());
-            $this->setAdditionalCurlOptions($config->getAdditionalCurlOptions() ?: array());
-        }
-
         return $this;
     }
 

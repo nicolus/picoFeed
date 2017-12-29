@@ -2,8 +2,8 @@
 
 namespace PicoFeed;
 
-use GuzzleHttp\Client;
 use GuzzleHttp\ClientInterface;
+use PicoFeed\Client\Client;
 use PicoFeed\Config\Config;
 use PicoFeed\Logging\Logger;
 
@@ -24,11 +24,14 @@ abstract class Base
     protected $config;
 
     /**
-     * Guzzle Http client used to make http requests
-     *
-     * @var ClientInterface
+     * @var ClientInterface Guzzle Http client used to make http requests
      */
     protected $httpClient;
+
+    /**
+     * @var Client Picofeed Http Client
+     */
+    protected $client;
 
     /**
      * Constructor.
@@ -39,7 +42,7 @@ abstract class Base
     public function __construct(Config $config = null, ClientInterface $httpClient = null)
     {
         $this->config = $config ?: new Config();
-        $this->httpClient = $httpClient ?: new Client();
+        $this->client = new Client($this->httpClient);
         Logger::setTimezone($this->config->getTimezone());
     }
 

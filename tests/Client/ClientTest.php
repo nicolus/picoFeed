@@ -11,7 +11,7 @@ class ClientTest extends TestCase
      */
     public function testDownload()
     {
-        $client = Client::getInstance();
+        $client = new Client();
         $client->setUrl('http://php.net/robots.txt');
         $client->execute();
 
@@ -25,7 +25,7 @@ class ClientTest extends TestCase
      */
     public function testPassthrough()
     {
-        $client = new Client(new \GuzzleHttp\Client());
+        $client = new Client();
         $client->setUrl('https://miniflux.net/favicon.ico');
         $client->enablePassthroughMode();
         $client->execute();
@@ -38,12 +38,12 @@ class ClientTest extends TestCase
      */
     public function testCacheBothHaveToMatch()
     {
-        $client = Client::getInstance();
+        $client = new Client();
         $client->setUrl('http://php.net/robots.txt');
         $client->execute();
         $etag = $client->getEtag();
 
-        $client = Client::getInstance();
+        $client = new Client();
         $client->setUrl('http://php.net/robots.txt');
         $client->setEtag($etag);
         $client->execute();
@@ -56,7 +56,7 @@ class ClientTest extends TestCase
      */
     public function testMultipleDownload()
     {
-        $client = Client::getInstance();
+        $client = new Client();
         $client->setUrl('http://miniflux.net/');
         $result = $client->doRequest();
 
@@ -71,12 +71,12 @@ class ClientTest extends TestCase
      */
     public function testCharset()
     {
-        $client = Client::getInstance();
+        $client = new Client();
         $client->setUrl('http://php.net/');
         $client->execute();
         $this->assertEquals('utf-8', $client->getEncoding());
 
-        $client = Client::getInstance();
+        $client = new Client();
         $client->setUrl('http://php.net/robots.txt');
         $client->execute();
         $this->assertEquals('', $client->getEncoding());
@@ -87,12 +87,12 @@ class ClientTest extends TestCase
      */
     public function testContentType()
     {
-        $client = Client::getInstance();
+        $client = new Client();
         $client->setUrl('http://miniflux.net/assets/img/favicon.png');
         $client->execute();
         $this->assertEquals('image/png', $client->getContentType());
 
-        $client = Client::getInstance();
+        $client = new Client();
         $client->setUrl('http://miniflux.net/');
         $client->execute();
         $this->assertEquals('text/html; charset=utf-8', $client->getContentType());
