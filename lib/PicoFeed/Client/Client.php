@@ -2,11 +2,8 @@
 
 namespace PicoFeed\Client;
 
-use DateTime;
-use Exception;
 use GuzzleHttp\ClientInterface;
 use PicoFeed\Logging\Logger;
-use PicoFeed\Config\Config;
 use Psr\Http\Message\ResponseInterface;
 
 /**
@@ -43,27 +40,6 @@ class Client
      * @var array
      */
     protected $request_headers = array();
-
-    /**
-     * HTTP Etag header.
-     *
-     * @var string
-     */
-    protected $etag = '';
-
-    /**
-     * HTTP Last-Modified header.
-     *
-     * @var string
-     */
-    protected $last_modified = '';
-
-    /**
-     * Expiration DateTime
-     *
-     * @var DateTime
-     */
-    protected $expiration = null;
 
     /**
      * Real URL used (can be changed after a HTTP redirect).
@@ -144,8 +120,6 @@ class Client
         }
 
         Logger::setMessage(get_called_class() . ' Fetch URL: ' . $this->url);
-        Logger::setMessage(get_called_class() . ' Etag provided: ' . $this->etag);
-        Logger::setMessage(get_called_class() . ' Last-Modified provided: ' . $this->last_modified);
 
         $response = $this->doRequest();
         if ($response) {
@@ -154,11 +128,7 @@ class Client
             };
 
             $this->handleResponse($response);
-            $this->expiration = $this->parseExpiration($response);
         }
-
-
-        Logger::setMessage(get_called_class() . ' Expiration: ' . $this->expiration->format(DATE_ISO8601));
 
         return $this;
     }
@@ -210,50 +180,6 @@ class Client
     public function getHeader(array $response, $header)
     {
         return isset($response['headers'][$header]) ? $response['headers'][$header][0] : '';
-    }
-
-    /**
-     * Set the Last-Modified HTTP header.
-     *
-     * @param string $last_modified Header value
-     * @return $this
-     */
-    public function setLastModified($last_modified)
-    {
-        $this->last_modified = $last_modified;
-        return $this;
-    }
-
-    /**
-     * Get the value of the Last-Modified HTTP header.
-     *
-     * @return string
-     */
-    public function getLastModified()
-    {
-        return $this->last_modified;
-    }
-
-    /**
-     * Set the value of the Etag HTTP header.
-     *
-     * @param string $etag Etag HTTP header value
-     * @return $this
-     */
-    public function setEtag($etag)
-    {
-        $this->etag = $etag;
-        return $this;
-    }
-
-    /**
-     * Get the Etag HTTP header value.
-     *
-     * @return string
-     */
-    public function getEtag()
-    {
-        return $this->etag;
     }
 
     /**
@@ -348,27 +274,5 @@ class Client
     {
         $this->passthrough = false;
         return $this;
-    }
-
-    public function parseExpiration(ResponseInterface $response)
-    {
-        try {
-
-            if ($cacheControl = $response->getHeader('Cache-Control')[0]) {
-                if (preg_match('/s-maxage=(\d+)/', $cacheControl, $matches)) {
-                    return new DateTime('+' . $matches[1] . ' seconds');
-                } else if (preg_match('/max-age=(\d+)/', $cacheControl, $matches)) {
-                    return new DateTime('+' . $matches[1] . ' seconds');
-                }
-            }
-
-            if ($expires = $response->getHeader('Expires')[0]) {
-                return new DateTime($expires);
-            }
-        } catch (Exception $e) {
-            Logger::setMessage('Unable to parse expiration date: ' . $e->getMessage());
-        }
-
-        return new DateTime();
     }
 }
