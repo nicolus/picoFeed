@@ -1,9 +1,7 @@
 PicoFeed
 ========
 
-PicoFeed was originally developed for [Miniflux](http://miniflux.net), a minimalist and open source news reader.
-
-[![Build Status](https://travis-ci.org/miniflux/picoFeed.svg?branch=master)](https://travis-ci.org/miniflux/picoFeed)
+This library is **not maintained anymore**.
 
 Features
 --------
@@ -29,21 +27,6 @@ Requirements
 - XML PHP extensions: DOM and SimpleXML
 - cURL or Stream Context (`allow_url_fopen=On`)
 - iconv extension
-
-Authors
--------
-
-- Original author: Frédéric Guillot
-- Major Contributors:
-    - [Bernhard Posselt](https://github.com/Raydiation)
-    - [David Pennington](https://github.com/Xeoncross)
-    - [Mathias Kresin](https://github.com/mkresin)
-
-Real world usage
-----------------
-
-- [Miniflux](http://miniflux.net)
-- [Owncloud News](https://github.com/owncloud/news)
 
 Documentation
 -------------
