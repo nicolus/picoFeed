@@ -1,12 +1,12 @@
 <?php
-return array(
-    'grabber' => array(
-        '%.*%' => array(
+return [
+    'grabber' => [
+        '%.*%' => [
             'test_url' => 'https://hotshowlife.com/top-10-chempionov-produktov-po-szhiganiyu-kalorij/',
-            'body' => array(
+            'body' => [
                 '//div[@class="entry-content"]',
-            ),
-            'strip' => array(
+            ],
+            'strip' => [
                 '//script',
                 '//form',
                 '//style',
@@ -17,7 +17,7 @@ return array(
                 '//div[contains(@class, "avatar")]',
                 '//ul[contains(@class, "entry-tags")]',
                 '//div[contains(@class, "entry-meta")]',
-            ),
-        ),
-    ),
-);
+            ],
+        ],
+    ],
+];

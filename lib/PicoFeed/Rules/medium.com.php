@@ -1,19 +1,19 @@
 <?php
-return array(
-    'grabber' => array(
-        '%.*%' => array(
+return [
+    'grabber' => [
+        '%.*%' => [
             'test_url' => 'https://medium.com/lessons-learned/917b8b63ae3e',
-            'body' => array(
+            'body' => [
                 '//div[@class="section-content"]',
-            ),
-            'strip' => array(
+            ],
+            'strip' => [
                 '//div[contains(@class,"metabar")]',
                 '//img[contains(@class,"thumbnail")]',
                 '//h1',
                 '//blockquote',
                 '//div[@class="aspectRatioPlaceholder-fill"]',
                 '//footer'
-            ),
-        ),
-    ),
-);
+            ],
+        ],
+    ],
+];

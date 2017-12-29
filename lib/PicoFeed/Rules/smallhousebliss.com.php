@@ -1,19 +1,19 @@
 <?php
-return array(
-    'grabber' => array(
-        '%.*%' => array(
+return [
+    'grabber' => [
+        '%.*%' => [
             'test_url' => 'http://smallhousebliss.com/2013/08/29/house-g-by-lode-architecture/',
-            'body' => array(
+            'body' => [
                 '//div[@class="post-content"]',
-            ),
-            'strip' => array(
+            ],
+            'strip' => [
                 '//*[contains(@class, "gallery")]',
                 '//*[contains(@class, "share")]',
                 '//*[contains(@class, "wpcnt")]',
                 '//*[contains(@class, "meta")]',
                 '//*[contains(@class, "postitle")]',
                 '//*[@id="nav-below"]',
-            ),
-        ),
-    ),
-);
+            ],
+        ],
+    ],
+];

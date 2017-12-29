@@ -1,12 +1,12 @@
 <?php
-return array(
-    'grabber' => array(
-        '%.*%' => array(
+return [
+    'grabber' => [
+        '%.*%' => [
             'test_url' => 'http://www.thestandard.com.hk/breaking_news_detail.asp?id=67156',
-            'body' => array(
+            'body' => [
                 '//table/tr/td/span[@class="bodyCopy"]',
-            ),
-            'strip' => array(
+            ],
+            'strip' => [
                 '//script',
                 '//br',
                 '//map[@name="gif_bar"]',
@@ -16,7 +16,7 @@ return array(
                 '//i',
                 '//b',
                 '//table',
-            ),
-        ),
-    ),
-);
+            ],
+        ],
+    ],
+];

@@ -1,16 +1,16 @@
 <?php
-return array(
-    'grabber' => array(
-        '%.*%' => array(
+return [
+    'grabber' => [
+        '%.*%' => [
             'test_url' => 'http://putaindecode.fr/posts/js/etat-lieux-js-modulaire-front/',
-            'body' => array(
+            'body' => [
                 '//*[@class="putainde-Post-md"]',
-            ),
-            'strip' => array(
+            ],
+            'strip' => [
                 '//*[contains(@class, "inlineimg")]',
                 '//*[contains(@class, "comment-respond")]',
                 '//header',
-            ),
-        ),
-    ),
-);
+            ],
+        ],
+    ],
+];

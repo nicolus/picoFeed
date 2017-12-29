@@ -1,14 +1,14 @@
 <?php
-return array(
-    'grabber' => array(
-        '%.*%' => array(
+return [
+    'grabber' => [
+        '%.*%' => [
             'test_url' => 'https://mno.hu/kulfold/elnokot-valasztanak-szloveniaban-2422840',
-            'body' => array(
-		'//div[@class="header"]/h1',
-		'//div[@class="content hircikk clearfix"]/p'
-            ),
-            'strip' => array(
-            )
-        ),
-    ),
-);
+            'body' => [
+                '//div[@class="header"]/h1',
+                '//div[@class="content hircikk clearfix"]/p'
+            ],
+            'strip' => [
+            ]
+        ],
+    ],
+];

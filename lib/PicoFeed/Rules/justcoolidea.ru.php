@@ -1,19 +1,19 @@
 <?php
-return array(
-    'grabber' => array(
-        '%.*%' => array(
+return [
+    'grabber' => [
+        '%.*%' => [
             'test_url' => 'http://justcoolidea.ru/idealnyj-sad-samodelnye-proekty-dlya-berezhlivogo-domovladeltsa/',
-            'body' => array(
+            'body' => [
                 '//section[@class="entry-content"]',
-            ),
-            'strip' => array(
+            ],
+            'strip' => [
                 '//script',
                 '//form',
                 '//style',
                 '//*[contains(@class, "essb_links")]',
                 '//*[contains(@rel, "nofollow")]',
                 '//*[contains(@class, "ads")]',
-            ),
-        ),
-    ),
-);
+            ],
+        ],
+    ],
+];

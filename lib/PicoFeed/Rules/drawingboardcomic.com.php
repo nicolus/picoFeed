@@ -1,15 +1,15 @@
 <?php
-return array(
-    'grabber' => array(
-        '%.*%' => array(
-            'body' => array('//img[@id="comicimage"]'),
-            'strip' => array(),
+return [
+    'grabber' => [
+        '%.*%' => [
+            'body' => ['//img[@id="comicimage"]'],
+            'strip' => [],
             'test_url' => 'http://drawingboardcomic.com/index.php?comic=208',
-        ),
-    ),
-    'filter' => array(
-        '%.*%' => array(
+        ],
+    ],
+    'filter' => [
+        '%.*%' => [
             '%title="(.+)" */>%' => '/><br/>$1',
-        ),
-    ),
-);
+        ],
+    ],
+];

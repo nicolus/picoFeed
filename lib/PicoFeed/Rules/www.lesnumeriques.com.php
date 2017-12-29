@@ -1,14 +1,14 @@
 <?php
-return array(
-    'grabber' => array(
-        '%.*%' => array(
+return [
+    'grabber' => [
+        '%.*%' => [
             'test_url' => 'http://www.lesnumeriques.com/blender/kitchenaid-diamond-5ksb1585-p27473/test.html',
-            'body' => array(
+            'body' => [
                 '//*[@id="product-content"]',
                 '//*[@id="news-content"]',
                 '//*[@id="article-content"]',
-            ),
-            'strip' => array(
+            ],
+            'strip' => [
                 '//form',
                 '//div[contains(@class, "price-v4"])',
                 '//div[contains(@class, "authors-and-date")]',
@@ -19,7 +19,7 @@ return array(
                 '//div[@id="product-reviews"]',
                 '//div[@id="publication-breadcrumbs-and-date"]',
                 '//div[@id="publication-breadcrumbs-and-date"]',
-            ),
-        ),
-    ),
-);
+            ],
+        ],
+    ],
+];

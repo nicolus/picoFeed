@@ -1,18 +1,18 @@
 <?php
-return array(
-    'grabber' => array(
-        '%.*%' => array(
-            'body' => array(
+return [
+    'grabber' => [
+        '%.*%' => [
+            'body' => [
                 '//div[@class="comicpane"]/a/img',
                 '//div[@class="entry"]',
-            ),
-            'strip' => array(),
+            ],
+            'strip' => [],
             'test_url' => 'http://thedoghousediaries.com/6023',
-        ),
-    ),
-    'filter' => array(
-        '%.*%' => array(
+        ],
+    ],
+    'filter' => [
+        '%.*%' => [
             '%title="(.+)" */>%' => '/><br/>$1',
-        ),
-    ),
-);
+        ],
+    ],
+];

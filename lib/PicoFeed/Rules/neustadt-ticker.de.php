@@ -1,15 +1,15 @@
 <?php
-return array(
-    'grabber' => array(
-        '%.*%' => array(
+return [
+    'grabber' => [
+        '%.*%' => [
             'test_url' => 'http://www.neustadt-ticker.de/41302/alltag/kultur/demo-auf-der-boehmischen',
-            'body' => array(
+            'body' => [
                 '//div[@class="entry-content"]',
-            ),
-            'strip' => array(
+            ],
+            'strip' => [
                 '//*[contains(@class, "sharedaddy")]',
                 '//*[contains(@class, "yarpp-related")]',
-            ),
-        ),
-    ),
-);
+            ],
+        ],
+    ],
+];

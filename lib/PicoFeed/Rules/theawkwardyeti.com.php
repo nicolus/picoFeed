@@ -1,12 +1,12 @@
 <?php
-return array(
-  'grabber' => array(
-    '%/comic/.*%' => array(
-      'test_url' => 'http://theawkwardyeti.com/comic/things-to-do/',
-      'body' => array(
-        '//div[@id="comic"]'
-      ),
-      'strip' => array()
-    )
-  )
-);
+return [
+    'grabber' => [
+        '%/comic/.*%' => [
+            'test_url' => 'http://theawkwardyeti.com/comic/things-to-do/',
+            'body' => [
+                '//div[@id="comic"]'
+            ],
+            'strip' => []
+        ]
+    ]
+];

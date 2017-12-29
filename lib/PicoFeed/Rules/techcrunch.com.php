@@ -1,15 +1,15 @@
 <?php
-return array(
-    'grabber' => array(
-        '%.*%' => array(
+return [
+    'grabber' => [
+        '%.*%' => [
             'test_url' => 'http://techcrunch.com/2013/08/31/indias-visa-maze/',
-            'body' => array(
+            'body' => [
                 '//div[contains(@class, "media-container")]',
                 '//div[contains(@class, "article-entry")]',
-            ),
-            'strip' => array(
+            ],
+            'strip' => [
                 '//*[contains(@class, "module-crunchbase")]',
-            ),
-        ),
-    ),
-);
+            ],
+        ],
+    ],
+];

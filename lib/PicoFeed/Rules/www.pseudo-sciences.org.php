@@ -1,16 +1,16 @@
 <?php
-return array(
-    'grabber' => array(
-        '%.*%' => array(
+return [
+    'grabber' => [
+        '%.*%' => [
             'test_url' => 'http://www.pseudo-sciences.org/spip.php?article2275',
-            'body' => array(
+            'body' => [
                 '//div[@id="art_main"]',
-            ),
-            'strip' => array(
+            ],
+            'strip' => [
                 '//div[@id="art_print"]',
                 '//div[@id="art_chapo"]',
                 '//img[@class="puce"]',
-            ),
-        ),
-    ),
-);
+            ],
+        ],
+    ],
+];

@@ -1,23 +1,23 @@
 <?php
-return array(
-    'grabber' => array(
-        '%^/news.*%' => array(
+return [
+    'grabber' => [
+        '%^/news.*%' => [
             'test_url' => 'http://www.adventuregamers.com/news/view/31079',
-            'body' => array(
+            'body' => [
                 '//div[@class="bodytext"]',
-            )
-        ),
-        '%^/videos.*%' => array(
+            ]
+        ],
+        '%^/videos.*%' => [
             'test_url' => 'http://www.adventuregamers.com/videos/view/31056',
-            'body' => array(
+            'body' => [
                 '//iframe',
-            )
-        ),
-        '%^/articles.*%' => array(
+            ]
+        ],
+        '%^/articles.*%' => [
             'test_url' => 'http://www.adventuregamers.com/articles/view/31049',
-            'body' => array(
+            'body' => [
                 '//div[@class="cleft"]',
-            )
-        )
-    ),
-);
+            ]
+        ]
+    ],
+];

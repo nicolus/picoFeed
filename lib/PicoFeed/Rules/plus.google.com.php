@@ -1,11 +1,11 @@
 <?php
-return array(
-    'grabber' => array(
-        '%.*%' => array(
+return [
+    'grabber' => [
+        '%.*%' => [
             'test_url' => 'https://plus.google.com/+LarryPage/posts/Lh8SKC6sED1',
-            'body' => array(
+            'body' => [
                 '//div[@role="article"]/div[contains(@class, "eE")]',
-            ),
-        ),
-    ),
-);
+            ],
+        ],
+    ],
+];

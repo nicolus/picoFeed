@@ -1,12 +1,12 @@
 <?php
-return array(
-    'grabber' => array(
-        '%.*%' => array(
+return [
+    'grabber' => [
+        '%.*%' => [
             'test_url' => 'http://www.forbes.com/sites/andygreenberg/2013/09/05/follow-the-bitcoins-how-we-got-busted-buying-drugs-on-silk-roads-black-market/',
-            'body' => array(
+            'body' => [
                 '//div[@id="leftRail"]/div[contains(@class, body)]',
-            ),
-            'strip' => array(
+            ],
+            'strip' => [
                 '//aside',
                 '//div[contains(@class, "entity_block")]',
                 '//div[contains(@class, "vestpocket") and not contains(@class, "body")]',
@@ -14,7 +14,7 @@ return array(
                 '//div[contains(@id, "comment")]',
                 '//div[contains(@class, "widget")]',
                 '//div[contains(@class, "pagination")]',
-            ),
-        ),
-    ),
-);
+            ],
+        ],
+    ],
+];

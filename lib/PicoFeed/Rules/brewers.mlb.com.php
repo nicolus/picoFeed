@@ -1,12 +1,12 @@
 <?php
-return array(
-    'grabber' => array(
-        '%.*%' => array(
+return [
+    'grabber' => [
+        '%.*%' => [
             'test_url' => 'http://m.brewers.mlb.com/news/article/161364798',
-            'body' => array(
+            'body' => [
                 '//article[contains(@class,"article")]',
-            ),
-            'strip' => array(
+            ],
+            'strip' => [
                 '//div[contains(@class,"ad-slot")]',
                 '//h1',
                 '//span[@class="timestamp"]',
@@ -16,7 +16,7 @@ return array(
                 '//p[@class="tagline"]',
                 '//div[contains(@class,"social")]',
                 '//div[@class="button-wrap"]',
-            ),
-        ),
-    ),
-);
+            ],
+        ],
+    ],
+];

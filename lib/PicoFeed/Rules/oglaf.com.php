@@ -1,19 +1,19 @@
 <?php
-return array(
-    'grabber' => array(
-        '%.*%' => array(
-            'body' => array(
+return [
+    'grabber' => [
+        '%.*%' => [
+            'body' => [
                 '//img[@id="strip"]',
                 '//a/div[@id="nx"]/..',
-            ),
-            'strip' => array(),
+            ],
+            'strip' => [],
             'test_url' => 'http://oglaf.com/slodging/',
-        ),
-    ),
-    'filter' => array(
-        '%.*%' => array(
+        ],
+    ],
+    'filter' => [
+        '%.*%' => [
             '%alt="(.+)" title="(.+)" */>%' => '/><br/>$1<br/>$2<br/>',
             '%</a>%' => 'Next page</a>',
-        ),
-    ),
-);
+        ],
+    ],
+];

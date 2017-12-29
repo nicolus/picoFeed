@@ -1,18 +1,18 @@
 <?php
-return array(
-    'grabber' => array(
-        '%.*%' => array(
-            'body' => array(
+return [
+    'grabber' => [
+        '%.*%' => [
+            'body' => [
                 '//div[@class="comicpane"]/a/img',
                 '//div[@class="entry"]',
-            ),
-            'strip' => array(),
+            ],
+            'strip' => [],
             'test_url' => 'http://sentfromthemoon.com/archives/1417',
-        ),
-    ),
-    'filter' => array(
-        '%.*%' => array(
+        ],
+    ],
+    'filter' => [
+        '%.*%' => [
             '%title="(.+)" */>%' => '/><br/>$1',
-        ),
-    ),
-);
+        ],
+    ],
+];

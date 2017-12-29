@@ -1,8 +1,8 @@
 <?php
-return array(
-    'filter' => array(
-        '%.*%' => array(
+return [
+    'filter' => [
+        '%.*%' => [
             '%(<img.+/s/[^"]+/)(.+)%' => '$1$2$1bonus.png"/>',
-        ),
-    ),
-);
+        ],
+    ],
+];

@@ -1,13 +1,13 @@
 <?php
-return array(
-    'grabber' => array(
-        '%.*%' => array(
-            'body' => array(
+return [
+    'grabber' => [
+        '%.*%' => [
+            'body' => [
                 '//img[@id="cc-comic"]',
                 '//div[@class="cc-newsbody"]',
-            ),
-            'strip' => array(),
+            ],
+            'strip' => [],
             'test_url' => 'http://www.marycagle.com/letsspeakenglish/74-grim-reality/',
-        ),
-    ),
-);
+        ],
+    ],
+];

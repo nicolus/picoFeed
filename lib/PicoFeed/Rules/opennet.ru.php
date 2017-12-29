@@ -1,13 +1,13 @@
 <?php
-return array(
-    'grabber' => array(
-        '%.*%' => array(
+return [
+    'grabber' => [
+        '%.*%' => [
             'test_url' => 'https://www.opennet.ru/opennews/art.shtml?num=46549',
-            'body' => array(
+            'body' => [
                 '//*[@id="r_memo"]',
-            ),
-            'strip' => array(
-            ),
-        )
-    )
-);
+            ],
+            'strip' => [
+            ],
+        ]
+    ]
+];

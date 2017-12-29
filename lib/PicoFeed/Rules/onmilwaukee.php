@@ -1,12 +1,12 @@
 <?php
-return array(
-    'grabber' => array(
-        '%.*%' => array(
+return [
+    'grabber' => [
+        '%.*%' => [
             'test_url' => 'http://onmilwaukee.com/movies/articles/downerspelunking.html',
-            'body' => array(
+            'body' => [
                 '//article[contains(@class, "show")]',
-            ),
-            'strip' => array(
+            ],
+            'strip' => [
                 '//h1',
                 '//div[contains(@class,"-ad")]',
                 '//div[contains(@class,"_ad")]',
@@ -18,7 +18,7 @@ return array(
                 '//div[contains(@class,"sidebar")]',
                 '//aside[@class="article_tag_list"]',
                 '//section[contains(@id,"more_posts")]'
-            ),
-        ),
-    ),
-);
+            ],
+        ],
+    ],
+];

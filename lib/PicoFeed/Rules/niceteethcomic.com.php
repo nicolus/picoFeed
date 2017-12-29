@@ -1,10 +1,10 @@
 <?php
-return array(
-    'grabber' => array(
-        '%/archives.*%' => array(
+return [
+    'grabber' => [
+        '%/archives.*%' => [
             'test_url' => 'http://niceteethcomic.com/archives/page119/',
-            'body' => array('//*[@class="comicpane"]/a/img'),
-            'strip' => array(),
-        ),
-    ),
-);
+            'body' => ['//*[@class="comicpane"]/a/img'],
+            'strip' => [],
+        ],
+    ],
+];

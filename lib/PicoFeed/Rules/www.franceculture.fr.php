@@ -1,14 +1,14 @@
 <?php
-return array(
-    'grabber' => array(
-        '%.*%' => array(
+return [
+    'grabber' => [
+        '%.*%' => [
             'test_url' => 'http://www.franceculture.fr/emission-culture-eco-la-finance-aime-toujours-la-france-2016-01-08',
-            'body' => array(
+            'body' => [
                 '//div[@class="text-zone"]',
-            ),
-            'strip' => array(
+            ],
+            'strip' => [
                 '//ul[@class="tags"]',
-            ),
-        )
-    )
-);
+            ],
+        ]
+    ]
+];

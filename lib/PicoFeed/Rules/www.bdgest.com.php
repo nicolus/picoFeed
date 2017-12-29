@@ -1,15 +1,15 @@
 <?php
-return array(
-    'grabber' => array(
-        '%.*%' => array(
+return [
+    'grabber' => [
+        '%.*%' => [
             'test_url' => 'http://www.bdgest.com/chronique-6027-BD-Adrastee-Tome-2.html',
-            'body' => array(
+            'body' => [
                 '//*[contains(@class, "chronique")]',
-            ),
-            'strip' => array(
+            ],
+            'strip' => [
                 '//*[contains(@class, "post-review")]',
                 '//*[contains(@class, "footer-review")]',
-            ),
-        ),
-    ),
-);
+            ],
+        ],
+    ],
+];
