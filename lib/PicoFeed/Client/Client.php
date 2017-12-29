@@ -80,13 +80,6 @@ class Client
     protected $content = '';
 
     /**
-     * HTTP response status code.
-     *
-     * @var int
-     */
-    protected $status_code = 0;
-
-    /**
      * Enables direct passthrough to requesting client.
      *
      * @var bool
@@ -286,16 +279,6 @@ class Client
     }
 
     /**
-     * Get the HTTP response status code.
-     *
-     * @return int
-     */
-    public function getStatusCode()
-    {
-        return $this->status_code;
-    }
-
-    /**
      * Get the body of the HTTP response.
      *
      * @return string
@@ -367,18 +350,6 @@ class Client
         return $this;
     }
 
-    /**
-     * Return true if the HTTP status code is a redirection
-     *
-     * @access protected
-     * @param  integer $code
-     * @return boolean
-     */
-    public function isRedirection($code)
-    {
-        return $code == 301 || $code == 302 || $code == 303 || $code == 307;
-    }
-
     public function parseExpiration(ResponseInterface $response)
     {
         try {
@@ -399,15 +370,5 @@ class Client
         }
 
         return new DateTime();
-    }
-
-    /**
-     * Get expiration date time from "Expires" or "Cache-Control" headers
-     *
-     * @return DateTime
-     */
-    public function getExpiration()
-    {
-        return $this->expiration ?: new DateTime();
     }
 }

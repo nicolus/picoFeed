@@ -184,8 +184,6 @@ class Scraper extends Base
             $this->encoding = '';
 
             try {
-                $this->client->setTimeout($this->config->getGrabberTimeout());
-                $this->client->setUserAgent($this->config->getGrabberUserAgent());
                 $this->client->execute($this->url);
 
                 $this->url = $this->client->getUrl();
