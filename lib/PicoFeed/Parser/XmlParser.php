@@ -23,6 +23,7 @@ class XmlParser
      * @static
      * @param string $input XML content
      * @return mixed
+     * @throws XmlEntityException
      */
     public static function getSimpleXml($input)
     {
@@ -35,6 +36,7 @@ class XmlParser
      * @static
      * @param string $input XML content
      * @return DOMDocument|bool
+     * @throws XmlEntityException
      */
     public static function getDomDocument($input)
     {

@@ -151,6 +151,7 @@ class Tag extends Base
      *
      * @param string $data Input data
      * @return string
+     * @throws \PicoFeed\Parser\XmlEntityException
      */
     public function removeBlacklistedTags($data)
     {

@@ -322,7 +322,8 @@ class Atom extends Parser
      * Get the URL from a link tag.
      *
      * @param SimpleXMLElement $xml XML tag
-     * @param string           $rel Link relationship: alternate, enclosure, related, self, via
+     * @param string $rel Link relationship: alternate, enclosure, related, self, via
+     * @param bool $fallback
      * @return string
      */
     private function getUrl(SimpleXMLElement $xml, $rel, $fallback = false)
