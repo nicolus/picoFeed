@@ -88,11 +88,10 @@ class XmlParserTest extends TestCase
         $this->assertEquals('', XmlParser::getEncodingFromXmlTag("<?xml version='1.0'?><?xml-stylesheet"));
     }
 
-    /**
-     * @expectedException PicoFeed\Parser\XmlEntityException
-     */
     public function testScanForXEE()
     {
+        $this->expectException(XmlEntityException::class);
+
         $xml = <<<XML
 <?xml version="1.0"?>
 <!DOCTYPE results [<!ENTITY harmless "completely harmless">]>
@@ -104,11 +103,10 @@ XML;
         XmlParser::getDomDocument($xml);
     }
 
-    /**
-     * @expectedException PicoFeed\Parser\XmlEntityException
-     */
     public function testScanForXXE()
     {
+        $this->expectException(XmlEntityException::class);
+
         $xml = <<<XML
 <?xml version="1.0"?>
 <!DOCTYPE root
