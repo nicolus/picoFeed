@@ -1,12 +1,12 @@
 <?php
-return array(
-    'grabber' => array(
-        '%.*%' => array(
+return [
+    'grabber' => [
+        '%.*%' => [
             'test_url' => 'http://karriere.jobfinder.dk/artikel/dansk-professor-skal-lede-smart-grid-forskning-20-millioner-dollars-763',
-            'body' => array(
+            'body' => [
                 '//section[contains(@class, "teaser")]',
                 '//section[contains(@class, "body")]',
-            ),
-        ),
-    ),
-);
+            ],
+        ],
+    ],
+];

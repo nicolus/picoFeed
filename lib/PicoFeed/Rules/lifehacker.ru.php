@@ -1,12 +1,12 @@
 <?php
-return array(
-    'grabber' => array(
-        '%.*%' => array(
+return [
+    'grabber' => [
+        '%.*%' => [
             'test_url' => 'http://lifehacker.ru/2016/03/03/polymail/',
-            'body' => array(
+            'body' => [
                 '//div[@class="post-content"]',
-            ),
-            'strip' => array(
+            ],
+            'strip' => [
                 '//script',
                 '//form',
                 '//style',
@@ -16,7 +16,7 @@ return array(
                 '//*[contains(@class, "wpappbox")]',
                 '//*[contains(@class, "icon__image")]',
                 '//div[@id="hypercomments_widget"]',
-            ),
-        ),
-    ),
-);
+            ],
+        ],
+    ],
+];

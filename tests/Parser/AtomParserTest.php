@@ -2,9 +2,9 @@
 
 namespace PicoFeed\Parser;
 
-use PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
 
-class AtomParserTest extends PHPUnit_Framework_TestCase
+class AtomParserTest extends TestCase
 {
     /**
      * @expectedException PicoFeed\Parser\MalformedXmlException

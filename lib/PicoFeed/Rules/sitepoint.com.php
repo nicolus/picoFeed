@@ -1,13 +1,13 @@
 <?php
-return array(
-    'grabber' => array(
-        '%.*%' => array(
+return [
+    'grabber' => [
+        '%.*%' => [
             'test_url' => 'http://www.sitepoint.com/creating-hello-world-app-swift/',
-            'body' => array(
+            'body' => [
                 '//section[@class="article_body"]',
-            ),
-            'strip' => array(
-            ),
-        ),
-    ),
-);
+            ],
+            'strip' => [
+            ],
+        ],
+    ],
+];

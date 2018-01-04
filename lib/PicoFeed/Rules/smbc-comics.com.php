@@ -1,14 +1,14 @@
 <?php
-return array(
-    'grabber' => array(
-        '%.*%' => array(
+return [
+    'grabber' => [
+        '%.*%' => [
             'test_url' => 'http://www.smbc-comics.com/comic/the-troll-toll',
-            'body' => array(
+            'body' => [
                 '//div[@id="cc-comicbody"]',
                 '//div[@id="aftercomic"]',
-            ),
-            'strip' => array(
-            ),
-        ),
-    ),
-);
+            ],
+            'strip' => [
+            ],
+        ],
+    ],
+];

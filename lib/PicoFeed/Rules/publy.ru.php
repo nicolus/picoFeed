@@ -1,12 +1,12 @@
 <?php
-return array(
-    'grabber' => array(
-        '%.*%' => array(
+return [
+    'grabber' => [
+        '%.*%' => [
             'test_url' => 'http://www.publy.ru/post/19988',
-            'body' => array(
+            'body' => [
                 '//div[@class="singlepost"]',
-            ),
-            'strip' => array(
+            ],
+            'strip' => [
                 '//script',
                 '//form',
                 '//style',
@@ -18,7 +18,7 @@ return array(
                 '//*[contains(@class, "g-single")]',
                 '//*[@class="ts-fab-wrapper"]',
                 '//*[contains(@class, "wp_rp_wrap")]',
-            ),
-        ),
-    ),
-);
+            ],
+        ],
+    ],
+];

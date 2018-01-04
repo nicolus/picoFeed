@@ -1,12 +1,12 @@
 <?php
-return array(
-    'grabber' => array(
-        '%.*%' => array(
+return [
+    'grabber' => [
+        '%.*%' => [
             'test_url' => 'https://www.muckrock.com/news/archives/2016/jan/13/5-concerns-private-prisons/',
-            'body' => array(
+            'body' => [
                 '//div[@class="content"]',
-            ),
-            'strip' => array(
+            ],
+            'strip' => [
                 '//div[@class="newsletter-widget"]',
                 '//div[@class="contributors"]',
                 '//time',
@@ -14,7 +14,7 @@ return array(
                 '//div[@class="secondary"]',
                 '//aside',
                 '//div[@class="articles__related"]'
-            ),
-        ),
-    ),
-);
+            ],
+        ],
+    ],
+];

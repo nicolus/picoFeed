@@ -1,18 +1,18 @@
 <?php
-return array(
-    'grabber' => array(
-        '%.*%' => array(
+return [
+    'grabber' => [
+        '%.*%' => [
             'test_url' => 'http://lifehacker.com/bring-water-bottle-caps-into-concerts-to-protect-your-d-1269334973',
-            'body' => array(
+            'body' => [
                 '//div[contains(@class, "row")/img',
                 '//div[contains(@class, "content-column")]',
-            ),
-            'strip' => array(
+            ],
+            'strip' => [
                 '//*[contains(@class, "meta")]',
                 '//span[contains(@class, "icon")]',
                 '//h1',
                 '//aside',
-            ),
-        ),
-    ),
-);
+            ],
+        ],
+    ],
+];

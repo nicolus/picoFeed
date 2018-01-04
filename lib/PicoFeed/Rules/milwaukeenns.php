@@ -1,14 +1,14 @@
 <?php
-return array(
-    'grabber' => array(
-        '%.*%' => array(
+return [
+    'grabber' => [
+        '%.*%' => [
             'test_url' => 'http://milwaukeenns.org/2016/01/08/united-way-grant-enables-sdc-to-restore-free-tax-assistance-program/',
-            'body' => array(
+            'body' => [
                 '//div[@class="pf-content"]',
-            ),
-            'strip' => array(
+            ],
+            'strip' => [
                 '//div[@class="printfriendly"]',
-            ),
-        ),
-    ),
-);
+            ],
+        ],
+    ],
+];

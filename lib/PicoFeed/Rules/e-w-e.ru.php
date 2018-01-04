@@ -1,12 +1,12 @@
 <?php
-return array(
-    'grabber' => array(
-        '%.*%' => array(
+return [
+    'grabber' => [
+        '%.*%' => [
             'test_url' => 'http://e-w-e.ru/16-prekrasnyx-izobretenij-zhenshhin/',
-            'body' => array(
+            'body' => [
                 '//div[contains(@class, "post_text")]',
-            ),
-            'strip' => array(
+            ],
+            'strip' => [
                 '//script',
                 '//form',
                 '//style',
@@ -16,7 +16,7 @@ return array(
                 '//*[contains(@rel, "nofollow")]',
                 '//*[contains(@class, "wp-smiley")]',
                 '//*[contains(text(),"Источник:")]',
-            ),
-        ),
-    ),
-);
+            ],
+        ],
+    ],
+];

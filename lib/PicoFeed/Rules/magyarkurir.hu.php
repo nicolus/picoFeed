@@ -1,12 +1,12 @@
 <?php
-return array(
-    'grabber' => array(
-        '%.*%' => array(
+return [
+    'grabber' => [
+        '%.*%' => [
             'test_url' => 'http://www.magyarkurir.hu/hirek/a-vilagszerte-ismert-dicsoito-csapat-hillsong-young-free-lep-fel-budapesten',
-            'body' => array(
+            'body' => [
                 '//div[@class="behuzas"]'
-            ),
-            'strip' => array(
+            ],
+            'strip' => [
                 '//div[@class="ikonsav"]',
                 '//p[@class="copyright"]',
                 '//div[@class="cimkek"]',
@@ -14,8 +14,8 @@ return array(
                 '//div[@class="rovat sargabg rovatdobozcim"]',
                 '//div[@class="rovatdoboz"]',
                 '//a[contains(., "Own")]',
-		'//a[@class="fblink"]'
-            )
-        ),
-    ),
-);
+                '//a[@class="fblink"]'
+            ]
+        ],
+    ],
+];

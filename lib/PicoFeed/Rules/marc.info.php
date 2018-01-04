@@ -1,13 +1,13 @@
 <?php
-return array(
-    'grabber' => array(
-        '%.*%' => array(
+return [
+    'grabber' => [
+        '%.*%' => [
             'test_url' => 'http://marc.info/?l=openbsd-misc&m=141987113202061&w=2',
-            'body' => array(
+            'body' => [
                 '//pre',
-            ),
-            'strip' => array(
-            ),
-        ),
-    ),
-);
+            ],
+            'strip' => [
+            ],
+        ],
+    ],
+];

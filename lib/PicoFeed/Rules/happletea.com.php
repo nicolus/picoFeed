@@ -1,18 +1,18 @@
 <?php
-return array(
-    'grabber' => array(
-        '%.*%' => array(
-            'body' => array(
+return [
+    'grabber' => [
+        '%.*%' => [
+            'body' => [
                 '//div[@id="comic"]',
                 '//div[@class="entry"]',
-            ),
-            'strip' => array('//div[@class="ssba"]'),
+            ],
+            'strip' => ['//div[@class="ssba"]'],
             'test_url' => 'http://www.happletea.com/comic/mans-best-friend/',
-        ),
-    ),
-    'filter' => array(
-        '%.*%' => array(
+        ],
+    ],
+    'filter' => [
+        '%.*%' => [
             '%title="(.+)" */>%' => '/><br/>$1',
-        ),
-    ),
-);
+        ],
+    ],
+];

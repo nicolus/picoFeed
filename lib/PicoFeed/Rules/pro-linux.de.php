@@ -1,16 +1,16 @@
 <?php
-return array(
-    'grabber' => array(
-        '%.*%' => array(
+return [
+    'grabber' => [
+        '%.*%' => [
             'test_url' => 'https://www.pro-linux.de/news/1/25252/chrome-62-erschienen.html',
-            'body' => array(
+            'body' => [
                 '//div[@id="news"]',
-            ),
-            'strip' => array(
+            ],
+            'strip' => [
                 '//h3[@class="topic"]',
                 '//h2[@class="title"]',
                 '//div[@class="picto"]',
-            ),
-        ),
-    ),
-);
+            ],
+        ],
+    ],
+];

@@ -1,12 +1,12 @@
 <?php
-return array(
-    'grabber' => array(
-        '%.*%' => array(
+return [
+    'grabber' => [
+        '%.*%' => [
             'test_url' => 'http://opensource.com/life/15/10/how-internet-things-will-change-way-we-think',
-            'body' => array(
+            'body' => [
                 '//div[@id="article-template"]',
-            ),
-            'strip' => array(
+            ],
+            'strip' => [
                 '//div[contains(@class,"os-article__sidebar")]',
                 '//div[@class="panel-pane pane-node-title"]',
                 '//div[@class="panel-pane pane-os-article-byline"]',
@@ -16,7 +16,7 @@ return array(
                 '//div[@class="panel-pane pane-os-article-byline"]',
                 '//div[@class="os-article__content-below"]',
                 '//div[@id="comments"]'
-            ),
-        ),
-    ),
-);
+            ],
+        ],
+    ],
+];

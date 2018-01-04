@@ -1,10 +1,10 @@
 <?php
-return array(
-    'grabber' => array(
-        '%.*%' => array(
+return [
+    'grabber' => [
+        '%.*%' => [
             'test_url' => 'http://maximumble.thebookofbiff.com/2015/04/20/1084-change/',
-            'body' => array('//div[@id="comic"]/div/a/img'),
-            'strip' => array(),
-        ),
-    ),
-);
+            'body' => ['//div[@id="comic"]/div/a/img'],
+            'strip' => [],
+        ],
+    ],
+];

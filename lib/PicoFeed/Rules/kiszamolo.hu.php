@@ -1,14 +1,14 @@
 <?php
-return array(
-    'grabber' => array(
-        '%.*%' => array(
+return [
+    'grabber' => [
+        '%.*%' => [
             'test_url' => 'https://kiszamolo.hu/30-eve-volt-a-fekete-hetfo/',
-            'body' => array(
+            'body' => [
                 '//article/h2',
-		'//article/div[@class="entry clearfix"]/p'
-            ),
-            'strip' => array(
-            )
-        ),
-    ),
-);
+                '//article/div[@class="entry clearfix"]/p'
+            ],
+            'strip' => [
+            ]
+        ],
+    ],
+];

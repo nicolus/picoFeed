@@ -1,12 +1,12 @@
 <?php
-return array(
-    'grabber' => array(
-        '%.*%' => array(
+return [
+    'grabber' => [
+        '%.*%' => [
             'test_url' => 'http://www.linuxinsider.com/story/82526.html?rss=1',
-            'body' => array(
+            'body' => [
                 '//div[@id="story"]',
-            ),
-            'strip' => array(
+            ],
+            'strip' => [
                 '//script',
                 '//h1',
                 '//div[@id="story-toolbox1"]',
@@ -14,7 +14,7 @@ return array(
                 '//div[@id="story"]/p',
                 '//div[@class="story-advertisement"]',
                 '//iframe',
-            ),
-        ),
-    ),
-);
+            ],
+        ],
+    ],
+];

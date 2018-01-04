@@ -1,15 +1,15 @@
 <?php
-return array(
-    'grabber' => array(
-        '%.*%' => array(
+return [
+    'grabber' => [
+        '%.*%' => [
             'test_url' => 'http://www.nationaljournal.com/s/354962/south-carolina-evangelicals-outstrip-establishment?mref=home_top_main',
-            'body' => array(
+            'body' => [
                 '//div[@class="section-body"]',
-            ),
-            'strip' => array(
+            ],
+            'strip' => [
                 '//*[contains(@class, "-related")]',
                 '//*[contains(@class, "social")]',
-            ),
-        ),
-    ),
-);
+            ],
+        ],
+    ],
+];

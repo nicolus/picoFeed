@@ -1,11 +1,11 @@
 <?php
-return array(
-    'grabber' => array(
-        '%.*%' => array(
+return [
+    'grabber' => [
+        '%.*%' => [
             'test_url' => 'https://kodi.tv/article/andwere-baaaaack',
-            'body' => array(
+            'body' => [
                 '//div[@class="l-region--content"]',
-            ),
-        ),
-    ),
-);
+            ],
+        ],
+    ],
+];

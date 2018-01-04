@@ -1,12 +1,12 @@
 <?php
-return array(
-    'grabber' => array(
-        '%.*%' => array(
+return [
+    'grabber' => [
+        '%.*%' => [
             'test_url' => 'https://www.tichyseinblick.de/daili-es-sentials/jamaika-reaktionen-der-enttaeuschten/',
-            'body' => array(
+            'body' => [
                 '//article'
-            ),
-            'strip' => array(
+            ],
+            'strip' => [
                 '//header',
                 '//footer',
                 '//div[@class="mod-cad2"]',
@@ -15,8 +15,8 @@ return array(
                 '//div[@class="pagelink"]',
                 '//div[@id="reward"]',
                 '//div[@class="rty-block-plista"]'
-            )
-        ),
-    ),
-);
+            ]
+        ],
+    ],
+];
 

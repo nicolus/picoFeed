@@ -1,15 +1,15 @@
 <?php
-return array(
-    'grabber' => array(
-        '%.*%' => array(
+return [
+    'grabber' => [
+        '%.*%' => [
             'test_url' => 'http://www.universfreebox.com/article/24305/4G-Bouygues-Telecom-lance-une-vente-flash-sur-son-forfait-Sensation-3Go',
-            'body' => array(
+            'body' => [
                 '//div[@id="corps_corps"]',
-            ),
-            'strip' => array(
+            ],
+            'strip' => [
                 '//*[@id="formulaire"]',
                 '//*[@id="commentaire"]',
-            ),
-        ),
-    ),
-);
+            ],
+        ],
+    ],
+];

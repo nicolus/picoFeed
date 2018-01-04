@@ -1,12 +1,12 @@
 <?php
-return array(
-    'grabber' => array(
-        '%.*%' => array(
+return [
+    'grabber' => [
+        '%.*%' => [
             'test_url' => 'http://www.allgemeine-zeitung.de/lokales/polizei/mainz-gonsenheim-unbekannte-rauben-esso-tankstelle-in-kurt-schumacher-strasse-aus_14913147.htm',
-            'body' => array(
+            'body' => [
                 '//div[contains(@class, "article")][1]',
-            ),
-            'strip' => array(
+            ],
+            'strip' => [
                 '//read/h1',
                 '//*[@id="t-map"]',
                 '//*[contains(@class, "modules")]',
@@ -17,7 +17,7 @@ return array(
                 '//*[@class="funcs"]',
                 '//span[@class="nd address"]',
                 '//a[contains(@href, "abo-und-services")]',
-            ),
-        ),
-    ),
-);
+            ],
+        ],
+    ],
+];

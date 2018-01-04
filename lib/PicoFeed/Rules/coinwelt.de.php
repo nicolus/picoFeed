@@ -1,14 +1,14 @@
 <?php
-return array(
-    'grabber' => array(
-        '%.*%' => array(
+return [
+    'grabber' => [
+        '%.*%' => [
             'test_url' => 'http://coinwelt.de/2017/08/bitcache-kreierer-kim-dotcom-bietet-arbeitsplaetze-fuer-blockchain-goetter/',
-            'body' => array(
+            'body' => [
                 '//div[@class="post-inner"]//div[@class="entry"]',
-            ),
-            'strip' => array(
+            ],
+            'strip' => [
                 '//div[contains(@class, "shariff")]',
-            ),
-        ),
-    ),
-);
+            ],
+        ],
+    ],
+];

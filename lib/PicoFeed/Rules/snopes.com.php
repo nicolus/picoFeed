@@ -1,12 +1,12 @@
 <?php
-return array(
-    'grabber' => array(
-        '%.*%' => array(
+return [
+    'grabber' => [
+        '%.*%' => [
             'test_url' => 'http://www.snopes.com/bacca-brides-on-tour/',
-            'body' => array(
+            'body' => [
                 '//article',
-            ),
-            'strip' => array(
+            ],
+            'strip' => [
                 '//span[@itemprop="author"]',
                 '//div[contains(@class,"author-")]',
                 '//h1',
@@ -16,7 +16,7 @@ return array(
                 '//aside',
                 '//div[contains(@class,"boomtrain")]',
                 '//footer'
-            ),
-        ),
-    ),
-);
+            ],
+        ],
+    ],
+];

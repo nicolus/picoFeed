@@ -3,9 +3,9 @@
 namespace PicoFeed\Syndication;
 
 use DateTime;
-use PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
 
-class Rss20WriterTest extends PHPUnit_Framework_TestCase
+class Rss20WriterTest extends TestCase
 {
     public function testWriter()
     {

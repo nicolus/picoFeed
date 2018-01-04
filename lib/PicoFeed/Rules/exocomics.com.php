@@ -1,15 +1,15 @@
 <?php
-return array(
-    'grabber' => array(
-        '%.*%' => array(
-            'body' => array('//a[@class="comic"]/img'),
-            'strip' => array(),
+return [
+    'grabber' => [
+        '%.*%' => [
+            'body' => ['//a[@class="comic"]/img'],
+            'strip' => [],
             'test_url' => 'http://www.exocomics.com/379',
-        ),
-    ),
-    'filter' => array(
-        '%.*%' => array(
+        ],
+    ],
+    'filter' => [
+        '%.*%' => [
             '%title="(.+)" */>%' => '/><br/>$1',
-        ),
-    ),
-);
+        ],
+    ],
+];

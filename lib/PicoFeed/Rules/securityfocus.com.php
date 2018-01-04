@@ -1,17 +1,17 @@
 <?php
-return array(
-    'grabber' => array(
-        '%.*%' => array(
+return [
+    'grabber' => [
+        '%.*%' => [
             'test_url' => 'http://www.securityfocus.com/archive/1/540139',
-            'body' => array(
+            'body' => [
                 '//div[@id="vulnerability"]',
                 '//div[@class="comments_reply"]',
-            ),
-            'strip' => array(
+            ],
+            'strip' => [
                 '//span[@class="title"]',
                 '//div[@id="logo_new"]',
                 '//div[@id="bannerAd"]',
-            ),
-        ),
-    ),
-);
+            ],
+        ],
+    ],
+];

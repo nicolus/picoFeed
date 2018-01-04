@@ -4,6 +4,7 @@
 require_once 'vendor/autoload.php';
 
 use PicoFeed\Config\Config;
+use PicoFeed\Parser\Feed;
 use PicoFeed\Reader\Favicon;
 use PicoFeed\Scraper\Scraper;
 use PicoFeed\Reader\Reader;
@@ -37,7 +38,7 @@ function get_feed($url, $disable_filtering = false)
     }
 }
 
-function get_item($feed, $item_id)
+function get_item(Feed $feed, $item_id)
 {
     foreach ($feed->items as $item) {
         if ($item->getId() === $item_id) {

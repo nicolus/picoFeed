@@ -1,14 +1,14 @@
 <?php
-return array(
-    'grabber' => array(
-        '%.*%' => array(
+return [
+    'grabber' => [
+        '%.*%' => [
             'test_url' => 'https://www.nasa.gov/image-feature/jpl/pia20514/coy-dione',
-            'body' => array(
+            'body' => [
                 '//div[@class="article-body"]',
-            ),
-            'strip' => array(
+            ],
+            'strip' => [
                 '//div[@class="title-bar"]',
-            ),
-        ),
-    ),
-);
+            ],
+        ],
+    ],
+];

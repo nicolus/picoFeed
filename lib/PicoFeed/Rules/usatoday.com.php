@@ -1,12 +1,12 @@
 <?php
-return array(
-    'grabber' => array(
-        '%.*%' => array(
+return [
+    'grabber' => [
+        '%.*%' => [
             'test_url' => 'http://www.usatoday.com/story/life/music/2017/02/13/things-you-should-know-happened-grammy-awards-2017/97833734/',
-            'body' => array(
+            'body' => [
                 '//div[@itemprop="articleBody"]',
-            ),
-            'strip' => array(
+            ],
+            'strip' => [
                 '//script',
                 '//h1',
                 '//iframe',
@@ -21,7 +21,7 @@ return array(
                 '//div[contains(@class,"gallery-asset")]',
                 '//div[contains(@class,"oembed-asset")]',
                 '//div[@class="article-print-url"]'
-            ),
-        ),
-    ),
-);
+            ],
+        ],
+    ],
+];

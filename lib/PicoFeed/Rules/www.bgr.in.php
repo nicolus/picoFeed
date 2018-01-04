@@ -1,12 +1,12 @@
 <?php
-return array(
-    'grabber' => array(
-        '%.*%' => array(
+return [
+    'grabber' => [
+        '%.*%' => [
             'test_url' => 'http://www.bgr.in/news/xiaomi-redmi-3-with-13-megapixel-camera-snapdragon-616-launched-price-specifications-and-features/',
-            'body' => array(
+            'body' => [
                 '//div[@class="article-content"]',
-            ),
-            'strip' => array(
+            ],
+            'strip' => [
                 '//*[@class="article-meta"]',
                 '//*[@class="contentAdsense300"]',
                 '//*[@class="iwpl-social-hide"]',
@@ -17,7 +17,7 @@ return array(
                 '//*[@class="footnote"]',
                 '//*[@id="gadget-widget"]',
                 '//header[@class="article-title entry-header"]',
-            ),
-        ),
-    ),
-);
+            ],
+        ],
+    ],
+];

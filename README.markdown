@@ -1,7 +1,11 @@
 PicoFeed
 ========
 
-This library is **not maintained anymore**.
+This is a fork of the original picoFeed (which has been abandonned).
+
+This fork will strive to make picofeed as simple, fast and modern as possible by stripping out everything that's not purely directly related to parsing and creating feeds, and replacing them with third party components. Most notably, all HTTP requests are now handled by Guzzle, and caching will be optionally handled by Guzzle Middlewares.
+
+
 
 Features
 --------
@@ -22,7 +26,7 @@ Features
 Requirements
 ------------
 
-- PHP >= 5.3
+- PHP >= 7.1
 - libxml >= 2.7
 - XML PHP extensions: DOM and SimpleXML
 - cURL or Stream Context (`allow_url_fopen=On`)

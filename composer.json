@@ -1,7 +1,7 @@
 {
     "name": "miniflux/picofeed",
-    "description": "RSS/Atom parsing library (not maintained)",
-    "homepage": "https://github.com/miniflux/picoFeed",
+    "description": "RSS/Atom parsing library",
+    "homepage": "https://github.com/nicolus/picoFeed",
     "type": "library",
     "license": "MIT",
     "authors": [
@@ -22,8 +22,7 @@
     },
     "require-dev" : {
         "phpdocumentor/reflection-docblock": "2.0.4",
-        "symfony/yaml": "2.8.7",
-        "phpunit/phpunit" : "4.8.26"
+        "phpunit/phpunit" : "^6"
     },
     "suggest": {
         "ext-curl": "PicoFeed will use cURL if present"

@@ -1,12 +1,12 @@
 <?php
-return array(
-    'grabber' => array(
-        '%.*%' => array(
+return [
+    'grabber' => [
+        '%.*%' => [
             'test_url' => 'http://www.developpez.com/actu/81757/Mozilla-annonce-la-disponibilite-de-Firefox-36-qui-passe-au-HTTP-2-et-permet-la-synchronisation-de-son-ecran-d-accueil/',
-            'body' => array(
+            'body' => [
                 '//*[@itemprop="articleBody"]',
-            ),
-            'strip' => array(
+            ],
+            'strip' => [
                 '//form',
                 '//div[@class="content"]/img',
                 '//a[last()]/following-sibling::*',
@@ -15,7 +15,7 @@ return array(
                 '//*[contains(@class,"inlineimg")]',
                 '//*[@id="signaler"]',
                 '//*[@id="signalerFrame"]',
-            ),
-        ),
-    ),
-);
+            ],
+        ],
+    ],
+];

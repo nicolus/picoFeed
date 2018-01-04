@@ -1,14 +1,14 @@
 <?php
-return array(
-    'grabber' => array(
-        '%.*%' => array(
+return [
+    'grabber' => [
+        '%.*%' => [
             'test_url' => 'http://www.degroupnews.com/medias/vodsvod/amazon-concurrence-la-chromecast-de-google-avec-fire-tv-stick',
-            'body' => array(
+            'body' => [
                 '//div[@class="contenu"]',
-            ),
-            'strip' => array(
+            ],
+            'strip' => [
                 '//div[contains(@class, "a2a")]',
-            ),
-        ),
-    ),
-);
+            ],
+        ],
+    ],
+];

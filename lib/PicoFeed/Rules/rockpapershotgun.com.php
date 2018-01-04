@@ -1,11 +1,11 @@
 <?php
-return array(
-    'grabber' => array(
-        '%.*%' => array(
+return [
+    'grabber' => [
+        '%.*%' => [
             'test_url' => 'https://www.rockpapershotgun.com/2016/08/26/the-divisions-expansions-delayed-to-improve-the-game/',
-            'body' => array(
+            'body' => [
                 '//div[@class="entry"]',
-            )
-        ),
-    ),
-);
+            ]
+        ],
+    ],
+];
