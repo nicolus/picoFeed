@@ -1,5 +1,5 @@
 {
-    "name": "miniflux/picofeed",
+    "name": "nicolus/picofeed",
     "description": "RSS/Atom parsing library",
     "homepage": "https://github.com/nicolus/picoFeed",
     "type": "library",
@@ -7,6 +7,9 @@
     "authors": [
         {
             "name": "Frédéric Guillot"
+        },
+        {
+            "name": "Nicolas Bailly"
         }
     ],
     "require": {
