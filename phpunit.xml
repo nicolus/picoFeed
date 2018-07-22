@@ -1,7 +1,13 @@
-<phpunit bootstrap="./vendor/autoload.php" colors="true">
+<phpunit  colors="true">
     <testsuites>
         <testsuite name="PicoFeed">
             <directory>tests</directory>
         </testsuite>
     </testsuites>
+    <filter>
+        <whitelist processUncoveredFilesFromWhitelist="true">
+            <directory suffix=".php">./lib/PicoFeed</directory>
+        </whitelist>
+    </filter>
 </phpunit>
+
