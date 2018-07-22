@@ -2,12 +2,7 @@
 
 namespace PicoFeed\Logging;
 
-use DateTime;
-use DateTimeZone;
-use Psr\Log\LoggerAwareInterface;
-use Psr\Log\LoggerAwareTrait;
 use Psr\Log\LoggerInterface;
-use Psr\Log\NullLogger;
 
 /**
  * Logging class.
