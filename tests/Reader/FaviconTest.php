@@ -90,8 +90,8 @@ class FaviconTest extends TestCase
 
         // favicon in meta
         $this->assertEquals(
-            'http://miniflux.net/assets/img/favicon.png',
-            $favicon->find('http://miniflux.net')
+            'https://miniflux.app/image/favicon.png',
+            $favicon->find('https://miniflux.app')
         );
 
         $this->assertNotEmpty($favicon->getContent());
@@ -105,8 +105,8 @@ class FaviconTest extends TestCase
         $favicon = new Favicon();
 
         $this->assertEquals(
-            'http://miniflux.net/assets/img/touch-icon-ipad.png',
-            $favicon->find('http://miniflux.net', '/assets/img/touch-icon-ipad.png')
+            'https://miniflux.app/image/touch-icon-ipad.png',
+            $favicon->find('https://miniflux.app', '/image/touch-icon-ipad.png')
         );
 
         $this->assertNotEmpty($favicon->getContent());
@@ -119,8 +119,8 @@ class FaviconTest extends TestCase
     {
         $favicon = new Favicon();
         $this->assertEquals(
-            'http://miniflux.net/assets/img/favicon.png',
-            $favicon->find('http://miniflux.net', '/nofavicon.ico')
+            'https://miniflux.app/image/favicon.png',
+            $favicon->find('https://miniflux.app', '/nofavicon.ico')
         );
 
         $this->assertNotEmpty($favicon->getContent());
@@ -134,7 +134,7 @@ class FaviconTest extends TestCase
         $favicon = new Favicon();
 
         $this->assertEquals(
-            'http://miniflux.net/assets/img/favicon.png',
+            'http://miniflux.net/image/favicon.png',
             $favicon->find('http://miniflux.net')
         );
 

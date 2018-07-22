@@ -205,18 +205,18 @@ class ReaderTest extends TestCase
     public function testDiscover()
     {
         $reader = new Reader();
-        $client = $reader->discover('http://www.universfreebox.com/');
-        $this->assertEquals('http://www.universfreebox.com/backend.php', $client->getUrl());
+        $client = $reader->discover('https://www.universfreebox.com/');
+        $this->assertEquals('https://www.universfreebox.com/backend.php', $client->getUrl());
         $this->assertInstanceOf('PicoFeed\Parser\Rss20', $reader->getParser($client->getUrl(), $client->getContent(), $client->getEncoding()));
 
         $reader = new Reader();
-        $client = $reader->discover('http://cabinporn.com/');
-        $this->assertEquals('http://cabinporn.com/rss', $client->getUrl());
+        $client = $reader->discover('https://cabinporn.com/');
+        $this->assertEquals('https://cabinporn.com/rss', $client->getUrl());
         $this->assertInstanceOf('PicoFeed\Parser\Rss20', $reader->getParser($client->getUrl(), $client->getContent(), $client->getEncoding()));
 
         $reader = new Reader();
-        $client = $reader->discover('http://linuxfr.org/');
-        $this->assertEquals('http://linuxfr.org/news.atom', $client->getUrl());
+        $client = $reader->discover('https://linuxfr.org/');
+        $this->assertEquals('https://linuxfr.org/news.atom', $client->getUrl());
         $this->assertInstanceOf('PicoFeed\Parser\Atom', $reader->getParser($client->getUrl(), $client->getContent(), $client->getEncoding()));
     }
 
