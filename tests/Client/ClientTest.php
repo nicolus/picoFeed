@@ -88,12 +88,12 @@ class ClientTest extends TestCase
     public function testContentType()
     {
         $client = Client::getInstance();
-        $client->setUrl('http://miniflux.net/assets/img/favicon.png');
+        $client->setUrl('https://miniflux.app/image/favicon.png');
         $client->execute();
         $this->assertEquals('image/png', $client->getContentType());
 
         $client = Client::getInstance();
-        $client->setUrl('http://miniflux.net/');
+        $client->setUrl('https://miniflux.app/');
         $client->execute();
         $this->assertEquals('text/html; charset=utf-8', $client->getContentType());
     }

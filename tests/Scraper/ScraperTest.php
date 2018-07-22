@@ -39,7 +39,7 @@ class ScraperTest extends TestCase
         $grabber->execute();
         $this->assertTrue($grabber->hasRelevantContent());
 
-        $this->assertEquals('<img title="2013-08-22" src="comics/../comics/1377151029-2013-08-22.png" id="comic" border="0" />', $grabber->getRelevantContent());
+        $this->assertEquals('<img title="2013-08-22" src="http://www.egscomics.com/comics/../comics/1377151029-2013-08-22.png" id="cc-comic"/>', $grabber->getRelevantContent());
     }
 
     /**
