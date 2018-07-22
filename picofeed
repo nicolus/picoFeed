@@ -11,7 +11,16 @@ use PicoFeed\Reader\Reader;
 use PicoFeed\Logging\Logger;
 use PicoFeed\PicoFeedException;
 
-Logger::enable();
+
+if (class_exists('\Monolog\Logger')) {
+    $log = new \Monolog\Logger('log');
+    $handler = new Monolog\Handler\StreamHandler('debug.log', \Monolog\Logger::DEBUG);
+    $log->pushHandler($handler);
+    Logger::setLogger($log);
+    printf("Monolog found, logs will be written in debug.log.\n");
+} else {
+    printf("Monolog is not installed, we won't log anything.\n");
+}
 
 function get_feed($url, $disable_filtering = false)
 {
@@ -57,12 +66,6 @@ function dump_feed($url)
     echo $feed;
 }
 
-function debug_feed($url)
-{
-    get_feed($url);
-    print_r(Logger::getMessages());
-}
-
 function dump_item($url, $item_id)
 {
     $feed = get_feed($url);
@@ -87,7 +90,7 @@ function grabber($url)
     $grabber->setUrl($url);
     $grabber->execute();
 
-    print_r(Logger::getMessages());
+//    print_r(Logger::getMessages());
     echo "============= CONTENT ================\n";
     echo $grabber->getRelevantContent().PHP_EOL;
     echo "============= FILTERED ================\n";
@@ -115,9 +118,6 @@ if ($argc === 4) {
         case 'feed':
             dump_feed($argv[2]);
             die;
-        case 'debug':
-            debug_feed($argv[2]);
-            die;
         case 'grabber':
             grabber($argv[2]);
             die;
@@ -129,7 +129,6 @@ if ($argc === 4) {
 
 printf("Usage:\n");
 printf("%s feed <feed-url>\n", $argv[0]);
-printf("%s debug <feed-url>\n", $argv[0]);
 printf("%s item <feed-url> <item-id>\n", $argv[0]);
 printf("%s nofilter <feed-url> <item-id>\n", $argv[0]);
 printf("%s grabber <url>\n", $argv[0]);
