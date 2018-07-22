@@ -4,65 +4,26 @@ Debugging
 Logging
 -------
 
-PicoFeed can log **in memory** the execution flow, if a feed doesn't work correctly it's easy to see what is wrong.
+PicoFeed can log the execution flow with a PSR-3 compliant logger (like Monolog), if a feed doesn't work correctly it's easy to see what is wrong.
 
 ### Enable/disable logging
 
-The logging is **disabled by default** to avoid unnecessary memory usage.
+The logging is **disabled by default**.
 
-Enable logging:
+To enable logging, set a logger with the setLogger static method, for example :
 
 ```php
-use PicoFeed\Logging\Logger;
+$log = new \Monolog\Logger('log');
+$handler = new Monolog\Handler\StreamHandler('debug.log', \Monolog\Logger::DEBUG);
+$log->pushHandler($handler);
 
-Logger::enable();
-
-// or change the flag value
-
-Logger::$enable = true;
+Logger::setLogger($log);
 ```
 
-### Reading messages
+Note that most frameworks will already come with a PSR-3 logger, so you just have to pass the instance of your existing logger, don't create a new one. For example with Laravel :
 
 ```php
-use PicoFeed\Logging\Logger;
-
-// All messages are stored inside an Array
-print_r(Logger::getMessages());
-```
-
-You will got an output like that:
-
-```php
-Array
-(
-    [0] => Fetch URL: http://petitcodeur.fr/feed.xml
-    [1] => Etag:
-    [2] => Last-Modified:
-    [3] => cURL total time: 0.711378
-    [4] => cURL dns lookup time: 0.001064
-    [5] => cURL connect time: 0.100733
-    [6] => cURL speed download: 74825
-    [7] => HTTP status code: 200
-    [8] => HTTP headers: Set-Cookie => start=R2701971637; path=/; expires=Sat, 06-Jul-2013 05:16:33 GMT
-    [9] => HTTP headers: Date => Sat, 06 Jul 2013 03:55:52 GMT
-    [10] => HTTP headers: Content-Type => application/xml
-    [11] => HTTP headers: Content-Length => 53229
-    [12] => HTTP headers: Connection => close
-    [13] => HTTP headers: Server => Apache
-    [14] => HTTP headers: Last-Modified => Tue, 02 Jul 2013 03:26:02 GMT
-    [15] => HTTP headers: ETag => "393e79c-cfed-4e07ee78b2680"
-    [16] => HTTP headers: Accept-Ranges => bytes
-    ....
-)
-```
-
-### Remove messages
-
-All messages are stored in memory, if you need to clear them just call the method `Logger::deleteMessages()`:
-
-```php
-Logger::deleteMessages();
+Logger::setLogger(Log::getMonolog())
 ```
 
 Command line utility
