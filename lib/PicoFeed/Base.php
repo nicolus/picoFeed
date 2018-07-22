@@ -40,7 +40,6 @@ abstract class Base
     {
         $this->config = $config ?: new Config();
         $this->httpClient = $httpClient ?: new Client();
-        Logger::setTimezone($this->config->getTimezone());
     }
 
     public function setConfig(Config $config) {

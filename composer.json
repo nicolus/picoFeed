@@ -21,14 +21,17 @@
         "ext-SimpleXML": "*",
         "zendframework/zendxml": "^1.0",
         "guzzlehttp/guzzle": "~6.0",
-        "kevinrob/guzzle-cache-middleware": "^2.1"
+        "kevinrob/guzzle-cache-middleware": "^2.1",
+        "psr/log": "^1.0"
     },
     "require-dev" : {
         "phpdocumentor/reflection-docblock": "2.0.4",
-        "phpunit/phpunit" : "^6.0.0"
+        "phpunit/phpunit" : "^6.0.0",
+        "monolog/monolog": "^1.23"
     },
     "suggest": {
-        "ext-curl": "PicoFeed will use cURL if present"
+        "ext-curl": "PicoFeed will use cURL if present",
+        "monolog/monolog": "You can set a monolog Logger to get debug information from PicoFeed"
     },
     "autoload": {
         "psr-0": {"PicoFeed": "lib/"}
