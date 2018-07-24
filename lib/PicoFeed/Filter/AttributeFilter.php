@@ -248,23 +248,22 @@ class AttributeFilter
     /**
      * Apply filters to the attributes list.
      *
-     * @param string $tag        TagFilter name
-     * @param array  $attributes Attributes dictionary
+     * @param Tag $tag
      *
      * @return array Filtered attributes
      */
-    public function filter($tag, array $attributes)
+    public function filter($tag)
     {
-        foreach ($attributes as $attribute => &$value) {
+        foreach ($tag->attributes as $attribute => &$value) {
             foreach ($this->filters as $filter) {
-                if (!$this->$filter($tag, $attribute, $value)) {
-                    unset($attributes[$attribute]);
+                if (!$this->$filter($tag->name, $attribute, $value)) {
+                    unset($tag->attributes[$attribute]);
                     break;
                 }
             }
         }
 
-        return $attributes;
+        return $tag->attributes;
     }
 
     /**
@@ -441,33 +440,31 @@ class AttributeFilter
     /**
      * Automatically add/override some attributes for specific tags.
      *
-     * @param string $tag        TagFilter name
-     * @param array  $attributes Attributes list
+     * @param Tag $tag
      *
      * @return array
      */
-    public function addAttributes($tag, array $attributes)
+    public function addAttributes($tag)
     {
-        if (isset($this->add_attributes[$tag])) {
-            $attributes += $this->add_attributes[$tag];
+        if (isset($this->add_attributes[$tag->name])) {
+            $tag->attributes += $this->add_attributes[$tag->name];
         }
 
-        return $attributes;
+        return $tag->attributes;
     }
 
     /**
      * Return true if all required attributes are present.
      *
-     * @param string $tag        TagFilter name
-     * @param array  $attributes Attributes list
+     * @param Tag $tag
      *
      * @return bool
      */
-    public function hasRequiredAttributes($tag, array $attributes)
+    public function hasRequiredAttributes(Tag $tag)
     {
-        if (isset($this->required_attributes[$tag])) {
-            foreach ($this->required_attributes[$tag] as $attribute) {
-                if (!isset($attributes[$attribute])) {
+        if (isset($this->required_attributes[$tag->name])) {
+            foreach ($this->required_attributes[$tag->name] as $attribute) {
+                if (!isset($tag->attributes[$attribute])) {
                     return false;
                 }
             }

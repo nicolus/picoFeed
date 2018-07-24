@@ -75,13 +75,12 @@ class TagFilter extends Base
     /**
      * Check if the tag is allowed and is not a pixel tracker.
      *
-     * @param string $tag        TagFilter name
-     * @param array  $attributes Attributes dictionary
+     * @param Tag $tag
      * @return bool
      */
-    public function isAllowed($tag, array $attributes)
+    public function isAllowed(Tag $tag)
     {
-        return $this->isAllowedTag($tag) && !$this->isPixelTracker($tag, $attributes);
+        return $this->isAllowedTag($tag->name) && !$this->isPixelTracker($tag);
     }
 
     /**
@@ -121,12 +120,12 @@ class TagFilter extends Base
     /**
      * Check if a tag is on the whitelist.
      *
-     * @param string $tag TagFilter name
+     * @param string $tagName Tag name
      * @return bool
      */
-    public function isAllowedTag($tag)
+    public function isAllowedTag($tagName)
     {
-        return in_array($tag, array_merge(
+        return in_array($tagName, array_merge(
             $this->tag_whitelist,
             array_keys($this->config->getFilterWhitelistedTags(array()))
         ));
@@ -135,15 +134,14 @@ class TagFilter extends Base
     /**
      * Detect if an image tag is a pixel tracker.
      *
-     * @param string $tag        TagFilter name
-     * @param array  $attributes TagFilter attributes
+     * @param Tag $tag
      * @return bool
      */
-    public function isPixelTracker($tag, array $attributes)
+    public function isPixelTracker(Tag $tag)
     {
-        return $tag === 'img' &&
-                isset($attributes['height']) && isset($attributes['width']) &&
-                $attributes['height'] == 1 && $attributes['width'] == 1;
+        return $tag->name === 'img' &&
+            isset($attributes['height']) && isset($attributes['width']) &&
+            $tag->attributes['height'] == 1 && $tag->attributes['width'] == 1;
     }
 
     /**

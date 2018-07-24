@@ -194,20 +194,22 @@ class HtmlFilter
      * Parse opening tag.
      *
      * @param resource $parser     XML parser
-     * @param string   $tag        TagFilter name
-     * @param array    $attributes TagFilter attributes
+     * @param string   $tagName    Tag name
+     * @param array    $attributes Tag attributes
      */
-    public function startTag($parser, $tag, array $attributes)
+    public function startTag($parser, $tagName, array $attributes)
     {
         $this->empty = true;
 
-        if ($this->tag->isAllowed($tag, $attributes)) {
-            $attributes = $this->attribute->filter($tag, $attributes);
+        $tag = new Tag($tagName, $attributes);
 
-            if ($this->attribute->hasRequiredAttributes($tag, $attributes)) {
-                $attributes = $this->attribute->addAttributes($tag, $attributes);
+        if ($this->tag->isAllowed($tag)) {
+            $attributes = $this->attribute->filter($tag);
 
-                $this->output .= $this->tag->openHtmlTag($tag, $this->attribute->toHtml($attributes));
+            if ($this->attribute->hasRequiredAttributes($tag)) {
+                $attributes = $this->attribute->addAttributes($tag);
+
+                $this->output .= $this->tag->openHtmlTag($tagName, $this->attribute->toHtml($attributes));
                 $this->empty = false;
             }
         }
