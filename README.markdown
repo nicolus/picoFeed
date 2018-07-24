@@ -1,5 +1,6 @@
 PicoFeed
 ========
+[![Coverage Status](https://coveralls.io/repos/github/nicolus/picoFeed/badge.svg)](https://coveralls.io/github/nicolus/picoFeed) [![SensioLabsInsight](https://insight.sensiolabs.com/projects/d76c5af7-a39c-46e9-9657-8a23046f17e7/mini.png)](https://insight.sensiolabs.com/projects/d76c5af7-a39c-46e9-9657-8a23046f17e7)
 
 This is a fork of the original picoFeed (which has been abandonned).
 
