@@ -11,7 +11,7 @@ before_script:
   - composer install --dev --no-interaction
 
 script:
-  mkdir -p build/logs
+  - mkdir -p build/logs
   - ./vendor/bin/phpunit --exclude-group online
 
 after_success:
