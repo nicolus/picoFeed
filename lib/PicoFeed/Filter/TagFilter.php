@@ -7,11 +7,11 @@ use PicoFeed\Base;
 use PicoFeed\Parser\XmlParser;
 
 /**
- * Tag Filter class.
+ * TagFilter Filter class.
  *
  * @author  Frederic Guillot
  */
-class Tag extends Base
+class TagFilter extends Base
 {
     /**
      * Tags blacklist (Xpath expressions).
@@ -75,7 +75,7 @@ class Tag extends Base
     /**
      * Check if the tag is allowed and is not a pixel tracker.
      *
-     * @param string $tag        Tag name
+     * @param string $tag        TagFilter name
      * @param array  $attributes Attributes dictionary
      * @return bool
      */
@@ -87,7 +87,7 @@ class Tag extends Base
     /**
      * Return the HTML opening tag.
      *
-     * @param string $tag        Tag name
+     * @param string $tag        TagFilter name
      * @param string $attributes Attributes converted in html
      * @return string
      */
@@ -99,7 +99,7 @@ class Tag extends Base
     /**
      * Return the HTML closing tag.
      *
-     * @param string $tag Tag name
+     * @param string $tag TagFilter name
      * @return string
      */
     public function closeHtmlTag($tag)
@@ -110,7 +110,7 @@ class Tag extends Base
     /**
      * Return true is the tag is self-closing.
      *
-     * @param string $tag Tag name
+     * @param string $tag TagFilter name
      * @return bool
      */
     public function isSelfClosingTag($tag)
@@ -121,7 +121,7 @@ class Tag extends Base
     /**
      * Check if a tag is on the whitelist.
      *
-     * @param string $tag Tag name
+     * @param string $tag TagFilter name
      * @return bool
      */
     public function isAllowedTag($tag)
@@ -135,8 +135,8 @@ class Tag extends Base
     /**
      * Detect if an image tag is a pixel tracker.
      *
-     * @param string $tag        Tag name
-     * @param array  $attributes Tag attributes
+     * @param string $tag        TagFilter name
+     * @param array  $attributes TagFilter attributes
      * @return bool
      */
     public function isPixelTracker($tag, array $attributes)
@@ -198,7 +198,7 @@ class Tag extends Base
      * Set whitelisted tags adn attributes for each tag.
      *
      * @param array $values List of tags: ['video' => ['src', 'cover'], 'img' => ['src']]
-     * @return Tag
+     * @return TagFilter
      */
     public function setWhitelistedTags(array $values)
     {

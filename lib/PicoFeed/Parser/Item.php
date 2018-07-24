@@ -146,10 +146,10 @@ class Item
     /**
      * Get specific XML tag or attribute value.
      *
-     * @param string $tag       Tag name (examples: guid, media:content)
-     * @param string $attribute Tag attribute
+     * @param string $tag       TagFilter name (examples: guid, media:content)
+     * @param string $attribute TagFilter attribute
      *
-     * @return array|false Tag values or error
+     * @return array|false TagFilter values or error
      */
     public function getTag($tag, $attribute = '')
     {

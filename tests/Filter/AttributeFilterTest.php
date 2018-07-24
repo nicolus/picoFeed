@@ -10,7 +10,7 @@ class AttributeFilterTest extends TestCase
 {
     public function testFilterAllowedAttribute()
     {
-        $filter = new Attribute(new Url('http://google.com'));
+        $filter = new AttributeFilter(new Url('http://google.com'));
 
         $this->assertTrue($filter->filterAllowedAttribute('abbr', 'title', 'test'));
         $this->assertFalse($filter->filterAllowedAttribute('script', 'type', 'text/javascript'));
@@ -22,7 +22,7 @@ class AttributeFilterTest extends TestCase
 
     public function testFilterIntegerAttribute()
     {
-        $filter = new Attribute(new Url('http://google.com'));
+        $filter = new AttributeFilter(new Url('http://google.com'));
 
         $this->assertTrue($filter->filterIntegerAttribute('abbr', 'title', 'test'));
         $this->assertTrue($filter->filterIntegerAttribute('iframe', 'width', '0'));
@@ -35,28 +35,28 @@ class AttributeFilterTest extends TestCase
 
     public function testRewriteProxyImageUrl()
     {
-        $filter = new Attribute(new Url('http://www.la-grange.net'));
+        $filter = new AttributeFilter(new Url('http://www.la-grange.net'));
         $url = '/2014/08/03/4668-noisettes';
         $this->assertTrue($filter->rewriteImageProxyUrl('a', 'href', $url));
         $this->assertEquals('/2014/08/03/4668-noisettes', $url);
 
-        $filter = new Attribute(new Url('http://www.la-grange.net'));
+        $filter = new AttributeFilter(new Url('http://www.la-grange.net'));
         $url = '/2014/08/03/4668-noisettes';
         $this->assertTrue($filter->rewriteImageProxyUrl('img', 'alt', $url));
         $this->assertEquals('/2014/08/03/4668-noisettes', $url);
 
-        $filter = new Attribute(new Url('http://www.la-grange.net'));
+        $filter = new AttributeFilter(new Url('http://www.la-grange.net'));
         $url = '/2014/08/03/4668-noisettes';
         $this->assertTrue($filter->rewriteImageProxyUrl('img', 'src', $url));
         $this->assertEquals('/2014/08/03/4668-noisettes', $url);
 
-        $filter = new Attribute(new Url('http://www.la-grange.net'));
+        $filter = new AttributeFilter(new Url('http://www.la-grange.net'));
         $filter->setImageProxyUrl('https://myproxy/?u=%s');
         $url = 'http://example.net/image.png';
         $this->assertTrue($filter->rewriteImageProxyUrl('img', 'src', $url));
         $this->assertEquals('https://myproxy/?u='.rawurlencode('http://example.net/image.png'), $url);
 
-        $filter = new Attribute(new Url('http://www.la-grange.net'));
+        $filter = new AttributeFilter(new Url('http://www.la-grange.net'));
 
         $filter->setImageProxyCallback(function ($image_url) {
             $key = hash_hmac('sha1', $image_url, 'secret');
@@ -71,12 +71,12 @@ class AttributeFilterTest extends TestCase
 
     public function testRewriteAbsoluteUrl()
     {
-        $filter = new Attribute(new Url('http://www.la-grange.net'));
+        $filter = new AttributeFilter(new Url('http://www.la-grange.net'));
         $url = '/2014/08/03/4668-noisettes';
         $this->assertTrue($filter->rewriteAbsoluteUrl('a', 'href', $url));
         $this->assertEquals('http://www.la-grange.net/2014/08/03/4668-noisettes', $url);
 
-        $filter = new Attribute(new Url('http://google.com'));
+        $filter = new AttributeFilter(new Url('http://google.com'));
 
         $url = 'test';
         $this->assertTrue($filter->rewriteAbsoluteUrl('a', 'href', $url));
@@ -90,26 +90,26 @@ class AttributeFilterTest extends TestCase
         $this->assertTrue($filter->rewriteAbsoluteUrl('a', 'href', $url));
         $this->assertEquals('http://example.com/', $url);
 
-        $filter = new Attribute(new Url('https://google.com'));
+        $filter = new AttributeFilter(new Url('https://google.com'));
         $url = '//example.com/?youpi';
         $this->assertTrue($filter->rewriteAbsoluteUrl('a', 'href', $url));
         $this->assertEquals('https://example.com/?youpi', $url);
 
-        $filter = new Attribute(new Url('https://127.0.0.1:8000/here/'));
+        $filter = new AttributeFilter(new Url('https://127.0.0.1:8000/here/'));
         $url = 'image.png?v=2';
         $this->assertTrue($filter->rewriteAbsoluteUrl('a', 'href', $url));
         $this->assertEquals('https://127.0.0.1:8000/here/image.png?v=2', $url);
 
-        $filter = new Attribute(new Url('https://truc/'));
+        $filter = new AttributeFilter(new Url('https://truc/'));
         $this->assertEquals(array('src' => 'https://www.youtube.com/test'), $filter->filter('iframe', array('width' => 'test', 'src' => '//www.youtube.com/test')));
 
-        $filter = new Attribute(new Url('http://truc/'));
+        $filter = new AttributeFilter(new Url('http://truc/'));
         $this->assertEquals(array('href' => 'http://google.fr/'), $filter->filter('a', array('href' => '//google.fr')));
     }
 
     public function testFilterIframeAttribute()
     {
-        $filter = new Attribute(new Url('http://google.com'));
+        $filter = new AttributeFilter(new Url('http://google.com'));
 
         $this->assertTrue($filter->filterIframeAttribute('iframe', 'src', 'http://www.youtube.com/test'));
         $this->assertTrue($filter->filterIframeAttribute('iframe', 'src', 'https://www.youtube.com/test'));
@@ -121,7 +121,7 @@ class AttributeFilterTest extends TestCase
 
     public function testAllowIframeFullscreen()
     {
-        $filter = new Attribute(new Url('http://google.com'));
+        $filter = new AttributeFilter(new Url('http://google.com'));
 
         $attrs = $filter->filter('iframe', array('allowfullscreen' => 'allowfullscreen', 'class' => 'test'));
 
@@ -130,7 +130,7 @@ class AttributeFilterTest extends TestCase
 
     public function testRemoveYouTubeAutoplay()
     {
-        $filter = new Attribute(new Url('http://google.com'));
+        $filter = new AttributeFilter(new Url('http://google.com'));
         $urls = array(
             'https://www.youtube.com/something/?autoplay=1' => 'https://www.youtube.com/something/?autoplay=0',
             'https://www.youtube.com/something/?test=s&autoplay=1&a=2' => 'https://www.youtube.com/something/?test=s&autoplay=0&a=2',
@@ -148,7 +148,7 @@ class AttributeFilterTest extends TestCase
 
     public function testFilterBlacklistAttribute()
     {
-        $filter = new Attribute(new Url('http://google.com'));
+        $filter = new AttributeFilter(new Url('http://google.com'));
 
         $this->assertTrue($filter->filterBlacklistResourceAttribute('a', 'href', 'http://google.fr/'));
         $this->assertFalse($filter->filterBlacklistResourceAttribute('a', 'href', 'http://res3.feedsportal.com/truc'));
@@ -159,7 +159,7 @@ class AttributeFilterTest extends TestCase
 
     public function testFilterProtocolAttribute()
     {
-        $filter = new Attribute(new Url('http://google.com'));
+        $filter = new AttributeFilter(new Url('http://google.com'));
 
         $this->assertTrue($filter->filterProtocolUrlAttribute('a', 'href', 'http://google.fr/'));
         $this->assertFalse($filter->filterProtocolUrlAttribute('a', 'href', 'bla://google.fr/'));
@@ -171,7 +171,7 @@ class AttributeFilterTest extends TestCase
 
     public function testRequiredAttribute()
     {
-        $filter = new Attribute(new Url('http://google.com'));
+        $filter = new AttributeFilter(new Url('http://google.com'));
 
         $this->assertTrue($filter->hasRequiredAttributes('a', array('href' => 'bla')));
         $this->assertTrue($filter->hasRequiredAttributes('img', array('src' => 'bla')));
@@ -184,7 +184,7 @@ class AttributeFilterTest extends TestCase
 
     public function testHtml()
     {
-        $filter = new Attribute(new Url('http://google.com'));
+        $filter = new AttributeFilter(new Url('http://google.com'));
 
         $this->assertEquals('title="A &amp; B"', $filter->toHtml(array('title' => 'A & B')));
         $this->assertEquals('title="&quot;a&quot;"', $filter->toHtml(array('title' => '"a"')));

@@ -10,16 +10,16 @@ namespace PicoFeed\Filter;
 class Filter
 {
     /**
-     * Get the Html filter instance.
+     * Get the HtmlFilter filter instance.
      *
      * @static
      * @param string $html    HTML content
      * @param string $website Site URL (used to build absolute URL)
-     * @return Html
+     * @return HtmlFilter
      */
     public static function html($html, $website)
     {
-        $filter = new Html($html, $website);
+        $filter = new HtmlFilter($html, $website);
 
         return $filter;
     }

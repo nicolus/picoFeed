@@ -12,7 +12,7 @@ use PicoFeed\Parser\XmlParser;
  *
  * @author  Frederic Guillot
  */
-class Html
+class HtmlFilter
 {
     /**
      * Config object.
@@ -50,16 +50,16 @@ class Html
     private $empty = true;
 
     /**
-     * Tag instance.
+     * TagFilter instance.
      *
-     * @var \PicoFeed\Filter\Tag
+     * @var \PicoFeed\Filter\TagFilter
      */
     public $tag = '';
 
     /**
-     * Attribute instance.
+     * AttributeFilter instance.
      *
-     * @var \PicoFeed\Filter\Attribute
+     * @var \PicoFeed\Filter\AttributeFilter
      */
     public $attribute = '';
 
@@ -81,16 +81,16 @@ class Html
         $this->config = new Config();
         $this->input = XmlParser::htmlToXml($html);
         $this->output = '';
-        $this->tag = new Tag($this->config);
+        $this->tag = new TagFilter($this->config);
         $this->website = $website;
-        $this->attribute = new Attribute(new Url($website));
+        $this->attribute = new AttributeFilter(new Url($website));
     }
 
     /**
      * Set config object.
      *
      * @param \PicoFeed\Config\Config $config Config instance
-     * @return \PicoFeed\Filter\Html
+     * @return \PicoFeed\Filter\HtmlFilter
      */
     public function setConfig($config)
     {
@@ -194,8 +194,8 @@ class Html
      * Parse opening tag.
      *
      * @param resource $parser     XML parser
-     * @param string   $tag        Tag name
-     * @param array    $attributes Tag attributes
+     * @param string   $tag        TagFilter name
+     * @param array    $attributes TagFilter attributes
      */
     public function startTag($parser, $tag, array $attributes)
     {
@@ -219,7 +219,7 @@ class Html
      * Parse closing tag.
      *
      * @param resource $parser XML parser
-     * @param string   $tag    Tag name
+     * @param string   $tag    TagFilter name
      */
     public function endTag($parser, $tag)
     {
@@ -232,7 +232,7 @@ class Html
      * Parse tag content.
      *
      * @param resource $parser  XML parser
-     * @param string   $content Tag content
+     * @param string   $content TagFilter content
      */
     public function dataTag($parser, $content)
     {

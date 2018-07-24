@@ -5,11 +5,11 @@ namespace PicoFeed\Filter;
 use PicoFeed\Client\Url;
 
 /**
- * Attribute Filter class.
+ * AttributeFilter Filter class.
  *
  * @author  Frederic Guillot
  */
-class Attribute
+class AttributeFilter
 {
     /**
      * Image proxy url.
@@ -248,7 +248,7 @@ class Attribute
     /**
      * Apply filters to the attributes list.
      *
-     * @param string $tag        Tag name
+     * @param string $tag        TagFilter name
      * @param array  $attributes Attributes dictionary
      *
      * @return array Filtered attributes
@@ -270,9 +270,9 @@ class Attribute
     /**
      * Return true if the value is allowed (remove not allowed attributes).
      *
-     * @param string $tag       Tag name
-     * @param string $attribute Attribute name
-     * @param string $value     Attribute value
+     * @param string $tag       TagFilter name
+     * @param string $attribute AttributeFilter name
+     * @param string $value     AttributeFilter value
      *
      * @return bool
      */
@@ -284,9 +284,9 @@ class Attribute
     /**
      * Return true if the value is not integer (remove attributes that should have an integer value).
      *
-     * @param string $tag       Tag name
-     * @param string $attribute Attribute name
-     * @param string $value     Attribute value
+     * @param string $tag       TagFilter name
+     * @param string $attribute AttributeFilter name
+     * @param string $value     AttributeFilter value
      *
      * @return bool
      */
@@ -302,9 +302,9 @@ class Attribute
     /**
      * Return true if the iframe source is allowed (remove not allowed iframe).
      *
-     * @param string $tag       Tag name
-     * @param string $attribute Attribute name
-     * @param string $value     Attribute value
+     * @param string $tag       TagFilter name
+     * @param string $attribute AttributeFilter name
+     * @param string $value     AttributeFilter value
      *
      * @return bool
      */
@@ -326,9 +326,9 @@ class Attribute
     /**
      * Return true if the resource is not blacklisted (remove blacklisted resource attributes).
      *
-     * @param string $tag       Tag name
-     * @param string $attribute Attribute name
-     * @param string $value     Attribute value
+     * @param string $tag       TagFilter name
+     * @param string $attribute AttributeFilter name
+     * @param string $value     AttributeFilter value
      *
      * @return bool
      */
@@ -344,9 +344,9 @@ class Attribute
     /**
      * Convert all relative links to absolute url.
      *
-     * @param string $tag       Tag name
-     * @param string $attribute Attribute name
-     * @param string $value     Attribute value
+     * @param string $tag       TagFilter name
+     * @param string $attribute AttributeFilter name
+     * @param string $value     AttributeFilter value
      *
      * @return bool
      */
@@ -363,9 +363,9 @@ class Attribute
      * Turns iframes' src attribute from http to https to prevent
      * mixed active content.
      *
-     * @param string $tag       Tag name
+     * @param string $tag       TagFilter name
      * @param array  $attribute Atttributes name
-     * @param string $value     Attribute value
+     * @param string $value     AttributeFilter value
      *
      * @return bool
      */
@@ -381,9 +381,9 @@ class Attribute
     /**
      * Removes YouTube autoplay from iframes.
      *
-     * @param string $tag       Tag name
+     * @param string $tag       TagFilter name
      * @param array  $attribute Atttributes name
-     * @param string $value     Attribute value
+     * @param string $value     AttributeFilter value
      *
      * @return bool
      */
@@ -400,9 +400,9 @@ class Attribute
     /**
      * Rewrite image url to use with a proxy.
      *
-     * @param string $tag       Tag name
-     * @param string $attribute Attribute name
-     * @param string $value     Attribute value
+     * @param string $tag       TagFilter name
+     * @param string $attribute AttributeFilter name
+     * @param string $value     AttributeFilter value
      *
      * @return bool
      */
@@ -423,9 +423,9 @@ class Attribute
     /**
      * Return true if the scheme is authorized.
      *
-     * @param string $tag       Tag name
-     * @param string $attribute Attribute name
-     * @param string $value     Attribute value
+     * @param string $tag       TagFilter name
+     * @param string $attribute AttributeFilter name
+     * @param string $value     AttributeFilter value
      *
      * @return bool
      */
@@ -441,7 +441,7 @@ class Attribute
     /**
      * Automatically add/override some attributes for specific tags.
      *
-     * @param string $tag        Tag name
+     * @param string $tag        TagFilter name
      * @param array  $attributes Attributes list
      *
      * @return array
@@ -458,7 +458,7 @@ class Attribute
     /**
      * Return true if all required attributes are present.
      *
-     * @param string $tag        Tag name
+     * @param string $tag        TagFilter name
      * @param array  $attributes Attributes list
      *
      * @return bool
@@ -479,7 +479,7 @@ class Attribute
     /**
      * Check if an attribute name is an external resource.
      *
-     * @param string $attribute Attribute name
+     * @param string $attribute AttributeFilter name
      *
      * @return bool
      */
@@ -491,7 +491,7 @@ class Attribute
     /**
      * Detect if the protocol is allowed or not.
      *
-     * @param string $value Attribute value
+     * @param string $value AttributeFilter value
      *
      * @return bool
      */
@@ -509,7 +509,7 @@ class Attribute
     /**
      * Detect if an url is blacklisted.
      *
-     * @param string $resource Attribute value (URL)
+     * @param string $resource AttributeFilter value (URL)
      *
      * @return bool
      */
@@ -547,7 +547,7 @@ class Attribute
      *
      * @param array $values List of tags: ['video' => ['src', 'cover'], 'img' => ['src']]
      *
-     * @return Attribute
+     * @return AttributeFilter
      */
     public function setWhitelistedAttributes(array $values)
     {
@@ -561,7 +561,7 @@ class Attribute
      *
      * @param array $values List of scheme: ['http://', 'ftp://']
      *
-     * @return Attribute
+     * @return AttributeFilter
      */
     public function setSchemeWhitelist(array $values)
     {
@@ -575,7 +575,7 @@ class Attribute
      *
      * @param array $values List of values: ['src', 'href']
      *
-     * @return Attribute
+     * @return AttributeFilter
      */
     public function setMediaAttributes(array $values)
     {
@@ -589,7 +589,7 @@ class Attribute
      *
      * @param array $values List of tags: ['http://google.com/', '...']
      *
-     * @return Attribute
+     * @return AttributeFilter
      */
     public function setMediaBlacklist(array $values)
     {
@@ -603,7 +603,7 @@ class Attribute
      *
      * @param array $values List of tags: ['img' => 'src']
      *
-     * @return Attribute
+     * @return AttributeFilter
      */
     public function setRequiredAttributes(array $values)
     {
@@ -617,7 +617,7 @@ class Attribute
      *
      * @param array $values List of tags: ['a' => 'target="_blank"']
      *
-     * @return Attribute
+     * @return AttributeFilter
      */
     public function setAttributeOverrides(array $values)
     {
@@ -631,7 +631,7 @@ class Attribute
      *
      * @param array $values List of tags: ['width', 'height']
      *
-     * @return Attribute
+     * @return AttributeFilter
      */
     public function setIntegerAttributes(array $values)
     {
@@ -645,7 +645,7 @@ class Attribute
      *
      * @param array $values List of tags: ['http://www.youtube.com']
      *
-     * @return Attribute
+     * @return AttributeFilter
      */
     public function setIframeWhitelist(array $values)
     {
@@ -661,7 +661,7 @@ class Attribute
      *
      * @param string $url Proxy URL
      *
-     * @return Attribute
+     * @return AttributeFilter
      */
     public function setImageProxyUrl($url)
     {
@@ -675,7 +675,7 @@ class Attribute
      *
      * @param \Closure $callback
      *
-     * @return Attribute
+     * @return AttributeFilter
      */
     public function setImageProxyCallback($callback)
     {
@@ -689,7 +689,7 @@ class Attribute
      *
      * @param string $value
      *
-     * @return Attribute
+     * @return AttributeFilter
      */
     public function setImageProxyProtocol($value)
     {

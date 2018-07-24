@@ -9,7 +9,7 @@ class TagFilterTest extends TestCase
 {
     public function testAllowedTag()
     {
-        $tag = new Tag(new Config());
+        $tag = new TagFilter(new Config());
 
         $this->assertTrue($tag->isAllowed('p', array('class' => 'test')));
         $this->assertTrue($tag->isAllowed('img', array('class' => 'test')));
@@ -20,7 +20,7 @@ class TagFilterTest extends TestCase
 
     public function testHtml()
     {
-        $tag = new Tag(new Config());
+        $tag = new TagFilter(new Config());
 
         $this->assertEquals('<p>', $tag->openHtmlTag('p'));
         $this->assertEquals('<img src="test" alt="truc"/>', $tag->openHtmlTag('img', 'src="test" alt="truc"'));
