@@ -28,8 +28,7 @@ class Rss20 extends Parser
      * Get the path to the items XML tree.
      *
      * @param SimpleXMLElement $xml Feed xml
-     *
-     * @return SimpleXMLElement
+     * @return SimpleXMLElement[]
      */
     public function getItemsTree(SimpleXMLElement $xml)
     {
@@ -211,6 +210,19 @@ class Rss20 extends Parser
     }
 
     /**
+     * Find the item author URL.
+     *
+     * @param SimpleXMLElement      $xml   Feed
+     * @param SimpleXMLElement      $entry Feed item
+     * @param \PicoFeed\Parser\Item $item  Item object
+     */
+    public function findItemAuthorUrl(SimpleXMLElement $xml, SimpleXMLElement $entry, Item $item)
+    {
+        // There appears to be no support for author URL in the dc: terms or author element
+        $item->setAuthorUrl('');
+    }
+
+    /**
      * Find the item content.
      *
      * @param SimpleXMLElement      $entry Feed item
@@ -301,5 +313,18 @@ class Rss20 extends Parser
     {
         $language = XmlParser::getXPathResult($entry, 'dc:language', $this->namespaces);
         $item->setLanguage(XmlParser::getValue($language) ?: $feed->getLanguage());
+    }
+
+    /**
+     * Find the item categories.
+     *
+     * @param SimpleXMLElement      $entry Feed item
+     * @param Item $item  Item object
+     * @param Feed $feed  Feed object
+     */
+    public function findItemCategories(SimpleXMLElement $entry, Item $item, Feed $feed)
+    {
+        $categories = XmlParser::getXPathResult($entry, 'category');
+        $item->setCategoriesFromXml($categories);
     }
 }

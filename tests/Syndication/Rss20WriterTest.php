@@ -3,9 +3,9 @@
 namespace PicoFeed\Syndication;
 
 use DateTime;
-use PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
 
-class Rss20WriterTest extends PHPUnit_Framework_TestCase
+class Rss20WriterTest extends TestCase
 {
     public function testWriter()
     {
@@ -33,7 +33,7 @@ class Rss20WriterTest extends PHPUnit_Framework_TestCase
         $expected = '<?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <generator>PicoFeed (https://github.com/fguillot/picoFeed)</generator>
+    <generator>PicoFeed (https://github.com/miniflux/picoFeed)</generator>
     <title>My website</title>
     <description>My website</description>
     <pubDate>'.date(DATE_RSS).'</pubDate>

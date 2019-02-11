@@ -55,6 +55,13 @@ class Item
     public $author = '';
 
     /**
+     * Item author URL.
+     *
+     * @var string
+     */
+    public $authorUrl = '';
+
+    /**
      * Item date.
      *
      * @var \DateTime
@@ -102,6 +109,13 @@ class Item
      * @var string
      */
     public $language = '';
+
+    /**
+     * Item categories.
+     *
+     * @var array
+     */
+    public $categories = array();
 
     /**
      * Raw XML.
@@ -166,13 +180,16 @@ class Item
             $output .= 'Item::'.$property.' = '.$this->$property.PHP_EOL;
         }
 
-        $publishedDate = $this->publishedDate != null ? $this->publishedDate->format(DATE_RFC822) : null;
-        $updatedDate = $this->updatedDate != null ? $this->updatedDate->format(DATE_RFC822) : null;
+        $publishedDate = $this->publishedDate !== null ? $this->publishedDate->format(DATE_RFC822) : null;
+        $updatedDate = $this->updatedDate !== null ? $this->updatedDate->format(DATE_RFC822) : null;
+
+        $categoryString = $this->categories !== null ? implode(',', $this->categories) : null;
 
         $output .= 'Item::date = '.$this->date->format(DATE_RFC822).PHP_EOL;
         $output .= 'Item::publishedDate = '.$publishedDate.PHP_EOL;
         $output .= 'Item::updatedDate = '.$updatedDate.PHP_EOL;
         $output .= 'Item::isRTL() = '.($this->isRTL() ? 'true' : 'false').PHP_EOL;
+        $output .= 'Item::categories = ['.$categoryString.']'.PHP_EOL;
         $output .= 'Item::content = '.strlen($this->content).' bytes'.PHP_EOL;
 
         return $output;
@@ -306,6 +323,16 @@ class Item
     }
 
     /**
+     * Get categories.
+     *
+     * @return array
+     */
+    public function getCategories()
+    {
+        return $this->categories;
+    }
+
+    /**
      * Get author.
      *
      * @return string
@@ -313,6 +340,16 @@ class Item
     public function getAuthor()
     {
         return $this->author;
+    }
+
+    /**
+     * Get author URL.
+     *
+     * @return string
+     */
+    public function getAuthorUrl()
+    {
+        return $this->authorUrl;
     }
 
     /**
@@ -358,6 +395,18 @@ class Item
     public function setAuthor($author)
     {
         $this->author = $author;
+        return $this;
+    }
+
+    /**
+     * Set author URL.
+     *
+     * @param string $authorUrl
+     * @return Item
+     */
+    public function setAuthorUrl($authorUrl)
+    {
+        $this->authorUrl = $authorUrl;
         return $this;
     }
 
@@ -430,6 +479,40 @@ class Item
     public function setLanguage($language)
     {
         $this->language = $language;
+        return $this;
+    }
+
+    /**
+     * Set item categories.
+     *
+     * @param array $categories
+     * @return Item
+     */
+    public function setCategories($categories)
+    {
+        $this->categories = $categories;
+        return $this;
+    }
+
+    /**
+     * Set item categories from xml.
+     *
+     * @param |SimpleXMLElement[] $categories
+     * @return Item
+     */
+    public function setCategoriesFromXml($categories)
+    {
+        if ($categories !== false) {
+            $this->setCategories(
+                array_map(
+                    function ($element) {
+                        return trim((string) $element);
+                    },
+                    $categories
+                )
+            );
+        }
+        
         return $this;
     }
 

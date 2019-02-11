@@ -25,7 +25,7 @@ use PicoFeed\Scraper\Scraper;
 
 $config = new Config;
 
-$grabber = new Scraper($config)
+$grabber = new Scraper($config);
 $grabber->setUrl($url);
 $grabber->execute();
 
@@ -114,6 +114,11 @@ $parser->enableContentGrabber(false);
 $parser->setGrabberIgnoreUrls(['http://foo', 'http://bar']);
 ```
 
+### Set maximum of recursions (pages) for multi page articles
+- Method name: `setMaxRecursions();`
+- Default value: 25
+- Argument value: integer
+
 How to write a grabber rules file?
 ----------------------------------
 
@@ -192,4 +197,4 @@ return array(
 List of content grabber rules
 -----------------------------
 
-Rules are stored inside the directory [lib/PicoFeed/Rules](https://github.com/fguillot/picoFeed/tree/master/lib/PicoFeed/Rules)
+Rules are stored inside the directory [lib/PicoFeed/Rules](https://github.com/miniflux/picoFeed/tree/master/lib/PicoFeed/Rules)

@@ -181,8 +181,8 @@ class CandidateParser implements ParserInterface
      * Strip useless tags.
      *
      * @param string $content
-     *
      * @return string
+     * @throws \PicoFeed\Parser\XmlEntityException
      */
     public function stripGarbage($content)
     {
@@ -249,11 +249,20 @@ class CandidateParser implements ParserInterface
     }
 
     /**
+     * Find link for next page of the article.
+     *
+     * @return string
+     */
+    public function findNextLink()
+    {
+        return null;
+    }
+
+    /**
      * Return false if the node should not be removed.
      *
      * @param DomDocument $dom
-     * @param DomNode     $node
-     *
+     * @param \DomNode    $node
      * @return bool
      */
     public function shouldRemove(DomDocument $dom, $node)

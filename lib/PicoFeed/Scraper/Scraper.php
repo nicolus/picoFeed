@@ -33,20 +33,6 @@ class Scraper extends Base
     private $content = '';
 
     /**
-     * Relevant collected content.
-     *
-     * @var string
-     */
-    private $pagecontent = '';
-
-    /**
-     * Are there more pages.
-     *
-     * @var bool
-     */
-    private $morePages = false;
-
-    /**
      * HTML content.
      *
      * @var string
@@ -219,13 +205,12 @@ class Scraper extends Base
 
     /**
      * Execute the scraper.
+     *
+     * @param string $pageContent
+     * @param int $recursionDepth
      */
-    public function execute()
+    public function execute($pageContent = '', $recursionDepth = 0)
     {
-        if(!$this->morePages){
-            $this->pagecontent = '';
-
-        }
         $this->html = '';
         $this->encoding = '';
         $this->content = '';
@@ -235,34 +220,22 @@ class Scraper extends Base
         $parser = $this->getParser();
 
         if ($parser !== null) {
-
-            $this->content = $parser->execute();
-            $this->pagecontent .= $this->content;
-            // check if there is a link to next page and recursively get content
-            if($nextLink = $this->getAbsoluteURL($parser->findNextLink())){
-                $this->morePages = true;
+            $maxRecursions = $this->config->getMaxRecursions();
+            if(!isset($maxRecursions)){
+                $maxRecursions = 25;
+            }
+            $pageContent .= $parser->execute();
+            // check if there is a link to next page and recursively get content (max 25 pages)
+            if((($nextLink = $parser->findNextLink()) !== null) && $recursionDepth < $maxRecursions){
+                $nextLink = Url::resolve($nextLink,$this->url);
                 $this->setUrl($nextLink);
-                $this->execute();
+                $this->execute($pageContent,$recursionDepth+1);
             }
             else{
-                $this->morePages = false;
-                $this->content = $this->pagecontent;
+                $this->content = $pageContent;
             }
             Logger::setMessage(get_called_class().': Content length: '.strlen($this->content).' bytes');
         }
-
-
-    }
-
-    /**
-     * convert relative url to absolute url
-     *
-     * @return url including domain
-     */
-    public function getAbsoluteURL($url){
-        // ToDo check if $url already includes domain an find better method to add domain
-        $pos = strpos($this->url,substr($url,0,10));
-        return substr($this->url,0,$pos).$url;
     }
 
     /**

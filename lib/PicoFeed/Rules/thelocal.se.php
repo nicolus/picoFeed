@@ -1,21 +1,17 @@
 <?php
-return array(
-    'grabber' => array(
-        '%.*%' => array(
-            'test_url' => 'http://www.thelocal.se/20151018/swedish-moderates-tighten-focus-on-begging-ban',
-            'body' => array(
-                '//article',
-            ),
-            'strip' => array(
-                '//p[@id="mobile-signature"]',
-                '//article/div[4]',
-                '//article/ul[1]',
-                '//div[@class="clr"]',
-                '//p[@class="small"]',
-                '//p[@style="font-weight: bold; font-size: 14px;"]',
-                '//div[@class="author"]',
-                '//div[@class="ad_container"]',
-        )
-        )
-    )
-);
+return [
+    'grabber' => [
+        '%.*%' => [
+            'test_url' => 'www.thelocal.se/20161219/this-swede-can-memorize-hundreds-of-numbers-in-only-five-minutes',
+            'body' => [
+                '//div[@id="article-photo"]',
+                '//div[@id="article-description"]',
+                '//div[@id="article-body"]',
+            ],
+            'strip' => [
+                '//div[@id="article-info-middle"]',
+            ]
+        ]
+    ]
+];
+

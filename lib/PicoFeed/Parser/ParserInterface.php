@@ -103,6 +103,15 @@ interface ParserInterface
     public function findItemAuthor(SimpleXMLElement $xml, SimpleXMLElement $entry, Item $item);
 
     /**
+     * Find the item author URL.
+     *
+     * @param SimpleXMLElement      $xml   Feed
+     * @param SimpleXMLElement      $entry Feed item
+     * @param Item $item  Item object
+     */
+    public function findItemAuthorUrl(SimpleXMLElement $xml, SimpleXMLElement $entry, Item $item);
+
+    /**
      * Find the item URL.
      *
      * @param SimpleXMLElement      $entry Feed item
@@ -170,4 +179,13 @@ interface ParserInterface
      * @param Feed $feed  Feed object
      */
     public function findItemLanguage(SimpleXMLElement $entry, Item $item, Feed $feed);
+
+    /**
+     * Find the item categories.
+     *
+     * @param SimpleXMLElement      $entry Feed item
+     * @param Item $item  Item object
+     * @param Feed $feed  Feed object
+     */
+    public function findItemCategories(SimpleXMLElement $entry, Item $item, Feed $feed);
 }

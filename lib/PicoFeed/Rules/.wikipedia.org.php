@@ -1,12 +1,12 @@
 <?php
-return array(
-    'grabber' => array(
-        '%.*%' => array(
+return [
+    'grabber' => [
+        '%.*%' => [
             'test_url' => 'https://en.wikipedia.org/wiki/Grace_Hopper',
-            'body' => array(
+            'body' => [
                 '//div[@id="bodyContent"]',
-            ),
-            'strip' => array(
+            ],
+            'strip' => [
                 "//div[@id='toc']",
                 "//div[@id='catlinks']",
                 "//div[@id='jump-to-nav']",
@@ -23,7 +23,7 @@ return array(
                 "//*[contains(@class, 'editsection')]",
                 "//*[contains(@class, 'error')]",
                 "//span[@title='pronunciation:']",
-            ),
-        )
-    )
-);
+            ],
+        ]
+    ]
+];

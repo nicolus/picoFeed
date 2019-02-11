@@ -2,9 +2,9 @@
 
 namespace PicoFeed\Filter;
 
-use PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
 
-class HtmlFilterTest extends PHPUnit_Framework_TestCase
+class HtmlFilterTest extends TestCase
 {
     public function testEmpty()
     {

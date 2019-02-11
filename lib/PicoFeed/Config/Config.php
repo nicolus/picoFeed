@@ -7,35 +7,38 @@ namespace PicoFeed\Config;
  *
  * @author  Frederic Guillot
  *
- * @method  \PicoFeed\Config\Config setClientTimeout(integer $value)
- * @method  \PicoFeed\Config\Config setClientUserAgent(string $value)
- * @method  \PicoFeed\Config\Config setMaxRedirections(integer $value)
- * @method  \PicoFeed\Config\Config setMaxBodySize(integer $value)
- * @method  \PicoFeed\Config\Config setProxyHostname(string $value)
- * @method  \PicoFeed\Config\Config setProxyPort(integer $value)
- * @method  \PicoFeed\Config\Config setProxyUsername(string $value)
- * @method  \PicoFeed\Config\Config setProxyPassword(string $value)
- * @method  \PicoFeed\Config\Config setGrabberRulesFolder(string $value)
- * @method  \PicoFeed\Config\Config setGrabberTimeout(integer $value)
- * @method  \PicoFeed\Config\Config setGrabberUserAgent(string $value)
- * @method  \PicoFeed\Config\Config setParserHashAlgo(string $value)
- * @method  \PicoFeed\Config\Config setContentFiltering(boolean $value)
- * @method  \PicoFeed\Config\Config setTimezone(string $value)
- * @method  \PicoFeed\Config\Config setFilterIframeWhitelist(array $value)
- * @method  \PicoFeed\Config\Config setFilterIntegerAttributes(array $value)
- * @method  \PicoFeed\Config\Config setFilterAttributeOverrides(array $value)
- * @method  \PicoFeed\Config\Config setFilterRequiredAttributes(array $value)
- * @method  \PicoFeed\Config\Config setFilterMediaBlacklist(array $value)
- * @method  \PicoFeed\Config\Config setFilterMediaAttributes(array $value)
- * @method  \PicoFeed\Config\Config setFilterSchemeWhitelist(array $value)
- * @method  \PicoFeed\Config\Config setFilterWhitelistedTags(array $value)
- * @method  \PicoFeed\Config\Config setFilterBlacklistedTags(array $value)
- * @method  \PicoFeed\Config\Config setFilterImageProxyUrl($value)
- * @method  \PicoFeed\Config\Config setFilterImageProxyCallback($closure)
- * @method  \PicoFeed\Config\Config setFilterImageProxyProtocol($value)
+ * @method  Config setAdditionalCurlOptions(array $options)
+ * @method  Config setClientTimeout(integer $value)
+ * @method  Config setClientUserAgent(string $value)
+ * @method  Config setMaxRedirections(integer $value)
+ * @method  Config setMaxRecursions(integer $value)
+ * @method  Config setMaxBodySize(integer $value)
+ * @method  Config setProxyHostname(string $value)
+ * @method  Config setProxyPort(integer $value)
+ * @method  Config setProxyUsername(string $value)
+ * @method  Config setProxyPassword(string $value)
+ * @method  Config setGrabberRulesFolder(string $value)
+ * @method  Config setGrabberTimeout(integer $value)
+ * @method  Config setGrabberUserAgent(string $value)
+ * @method  Config setParserHashAlgo(string $value)
+ * @method  Config setContentFiltering(boolean $value)
+ * @method  Config setTimezone(string $value)
+ * @method  Config setFilterIframeWhitelist(array $value)
+ * @method  Config setFilterIntegerAttributes(array $value)
+ * @method  Config setFilterAttributeOverrides(array $value)
+ * @method  Config setFilterRequiredAttributes(array $value)
+ * @method  Config setFilterMediaBlacklist(array $value)
+ * @method  Config setFilterMediaAttributes(array $value)
+ * @method  Config setFilterSchemeWhitelist(array $value)
+ * @method  Config setFilterWhitelistedTags(array $value)
+ * @method  Config setFilterBlacklistedTags(array $value)
+ * @method  Config setFilterImageProxyUrl($value)
+ * @method  Config setFilterImageProxyCallback($closure)
+ * @method  Config setFilterImageProxyProtocol($value)
  * @method  integer    getClientTimeout()
  * @method  string     getClientUserAgent()
  * @method  integer    getMaxRedirections()
+ * @method  integer    getMaxRecursions()
  * @method  integer    getMaxBodySize()
  * @method  string     getProxyHostname()
  * @method  integer    getProxyPort()
@@ -59,6 +62,7 @@ namespace PicoFeed\Config;
  * @method  string     getFilterImageProxyUrl()
  * @method  \Closure   getFilterImageProxyCallback()
  * @method  string     getFilterImageProxyProtocol()
+ * @method  array      getAdditionalCurlOptions()
  */
 class Config
 {
@@ -92,5 +96,7 @@ class Config
 
             return isset($this->container[$parameter]) ? $this->container[$parameter] : $default_value;
         }
+
+        return null;
     }
 }

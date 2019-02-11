@@ -1,14 +1,14 @@
 <?php
-return array(
-    'grabber' => array(
-        '%.*%' => array(
+return [
+    'grabber' => [
+        '%.*%' => [
             'test_url' => 'http://www.theguardian.com/sustainable-business/2015/feb/02/2015-hyper-transparency-global-business',
-            'body' => array(
+            'body' => [
                 '//div[contains(@class, "content__main-column--article")]',
-            ),
-            'strip' => array(
+            ],
+            'strip' => [
                 '//div[contains(@class, "meta-container")]',
-            ),
-        )
-    )
-);
+            ],
+        ]
+    ]
+];

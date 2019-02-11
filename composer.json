@@ -1,25 +1,38 @@
 {
-    "name": "fguillot/picofeed",
-    "description": "Modern library to handle RSS/Atom feeds",
-    "homepage": "https://github.com/fguillot/picoFeed",
+    "name": "nicolus/picofeed",
+    "description": "RSS/Atom parsing library",
+    "homepage": "https://github.com/nicolus/picoFeed",
     "type": "library",
     "license": "MIT",
     "authors": [
         {
             "name": "Frédéric Guillot"
+        },
+        {
+            "name": "Nicolas Bailly"
         }
     ],
     "require": {
-        "php": ">=5.3.0",
+        "php": ">=7.1",
         "ext-iconv": "*",
         "ext-dom": "*",
         "ext-xml": "*",
         "ext-libxml": "*",
         "ext-SimpleXML": "*",
-        "zendframework/zendxml": "^1.0"
+        "zendframework/zendxml": "^1.0",
+        "guzzlehttp/guzzle": "~6.0",
+        "kevinrob/guzzle-cache-middleware": "^2.1",
+        "psr/log": "^1.0"
+    },
+    "require-dev" : {
+        "phpdocumentor/reflection-docblock": "2.0.4",
+        "php-coveralls/php-coveralls": "^2.1",
+        "phpunit/phpunit" : "^6.0.0",
+        "monolog/monolog": "^1.23"
     },
     "suggest": {
-        "ext-curl": "PicoFeed will use cURL if present"
+        "ext-curl": "PicoFeed will use cURL if present",
+        "monolog/monolog": "You can set a monolog Logger to get debug information from PicoFeed"
     },
     "autoload": {
         "psr-0": {"PicoFeed": "lib/"}

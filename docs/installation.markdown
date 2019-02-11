@@ -11,7 +11,7 @@ Installation with Composer
 --------------------------
 
 ```bash
-composer require fguillot/picofeed @stable
+composer require miniflux/picofeed @stable
 ```
 
 And download the code:

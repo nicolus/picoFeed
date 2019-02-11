@@ -1,14 +1,12 @@
 PicoFeed
 ========
+[![Coverage Status](https://coveralls.io/repos/github/nicolus/picoFeed/badge.svg)](https://coveralls.io/github/nicolus/picoFeed) [![SensioLabsInsight](https://insight.sensiolabs.com/projects/d76c5af7-a39c-46e9-9657-8a23046f17e7/mini.png)](https://insight.sensiolabs.com/projects/d76c5af7-a39c-46e9-9657-8a23046f17e7)
 
-PicoFeed was originally developed for [Miniflux](http://miniflux.net), a minimalist and open source news reader.
+This is a fork of the original picoFeed (which has been abandonned).
 
-However, this library can be used inside any project.
-PicoFeed is tested with a lot of different feeds and it's simple and easy to use.
+This fork will strive to make picofeed as simple, fast and modern as possible by stripping out everything that's not purely directly related to parsing and creating feeds, and replacing them with third party components. Most notably, all HTTP requests are now handled by Guzzle, and caching will be optionally handled by Guzzle Middlewares.
 
-[![Build Status](https://travis-ci.org/fguillot/picoFeed.svg?branch=master)](https://travis-ci.org/fguillot/picoFeed)
 
-[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/fguillot/picoFeed/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/fguillot/picoFeed/?branch=master)
 
 Features
 --------
@@ -29,26 +27,11 @@ Features
 Requirements
 ------------
 
-- PHP >= 5.3
+- PHP >= 7.1
 - libxml >= 2.7
 - XML PHP extensions: DOM and SimpleXML
 - cURL or Stream Context (`allow_url_fopen=On`)
 - iconv extension
-
-Authors
--------
-
-- Original author: Frédéric Guillot
-- Major Contributors:
-    - [Bernhard Posselt](https://github.com/Raydiation)
-    - [David Pennington](https://github.com/Xeoncross)
-    - [Mathias Kresin](https://github.com/mkresin)
-
-Real world usage
-----------------
-
-- [Miniflux](http://miniflux.net)
-- [Owncloud News](https://github.com/owncloud/news)
 
 Documentation
 -------------

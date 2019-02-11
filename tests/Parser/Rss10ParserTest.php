@@ -2,13 +2,13 @@
 
 namespace PicoFeed\Parser;
 
-use PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
 
-class Rss10ParserTest extends PHPUnit_Framework_TestCase
+class Rss10ParserTest extends TestCase
 {
     public function testBadInput()
     {
-        $this->setExpectedException('PicoFeed\Parser\MalformedXmlException');
+        $this->expectException('PicoFeed\Parser\MalformedXmlException');
 
         $parser = new Rss10('boo');
         $parser->execute();
@@ -329,6 +329,18 @@ class Rss10ParserTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('', $feed->items[0]->getAuthor());
     }
 
+    public function testFindItemCategories()
+    {
+        $parser = new Rss10(file_get_contents('tests/fixtures/rss_10.xml'));
+        $feed = $parser->execute();
+        $categories = $feed->items[0]->getCategories();
+        $this->assertEquals($categories[0], 'Война и мир');
+
+        $parser = new Rss10(file_get_contents('tests/fixtures/rss_10_empty_item.xml'));
+        $feed = $parser->execute();
+        $this->assertEmpty($feed->items[0]->getCategories());
+    }
+
     public function testFindItemAuthor()
     {
         // items[0] === item author
@@ -339,6 +351,18 @@ class Rss10ParserTest extends PHPUnit_Framework_TestCase
         $parser = new Rss10(file_get_contents('tests/fixtures/rss_10_empty_item.xml'));
         $feed = $parser->execute();
         $this->assertEquals('', $feed->items[0]->getAuthor());
+    }
+
+    public function testFindItemAuthorUrl()
+    {
+        // items[0] === item author
+        $parser = new Rss10(file_get_contents('tests/fixtures/rss_10.xml'));
+        $feed = $parser->execute();
+        $this->assertEquals('', $feed->items[0]->getAuthorUrl());
+
+        $parser = new Rss10(file_get_contents('tests/fixtures/rss_10_empty_item.xml'));
+        $feed = $parser->execute();
+        $this->assertEquals('', $feed->items[0]->getAuthorUrl());
     }
 
     public function testFindItemContent()

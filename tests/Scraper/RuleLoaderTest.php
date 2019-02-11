@@ -2,10 +2,10 @@
 
 namespace PicoFeed\Scraper;
 
-use PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
 use PicoFeed\Config\Config;
 
-class RuleLoaderTest extends PHPUnit_Framework_TestCase
+class RuleLoaderTest extends TestCase
 {
     public function testGetRulesFolders()
     {

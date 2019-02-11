@@ -3,9 +3,9 @@
 namespace PicoFeed\Parser;
 
 use DOMDocument;
-use PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
 
-class XmlParserTest extends PHPUnit_Framework_TestCase
+class XmlParserTest extends TestCase
 {
     public function testEmpty()
     {
@@ -88,11 +88,10 @@ class XmlParserTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('', XmlParser::getEncodingFromXmlTag("<?xml version='1.0'?><?xml-stylesheet"));
     }
 
-    /**
-     * @expectedException PicoFeed\Parser\XmlEntityException
-     */
     public function testScanForXEE()
     {
+        $this->expectException(XmlEntityException::class);
+
         $xml = <<<XML
 <?xml version="1.0"?>
 <!DOCTYPE results [<!ENTITY harmless "completely harmless">]>
@@ -104,11 +103,10 @@ XML;
         XmlParser::getDomDocument($xml);
     }
 
-    /**
-     * @expectedException PicoFeed\Parser\XmlEntityException
-     */
     public function testScanForXXE()
     {
+        $this->expectException(XmlEntityException::class);
+
         $xml = <<<XML
 <?xml version="1.0"?>
 <!DOCTYPE root
@@ -125,20 +123,20 @@ XML;
 
     public function testScanSimpleXML()
     {
-        return <<<XML
+        $xml = <<<XML
 <?xml version="1.0"?>
 <results>
     <result>test</result>
 </results>
 XML;
         $result = XmlParser::getSimpleXml($xml);
-        $this->assertTrue($result instanceof SimpleXMLElement);
+        $this->assertTrue($result instanceof \SimpleXMLElement);
         $this->assertEquals($result->result, 'test');
     }
 
     public function testScanDomDocument()
     {
-        return <<<XML
+        $xml = <<<XML
 <?xml version="1.0"?>
 <results>
     <result>test</result>

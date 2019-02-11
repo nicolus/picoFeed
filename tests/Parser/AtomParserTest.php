@@ -2,9 +2,9 @@
 
 namespace PicoFeed\Parser;
 
-use PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
 
-class AtomParserTest extends PHPUnit_Framework_TestCase
+class AtomParserTest extends TestCase
 {
     /**
      * @expectedException PicoFeed\Parser\MalformedXmlException
@@ -378,6 +378,28 @@ class AtomParserTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('', $feed->items[0]->getLanguage());
     }
 
+    public function testItemCategories()
+    {
+        $parser = new Atom(file_get_contents('tests/fixtures/atom.xml'));
+        $feed = $parser->execute();
+        $categories = $feed->items[0]->getCategories();
+        $this->assertEquals($categories[0], 'Война и мир');
+
+        $parser = new Atom(file_get_contents('tests/fixtures/atom_no_default_namespace.xml'));
+        $feed = $parser->execute();
+        $categories = $feed->items[0]->getCategories();
+        $this->assertEquals($categories[0], 'Война и мир');
+
+        $parser = new Atom(file_get_contents('tests/fixtures/atom_prefixed.xml'));
+        $feed = $parser->execute();
+        $categories = $feed->items[0]->getCategories();
+        $this->assertEquals($categories[0], 'Война и мир');
+
+        $parser = new Atom(file_get_contents('tests/fixtures/atom_empty_item.xml'));
+        $feed = $parser->execute();
+        $this->assertEmpty($feed->items[0]->getCategories());
+    }
+
     public function testItemAuthor()
     {
         // items[0] === item author
@@ -400,6 +422,30 @@ class AtomParserTest extends PHPUnit_Framework_TestCase
         $parser = new Atom(file_get_contents('tests/fixtures/atom_empty_item.xml'));
         $feed = $parser->execute();
         $this->assertEquals('', $feed->items[0]->getAuthor());
+    }
+
+    public function testItemAuthorUrl()
+    {
+        // items[0] === item author
+        // items[1] === feed author via empty fallback
+        $parser = new Atom(file_get_contents('tests/fixtures/atom.xml'));
+        $feed = $parser->execute();
+        $this->assertEquals('https://en.wikipedia.org/wiki/Leo_Tolstoy', $feed->items[0]->getAuthorUrl());
+        $this->assertEquals('https://en.wikipedia.org/', $feed->items[1]->getAuthorUrl());
+
+        $parser = new Atom(file_get_contents('tests/fixtures/atom_no_default_namespace.xml'));
+        $feed = $parser->execute();
+        $this->assertEquals('https://en.wikipedia.org/wiki/Leo_Tolstoy', $feed->items[0]->getAuthorUrl());
+        $this->assertEquals('https://en.wikipedia.org/', $feed->items[1]->getAuthorUrl());
+
+        $parser = new Atom(file_get_contents('tests/fixtures/atom_prefixed.xml'));
+        $feed = $parser->execute();
+        $this->assertEquals('https://en.wikipedia.org/wiki/Leo_Tolstoy', $feed->items[0]->getAuthorUrl());
+        $this->assertEquals('https://en.wikipedia.org/', $feed->items[1]->getAuthorUrl());
+
+        $parser = new Atom(file_get_contents('tests/fixtures/atom_empty_item.xml'));
+        $feed = $parser->execute();
+        $this->assertEquals('', $feed->items[0]->getAuthorUrl());
     }
 
     public function testItemContent()

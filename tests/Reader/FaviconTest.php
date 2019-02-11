@@ -2,9 +2,9 @@
 
 namespace PicoFeed\Reader;
 
-use PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
 
-class FaviconTest extends PHPUnit_Framework_TestCase
+class FaviconTest extends TestCase
 {
     public function testExtract()
     {
@@ -77,8 +77,7 @@ class FaviconTest extends PHPUnit_Framework_TestCase
         $favicon = new Favicon();
 
         $this->assertTrue($favicon->exists('https://miniflux.net/favicon.ico'));
-        $this->assertFalse($favicon->exists('http://minicoders.com/favicon.ico'));
-        $this->assertFalse($favicon->exists('http://blabla'));
+        $this->assertFalse($favicon->exists('http://foobar'));
         $this->assertFalse($favicon->exists(''));
     }
 
@@ -91,34 +90,11 @@ class FaviconTest extends PHPUnit_Framework_TestCase
 
         // favicon in meta
         $this->assertEquals(
-            'http://miniflux.net/assets/img/favicon.png',
-            $favicon->find('http://miniflux.net')
+            'https://miniflux.app/image/favicon.png',
+            $favicon->find('https://miniflux.app')
         );
 
         $this->assertNotEmpty($favicon->getContent());
-    }
-
-//    public function testFind_inRootDir()
-//    {
-//        // favicon not in meta, only in website root (need example page)
-//        $favicon = new Favicon;
-//
-//        $this->assertEquals(
-//            'http://minicoders.com/favicon.ico',
-//            $favicon->find('http://minicoders.com')
-//        );
-//    }
-
-    public function testFind_noIcons()
-    {
-        $favicon = new Favicon();
-
-        $this->assertEquals(
-            '',
-            $favicon->find('http://minicoders.com')
-        );
-
-        $this->assertEmpty($favicon->getContent());
     }
 
     /**
@@ -129,8 +105,8 @@ class FaviconTest extends PHPUnit_Framework_TestCase
         $favicon = new Favicon();
 
         $this->assertEquals(
-            'http://miniflux.net/assets/img/touch-icon-ipad.png',
-            $favicon->find('http://miniflux.net', '/assets/img/touch-icon-ipad.png')
+            'https://miniflux.app/image/touch-icon-ipad.png',
+            $favicon->find('https://miniflux.app', '/image/touch-icon-ipad.png')
         );
 
         $this->assertNotEmpty($favicon->getContent());
@@ -143,8 +119,8 @@ class FaviconTest extends PHPUnit_Framework_TestCase
     {
         $favicon = new Favicon();
         $this->assertEquals(
-            'http://miniflux.net/assets/img/favicon.png',
-            $favicon->find('http://miniflux.net', '/nofavicon.ico')
+            'https://miniflux.app/image/favicon.png',
+            $favicon->find('https://miniflux.app', '/nofavicon.ico')
         );
 
         $this->assertNotEmpty($favicon->getContent());
@@ -158,7 +134,7 @@ class FaviconTest extends PHPUnit_Framework_TestCase
         $favicon = new Favicon();
 
         $this->assertEquals(
-            'http://miniflux.net/assets/img/favicon.png',
+            'http://miniflux.net/image/favicon.png',
             $favicon->find('http://miniflux.net')
         );
 

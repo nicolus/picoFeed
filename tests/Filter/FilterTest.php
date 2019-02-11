@@ -2,10 +2,10 @@
 
 namespace PicoFeed\Filter;
 
-use PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
 use PicoFeed\Config\Config;
 
-class FilterTest extends PHPUnit_Framework_TestCase
+class FilterTest extends TestCase
 {
     public function testStripHeadTag()
     {

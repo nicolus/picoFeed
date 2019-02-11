@@ -2,9 +2,9 @@
 
 namespace PicoFeed\Client;
 
-use PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
 
-class ClientTest extends PHPUnit_Framework_TestCase
+class ClientTest extends TestCase
 {
     /**
      * @group online
@@ -17,8 +17,6 @@ class ClientTest extends PHPUnit_Framework_TestCase
 
         $this->assertTrue($client->isModified());
         $this->assertNotEmpty($client->getContent());
-        $this->assertNotEmpty($client->getEtag());
-        $this->assertNotEmpty($client->getLastModified());
     }
 
     /**
@@ -27,7 +25,7 @@ class ClientTest extends PHPUnit_Framework_TestCase
      */
     public function testPassthrough()
     {
-        $client = Client::getInstance();
+        $client = new Client(new \GuzzleHttp\Client());
         $client->setUrl('https://miniflux.net/favicon.ico');
         $client->enablePassthroughMode();
         $client->execute();
@@ -56,59 +54,16 @@ class ClientTest extends PHPUnit_Framework_TestCase
     /**
      * @group online
      */
-    public function testCacheEtag()
+    public function testMultipleDownload()
     {
         $client = Client::getInstance();
-        $client->setUrl('http://php.net/robots.txt');
-        $client->execute();
-        $etag = $client->getEtag();
-        $lastModified = $client->getLastModified();
+        $client->setUrl('http://miniflux.net/');
+        $result = $client->doRequest();
 
-        $client = Client::getInstance();
-        $client->setUrl('http://php.net/robots.txt');
-        $client->setEtag($etag);
-        $client->setLastModified($lastModified);
-        $client->execute();
+        $body = $result->getBody()->getContents();
+        $result = $client->doRequest();
 
-        $this->assertFalse($client->isModified());
-    }
-
-    /**
-     * @group online
-     */
-    public function testCacheLastModified()
-    {
-        $client = Client::getInstance();
-        $client->setUrl('http://miniflux.net/robots.txt');
-        $client->execute();
-        $lastmod = $client->getLastModified();
-
-        $client = Client::getInstance();
-        $client->setUrl('http://miniflux.net/robots.txt');
-        $client->setLastModified($lastmod);
-        $client->execute();
-
-        $this->assertFalse($client->isModified());
-    }
-
-    /**
-     * @group online
-     */
-    public function testCacheBoth()
-    {
-        $client = Client::getInstance();
-        $client->setUrl('http://miniflux.net/robots.txt');
-        $client->execute();
-        $lastmod = $client->getLastModified();
-        $etag = $client->getEtag();
-
-        $client = Client::getInstance();
-        $client->setUrl('http://miniflux.net/robots.txt');
-        $client->setLastModified($lastmod);
-        $client->setEtag($etag);
-        $client->execute();
-
-        $this->assertFalse($client->isModified());
+        $this->assertEquals($body, $result->getBody()->getContents());
     }
 
     /**
@@ -133,12 +88,12 @@ class ClientTest extends PHPUnit_Framework_TestCase
     public function testContentType()
     {
         $client = Client::getInstance();
-        $client->setUrl('http://miniflux.net/assets/img/favicon.png');
+        $client->setUrl('https://miniflux.app/image/favicon.png');
         $client->execute();
         $this->assertEquals('image/png', $client->getContentType());
 
         $client = Client::getInstance();
-        $client->setUrl('http://miniflux.net/');
+        $client->setUrl('https://miniflux.app/');
         $client->execute();
         $this->assertEquals('text/html; charset=utf-8', $client->getContentType());
     }
