@@ -243,7 +243,6 @@ class CandidateParser implements ParserInterface
         }
     }
 
-
     /**
      * Find link for next page of the article.
      *
