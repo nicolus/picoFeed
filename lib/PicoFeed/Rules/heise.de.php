@@ -89,6 +89,7 @@ return [
         '%.*%' => [
             'test_url' => 'https://www.heise.de/mac-and-i/meldung/iOS-App-Nude-findet-mittels-ML-Nacktbilder-und-versteckt-sie-3864217.html',
             'body' => [
+                '//div[contains(@class,"article-content")]',
                 '//article/div[@class="meldung_wrapper"]',
 				'//article/div[@class="article-content"]',
 				'//article/div/div[@class="akwa-article__content"]',
