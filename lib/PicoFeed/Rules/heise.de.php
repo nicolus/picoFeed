@@ -22,14 +22,26 @@ return [
                 '//a[@class="seite_weiter"]'
             ],
         ],
-        '%^/newsticker/meldung.*%' => [
+        '%^/(ix|make|newsticker|mac-and-i)/meldung.*%' => [
             'test_url' => 'https://www.heise.de/newsticker/meldung/DragonFly-BSD-5-0-mit-experimentellem-HAMMER2-veroeffentlicht-3864731.html',
             'body' => [
-                '//div[@class="article-content"]',
+                '//div[contains(@class,"article-content")]',
             ],
             'strip' => [
-                '//*[contains(@class, "gallery")]',
+//                '//*[contains(@class, "gallery")]',
                 '//*[contains(@class, "video")]',
+                '//*[contains(@class, "-ad")]',
+                '//h5[contains(@id, "pagination-heading")]',
+                '//ol[contains(@class, "a-pagination__items")]/li[(not(contains(@class, "a-pagination__item--next")))]',
+                '//*[@class="pagination__arrow--left"]',
+                '//*[@class="pagination__arrow--right"]',
+                '//a[@title="zur Startseite von heise online"]',
+                '//nav[@class="a-toc"]',
+                '//a[contains(@class, "article-footer__comment-button")]',
+                '//nav[contains(@class, "a-pagination--all-on-one-page")]',
+            ],
+            'next_page' => [
+                '//li[contains(@class,"a-pagination__item--next")]/a'
             ],
         ],
         '%^/autos/artikel.*%' => [
@@ -62,17 +74,32 @@ return [
         '%^/developer.*%' => [
             'test_url' => 'https://www.heise.de/developer/meldung/Container-Docker-unterstuetzt-Kubernetes-3863625.html',
             'body' => [
-                '//div[@class="article-content"]'
-            ]
+                '//article/div[@class="meldung_wrapper"]',
+				'//*[contains(@class, "article-content")]',
+            ],
+            'strip' => [
+ //               '//*[contains(@class, "gallery")]',
+                '//*[contains(@class, "video")]',
+				'//nav[@class="pre-akwa-toc"]',
+            ],
+			'next_page' => [
+                '//a[@class="seite_weiter"]'
+            ],
         ],
         '%.*%' => [
             'test_url' => 'https://www.heise.de/mac-and-i/meldung/iOS-App-Nude-findet-mittels-ML-Nacktbilder-und-versteckt-sie-3864217.html',
             'body' => [
                 '//article/div[@class="meldung_wrapper"]',
+				'//article/div[@class="article-content"]',
+				'//article/div/div[@class="akwa-article__content"]',
             ],
             'strip' => [
-                '//*[contains(@class, "gallery")]',
+//                '//*[contains(@class, "gallery")]',
                 '//*[contains(@class, "video")]',
+				'//nav[@class="pre-akwa-toc"]',
+            ],
+			'next_page' => [
+                '//a[@class="seite_weiter"]'
             ],
         ],
     ],
