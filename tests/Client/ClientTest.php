@@ -2,16 +2,34 @@
 
 namespace PicoFeed\Client;
 
+use GuzzleHttp\Handler\MockHandler;
+use GuzzleHttp\HandlerStack;
+use GuzzleHttp\Psr7\Response;
 use PHPUnit\Framework\TestCase;
 
 class ClientTest extends TestCase
 {
-    /**
-     * @group online
-     */
+
+
+    public function testFactoryWorks()
+    {
+        // Testing that the factory is not completely broken,
+        // we won't use it for the rest of the tests since we'll need to use custom mock hanlders.
+        $client = Client::getInstance();
+        $this->assertInstanceOf(Client::class, $client);
+    }
+
+
     public function testDownload()
     {
-        $client = Client::getInstance();
+
+        $mock = new MockHandler([
+            new Response(200, ['content-Type' => 'application/rss+xml'], 'someResponse'),
+        ]);
+        $handler = HandlerStack::create($mock);
+
+        $client = new Client(new \GuzzleHttp\Client(['handler' => $handler]));
+
         $client->setUrl('http://php.net/robots.txt');
         $client->execute();
 
@@ -19,18 +37,23 @@ class ClientTest extends TestCase
         $this->assertNotEmpty($client->getContent());
     }
 
-    /**
-     * @runInSeparateProcess
-     * @group online
-     */
+
     public function testPassthrough()
     {
-        $client = new Client(new \GuzzleHttp\Client());
+        $fileContent = file_get_contents(__DIR__ . '/../fixtures/miniflux_favicon.ico');
+
+        $mock = new MockHandler([
+            new Response(200, ['content-Type' => 'image/x-icon'], $fileContent),
+        ]);
+        $handler = HandlerStack::create($mock);
+
+        $client = new Client(new \GuzzleHttp\Client(['handler' => $handler]));
+
         $client->setUrl('https://miniflux.net/favicon.ico');
         $client->enablePassthroughMode();
         $client->execute();
 
-        $this->expectOutputString(file_get_contents('tests/fixtures/miniflux_favicon.ico'));
+        $this->expectOutputString($fileContent);
     }
 
     /**
@@ -49,6 +72,67 @@ class ClientTest extends TestCase
         $client->execute();
 
         $this->assertTrue($client->isModified());
+    }
+
+    /**
+     * @group online
+     */
+    public function testCacheEtag()
+    {
+        $client = Client::getInstance();
+        $client->setUrl('http://php.net/robots.txt');
+        $client->execute();
+        $etag = $client->getEtag();
+        $lastModified = $client->getLastModified();
+
+        die('last modified : ' . $lastModified);
+        die("etag : " . $etag);
+
+        $client = Client::getInstance();
+        $client->setUrl('http://php.net/robots.txt');
+        $client->setEtag($etag);
+        $client->setLastModified($lastModified);
+        $client->execute();
+
+        $this->assertFalse($client->isModified());
+    }
+
+    /**
+     * @group online
+     */
+    public function testCacheLastModified()
+    {
+        $client = Client::getInstance();
+        $client->setUrl('http://miniflux.net/robots.txt');
+        $client->execute();
+        $lastmod = $client->getLastModified();
+
+        $client = Client::getInstance();
+        $client->setUrl('http://miniflux.net/robots.txt');
+        $client->setLastModified($lastmod);
+        $client->execute();
+
+        $this->assertFalse($client->isModified());
+    }
+
+    /**
+     * @group online
+     */
+    public function testCacheBoth()
+    {
+        $client = Client::getInstance();
+        $client->setUrl('http://miniflux.net/robots.txt');
+        $client->execute();
+        $lastmod = $client->getLastModified();
+        $etag = $client->getEtag();
+
+        $client = Client::getInstance();
+        $client->setUrl('http://miniflux.net/robots.txt');
+        $client->setLastModified($lastmod);
+        $client->setEtag($etag);
+        $client->execute();
+
+        $this->assertFalse($client->isModified());
     }
 
     /**
