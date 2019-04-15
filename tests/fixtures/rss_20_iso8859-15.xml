@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="ISO-8859-15" ?>
+<rss version="2.0">
+
+  <channel>
+    <title>Test feed for encoding conversion</title>
+    <link>https://www.google.com</link>
+    <description>The first item contains accentuated characters</description>
+    <item>
+      <title>RSS Tutorial</title>
+      <link>https://www.google.com</link>
+      <description>éàùç€@ïî</description>
+    </item>
+  </channel>
+</rss> 
