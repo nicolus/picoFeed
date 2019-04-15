@@ -56,28 +56,13 @@ class ClientTest extends TestCase
         $this->expectOutputString($fileContent);
     }
 
-    /**
-     * @group online
-     */
-    public function testCacheBothHaveToMatch()
+    public function testCacheBothDateAndEtagHaveToMatchIfPresent()
     {
-        $client = Client::getInstance();
-        $client->setUrl('http://php.net/robots.txt');
-        $client->execute();
-        $etag = $client->getEtag();
-
-        $client = Client::getInstance();
-        $client->setUrl('http://php.net/robots.txt');
-        $client->setEtag($etag);
-        $client->execute();
-
-        $this->assertTrue($client->isModified());
-    }
-
-
-    public function testCacheBothHaveToMatchOffline()
-    {
-        $response = new Response(200, ['content-Type' => 'text/plain', 'etag' => '336-50d275e263080'], 'someContent');
+        $response = new Response(200, [
+            'content-Type'  => 'text/plain',
+            'etag'          => '336-50d275e263080',
+            'last-modified' => 'Mon, 15 Apr 2019 09:31:45 GMT',
+        ], 'someContent');
         $mock = new MockHandler([$response, $response]);
         $handler = HandlerStack::create($mock);
 
@@ -95,18 +80,23 @@ class ClientTest extends TestCase
         $this->assertTrue($client->isModified());
     }
 
-    /**
-     * @group online
-     */
+
     public function testCacheEtag()
     {
-        $client = Client::getInstance();
+        $response = new Response(200, [
+            'content-Type' => 'text/plain',
+            'etag'         => '336-50d275e263080',
+        ], 'someContent');
+        $mock = new MockHandler([$response, $response]);
+        $handler = HandlerStack::create($mock);
+
+        $client = new Client(new \GuzzleHttp\Client(['handler' => $handler]));
         $client->setUrl('http://php.net/robots.txt');
         $client->execute();
         $etag = $client->getEtag();
         $lastModified = $client->getLastModified();
 
-        $client = Client::getInstance();
+        $client = new Client(new \GuzzleHttp\Client(['handler' => $handler]));
         $client->setUrl('http://php.net/robots.txt');
         $client->setEtag($etag);
         $client->setLastModified($lastModified);
@@ -115,17 +105,22 @@ class ClientTest extends TestCase
         $this->assertFalse($client->isModified());
     }
 
-    /**
-     * @group online
-     */
+
     public function testCacheLastModified()
     {
-        $client = Client::getInstance();
+        $response = new Response(200, [
+            'content-Type'  => 'text/plain',
+            'last-modified' => 'Mon, 15 Apr 2019 09:31:45 GMT',
+        ], 'someContent');
+        $mock = new MockHandler([$response, $response]);
+        $handler = HandlerStack::create($mock);
+
+        $client = new Client(new \GuzzleHttp\Client(['handler' => $handler]));
         $client->setUrl('http://miniflux.net/robots.txt');
         $client->execute();
         $lastmod = $client->getLastModified();
 
-        $client = Client::getInstance();
+        $client = new Client(new \GuzzleHttp\Client(['handler' => $handler]));
         $client->setUrl('http://miniflux.net/robots.txt');
         $client->setLastModified($lastmod);
         $client->execute();
@@ -133,18 +128,24 @@ class ClientTest extends TestCase
         $this->assertFalse($client->isModified());
     }
 
-    /**
-     * @group online
-     */
+
     public function testCacheBoth()
     {
-        $client = Client::getInstance();
+        $response = new Response(200, [
+            'content-Type'  => 'text/plain',
+            'etag'          => '336-50d275e263080',
+            'last-modified' => 'Mon, 15 Apr 2019 09:31:45 GMT',
+        ], 'someContent');
+        $mock = new MockHandler([$response, $response]);
+        $handler = HandlerStack::create($mock);
+
+        $client = new Client(new \GuzzleHttp\Client(['handler' => $handler]));
         $client->setUrl('http://miniflux.net/robots.txt');
         $client->execute();
         $lastmod = $client->getLastModified();
         $etag = $client->getEtag();
 
-        $client = Client::getInstance();
+        $client = new Client(new \GuzzleHttp\Client(['handler' => $handler]));
         $client->setUrl('http://miniflux.net/robots.txt');
         $client->setLastModified($lastmod);
         $client->setEtag($etag);
@@ -168,33 +169,51 @@ class ClientTest extends TestCase
         $this->assertEquals($body, $result->getBody()->getContents());
     }
 
-    /**
-     * @group online
-     */
+
     public function testCharset()
     {
-        $client = Client::getInstance();
+        $responseWithCharset = new Response(200, [
+            'content-Type' => 'text/html; charset=utf-8',
+        ], 'someContent');
+
+        $responseWithoutCharset = new Response(200, [
+            'content-Type' => 'text/plain',
+        ], 'someContent');
+        $mock = new MockHandler([$responseWithCharset, $responseWithoutCharset]);
+        $handler = HandlerStack::create($mock);
+
+        $client = new Client(new \GuzzleHttp\Client(['handler' => $handler]));
+
+
         $client->setUrl('http://php.net/');
         $client->execute();
         $this->assertEquals('utf-8', $client->getEncoding());
 
-        $client = Client::getInstance();
         $client->setUrl('http://php.net/robots.txt');
         $client->execute();
         $this->assertEquals('', $client->getEncoding());
     }
 
-    /**
-     * @group online
-     */
+
     public function testContentType()
     {
-        $client = Client::getInstance();
+        $responseImage = new Response(200, [
+            'content-Type' => 'image/png',
+        ], 'someContent');
+
+        $responseHtml = new Response(200, [
+            'content-Type' => 'text/html; charset=utf-8',
+        ], 'someContent');
+
+        $mock = new MockHandler([$responseImage, $responseHtml]);
+        $handler = HandlerStack::create($mock);
+
+        $client = new Client(new \GuzzleHttp\Client(['handler' => $handler]));
+
         $client->setUrl('https://miniflux.app/image/favicon.png');
         $client->execute();
         $this->assertEquals('image/png', $client->getContentType());
 
-        $client = Client::getInstance();
         $client->setUrl('https://miniflux.app/');
         $client->execute();
         $this->assertEquals('text/html; charset=utf-8', $client->getContentType());
