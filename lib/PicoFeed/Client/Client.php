@@ -238,6 +238,7 @@ class Client
                 echo $response->getBody()->getContents();
             };
 
+            $this->handleNotModifiedResponse($response);
             $this->handleNormalResponse($response);
             $this->expiration = $this->parseExpiration($response);
         }

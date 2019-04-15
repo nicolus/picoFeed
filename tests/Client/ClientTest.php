@@ -74,6 +74,27 @@ class ClientTest extends TestCase
         $this->assertTrue($client->isModified());
     }
 
+
+    public function testCacheBothHaveToMatchOffline()
+    {
+        $response = new Response(200, ['content-Type' => 'text/plain', 'etag' => '336-50d275e263080'], 'someContent');
+        $mock = new MockHandler([$response, $response]);
+        $handler = HandlerStack::create($mock);
+
+
+        $client = new Client(new \GuzzleHttp\Client(['handler' => $handler]));
+        $client->setUrl('http://php.net/robots.txt');
+        $client->execute();
+        $etag = $client->getEtag();
+
+        $client = new Client(new \GuzzleHttp\Client(['handler' => $handler]));
+        $client->setUrl('http://php.net/robots.txt');
+        $client->setEtag($etag);
+        $client->execute();
+
+        $this->assertTrue($client->isModified());
+    }
+
     /**
      * @group online
      */
@@ -84,9 +105,6 @@ class ClientTest extends TestCase
         $client->execute();
         $etag = $client->getEtag();
         $lastModified = $client->getLastModified();
-
-        die('last modified : ' . $lastModified);
-        die("etag : " . $etag);
 
         $client = Client::getInstance();
         $client->setUrl('http://php.net/robots.txt');
