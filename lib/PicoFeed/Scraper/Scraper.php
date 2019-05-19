@@ -184,7 +184,7 @@ class Scraper extends Base
             $this->encoding = '';
 
             try {
-                $client = Client::getInstance();
+                $client = new Client($this->httpClient);
                 $client->setConfig($this->config);
                 $client->setTimeout($this->config->getGrabberTimeout());
                 $client->setUserAgent($this->config->getGrabberUserAgent());

@@ -80,6 +80,24 @@ class ClientTest extends TestCase
         $this->assertTrue($client->isModified());
     }
 
+    public function testGetExpirationDate()
+    {
+        $response = new Response(200, [
+            'content-Type'  => 'text/plain',
+            'Expires'       => 'Wed, 21 Oct 2015 07:28:00 GMT',
+        ], 'someContent');
+        $mock = new MockHandler([$response, $response]);
+        $handler = HandlerStack::create($mock);
+
+
+        $client = new Client(new \GuzzleHttp\Client(['handler' => $handler]));
+        $client->setUrl('http://php.net/robots.txt');
+        $client->execute();
+
+        $this->assertInstanceOf(\DateTime::class, $client->getExpiration());
+        $this->assertTrue($client->isModified());
+    }
+
 
     public function testCacheEtag()
     {

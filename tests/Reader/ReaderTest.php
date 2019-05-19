@@ -2,7 +2,12 @@
 
 namespace PicoFeed\Reader;
 
+use GuzzleHttp\Client as GuzzleClient;
+use GuzzleHttp\Handler\MockHandler;
+use GuzzleHttp\HandlerStack;
+use GuzzleHttp\Psr7\Response;
 use PHPUnit\Framework\TestCase;
+use PicoFeed\Config\Config;
 
 class ReaderTest extends TestCase
 {
@@ -199,22 +204,52 @@ class ReaderTest extends TestCase
         $this->assertEquals(array(), $feeds);
     }
 
-    /**
-     * @group online
-     */
+
     public function testDiscover()
     {
-        $reader = new Reader();
+        $mock = new MockHandler([
+            new Response(
+                200,
+                ['content-Type' => 'text/html',],
+                file_get_contents(__DIR__ . '/../fixtures/html_reader_universfreebox.html')
+            ),
+            new Response(
+                200,
+                ['content-Type' => 'text/html',],
+                file_get_contents(__DIR__ . '/../fixtures/univers_freebox.xml')
+            ),
+            new Response(
+                200,
+                ['content-Type' => 'text/html',],
+                file_get_contents(__DIR__ . '/../fixtures/html_reader_cabinporn.html')
+            ),
+            new Response(
+                200,
+                ['content-Type' => 'text/html',],
+                file_get_contents(__DIR__ . '/../fixtures/univers_freebox.xml')
+            ),
+            new Response(
+                200,
+                ['content-Type' => 'text/html',],
+                file_get_contents(__DIR__ . '/../fixtures/html_reader_linuxfr.html')
+            ),
+            new Response(
+                200,
+                ['content-Type' => 'text/html',],
+                file_get_contents(__DIR__ . '/../fixtures/atom.xml')
+            ),
+        ]);
+        $handler = HandlerStack::create($mock);
+
+        $reader = new Reader(new Config(), new GuzzleClient(['handler' => $handler]) );
         $client = $reader->discover('https://www.universfreebox.com/');
         $this->assertEquals('https://www.universfreebox.com/backend.php', $client->getUrl());
         $this->assertInstanceOf('PicoFeed\Parser\Rss20', $reader->getParser($client->getUrl(), $client->getContent(), $client->getEncoding()));
 
-        $reader = new Reader();
         $client = $reader->discover('https://cabinporn.com/');
         $this->assertEquals('https://cabinporn.com/rss', $client->getUrl());
         $this->assertInstanceOf('PicoFeed\Parser\Rss20', $reader->getParser($client->getUrl(), $client->getContent(), $client->getEncoding()));
 
-        $reader = new Reader();
         $client = $reader->discover('https://linuxfr.org/');
         $this->assertEquals('https://linuxfr.org/news.atom', $client->getUrl());
         $this->assertInstanceOf('PicoFeed\Parser\Atom', $reader->getParser($client->getUrl(), $client->getContent(), $client->getEncoding()));
