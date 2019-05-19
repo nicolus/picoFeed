@@ -1,0 +1,1145 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <title>Accueil - LinuxFr.org</title>
+  <style type="text/css">header#branding h1 { background-image: url(/images/logos/linuxfr-zemarmot.png) }</style>
+  <link rel="stylesheet" href="/assets/application-fc2f074b134962748daa29283cf77bb382293f518a56f47b3f4723fc2ddb9fc4.css" />
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.png" />
+  <meta content="width=device-width" name="viewport">
+  <meta content="L&#39;actualité du Logiciel Libre et de Linux, sur un site francophone contributif géré par une équipe bénévole par et pour des libristes enthousiastes" name="description">
+  <meta content="Linux, Logiciel, Libre, GNU, Free, Software, Actualité, Forum, Communauté" name="keywords">
+  <link rel="alternate" type="application/atom+xml" title="Flux Atom des dépêches" href="/news.atom" />
+</head>
+
+<body class="" id="home-index">
+<div id="top"></div>
+<nav id="site">
+  <div class="go_to_content">
+    <a href="#contents">Aller au contenu</a>
+    <a href="#sidebar">Aller au menu</a>
+  </div>
+  <ul>
+    <li><a title="Actualités, événements et autres nouveautés" href="/news">Dépêches</a></li>
+    <li><a title="Journaux personnels de nos visiteurs" href="/journaux">Journaux</a></li>
+    <li><a title="Liens remarquables" href="/liens">Liens</a></li>
+    <li><a title="Questions/réponses, petites annonces" href="/forums">Forums</a></li>
+    <li><a title="Pages wiki" href="/wiki">Wiki</a></li>
+    <li><a title="Participez à la rédaction des dépêches" href="/redaction">Rédaction</a></li>
+  </ul>
+  <form action="/recherche" accept-charset="UTF-8" method="get"><input name="utf8" type="hidden" value="&#x2713;" />
+    <div class="searchbox" role="search">
+      <label for="query" id="label_query">Recherche :</label>
+      <input id="query" name="q" type="search" placeholder="Rechercher" />
+      <input type="submit" value="Rechercher" id="search_submit" title="Lancer la recherche sur le site" data-disable-with="Rechercher" />
+    </div>
+  </form>
+
+</nav>
+
+<aside id="sidebar">
+  <header id="branding"><h1 title="Le logo de LinuxFr.org"><a href="/">LinuxFr.org</a></h1></header>
+  <div class="login box">
+    <h1>Se connecter</h1>
+    <div class="new_content">
+      <a href="/proposer-un-contenu">Proposer un contenu</a>
+    </div>
+    <form class="new_account" id="new_account_sidebar" action="/compte/connexion" accept-charset="UTF-8" method="post"><input name="utf8" type="hidden" value="&#x2713;" /><input type="hidden" name="authenticity_token" value="qKyDmfj6iN/lzKIRgQGaaJgMRsmjMs8oLRfyoSfX9XhHAgb8bBYF+yn3AkN5VsEnkzQIszpRh96jn3jzW/zHEg==" /><p>
+      <label for="account_login_sidebar">Identifiant</label>
+      <input id="account_login_sidebar" required="required" placeholder="Identifiant" size="20" type="text" name="account[login]" />
+    </p>
+      <p>
+        <label for="account_password_sidebar">Mot de passe</label>
+        <input id="account_password_sidebar" required="required" placeholder="Mot de passe" size="20" type="password" name="account[password]" />
+      </p>
+      <p>
+        <input name="account[remember_me]" type="hidden" value="0" /><input id="account_remember_me_sidebar" type="checkbox" value="1" name="account[remember_me]" />
+        <label for="account_remember_me_sidebar">Connexion automatique</label>
+      </p>
+      <p>
+        <input type="submit" name="commit" value="Se connecter" id="account_submit_sidebar" data-disable-with="Se connecter" />
+      </p>
+    </form>
+    <ul>
+      <li><a href="/compte/inscription">Pas de compte&nbsp;? S'inscrire&nbsp;!</a></li>
+    </ul>
+  </div>
+  <div class="box" id="poll_box">
+    <h1><a href="/sondages">Sondage</a></h1>
+    <h2><a href="/sondages/quel-type-de-messagerie-ouverte-et-interoperable-j-utilise-le-plus?results=1">Quel type de messagerie ouverte et interopérable j’utilise le plus ?</a></h2>
+    <form id="poll_543_sidebar" action="/sondages/quel-type-de-messagerie-ouverte-et-interoperable-j-utilise-le-plus/vote" accept-charset="UTF-8" method="post"><input name="utf8" type="hidden" value="&#x2713;" /><input type="hidden" name="authenticity_token" value="/4iuGZjop8RVJakbcABdiCXxnmhxnC7uXSqbJyVLraIQJit8DAQq4JkeCUmIVwbHLsnQEuj/ZhjTohF1WWCfyA==" />
+      <ul class="poll current">
+        <li>
+          <input type="radio" name="position" id="position_0_sidebar" value="1" />
+          <label for="position_0_sidebar">IRC</label>
+        </li>
+        <li>
+          <input type="radio" name="position" id="position_1_sidebar" value="2" />
+          <label for="position_1_sidebar">XMPP</label>
+        </li>
+        <li>
+          <input type="radio" name="position" id="position_2_sidebar" value="3" />
+          <label for="position_2_sidebar">SIP</label>
+        </li>
+        <li>
+          <input type="radio" name="position" id="position_3_sidebar" value="4" />
+          <label for="position_3_sidebar">Matrix</label>
+        </li>
+        <li>
+          <input type="radio" name="position" id="position_4_sidebar" value="5" />
+          <label for="position_4_sidebar">Courriel</label>
+        </li>
+        <li>
+          <input type="radio" name="position" id="position_5_sidebar" value="6" />
+          <label for="position_5_sidebar">Tribune</label>
+        </li>
+      </ul>
+      <p class="total_votes">
+        Total :
+        1024 votes
+      </p>
+      <input type="submit" name="commit" value="Voter" data-disable-with="Voter" />
+    </form>
+
+
+  </div>
+
+  <div class="box" id="sections_box">
+    <h1><a href="/sections">Les sections</a></h1>
+    <ul>
+      <li><a href="/sections/administration-systeme">Administration système</a></li>
+      <li><a href="/sections/android">Android</a></li>
+      <li><a href="/sections/apple">Apple</a></li>
+      <li><a href="/sections/arch-linux">Arch Linux</a></li>
+      <li><a href="/sections/audiovisuel">Audiovisuel</a></li>
+      <li><a href="/sections/base-de-donn%C3%A9es">Base de données</a></li>
+      <li><a href="/sections/bureautique">Bureautique</a></li>
+      <li><a href="/sections/c-et-cpp">C et C++</a></li>
+      <li><a href="/sections/cloud">Cloud</a></li>
+      <li><a href="/sections/commercial">Commercial</a></li>
+      <li><a href="/sections/communaut%C3%A9">Communauté</a></li>
+      <li><a href="/sections/cuisine">Cuisine</a></li>
+      <li><a href="/sections/culture">Culture</a></li>
+      <li><a href="/sections/debian">Debian</a></li>
+      <li><a href="/sections/distribution">Distribution</a></li>
+      <li><a href="/sections/do-it-yourself">Do It Yourself</a></li>
+      <li><a href="/sections/doc">Doc</a></li>
+      <li><a href="/sections/dragonfly-bsd">DragonFly BSD</a></li>
+      <li><a href="/sections/%C3%A9ducation">Éducation</a></li>
+      <li><a href="/sections/fedora">Fedora</a></li>
+      <li><a href="/sections/freebsd">FreeBSD</a></li>
+      <li><a href="/sections/gentoo">Gentoo</a></li>
+      <li><a href="/sections/gestion-de-versions">Gestion de versions</a></li>
+      <li><a href="/sections/gnome">Gnome</a></li>
+      <li><a href="/sections/gnu">GNU</a></li>
+      <li><a href="/sections/gnustep">GNUstep</a></li>
+      <li><a href="/sections/golang">Golang</a></li>
+      <li><a href="/sections/graphisme-photo">Graphisme/photo</a></li>
+      <li><a href="/sections/haiku">Haiku</a></li>
+      <li><a href="/sections/humour">Humour</a></li>
+      <li><a href="/sections/internet">Internet</a></li>
+      <li><a href="/sections/java">Java</a></li>
+      <li><a href="/sections/javascript">JavaScript</a></li>
+      <li><a href="/sections/jeu">Jeu</a></li>
+      <li><a href="/sections/justice">Justice</a></li>
+      <li><a href="/sections/kde">KDE</a></li>
+      <li><a href="/sections/ligne-de-commande">Ligne de commande</a></li>
+      <li><a href="/sections/linux">Linux</a></li>
+      <li><a href="/sections/linuxfrorg">LinuxFr.org</a></li>
+      <li><a href="/sections/lug">Lug</a></li>
+      <li><a href="/sections/mageia">Mageia</a></li>
+      <li><a href="/sections/mate-desktop-environment">MATE Desktop Environment</a></li>
+      <li><a href="/sections/mat%C3%A9riel">Matériel</a></li>
+      <li><a href="/sections/medecine">Médecine</a></li>
+      <li><a href="/sections/microsoft">Microsoft</a></li>
+      <li><a href="/sections/mobile">Mobile</a></li>
+      <li><a href="/sections/mono">Mono</a></li>
+      <li><a href="/sections/mozilla">Mozilla</a></li>
+      <li><a href="/sections/netbsd">NetBSD</a></li>
+      <li><a href="/sections/noyau">Noyau</a></li>
+      <li><a href="/sections/open-data">Open Data</a></li>
+      <li><a href="/sections/openbsd">OpenBSD</a></li>
+      <li><a href="/sections/paris-open-source-summit">Paris Open Source Summit</a></li>
+      <li><a href="/sections/perl">Perl</a></li>
+      <li><a href="/sections/php">PHP</a></li>
+      <li><a href="/sections/presse">Presse</a></li>
+      <li><a href="/sections/programmation-fonctionnelle">Programmation fonctionnelle</a></li>
+      <li><a href="/sections/python">Python</a></li>
+      <li><a href="/sections/raspberry-pi">Raspberry Pi</a></li>
+      <li><a href="/sections/red-hat">Red Hat</a></li>
+      <li><a href="/sections/rien-%C3%A0-voir">Rien à voir</a></li>
+      <li><a href="/sections/rmlllsm">RMLL/LSM</a></li>
+      <li><a href="/sections/ruby">Ruby</a></li>
+      <li><a href="/sections/rust">Rust</a></li>
+      <li><a href="/sections/samba">Samba</a></li>
+      <li><a href="/sections/science">Science</a></li>
+      <li><a href="/sections/s%C3%A9curit%C3%A9">Sécurité</a></li>
+      <li><a href="/sections/x">Serveurs d&#39;affichage</a></li>
+      <li><a href="/sections/slackware">Slackware</a></li>
+      <li><a href="/sections/son">Son</a></li>
+      <li><a href="/sections/supervision">Supervision</a></li>
+      <li><a href="/sections/suse">Suse</a></li>
+      <li><a href="/sections/technologie">Technologie</a></li>
+      <li><a href="/sections/telephonie">Téléphonie</a></li>
+      <li><a href="/sections/ubuntu">Ubuntu</a></li>
+      <li><a href="/sections/virtualisation">Virtualisation</a></li>
+      <li><a href="/sections/wikimedia">Wikimedia</a></li>
+      <li><a href="/sections/xmpp">XMPP</a></li></ul>
+  </div>
+
+
+</aside>
+
+<section class="container" id="container">
+  <h1>"Accueil"</h1>
+  <section id="phare">
+    <article class="node hentry score9 news ppp" itemscope itemtype="http://schema.org/Article">
+      <header>
+        <h1 class="entry-title" itemprop="name"><a href="/news/jugement-tgi-de-paris-du-7-mars-2019-sur-le-blocage-de-sci-hub-libgen">Jugement TGI de Paris du 7 mars 2019 sur le blocage de Sci-Hub/LibGen</a></h1>
+        <div class="meta">
+          <span class="floating_spacer"></span><span class="posted_by_spanblock">Posté par <a rel="author" href="/users/oumph">Benoît Sibaud</a> (<a href="http://oumph.free.fr">page perso</a>) <time datetime="2019-04-02T10:11:31+02:00" class="updated"><span class="date">le 02/04/19</span> <span class="time">à 10:11</span></time>.</span>
+          <span class="edited_by_spanblock">Édité par <span class="edited_by"><a href="/users/nyco">Nÿco</a>, <a href="/users/tisaac">tisaac</a>, <a href="/users/davy78">Davy Defaud</a> et <a href="/users/xate">Xavier Teyssier</a></span>.</span>
+          <span class="moderated_by_spanblock">Modéré par <a href="/users/andrianarivony">ZeroHeure</a>.</span>
+          <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/deed.fr">Licence CC by-sa.</a>
+          <div class="tags">
+            Tags :
+            <ul class="tag_cloud" itemprop="keywords">
+              <li><a rel="tag" href="/tags/sci-hub/public">sci-hub</a></li>
+              <li><a rel="tag" href="/tags/libgen/public">libgen</a></li>
+              <li><a rel="tag" href="/tags/openaccess/public">openaccess</a></li>
+              <li><a rel="tag" href="/tags/science/public">science</a></li>
+              <li><a rel="tag" href="/tags/drm_flawed_by_design/public">drm_flawed_by_design</a></li>
+              <li><a rel="tag" href="/tags/privatisation_de_la_connaissance/public">privatisation_de_la_connaissance</a></li></ul>
+          </div>
+        </div>
+      </header>
+      <div class="figures">
+        <meta content="UserLikes:46" itemprop="interactionCount">
+        <figure class="score" title="Note de ce contenu">46</figure>
+        <figure class="datePourCss"><div class="jour">2</div><div class="mois">avr.</div><div class="annee">2019</div></figure>
+        <figure class="image" itemprop="image"><a href="/sections/justice"><img alt="Justice" title="Justice" src="/images/sections/24.png" /></a></figure>
+      </div>
+      <div class="content entry-content" itemprop="articleBody">
+        <p>Le tribunal de grande instance de Paris a rendu le 7 mars 2019 son jugement sur le blocage de Sci-Hub et LibGen.</p>
+
+        <p>Les gros éditeurs scientifiques Elsevier et Springer (environ 300 000 articles, 50 000 ouvrages et 7 000 revues à eux deux) veulent obtenir des quatre plus grands fournisseurs d’accès à Internet (FAI) français un blocage de Sci-Hub et LibGen qui fournissent des dizaines de millions de publications scientifiques, en contournement des abonnements très onéreux des éditeurs.</p>
+
+        <p>Ces éditeurs avaient demandé un blocage de cinquante‐sept domaines permettant d’accéder aux deux sites, ils voulaient un blocage par adresse IP, une injonction dynamique pour éviter de repasser devant le juge en cas de miroir, ne pas payer et être notifiés sans rien faire.</p>
+
+        <p>Les FAI ne rejetaient pas le principe du blocage mais voulaient en choisir les modalités techniques, voulaient que toute évolution de la demande repasse devant le juge, être notifiés des disparitions de sites par les éditeurs et ne pas payer.</p>
+
+        <p>Le jugement (susceptible d’appel) laisse aux FAI le choix de la méthode, leur demande de bloquer ni plus ni moins les cinquante‐sept noms de domaine pour un an, indique qu’un nouveau référé sera nécessaire en cas d’évolution de la demande, laisse le suivi des sites aux éditeurs (même si je ne vois pas pourquoi ils le feraient, vu que ça ne leur coûte rien de laisser le blocage demandé…) et les frais du blocage sont à la charge des FAI (chaque partie payant elle‐même ses frais de justice).</p>
+
+
+      </div>
+      <footer class="actions">
+        <meta itemprop="interactionCount" content="UserComments:57" /><span class="anonymous_reader"><a itemprop="url" href="/news/jugement-tgi-de-paris-du-7-mars-2019-sur-le-blocage-de-sci-hub-libgen">Lire la suite</a> (<span class="nb_comments">57 commentaires</span>).</span>
+
+        <div class="formats">
+          <a title="Télécharger ce contenu au format markdown" class="action download" href="/news/jugement-tgi-de-paris-du-7-mars-2019-sur-le-blocage-de-sci-hub-libgen.md">Markdown</a>
+          <a title="Télécharger ce contenu au format epub" class="action download" href="/news/jugement-tgi-de-paris-du-7-mars-2019-sur-le-blocage-de-sci-hub-libgen.epub">Epub</a>
+        </div>
+
+      </footer>
+    </article>
+
+  </section>
+  <aside class="banner">
+    <a href="http://libreassociation.info/" title="Libreassociation">
+      <img src="//img.linuxfr.org/img/687474703a2f2f7777772e617072696c2e6f72672f73697465732f64656661756c742f66696c65732f67726f757065732f6c696272656173736f63696174696f6e2f696d616765732f62616e6e696572652d6c696272652d6173736f63696174696f6e5f3436382e706e67/banniere-libre-association_468.png" alt="Libreassociation" />
+    </a>
+  </aside>
+  <nav class="toolbox"><div class="follow_feed"><a href="/news.atom">Flux Atom des dépêches</a></div><div class="new_content"><a href="/news/nouveau">Proposer une dépêche</a></div><div class="order_navbar">
+    Trier par :
+    <ul>
+      <li><a href="/?order=created_at">date</a></li>
+      <li><a href="/?order=score">note</a></li>
+      <li>intérêt</li>
+      <li><a href="/?order=last_commented_at">dernier commentaire</a></li>
+    </ul>
+  </div>
+    <nav class="pagination">
+
+
+        <span class="page current">
+  1
+</span>
+
+      <span class="page">
+  <a rel="next" href="/?page=2">2</a>
+</span>
+
+      <span class="page">
+  <a href="/?page=3">3</a>
+</span>
+
+      <span class="page">
+  <a href="/?page=4">4</a>
+</span>
+
+      <span class="page">
+  <a href="/?page=5">5</a>
+</span>
+
+      <span class="page">
+  <a href="/?page=6">6</a>
+</span>
+
+      <span class="page">
+  <a href="/?page=7">7</a>
+</span>
+
+      <span class="page">
+  <a href="/?page=8">8</a>
+</span>
+
+      <span class="page">
+  <a href="/?page=9">9</a>
+</span>
+
+      <span class="page">
+  <a href="/?page=10">10</a>
+</span>
+
+      <span class="page">
+  <a href="/?page=11">11</a>
+</span>
+
+      <span class="page gap">…</span>
+
+      <span class="next">
+  <a rel="next" href="/?page=2">Suivant &rsaquo;</a>
+</span>
+
+      <span class="last">
+  <a href="/?page=1727">Dernier &raquo;</a>
+</span>
+
+    </nav>
+  </nav><main id="contents" role="main">
+  <article class="node hentry score1 news" itemscope itemtype="http://schema.org/Article">
+    <header>
+      <h1 class="entry-title" itemprop="name"><a href="/news/emission-libre-a-vous-du-16-avril-2019-podcasts-et-references">Émission « Libre à vous ! » du 16 avril 2019 — Podcasts et références</a></h1>
+      <div class="meta">
+        <span class="floating_spacer"></span><span class="posted_by_spanblock">Posté par <a rel="author" href="/users/mad">Frederic Couchet</a> <time datetime="2019-04-17T11:36:23+02:00" class="updated"><span class="date">le 17/04/19</span> <span class="time">à 11:36</span></time>.</span>
+        <span class="edited_by_spanblock">Édité par <span class="edited_by"><a href="/users/davy78">Davy Defaud</a> et <a href="/users/floxy">Florent Zara</a></span>.</span>
+        <span class="moderated_by_spanblock">Modéré par <a href="/users/jarillon">Pierre Jarillon</a>.</span>
+        <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/deed.fr">Licence CC by-sa.</a>
+        <div class="tags">
+          Tags :
+          <ul class="tag_cloud" itemprop="keywords">
+            <li><a rel="tag" href="/tags/libre_à_vous/public">libre_à_vous</a></li>
+            <li><a rel="tag" href="/tags/radio_cause_commune/public">radio_cause_commune</a></li></ul>
+        </div>
+      </div>
+    </header>
+    <div class="figures">
+      <meta content="UserLikes:6" itemprop="interactionCount">
+      <figure class="score" title="Note de ce contenu">6</figure>
+      <figure class="datePourCss"><div class="jour">17</div><div class="mois">avr.</div><div class="annee">2019</div></figure>
+      <figure class="image" itemprop="image"><a href="/sections/communaut%C3%A9"><img alt="Communauté" title="Communauté" src="/images/sections/9.png" /></a></figure>
+    </div>
+    <div class="content entry-content" itemprop="articleBody">
+      <p>La vingt‐et‐unième émission « Libre à vous ! » de l’April a été diffusée sur la radio Cause commune, mardi 16 avril 2019.</p>
+
+      <p>Nous avons commencé par la chronique de Marie‐Odile Morandi « Les transcriptions qui redonnent le goût de la lecture ». Nous avons enchaîné avec notre sujet principal qui portait sur le Collectif des Hébergeurs Alternatifs, Transparents, Ouverts, Neutres et Solidaires (CHATONS) avec : Angie Gaudion de Framasoft, Denis Dordoigne d’INFINI et Christian Pierre Momon du Chapril. Nous avons poursuivi avec la chronique juridique « <em>In code we trust</em> » de Noémie Bergez. </p>
+
+      <p>La prochaine émission sera diffusée en direct sur la bande FM en Île‐de‐France (93,1 MHz) et sur le <a href="https://cause-commune.fm/">site Web de la radio</a> mardi 23 avril 2019, de 15 h 30 à 17 h. Notre sujet principal portera sur les entreprises du logiciel libre.</p>
+
+
+    </div>
+    <footer class="actions">
+      <meta itemprop="interactionCount" content="UserComments:0" /><span class="anonymous_reader"><a itemprop="url" href="/news/emission-libre-a-vous-du-16-avril-2019-podcasts-et-references">Lire la suite</a> (<span class="nb_comments">0 commentaire</span>).</span>
+
+      <div class="formats">
+        <a title="Télécharger ce contenu au format markdown" class="action download" href="/news/emission-libre-a-vous-du-16-avril-2019-podcasts-et-references.md">Markdown</a>
+        <a title="Télécharger ce contenu au format epub" class="action download" href="/news/emission-libre-a-vous-du-16-avril-2019-podcasts-et-references.epub">Epub</a>
+      </div>
+
+    </footer>
+  </article>
+  <article class="node hentry score2 news" itemscope itemtype="http://schema.org/Article">
+    <header>
+      <h1 class="entry-title" itemprop="name"><a href="/news/revue-de-presse-de-l-april-pour-la-semaine-15-de-l-annee-2019">Revue de presse de l’April pour la semaine 15 de l’année 2019</a></h1>
+      <div class="meta">
+        <span class="floating_spacer"></span><span class="posted_by_spanblock">Posté par <a rel="author" href="/users/echarp">echarp</a> (<a href="http://blog.echarp.org">page perso</a>) <time datetime="2019-04-15T18:17:25+02:00" class="updated"><span class="date">le 15/04/19</span> <span class="time">à 18:17</span></time>.</span>
+        <span class="edited_by_spanblock">Édité par <span class="edited_by"><a href="/users/davy78">Davy Defaud</a></span>.</span>
+        <span class="moderated_by_spanblock">Modéré par <a href="/users/davy78">Davy Defaud</a>.</span>
+        <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/deed.fr">Licence CC by-sa.</a>
+        <div class="tags">
+          Tags :
+          <ul class="tag_cloud" itemprop="keywords">
+            <li><a rel="tag" href="/tags/revue_de_presse/public">revue_de_presse</a></li></ul>
+        </div>
+      </div>
+    </header>
+    <div class="figures">
+      <meta content="UserLikes:14" itemprop="interactionCount">
+      <figure class="score" title="Note de ce contenu">14</figure>
+      <figure class="datePourCss"><div class="jour">15</div><div class="mois">avr.</div><div class="annee">2019</div></figure>
+      <figure class="image" itemprop="image"><a href="/sections/internet"><img alt="Internet" title="Internet" src="/images/sections/22.png" /></a></figure>
+    </div>
+    <div class="content entry-content" itemprop="articleBody">
+      <p>Cette revue de presse sur Internet fait partie du travail de veille mené par l’April dans le cadre de son action de défense et de promotion du logiciel libre. Les positions exposées dans les articles sont celles de leurs auteurs et ne rejoignent pas forcément celles de l’April.</p>
+
+      <ul>
+        <li><a href="https://www.estrepublicain.fr/faits-divers/2019/04/12/julian-assange-ce-qu-on-lui-reproche-ce-qu-il-risque">[estrepublicain.fr] Julian Assange : ce qu’on lui reproche, ce qu’il risque</a></li>
+        <li><a href="https://lecourrier.ch/2019/04/10/la-liberte-a-lere-des-gafa">[Le Courrier] La liberté à l’ère des GAFA</a></li>
+        <li><a href="https://www.euractiv.com/section/copyright/opinion/copyright-rules-will-turn-the-eu-into-a-french-digital-colony/">[EurActiv] <em>Copyright rules will turn the EU into a French digital colony</em></a></li>
+        <li><a href="https://www.republicain-lorrain.fr/edition-de-sarrebourg-chateau-salins/2019/04/09/informatique-les-bons-conseils-pour-bien-surfer">[Le Républicain Lorrain] Informatique à Insming: les bons conseils pour bien surfer</a></li>
+        <li><a href="https://www.zdnet.fr/actualites/le-bureau-linux-est-en-difficulte-39883239.htm">[ZDNet France] Le poste de travail Linux est en difficulté</a></li>
+      </ul>
+
+
+    </div>
+    <footer class="actions">
+      <meta itemprop="interactionCount" content="UserComments:0" /><span class="anonymous_reader"><a itemprop="url" href="/news/revue-de-presse-de-l-april-pour-la-semaine-15-de-l-annee-2019">Lire la suite</a> (<span class="nb_comments">0 commentaire</span>).</span>
+
+      <div class="formats">
+        <a title="Télécharger ce contenu au format markdown" class="action download" href="/news/revue-de-presse-de-l-april-pour-la-semaine-15-de-l-annee-2019.md">Markdown</a>
+        <a title="Télécharger ce contenu au format epub" class="action download" href="/news/revue-de-presse-de-l-april-pour-la-semaine-15-de-l-annee-2019.epub">Epub</a>
+      </div>
+
+    </footer>
+  </article>
+  <article class="node hentry score2 news" itemscope itemtype="http://schema.org/Article">
+    <header>
+      <h1 class="entry-title" itemprop="name"><a href="/news/agenda-du-libre-pour-la-semaine-16-de-l-annee-2019">Agenda du Libre pour la semaine 16 de l’année 2019</a></h1>
+      <div class="meta">
+        <span class="floating_spacer"></span><span class="posted_by_spanblock">Posté par <a rel="author" href="/users/collectif">Collectif</a> <time datetime="2019-04-13T19:55:24+02:00" class="updated"><span class="date">le 13/04/19</span> <span class="time">à 19:55</span></time>.</span>
+        <span class="edited_by_spanblock">Édité par <span class="edited_by"><a href="/users/oumph">Benoît Sibaud</a> et <a href="/users/davy78">Davy Defaud</a></span>.</span>
+        <span class="moderated_by_spanblock">Modéré par <a href="/users/andrianarivony">ZeroHeure</a>.</span>
+        <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/deed.fr">Licence CC by-sa.</a>
+        <div class="tags">
+          Tags :
+          <ul class="tag_cloud" itemprop="keywords">
+            <li><a rel="tag" href="/tags/agenda_du_libre/public">agenda_du_libre</a></li></ul>
+        </div>
+      </div>
+    </header>
+    <div class="figures">
+      <meta content="UserLikes:10" itemprop="interactionCount">
+      <figure class="score" title="Note de ce contenu">10</figure>
+      <figure class="datePourCss"><div class="jour">13</div><div class="mois">avr.</div><div class="annee">2019</div></figure>
+      <figure class="image" itemprop="image"><a href="/sections/communaut%C3%A9"><img alt="Communauté" title="Communauté" src="/images/sections/9.png" /></a></figure>
+    </div>
+    <div class="content entry-content" itemprop="articleBody">
+      <p>Calendrier Web, regroupant des événements liés au Libre (logiciel, salon, atelier, <em>install party</em>, conférence), annoncés par leurs organisateurs. Voici un récapitulatif de la semaine à venir. Le détail de chacun de ces 44 événements (France : 43, Belgique : 1) est en seconde partie de dépêche.</p>
+
+
+    </div>
+    <footer class="actions">
+      <meta itemprop="interactionCount" content="UserComments:0" /><span class="anonymous_reader"><a itemprop="url" href="/news/agenda-du-libre-pour-la-semaine-16-de-l-annee-2019">Lire la suite</a> (<span class="nb_comments">0 commentaire</span>).</span>
+
+      <div class="formats">
+        <a title="Télécharger ce contenu au format markdown" class="action download" href="/news/agenda-du-libre-pour-la-semaine-16-de-l-annee-2019.md">Markdown</a>
+        <a title="Télécharger ce contenu au format epub" class="action download" href="/news/agenda-du-libre-pour-la-semaine-16-de-l-annee-2019.epub">Epub</a>
+      </div>
+
+    </footer>
+  </article>
+  <article class="node hentry score2 news" itemscope itemtype="http://schema.org/Article">
+    <header>
+      <h1 class="entry-title" itemprop="name"><a href="/news/chiffrement-de-documents-de-bout-en-bout-dans-onlyoffice-premier-apercu">Chiffrement de documents de bout en bout dans ONLYOFFICE. Premier aperçu.</a></h1>
+      <div class="meta">
+        <span class="floating_spacer"></span><span class="posted_by_spanblock">Posté par <a rel="author" href="/users/tatik">TatiK</a> <time datetime="2019-04-13T11:43:21+02:00" class="updated"><span class="date">le 13/04/19</span> <span class="time">à 11:43</span></time>.</span>
+        <span class="edited_by_spanblock">Édité par <span class="edited_by"><a href="/users/palm123">palm123</a>, <a href="/users/andrianarivony">ZeroHeure</a>, <a href="/users/davy78">Davy Defaud</a>, <a href="/users/oumph">Benoît Sibaud</a> et <a href="/users/julien_jorge">Julien Jorge</a></span>.</span>
+        <span class="moderated_by_spanblock">Modéré par <a href="/users/andrianarivony">ZeroHeure</a>.</span>
+        <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/deed.fr">Licence CC by-sa.</a>
+        <div class="tags">
+          Tags :
+          <ul class="tag_cloud" itemprop="keywords">
+            <li><a rel="tag" href="/tags/onlyoffice/public">onlyoffice</a></li>
+            <li><a rel="tag" href="/tags/bureautique/public">bureautique</a></li>
+            <li><a rel="tag" href="/tags/chiffrement_bout_en_bout/public">chiffrement_bout_en_bout</a></li></ul>
+        </div>
+      </div>
+    </header>
+    <div class="figures">
+      <meta content="UserLikes:11" itemprop="interactionCount">
+      <figure class="score" title="Note de ce contenu">11</figure>
+      <figure class="datePourCss"><div class="jour">13</div><div class="mois">avr.</div><div class="annee">2019</div></figure>
+      <figure class="image" itemprop="image"><a href="/sections/bureautique"><img alt="Bureautique" title="Bureautique" src="/images/sections/62.png" /></a></figure>
+    </div>
+    <div class="content entry-content" itemprop="articleBody">
+      <p>Avec la sortie de la dernière version d’ONLYOFFICE Desktop Editors (déjà présentée sur <a href="//linuxfr.org/news/sortie-de-onlyoffice-desktop-editors-5-2-avec-la-connexion-a-nextcloud-owncloud"><em>LinuxFr.org</em></a>), ONLYOFFICE a annoncé le premier aperçu du chiffrement de document de bout en bout, renforcé par <em>blockchain</em>.</p>
+
+      <p><img src="//img.linuxfr.org/img/68747470733a2f2f706572736f6e616c2e6f6e6c796f66666963652e636f6d2f70726f64756374732f66696c65732f6874747068616e646c6572732f66696c6568616e646c65722e617368783f616374696f6e3d646f776e6c6f61642666696c6569643d3238353530363826646f633d64335a364f487074635578506548704b62444132515752336332685161455a434e6e645a615645794f486333626e4e785a6b35444e4446745454305f496a49344e5455774e6a676930/filehandler.ashx?action=download&amp;fileid=2855068&amp;doc=d3Z6OHptcUxPeHpKbDA2QWR3c2hQaEZCNndZaVEyOHc3bnNxZk5DNDFtTT0_IjI4NTUwNjgi0" alt="ONLYOFFICE" title="Source : https://personal.onlyoffice.com/products/files/httphandlers/filehandler.ashx?action=download&amp;fileid=2855068&amp;doc=d3Z6OHptcUxPeHpKbDA2QWR3c2hQaEZCNndZaVEyOHc3bnNxZk5DNDFtTT0_IjI4NTUwNjgi0"></p>
+
+
+    </div>
+    <footer class="actions">
+      <meta itemprop="interactionCount" content="UserComments:25" /><span class="anonymous_reader"><a itemprop="url" href="/news/chiffrement-de-documents-de-bout-en-bout-dans-onlyoffice-premier-apercu">Lire la suite</a> (<span class="nb_comments">25 commentaires</span>).</span>
+
+      <div class="formats">
+        <a title="Télécharger ce contenu au format markdown" class="action download" href="/news/chiffrement-de-documents-de-bout-en-bout-dans-onlyoffice-premier-apercu.md">Markdown</a>
+        <a title="Télécharger ce contenu au format epub" class="action download" href="/news/chiffrement-de-documents-de-bout-en-bout-dans-onlyoffice-premier-apercu.epub">Epub</a>
+      </div>
+
+    </footer>
+  </article>
+  <article class="node hentry score7 news" itemscope itemtype="http://schema.org/Article">
+    <header>
+      <h1 class="entry-title" itemprop="name"><a href="/news/proxmox-ve-5-4">Proxmox VE 5.4</a></h1>
+      <div class="meta">
+        <span class="floating_spacer"></span><span class="posted_by_spanblock">Posté par <a rel="author" href="/users/haeda">haeda</a> <time datetime="2019-04-11T22:22:50+02:00" class="updated"><span class="date">le 11/04/19</span> <span class="time">à 22:22</span></time>.</span>
+        <span class="edited_by_spanblock">Édité par <span class="edited_by"><a href="/users/davy78">Davy Defaud</a>, <a href="/users/oumph">Benoît Sibaud</a> et <a href="/users/palm123">palm123</a></span>.</span>
+        <span class="moderated_by_spanblock">Modéré par <a href="/users/andrianarivony">ZeroHeure</a>.</span>
+        <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/deed.fr">Licence CC by-sa.</a>
+        <div class="tags">
+          Tags :
+          <ul class="tag_cloud" itemprop="keywords">
+            <li><a rel="tag" href="/tags/proxmox/public">proxmox</a></li>
+            <li><a rel="tag" href="/tags/debian/public">debian</a></li>
+            <li><a rel="tag" href="/tags/virtualisation/public">virtualisation</a></li>
+            <li><a rel="tag" href="/tags/ceph/public">ceph</a></li>
+            <li><a rel="tag" href="/tags/tfa/public">tfa</a></li>
+            <li><a rel="tag" href="/tags/qemukvm/public">qemukvm</a></li>
+            <li><a rel="tag" href="/tags/hautedisponibilité/public">hautedisponibilité</a></li></ul>
+        </div>
+      </div>
+    </header>
+    <div class="figures">
+      <meta content="UserLikes:35" itemprop="interactionCount">
+      <figure class="score" title="Note de ce contenu">35</figure>
+      <figure class="datePourCss"><div class="jour">11</div><div class="mois">avr.</div><div class="annee">2019</div></figure>
+      <figure class="image" itemprop="image"><a href="/sections/virtualisation"><img alt="Virtualisation" title="Virtualisation" src="/images/sections/74.png" /></a></figure>
+    </div>
+    <div class="content entry-content" itemprop="articleBody">
+      <p>Proxmox est une plate‐forme de gestion de virtualisation libre (AGPLv3) permettant de gérer des machines virtuelles KVM et des conteneurs LXC.</p>
+
+      <p>Proxmox VE 5.4 introduit un nouvel assistant pour l’installation d’une grappe de serveurs (<em>cluster</em>) Ceph dans l’interface Web, plus de flexibilité avec la haute disponibilité, la prise en charge de l’hibernation pour les machines virtuelles, et la prise en charge de l’authentification universelle à deux facteurs (U2F). La plate‐forme Proxmox VE 5.4 est basée sur Debian 9 <em>Stretch</em> et un noyau Linux 4.15.</p>
+
+
+    </div>
+    <footer class="actions">
+      <meta itemprop="interactionCount" content="UserComments:1" /><span class="anonymous_reader"><a itemprop="url" href="/news/proxmox-ve-5-4">Lire la suite</a> (<span class="nb_comments">1 commentaire</span>).</span>
+
+      <div class="formats">
+        <a title="Télécharger ce contenu au format markdown" class="action download" href="/news/proxmox-ve-5-4.md">Markdown</a>
+        <a title="Télécharger ce contenu au format epub" class="action download" href="/news/proxmox-ve-5-4.epub">Epub</a>
+      </div>
+
+    </footer>
+  </article>
+  <article class="node hentry score1 news" itemscope itemtype="http://schema.org/Article">
+    <header>
+      <h1 class="entry-title" itemprop="name"><a href="/news/libre-en-fete-record-d-evenements-proposes">Libre en Fête : record d’événements proposés</a></h1>
+      <div class="meta">
+        <span class="floating_spacer"></span><span class="posted_by_spanblock">Posté par <a rel="author" href="/users/cioccolisa">cioccolisa</a> <time datetime="2019-04-11T21:59:14+02:00" class="updated"><span class="date">le 11/04/19</span> <span class="time">à 21:59</span></time>.</span>
+        <span class="edited_by_spanblock">Édité par <span class="edited_by"><a href="/users/oumph">Benoît Sibaud</a> et <a href="/users/davy78">Davy Defaud</a></span>.</span>
+        <span class="moderated_by_spanblock">Modéré par <a href="/users/oumph">Benoît Sibaud</a>.</span>
+        <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/deed.fr">Licence CC by-sa.</a>
+        <div class="tags">
+          Tags :
+          <ul class="tag_cloud" itemprop="keywords">
+            <li><a rel="tag" href="/tags/april/public">april</a></li>
+            <li><a rel="tag" href="/tags/libre-en-fete/public">libre-en-fete</a></li>
+            <li><a rel="tag" href="/tags/libre-en-fete-2019/public">libre-en-fete-2019</a></li>
+            <li><a rel="tag" href="/tags/sensibilisation/public">sensibilisation</a></li>
+            <li><a rel="tag" href="/tags/priorité-logiciel-libre/public">priorité-logiciel-libre</a></li>
+            <li><a rel="tag" href="/tags/agenda_du_libre/public">agenda_du_libre</a></li>
+            <li><a rel="tag" href="/tags/expolibre/public">expolibre</a></li></ul>
+        </div>
+      </div>
+    </header>
+    <div class="figures">
+      <meta content="UserLikes:9" itemprop="interactionCount">
+      <figure class="score" title="Note de ce contenu">9</figure>
+      <figure class="datePourCss"><div class="jour">11</div><div class="mois">avr.</div><div class="annee">2019</div></figure>
+      <figure class="image" itemprop="image"><a href="/sections/communaut%C3%A9"><img alt="Communauté" title="Communauté" src="/images/sections/9.png" /></a></figure>
+    </div>
+    <div class="content entry-content" itemprop="articleBody">
+      <p><strong>L’édition 2019 du <a href="https://www.libre-en-fete.net/2019">Libre en Fête</a> vient de se terminer et le bilan est plus que positif : 254 événements ont été référencés dans le cadre de cette initiative, ce qui représente un nouveau record (l’ancien record, 216 événements, remontait à 2009).</strong></p>
+
+      <p><img src="//img.linuxfr.org/img/68747470733a2f2f7777772e6c696272652d656e2d666574652e6e65742f6c6f63616c2f63616368652d7669676e65747465732f4c31353078483132322f736974656f6e302d62336366362e706e673f31343930313039333531/siteon0-b3cf6.png?1490109351" alt="Libre En Fête" title="Source : https://www.libre-en-fete.net/local/cache-vignettes/L150xH122/siteon0-b3cf6.png?1490109351"></p>
+
+      <p>Chaque année depuis 2002, l’<a href="https://www.april.org/">April</a> invite les groupes d’utilisateurs et utilisatrices de logiciels libres, ainsi que toute organisation ayant à cœur la promotion du logiciel libre à proposer, <strong>à l’arrivée du printemps, des événements de découverte du Libre à destination du grand public</strong>, dans une dynamique conviviale et festive.</p>
+
+      <p>Grâce à la mobilisation de nombreuses structures partout en France, et également en Belgique et en Suisse, le grand public a eu l’opportunité de s’initier aux applications et aux systèmes d’exploitation libres, de se familiariser avec les projets collaboratifs en ligne, de découvrir comment améliorer la sécurité de ses navigations sur le Web, et bien plus encore.</p>
+
+      <p>Nous tenons à remercier très chaleureusement toutes les personnes et structures qui ont organisé ces événements : leur action a assuré le succès du Libre en Fête 2019.</p>
+
+      <p>Rendez‐vous l’année prochaine !</p>
+
+
+    </div>
+    <footer class="actions">
+      <meta itemprop="interactionCount" content="UserComments:0" /><span class="anonymous_reader"><a itemprop="url" href="/news/libre-en-fete-record-d-evenements-proposes">Lire la suite</a> (<span class="nb_comments">0 commentaire</span>).</span>
+
+      <div class="formats">
+        <a title="Télécharger ce contenu au format markdown" class="action download" href="/news/libre-en-fete-record-d-evenements-proposes.md">Markdown</a>
+        <a title="Télécharger ce contenu au format epub" class="action download" href="/news/libre-en-fete-record-d-evenements-proposes.epub">Epub</a>
+      </div>
+
+    </footer>
+  </article>
+  <article class="node hentry score3 news" itemscope itemtype="http://schema.org/Article">
+    <header>
+      <h1 class="entry-title" itemprop="name"><a href="/news/fusiondirectory-1-3-est-sorti">FusionDirectory 1.3 est sorti</a></h1>
+      <div class="meta">
+        <span class="floating_spacer"></span><span class="posted_by_spanblock">Posté par <a rel="author" href="/users/bmortier">Benoit Mortier</a> <time datetime="2019-04-11T14:17:59+02:00" class="updated"><span class="date">le 11/04/19</span> <span class="time">à 14:17</span></time>.</span>
+        <span class="edited_by_spanblock">Édité par <span class="edited_by"><a href="/users/davy78">Davy Defaud</a>, <a href="/users/palm123">palm123</a> et <a href="/users/julien_jorge">Julien Jorge</a></span>.</span>
+        <span class="moderated_by_spanblock">Modéré par <a href="/users/nils--2">Nils Ratusznik</a>.</span>
+        <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/deed.fr">Licence CC by-sa.</a>
+        <div class="tags">
+          Tags :
+          <ul class="tag_cloud" itemprop="keywords">
+            <li><a rel="tag" href="/tags/gestion/public">gestion</a></li>
+            <li><a rel="tag" href="/tags/identités/public">identités</a></li>
+            <li><a rel="tag" href="/tags/openldap/public">openldap</a></li>
+            <li><a rel="tag" href="/tags/ldap/public">ldap</a></li>
+            <li><a rel="tag" href="/tags/infrastructure/public">infrastructure</a></li>
+            <li><a rel="tag" href="/tags/php/public">php</a></li>
+            <li><a rel="tag" href="/tags/iam/public">iam</a></li></ul>
+        </div>
+      </div>
+    </header>
+    <div class="figures">
+      <meta content="UserLikes:19" itemprop="interactionCount">
+      <figure class="score" title="Note de ce contenu">19</figure>
+      <figure class="datePourCss"><div class="jour">11</div><div class="mois">avr.</div><div class="annee">2019</div></figure>
+      <figure class="image" itemprop="image"><a href="/sections/administration-systeme"><img alt="Administration système" title="Administration système" src="/images/sections/95.png" /></a></figure>
+    </div>
+    <div class="content entry-content" itemprop="articleBody">
+      <p>L’équipe de <a href="https://www.fusiondirectory.org/">FusionDirectory</a> est heureuse de vous annoncer la sortie de FusionDirectory 1.3 !</p>
+
+      <p>FusionDirectory est la solution libre et multi‐plate‐forme de  gestion des identités et d’infrastructure qui inclut des fonctionnalités pour l’éducation nationale française. </p>
+
+      <p>En effet FusionDirectory supporte la norme <a href="https://services.renater.fr/documentation/supann/index">SupAnn</a>, <a href="https://partage.renater.fr/">Partage de Renater</a> et <a href="http://www.amue.fr/pilotage/logiciels/sinaps/">SINAPS</a> de l’<a href="http://www.amue.fr/">AMUE</a>.</p>
+
+      <p>FusionDirectory est une solution extensible qui possède cinquante greffons à l’heure actuelle, son système de listes de contrôle d’accès (<a href="https://fr.wikipedia.org/wiki/Access_Control_List">ACL</a>) fines et ses fonctionnalités de gestion quotidiennes en font un logiciel qui s’adapte à tout type d’environnement.</p>
+
+      <p>Son <a href="https://api.fusiondirectory.org/">API</a> vous permet d’écrire de nouveaux greffons pour étendre ses fonctionnalités et correspondre à vos besoins.</p>
+
+      <p>Les nouvelles fonctionnalités et les diverses améliorations sont décrites en seconde partie de l’article.</p>
+
+
+    </div>
+    <footer class="actions">
+      <meta itemprop="interactionCount" content="UserComments:5" /><span class="anonymous_reader"><a itemprop="url" href="/news/fusiondirectory-1-3-est-sorti">Lire la suite</a> (<span class="nb_comments">5 commentaires</span>).</span>
+
+      <div class="formats">
+        <a title="Télécharger ce contenu au format markdown" class="action download" href="/news/fusiondirectory-1-3-est-sorti.md">Markdown</a>
+        <a title="Télécharger ce contenu au format epub" class="action download" href="/news/fusiondirectory-1-3-est-sorti.epub">Epub</a>
+      </div>
+
+    </footer>
+  </article>
+  <article class="node hentry score1 news" itemscope itemtype="http://schema.org/Article">
+    <header>
+      <h1 class="entry-title" itemprop="name"><a href="/news/emission-libre-a-vous-du-9-avril-2019-podcasts-et-references">Émission « Libre à vous ! » du 9 avril 2019 — Podcasts et références</a></h1>
+      <div class="meta">
+        <span class="floating_spacer"></span><span class="posted_by_spanblock">Posté par <a rel="author" href="/users/mad">Frederic Couchet</a> <time datetime="2019-04-10T19:13:57+02:00" class="updated"><span class="date">le 10/04/19</span> <span class="time">à 19:13</span></time>.</span>
+        <span class="edited_by_spanblock">Édité par <span class="edited_by"><a href="/users/davy78">Davy Defaud</a></span>.</span>
+        <span class="moderated_by_spanblock">Modéré par <a href="/users/andrianarivony">ZeroHeure</a>.</span>
+        <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/deed.fr">Licence CC by-sa.</a>
+        <div class="tags">
+          Tags :
+          <ul class="tag_cloud" itemprop="keywords">
+            <li><a rel="tag" href="/tags/radio_cause_commune/public">radio_cause_commune</a></li>
+            <li><a rel="tag" href="/tags/libre_à_vous/public">libre_à_vous</a></li></ul>
+        </div>
+      </div>
+    </header>
+    <div class="figures">
+      <meta content="UserLikes:5" itemprop="interactionCount">
+      <figure class="score" title="Note de ce contenu">5</figure>
+      <figure class="datePourCss"><div class="jour">10</div><div class="mois">avr.</div><div class="annee">2019</div></figure>
+      <figure class="image" itemprop="image"><a href="/sections/communaut%C3%A9"><img alt="Communauté" title="Communauté" src="/images/sections/9.png" /></a></figure>
+    </div>
+    <div class="content entry-content" itemprop="articleBody">
+      <p>La vingtième émission « Libre à vous ! » de l’April a été diffusée sur la radio Cause commune, mardi 9 avril 2019.</p>
+
+      <p>Nous avons commencé par la chronique de Véronique Bonnet (« Partager est bon ») sur le thème « Pourquoi les écoles devraient utiliser exclusivement du logiciel libre ». Nous avons enchainé avec notre sujet principal qui portait sur Wikipédia avec nos invités : Pierre‐Yves Beaudouin et Nadine Le Lirzin, président et secrétaire de Wikimédia France. Nous avons poursuivi avec un point sur la proposition de directive droit d’auteur. Nous avons terminé par diverses annonces.</p>
+
+      <p>La prochaine émission sera diffusée en direct sur la bande FM en Île‐de‐France (93,1 MHz) et sur le <a href="https://cause-commune.fm/">site Web de la radio</a> mardi 16 avril 2019, de 15 h 30 à 17 h. Notre sujet principal portera sur le Collectif des Hébergeurs Alternatifs,Transparents, Ouverts, Neutres et Solidaires (CHATONS).</p>
+
+      <p>La radio Cause Commune dispose d’une messagerie sur laquelle vous pouvez laisser des messages (annonces, rires, poèmes, coups de gueule, vœux…) destinés à passer à l’antenne sur la radio. Le numéro à appeler est le +33 1 88 32 54 33.</p>
+
+
+    </div>
+    <footer class="actions">
+      <meta itemprop="interactionCount" content="UserComments:0" /><span class="anonymous_reader"><a itemprop="url" href="/news/emission-libre-a-vous-du-9-avril-2019-podcasts-et-references">Lire la suite</a> (<span class="nb_comments">0 commentaire</span>).</span>
+
+      <div class="formats">
+        <a title="Télécharger ce contenu au format markdown" class="action download" href="/news/emission-libre-a-vous-du-9-avril-2019-podcasts-et-references.md">Markdown</a>
+        <a title="Télécharger ce contenu au format epub" class="action download" href="/news/emission-libre-a-vous-du-9-avril-2019-podcasts-et-references.epub">Epub</a>
+      </div>
+
+    </footer>
+  </article>
+  <article class="node hentry score8 news" itemscope itemtype="http://schema.org/Article">
+    <header>
+      <h1 class="entry-title" itemprop="name"><a href="/news/satnogs-un-reseau-open-source-de-reception-de-donnees-satellitaires-en-orbite-basse">SATNOGS : un réseau open source de réception de données satellitaires en orbite basse.</a></h1>
+      <div class="meta">
+        <span class="floating_spacer"></span><span class="posted_by_spanblock">Posté par <a rel="author" href="/users/jujun">jujun</a> <time datetime="2019-04-09T17:03:55+02:00" class="updated"><span class="date">le 09/04/19</span> <span class="time">à 17:03</span></time>.</span>
+        <span class="edited_by_spanblock">Édité par <span class="edited_by"><a href="/users/julien_jorge">Julien Jorge</a>, <a href="/users/palm123">palm123</a> et <a href="/users/davy78">Davy Defaud</a></span>.</span>
+        <span class="moderated_by_spanblock">Modéré par <a href="/users/andrianarivony">ZeroHeure</a>.</span>
+        <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/deed.fr">Licence CC by-sa.</a>
+        <div class="tags">
+          Tags :
+          <ul class="tag_cloud" itemprop="keywords">
+            <li><a rel="tag" href="/tags/diy/public">diy</a></li>
+            <li><a rel="tag" href="/tags/cubsat/public">cubsat</a></li>
+            <li><a rel="tag" href="/tags/satellite/public">satellite</a></li>
+            <li><a rel="tag" href="/tags/électronique/public">électronique</a></li>
+            <li><a rel="tag" href="/tags/antenne/public">antenne</a></li>
+            <li><a rel="tag" href="/tags/open-source/public">open-source</a></li></ul>
+        </div>
+      </div>
+    </header>
+    <div class="figures">
+      <meta content="UserLikes:44" itemprop="interactionCount">
+      <figure class="score" title="Note de ce contenu">44</figure>
+      <figure class="datePourCss"><div class="jour">9</div><div class="mois">avr.</div><div class="annee">2019</div></figure>
+      <figure class="image" itemprop="image"><a href="/sections/do-it-yourself"><img alt="Do It Yourself" title="Do It Yourself" src="/images/sections/86.png" /></a></figure>
+    </div>
+    <div class="content entry-content" itemprop="articleBody">
+      <p>Ce vendredi 12 avril à 20 h 30, nous, l’<strong>Atelier associatif d’électronique et de radiocommunications de Fontaine ADRI38</strong> (agglomération grenobloise), proposons une présentation sur le réseau SATNOGS.</p>
+
+      <p>Cette présentation a pour but de montrer à quel point les données issues de satellites sont accessibles avec du matériel à <strong>faible coût</strong> et des <strong>logiciels libres</strong>.</p>
+
+
+    </div>
+    <footer class="actions">
+      <meta itemprop="interactionCount" content="UserComments:9" /><span class="anonymous_reader"><a itemprop="url" href="/news/satnogs-un-reseau-open-source-de-reception-de-donnees-satellitaires-en-orbite-basse">Lire la suite</a> (<span class="nb_comments">9 commentaires</span>).</span>
+
+      <div class="formats">
+        <a title="Télécharger ce contenu au format markdown" class="action download" href="/news/satnogs-un-reseau-open-source-de-reception-de-donnees-satellitaires-en-orbite-basse.md">Markdown</a>
+        <a title="Télécharger ce contenu au format epub" class="action download" href="/news/satnogs-un-reseau-open-source-de-reception-de-donnees-satellitaires-en-orbite-basse.epub">Epub</a>
+      </div>
+
+    </footer>
+  </article>
+  <article class="node hentry score4 news" itemscope itemtype="http://schema.org/Article">
+    <header>
+      <h1 class="entry-title" itemprop="name"><a href="/news/revue-de-presse-de-l-april-pour-la-semaine-14-de-l-annee-2019">Revue de presse de l’April pour la semaine 14 de l’année 2019</a></h1>
+      <div class="meta">
+        <span class="floating_spacer"></span><span class="posted_by_spanblock">Posté par <a rel="author" href="/users/echarp">echarp</a> (<a href="http://blog.echarp.org">page perso</a>) <time datetime="2019-04-09T08:40:34+02:00" class="updated"><span class="date">le 09/04/19</span> <span class="time">à 08:40</span></time>.</span>
+        <span class="edited_by_spanblock">Édité par <span class="edited_by"><a href="/users/davy78">Davy Defaud</a></span>.</span>
+        <span class="moderated_by_spanblock">Modéré par <a href="/users/floxy">Florent Zara</a>.</span>
+        <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/deed.fr">Licence CC by-sa.</a>
+        <div class="tags">
+          Tags :
+          <ul class="tag_cloud" itemprop="keywords">
+            <li><a rel="tag" href="/tags/revue_de_presse/public">revue_de_presse</a></li></ul>
+        </div>
+      </div>
+    </header>
+    <div class="figures">
+      <meta content="UserLikes:21" itemprop="interactionCount">
+      <figure class="score" title="Note de ce contenu">21</figure>
+      <figure class="datePourCss"><div class="jour">9</div><div class="mois">avr.</div><div class="annee">2019</div></figure>
+      <figure class="image" itemprop="image"><a href="/sections/internet"><img alt="Internet" title="Internet" src="/images/sections/22.png" /></a></figure>
+    </div>
+    <div class="content entry-content" itemprop="articleBody">
+      <p>Cette revue de presse sur Internet fait partie du travail de veille mené par l’April dans le cadre de son action de défense et de promotion du logiciel libre. Les positions exposées dans les articles sont celles de leurs auteurs et ne rejoignent pas forcément celles de l’April.</p>
+
+      <ul>
+        <li><a href="https://www.20min.ch/ro/multimedia/stories/story/-Le-mobile--je-l-appelle-le-r-ve-de-Staline--13665778">[20 minutes online] « Le mobile, je l’appelle le rêve de Staline »</a></li>
+        <li><a href="https://usbeketrica.com/article/deux-tiers-francais-preoccupes-donnees-personnelles">[Usbek &amp; Rica] Deux tiers des Français préoccupés par leurs données personnelles</a></li>
+        <li><a href="https://www.lesnumeriques.com/loisirs/microsoft-ferme-rayon-livres-son-store-n85547.html">[Les Numériques] Microsoft ferme le rayon “livres” de son Store</a></li>
+        <li><a href="https://www.cxp.fr/content/news/edito-incontournable-open-source-0">[CXP] Incontournable Open Source</a></li>
+        <li><a href="https://www.ladn.eu/tech-a-suivre/ecrans-publicitaires-espionnent-embrouiller">[L’ADN] Écrans publicitaires : comment éviter d’envoyer ses données aux marques</a></li>
+        <li><a href="https://www.01net.com/actualites/article-17-cinq-questions-pour-comprendre-ce-que-cette-nouvelle-regle-du-droit-d-auteur-va-changer-1661380.html">[01net.] Article 17 : cinq questions pour comprendre ce que cette nouvelle règle du droit d’auteur va changer</a></li>
+        <li><a href="https://www.techniques-ingenieur.fr/actualite/articles/lopen-source-des-failles-qui-se-multiplient-64675">[Techniques de l’Ingénieur] L’open source : des failles qui se multiplient</a></li>
+      </ul>
+
+
+    </div>
+    <footer class="actions">
+      <meta itemprop="interactionCount" content="UserComments:4" /><span class="anonymous_reader"><a itemprop="url" href="/news/revue-de-presse-de-l-april-pour-la-semaine-14-de-l-annee-2019">Lire la suite</a> (<span class="nb_comments">4 commentaires</span>).</span>
+
+      <div class="formats">
+        <a title="Télécharger ce contenu au format markdown" class="action download" href="/news/revue-de-presse-de-l-april-pour-la-semaine-14-de-l-annee-2019.md">Markdown</a>
+        <a title="Télécharger ce contenu au format epub" class="action download" href="/news/revue-de-presse-de-l-april-pour-la-semaine-14-de-l-annee-2019.epub">Epub</a>
+      </div>
+
+    </footer>
+  </article>
+  <article class="node hentry score10 news" itemscope itemtype="http://schema.org/Article">
+    <header>
+      <h1 class="entry-title" itemprop="name"><a href="/news/hygiene-mentale-une-chaine-de-videos-sur-l-esprit-critique-sous-licence-libre">« Hygiène mentale » : une chaîne de vidéos sur l’esprit critique, sous licence libre</a></h1>
+      <div class="meta">
+        <span class="floating_spacer"></span><span class="posted_by_spanblock">Posté par <a rel="author" href="/users/oumph">Benoît Sibaud</a> (<a href="http://oumph.free.fr">page perso</a>) <time datetime="2019-04-08T15:25:26+02:00" class="updated"><span class="date">le 08/04/19</span> <span class="time">à 15:25</span></time>.</span>
+        <span class="edited_by_spanblock">Édité par <span class="edited_by"><a href="/users/davy78">Davy Defaud</a>, <a href="/users/julien_jorge">Julien Jorge</a> et <a href="/users/tankey">tankey</a></span>.</span>
+        <span class="moderated_by_spanblock">Modéré par <a href="/users/patrick_g">patrick_g</a>.</span>
+        <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/deed.fr">Licence CC by-sa.</a>
+        <div class="tags">
+          Tags :
+          <ul class="tag_cloud" itemprop="keywords">
+            <li><a rel="tag" href="/tags/esprit_critique/public">esprit_critique</a></li>
+            <li><a rel="tag" href="/tags/zététique/public">zététique</a></li>
+            <li><a rel="tag" href="/tags/vidéaste/public">vidéaste</a></li>
+            <li><a rel="tag" href="/tags/libre_washing/public">libre_washing</a></li></ul>
+        </div>
+      </div>
+    </header>
+    <div class="figures">
+      <meta content="UserLikes:51" itemprop="interactionCount">
+      <figure class="score" title="Note de ce contenu">51</figure>
+      <figure class="datePourCss"><div class="jour">8</div><div class="mois">avr.</div><div class="annee">2019</div></figure>
+      <figure class="image" itemprop="image"><a href="/sections/culture"><img alt="Culture" title="Culture" src="/images/sections/70.png" /></a></figure>
+    </div>
+    <div class="content entry-content" itemprop="articleBody">
+      <p>Suite à un <a href="//linuxfr.org/users/faya/liens/hygiene-mentale-en-libre-diffusion">simple lien</a> sur le site, indiquant un changement de licence (suivi d’un autre, voir les commentaires), il m’a semblé que l’information méritait un peu plus de visibilité : des dizaines de contenus de qualité passent sous une licence libre, et un vidéaste francophone faisant de la vulgarisation et la pédagogie rejoint le « monde de la culture libre » (pour faire grandiloquent).</p>
+
+      <p>D’autre part, c’était une bonne occasion de pouvoir parler d’<em>Hygiène mentale</em>, dont j’apprécie la fond et la forme, sous forme de dépêche, car son actualité est en rapport avec le thème de <em>LinuxFr.org</em>.</p>
+
+      <p><em>Hygiène Mentale</em> est une chaîne de vidéos sur l’esprit critique — « Un peu d’Esprit Critique chaque jour » —, la <a href="https://fr.wikipedia.org/wiki/z%C3%A9t%C3%A9tique" title="Définition Wikipédia">zététique</a>, la méthodologie, l’étude rationnelle du paranormal et des pseudo‐sciences. La description comporte notamment la citation « Si l’on avait un vrai système éducatif dans ce pays, on y donnerait des cours d’Autodéfense‐Intellectuelle ». La série est écrite et montée par Christophe Michel. La première vidéo date de juillet 2014.</p>
+
+      <p>Les vidéos sont diffusées <a href="https://skeptikon.fr/video-channels/ecf58044-ecfd-46b8-bf6f-d8206bbace38/videos">via l’instance PeerTube <em>Skepticón</em></a>, YouTube ou Dailymotion. L’auteur est présent sur Mastodon et Twitter, sur Diaspora* et Facebook.</p>
+
+      <p>Sur les quarante‐six vidéos disponibles sur YouTube, celles complètement réalisées pour la chaîne sont passées sous « licence de paternité Creative Commons (réutilisation autorisée) » (même si la description YouTube de la chaîne présente encore une information obsolète « Toutes les vidéos de la chaîne <em>Hygiène Mentale</em> sont sous licence Creative Common : CC-BY-NC-SA. » ou que les vidéos sur <em>Skepticon.fr</em> soient encore indiquées sous licence NC). Seules les vidéos basées des interviews de personnalités (Snowden, Randi, Russell, etc.) semblent être sous d’autres licences plus restrictives.</p>
+
+
+    </div>
+    <footer class="actions">
+      <meta itemprop="interactionCount" content="UserComments:146" /><span class="anonymous_reader"><a itemprop="url" href="/news/hygiene-mentale-une-chaine-de-videos-sur-l-esprit-critique-sous-licence-libre">Lire la suite</a> (<span class="nb_comments">146 commentaires</span>).</span>
+
+      <div class="formats">
+        <a title="Télécharger ce contenu au format markdown" class="action download" href="/news/hygiene-mentale-une-chaine-de-videos-sur-l-esprit-critique-sous-licence-libre.md">Markdown</a>
+        <a title="Télécharger ce contenu au format epub" class="action download" href="/news/hygiene-mentale-une-chaine-de-videos-sur-l-esprit-critique-sous-licence-libre.epub">Epub</a>
+      </div>
+
+    </footer>
+  </article>
+  <article class="node hentry score3 news" itemscope itemtype="http://schema.org/Article">
+    <header>
+      <h1 class="entry-title" itemprop="name"><a href="/news/meilleures-contributions-linuxfr-org-les-primees-de-mars-2019">Meilleures contributions LinuxFr.org : les primées de mars 2019</a></h1>
+      <div class="meta">
+        <span class="floating_spacer"></span><span class="posted_by_spanblock">Posté par <a rel="author" href="/users/floxy">Florent Zara</a> (<a href="https://linuxfr.org/users/floxy">page perso</a>) <time datetime="2019-04-09T10:01:07+02:00" class="updated"><span class="date">le 09/04/19</span> <span class="time">à 10:01</span></time>.</span>
+        <span class="edited_by_spanblock">Édité par <span class="edited_by"><a href="/users/davy78">Davy Defaud</a> et <a href="/users/julien_jorge">Julien Jorge</a></span>.</span>
+        <span class="moderated_by_spanblock">Modéré par <a href="/users/julien_jorge">Julien Jorge</a>.</span>
+        <div class="tags">
+          Tags :
+          aucun
+        </div>
+      </div>
+    </header>
+    <div class="figures">
+      <meta content="UserLikes:17" itemprop="interactionCount">
+      <figure class="score" title="Note de ce contenu">17</figure>
+      <figure class="datePourCss"><div class="jour">9</div><div class="mois">avr.</div><div class="annee">2019</div></figure>
+      <figure class="image" itemprop="image"><a href="/sections/linuxfrorg"><img alt="LinuxFr.org" title="LinuxFr.org" src="/images/sections/27.png" /></a></figure>
+    </div>
+    <div class="content entry-content" itemprop="articleBody">
+      <p>Nous continuons sur notre lancée de récompenser ceux qui chaque mois contribuent au site <em>LinuxFr.org</em> (dépêches, commentaires, logo, journaux, patchs, etc.). Vous n’êtes pas sans risquer de gagner un livre des éditions <a href="http://www.editions-eyrolles.com/">Eyrolles</a> ou <a href="http://www.editions-eni.fr/">ENI</a>. Voici les gagnants du mois de mars 2019 :</p>
+
+      <ul>
+        <li>
+          <a href="//linuxfr.org/users/tankey"><em>tankey</em></a>, pour « <a href="//linuxfr.org/news/sortie-du-noyau-linux-5-0">Sortie du noyau Linux 5.0</a> » ;</li>
+        <li>
+          <a href="//linuxfr.org/users/fcartegnie"><em>fcartegnie</em></a>, pour « <a href="//linuxfr.org/news/dav1d-is-an-av1-decoder"><em>dav1d is An AV1 Decoder</em></a> » ;</li>
+        <li>
+          <a href="//linuxfr.org/users/gnumdk"><em>gnumdk</em></a>, pour « <a href="//linuxfr.org/users/gnumdk/journaux/lollypop-1-0-est-sorti">Lollypop 1.0 est sorti</a> » ;</li>
+        <li>
+          <a href="//linuxfr.org/users/nud"><em>nud</em></a>, pour « <a href="//linuxfr.org/users/nud/journaux/un-irssi-ou-autre-chose-dans-un-tmux-sur-un-serveur-avec-systemd">Un irssi (ou autre chose) dans un tmux sur un serveur, avec systemd</a> » ;</li>
+        <li>
+          <a href="//linuxfr.org/users/nokomprendo-3"><em>nokomprendo</em></a>, pour « <a href="//linuxfr.org/news/developpement-web-fullstack-application-de-dessin-collaboratif">Développement Web “fullstack”, application de dessin collaboratif</a> » ;</li>
+        <li>
+          <a href="//linuxfr.org/users/epeios">Claude Simon</a>, pour « <a href="//linuxfr.org/news/les-jeunes-et-la-programmation-atlas-toolkit-v0-7">Les jeunes et la programmation (Atlas toolkit v0.7)</a> ».</li>
+      </ul>
+
+      <p>Les livres qu’ils ont sélectionnés sont en seconde partie de la dépêche. N’oubliez pas de contribuer, <em>LinuxFr.org</em> vit pour vous et par vous !</p>
+
+
+    </div>
+    <footer class="actions">
+      <meta itemprop="interactionCount" content="UserComments:0" /><span class="anonymous_reader"><a itemprop="url" href="/news/meilleures-contributions-linuxfr-org-les-primees-de-mars-2019">Lire la suite</a> (<span class="nb_comments">0 commentaire</span>).</span>
+
+      <div class="formats">
+        <a title="Télécharger ce contenu au format markdown" class="action download" href="/news/meilleures-contributions-linuxfr-org-les-primees-de-mars-2019.md">Markdown</a>
+        <a title="Télécharger ce contenu au format epub" class="action download" href="/news/meilleures-contributions-linuxfr-org-les-primees-de-mars-2019.epub">Epub</a>
+      </div>
+
+    </footer>
+  </article>
+  <article class="node hentry score3 news" itemscope itemtype="http://schema.org/Article">
+    <header>
+      <h1 class="entry-title" itemprop="name"><a href="/news/les-journaux-linuxfr-org-les-mieux-notes-de-mars-2019">Les journaux LinuxFr.org les mieux notés de mars 2019</a></h1>
+      <div class="meta">
+        <span class="floating_spacer"></span><span class="posted_by_spanblock">Posté par <a rel="author" href="/users/floxy">Florent Zara</a> (<a href="https://linuxfr.org/users/floxy">page perso</a>) <time datetime="2019-04-08T09:16:48+02:00" class="updated"><span class="date">le 08/04/19</span> <span class="time">à 09:16</span></time>.</span>
+        <span class="edited_by_spanblock">Édité par <span class="edited_by"><a href="/users/davy78">Davy Defaud</a> et <a href="/users/jarillon">Pierre Jarillon</a></span>.</span>
+        <span class="moderated_by_spanblock">Modéré par <a href="/users/nyco">Nÿco</a>.</span>
+        <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/deed.fr">Licence CC by-sa.</a>
+        <div class="tags">
+          Tags :
+          aucun
+        </div>
+      </div>
+    </header>
+    <div class="figures">
+      <meta content="UserLikes:16" itemprop="interactionCount">
+      <figure class="score" title="Note de ce contenu">16</figure>
+      <figure class="datePourCss"><div class="jour">8</div><div class="mois">avr.</div><div class="annee">2019</div></figure>
+      <figure class="image" itemprop="image"><a href="/sections/linuxfrorg"><img alt="LinuxFr.org" title="LinuxFr.org" src="/images/sections/27.png" /></a></figure>
+    </div>
+    <div class="content entry-content" itemprop="articleBody">
+      <p><em>LinuxFr.org</em> propose des dépêches et articles, soumis par tout un chacun, puis revus et corrigés par l’équipe de modération avant publication. C’est la partie la plus visible de <em>LinuxFr.org</em>, ce sont les dépêches qui sont le plus lues et suivies, sur le site, via Atom/RSS, ou bien via partage par messagerie instantanée, par courriel, ou encore via médias sociaux.</p>
+
+      <p><img src="//linuxfr.org/images/logos/anim.gif" alt="Bannière LinuxFr.org"></p>
+
+      <p>Ce que l’on sait moins, c’est que <em>LinuxFr.org</em> vous propose également à tous de tenir vos propres articles directement publiables, sans validation <em>a priori</em> des modérateurs. Ceux‐ci s’appellent des journaux. Voici un florilège d’une dizaine de ces journaux parmi les mieux notés par les utilisateurs… qui notent. Lumière sur ceux du mois de mars passé :</p>
+
+      <ul>
+        <li>« <a href="//linuxfr.org/users/gepolabo/journaux/les-editions-diamond-passent-au-numerique-gafam">Les éditions Diamond passent au numérique GAFAM</a> », par <em>gepolabo</em> ;</li>
+        <li>« <a href="//linuxfr.org/users/pmanglade/journaux/hs-felonie-au-parlement-europeen">[HS] Félonie au parlement européen</a> », par ǝpɐןƃu∀ nǝıɥʇʇɐW‐ǝɹɹǝıԀ ;</li>
+        <li>« <a href="//linuxfr.org/users/gnumdk/journaux/lollypop-1-0-est-sorti">Lollypop 1.0 est sorti</a> », par <em>gnumdk</em> ;</li>
+        <li>« <a href="//linuxfr.org/users/nud/journaux/un-irssi-ou-autre-chose-dans-un-tmux-sur-un-serveur-avec-systemd">Un irssi (ou autre chose) dans un tmux sur un serveur, avec systemd</a> », par <em>nud</em> ;</li>
+        <li>« <a href="//linuxfr.org/users/jobpilot/journaux/virt-manager-vm-avec-plusieurs-ecrans">virt-manager : VM avec plusieurs écrans</a> », par <em>Ecran Plat</em> ;</li>
+        <li>« <a href="//linuxfr.org/users/devnewton/journaux/java-xii-est-dehors">Java XII est dehors</a> », par <em>devnewton</em> ;</li>
+        <li>« <a href="//linuxfr.org/users/goldysama/journaux/faire-des-plateformes-sociales-des-editeurs-pour-sauvegarder-le-statut-d-hebergeur">Faire des plates‐formes sociales des éditeurs pour sauvegarder le statut d’hébergeur</a> », par <em>Goldy</em> ;</li>
+        <li>« <a href="//linuxfr.org/users/liums/journaux/lancer-un-programme-sans-acces-au-reseau-merci-les-espaces-de-noms-reseaux">Lancer un programme sans accès au réseau, merci les espaces de noms réseau</a> », par <em>liUms</em> ;</li>
+        <li>« <a href="//linuxfr.org/users/rom1v/journaux/scrcpy-a-1-an">scrcpy a 1 an</a> », par <em>®om</em> ;</li>
+        <li>« <a href="//linuxfr.org/users/spacefox/journaux/des-emojis-en-sql-c-est-possible-et-on-peut-aller-au-dela">Des emojis en SQL ? C’est possible… et on peut aller au‐delà !</a> », par <em>SpaceFox</em>.</li>
+      </ul>
+
+
+    </div>
+    <footer class="actions">
+      <meta itemprop="interactionCount" content="UserComments:0" /><span class="anonymous_reader"><a itemprop="url" href="/news/les-journaux-linuxfr-org-les-mieux-notes-de-mars-2019">Lire la suite</a> (<span class="nb_comments">0 commentaire</span>).</span>
+
+      <div class="formats">
+        <a title="Télécharger ce contenu au format markdown" class="action download" href="/news/les-journaux-linuxfr-org-les-mieux-notes-de-mars-2019.md">Markdown</a>
+        <a title="Télécharger ce contenu au format epub" class="action download" href="/news/les-journaux-linuxfr-org-les-mieux-notes-de-mars-2019.epub">Epub</a>
+      </div>
+
+    </footer>
+  </article>
+  <article class="node hentry score9 news" itemscope itemtype="http://schema.org/Article">
+    <header>
+      <h1 class="entry-title" itemprop="name"><a href="/news/la-norme-francaise-de-dispositions-de-clavier-a-ete-publiee">La norme française de dispositions de clavier a été publiée</a></h1>
+      <div class="meta">
+        <span class="floating_spacer"></span><span class="posted_by_spanblock">Posté par <a rel="author" href="/users/elessar">🚲 Tanguy Ortolo</a> (<a href="http://tanguy.ortolo.eu/">page perso</a>) <time datetime="2019-04-06T04:18:24+02:00" class="updated"><span class="date">le 06/04/19</span> <span class="time">à 04:18</span></time>.</span>
+        <span class="edited_by_spanblock">Édité par <span class="edited_by"><a href="/users/floxy">Florent Zara</a>, <a href="/users/davy78">Davy Defaud</a> et <a href="/users/oumph">Benoît Sibaud</a></span>.</span>
+        <span class="moderated_by_spanblock">Modéré par <a href="/users/tankey">tankey</a>.</span>
+        <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/deed.fr">Licence CC by-sa.</a>
+        <div class="tags">
+          Tags :
+          <ul class="tag_cloud" itemprop="keywords">
+            <li><a rel="tag" href="/tags/azerty/public">azerty</a></li>
+            <li><a rel="tag" href="/tags/bÉpo/public">bÉpo</a></li>
+            <li><a rel="tag" href="/tags/afnor/public">afnor</a></li></ul>
+        </div>
+      </div>
+    </header>
+    <div class="figures">
+      <meta content="UserLikes:49" itemprop="interactionCount">
+      <figure class="score" title="Note de ce contenu">49</figure>
+      <figure class="datePourCss"><div class="jour">6</div><div class="mois">avr.</div><div class="annee">2019</div></figure>
+      <figure class="image" itemprop="image"><a href="/sections/mat%C3%A9riel"><img alt="Matériel" title="Matériel" src="/images/sections/19.png" /></a></figure>
+    </div>
+    <div class="content entry-content" itemprop="articleBody">
+      <p>L’AFNOR vient de publier la norme <a href="https://www.boutique.afnor.org/norme/nf-z71-300/interfaces-utilisateurs-dispositions-de-clavier-bureautique-francais/article/901594/fa188960">NF Z71-300</a> qui définit des dispositions clavier, une <em>AZERTY</em> et une <em>BÉPO</em>.</p>
+
+      <p><img src="//img.linuxfr.org/img/68747470733a2f2f6e6f726d616c69736174696f6e2e61666e6f722e6f72672f77702d636f6e74656e742f75706c6f6164732f323031392f30332f636c61766965725f617a657274795f616d656c696f72652e6a7067/clavier_azerty_ameliore.jpg" alt="Azerty amélioré par l’AFNOR" title="Source : https://normalisation.afnor.org/wp-content/uploads/2019/03/clavier_azerty_ameliore.jpg"></p>
+
+      <p>La disposition <em>AZERTY</em> ainsi normalisée permet de saisir tous les caractères nécessaires à l’écriture de la langue française, ainsi que d’autres langues européennes, en plaçant les symboles à des emplacements facilitant leur mémorisation.</p>
+
+
+    </div>
+    <footer class="actions">
+      <meta itemprop="interactionCount" content="UserComments:94" /><span class="anonymous_reader"><a itemprop="url" href="/news/la-norme-francaise-de-dispositions-de-clavier-a-ete-publiee">Lire la suite</a> (<span class="nb_comments">94 commentaires</span>).</span>
+
+      <div class="formats">
+        <a title="Télécharger ce contenu au format markdown" class="action download" href="/news/la-norme-francaise-de-dispositions-de-clavier-a-ete-publiee.md">Markdown</a>
+        <a title="Télécharger ce contenu au format epub" class="action download" href="/news/la-norme-francaise-de-dispositions-de-clavier-a-ete-publiee.epub">Epub</a>
+      </div>
+
+    </footer>
+  </article>
+  <article class="node hentry score1 news" itemscope itemtype="http://schema.org/Article">
+    <header>
+      <h1 class="entry-title" itemprop="name"><a href="/news/agenda-du-libre-pour-la-semaine-15-de-l-annee-2019">Agenda du Libre pour la semaine 15 de l’année 2019</a></h1>
+      <div class="meta">
+        <span class="floating_spacer"></span><span class="posted_by_spanblock">Posté par <a rel="author" href="/users/collectif">Collectif</a> <time datetime="2019-04-06T18:04:22+02:00" class="updated"><span class="date">le 06/04/19</span> <span class="time">à 18:04</span></time>.</span>
+        <span class="edited_by_spanblock">Édité par <span class="edited_by"><a href="/users/oumph">Benoît Sibaud</a> et <a href="/users/davy78">Davy Defaud</a></span>.</span>
+        <span class="moderated_by_spanblock">Modéré par <a href="/users/montaigne">Ontologia</a>.</span>
+        <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/deed.fr">Licence CC by-sa.</a>
+        <div class="tags">
+          Tags :
+          <ul class="tag_cloud" itemprop="keywords">
+            <li><a rel="tag" href="/tags/agenda_du_libre/public">agenda_du_libre</a></li></ul>
+        </div>
+      </div>
+    </header>
+    <div class="figures">
+      <meta content="UserLikes:7" itemprop="interactionCount">
+      <figure class="score" title="Note de ce contenu">7</figure>
+      <figure class="datePourCss"><div class="jour">6</div><div class="mois">avr.</div><div class="annee">2019</div></figure>
+      <figure class="image" itemprop="image"><a href="/sections/communaut%C3%A9"><img alt="Communauté" title="Communauté" src="/images/sections/9.png" /></a></figure>
+    </div>
+    <div class="content entry-content" itemprop="articleBody">
+      <p>Calendrier Web, regroupant des événements liés au Libre (logiciel, salon, atelier, <em>install party</em>, conférence), annoncés par leurs organisateurs. Voici un récapitulatif de la semaine à venir. Le détail de chacun de ces 49 événements (France : 39, Québec : 5, Suisse : 4, Belgique : 1) est en seconde partie de dépêche.</p>
+
+
+    </div>
+    <footer class="actions">
+      <meta itemprop="interactionCount" content="UserComments:0" /><span class="anonymous_reader"><a itemprop="url" href="/news/agenda-du-libre-pour-la-semaine-15-de-l-annee-2019">Lire la suite</a> (<span class="nb_comments">0 commentaire</span>).</span>
+
+      <div class="formats">
+        <a title="Télécharger ce contenu au format markdown" class="action download" href="/news/agenda-du-libre-pour-la-semaine-15-de-l-annee-2019.md">Markdown</a>
+        <a title="Télécharger ce contenu au format epub" class="action download" href="/news/agenda-du-libre-pour-la-semaine-15-de-l-annee-2019.epub">Epub</a>
+      </div>
+
+    </footer>
+  </article>
+
+</main>
+  <nav class="toolbox">  <nav class="pagination">
+
+
+        <span class="page current">
+  1
+</span>
+
+    <span class="page">
+  <a rel="next" href="/?page=2">2</a>
+</span>
+
+    <span class="page">
+  <a href="/?page=3">3</a>
+</span>
+
+    <span class="page">
+  <a href="/?page=4">4</a>
+</span>
+
+    <span class="page">
+  <a href="/?page=5">5</a>
+</span>
+
+    <span class="page">
+  <a href="/?page=6">6</a>
+</span>
+
+    <span class="page">
+  <a href="/?page=7">7</a>
+</span>
+
+    <span class="page">
+  <a href="/?page=8">8</a>
+</span>
+
+    <span class="page">
+  <a href="/?page=9">9</a>
+</span>
+
+    <span class="page">
+  <a href="/?page=10">10</a>
+</span>
+
+    <span class="page">
+  <a href="/?page=11">11</a>
+</span>
+
+    <span class="page gap">…</span>
+
+    <span class="next">
+  <a rel="next" href="/?page=2">Suivant &rsaquo;</a>
+</span>
+
+    <span class="last">
+  <a href="/?page=1727">Dernier &raquo;</a>
+</span>
+
+  </nav>
+  </nav><div class="incitation">
+  <h2>Faites vivre LinuxFr.org</h2>
+  <p>
+    Tous les articles sont le fruit du travail de la communauté. Grâce au
+    système de rédaction collaborative du site, on peut s’aider les uns les
+    autres. Pas besoin d'être un expert pour participer.
+  </p>
+  <ul class="people-list">
+    <li>
+      <a href="/redaction">Participer</a>
+    </li>
+    <li>
+      <a href="/a-propos">En savoir plus</a>
+    </li>
+  </ul>
+</div>
+
+  <footer>
+    <p><a class="scroll" href="#top">Revenir en haut de page</a></p>
+  </footer>
+</section>
+<footer id="bigfooter">
+  <nav id="last_comments">
+    <h1>Derniers commentaires</h1>
+    <ul>
+      <li><a href="/users/tarnyko/journaux/abandonware-un-orphelinat-pour-projets-oss-abandonnes#comment-1768110">Re: jeux libres</a></li>
+      <li><a href="/users/albert_/journaux/hs-ni-libre-ni-opensource-mais-bon-on-peut-apprecier-le-geste#comment-1768109">Re: Pas &quot;donné&quot;</a></li>
+      <li><a href="/users/albert_/journaux/hs-ni-libre-ni-opensource-mais-bon-on-peut-apprecier-le-geste#comment-1768108">Re: Pas &quot;donné&quot;</a></li>
+      <li><a href="/users/saltimbanque/journaux/le-bureau-linux-n-est-pas-mort-ce-sont-les-chromebook#comment-1768107">Re: je le sais qu&#39;il n&#39;est pas mort</a></li>
+      <li><a href="/users/albert_/journaux/hs-ni-libre-ni-opensource-mais-bon-on-peut-apprecier-le-geste#comment-1768106">Re: Pas &quot;donné&quot;</a></li>
+      <li><a href="/users/albert_/journaux/hs-ni-libre-ni-opensource-mais-bon-on-peut-apprecier-le-geste#comment-1768105">Re: Pas &quot;donné&quot;</a></li>
+      <li><a href="/users/albert_/journaux/hs-ni-libre-ni-opensource-mais-bon-on-peut-apprecier-le-geste#comment-1768104">Re: Pas &quot;donné&quot;</a></li>
+      <li><a href="/users/albert_/journaux/hs-ni-libre-ni-opensource-mais-bon-on-peut-apprecier-le-geste#comment-1768103">Re: Pas &quot;donné&quot;</a></li>
+      <li><a href="/users/albert_/journaux/hs-ni-libre-ni-opensource-mais-bon-on-peut-apprecier-le-geste#comment-1768102">Re: Pas &quot;donné&quot;</a></li>
+      <li><a href="/users/albert_/journaux/hs-ni-libre-ni-opensource-mais-bon-on-peut-apprecier-le-geste#comment-1768101">Re: HS du HS du HS... attaque perso surtout.</a></li>
+      <li><a href="/users/albert_/journaux/hs-ni-libre-ni-opensource-mais-bon-on-peut-apprecier-le-geste#comment-1768100">Re: Pas &quot;donné&quot;</a></li>
+      <li><a href="/forums/general-cherche-logiciel/posts/traitement-reconnaissance-d-images#comment-1768099">Re: Setup ?</a></li>
+    </ul>
+  </nav>
+  <nav id="popular_tags">
+    <h1>Tags populaires</h1>
+    <ul class="tag_cloud">
+      <li><a href="/tags/debian/public">debian</a></li>
+      <li><a href="/tags/revue_de_presse/public">revue_de_presse</a></li>
+      <li><a href="/tags/linux/public">linux</a></li>
+      <li><a href="/tags/python/public">python</a></li>
+      <li><a href="/tags/spam/public">spam</a></li>
+      <li><a href="/tags/sécurité/public">sécurité</a></li>
+      <li><a href="/tags/android/public">android</a></li>
+      <li><a href="/tags/agenda_du_libre/public">agenda_du_libre</a></li>
+      <li><a href="/tags/vie_privée/public">vie_privée</a></li>
+      <li><a href="/tags/presse/public">presse</a></li>
+      <li><a href="/tags/opensource/public">opensource</a></li>
+      <li><a href="/tags/jeux_linux/public">jeux_linux</a></li>
+    </ul>
+  </nav>
+  <section id="friends">
+    <h1>Sites amis</h1>
+    <ul>
+      <li><a href="https://www.april.org/">April</a></li>
+      <li><a href="https://www.agendadulibre.org/">Agenda du libre</a></li>
+      <li><a href="https://www.framasoft.net/">Framasoft</a></li>
+      <li><a href="http://fr.lolix.org/">Lolix</a></li>
+      <li><a href="http://www.jesuislibre.org/">JeSuisLibre</a></li>
+      <li><a href="https://boutique.ed-diamond.com/">Éditions Diamond</a></li>
+      <li><a href="https://vvlibri.org/">Veni, Vedi, Libri</a></li>
+      <li><a href="https://www.linuxgraphic.org/">LinuxGraphic</a></li>
+      <li><a href="https://www.editions-eni.fr/livres/open-source/.12659ab71294b44082200c97a40710bc.html">Éditions ENI</a></li>
+      <li><a href="https://www.laquadrature.net/">La Quadrature du Net</a></li>
+      <li><a href="https://www.gp3.fr/">Grafik Plus</a></li>
+      <li><a href="http://lea-linux.org">Lea-Linux</a></li>
+      <li><a href="https://tuxfamily.org">TuxFamily</a></li>
+      <li><a href="https://www.editions-eyrolles.com/Recherche/?q=linux">Éditions Eyrolles</a></li>
+      <li><a href="https://enventelibre.org">En Vente Libre</a></li>
+    </ul>
+  </section>
+  <nav id="about_us">
+    <h1>À propos de LinuxFr.org</h1>
+    <ul>
+      <li><a href="/mentions_legales">Mentions légales</a></li>
+      <li><a href="/faire_un_don">Faire un don</a></li>
+      <li><a href="/team">L&#39;équipe LinuxFr.org</a></li>
+      <li><a href="/informations">Informations sur le site</a></li>
+      <li><a href="/aide">Aide / Foire aux questions</a></li>
+      <li><a href="/suivi">Suivi des suggestions et bugs</a></li>
+      <li><a href="/regles_de_moderation">Règles de modération</a></li>
+      <li><a href="/statistiques">Statistiques</a></li>
+      <li><a href="/developpeur">API pour les développeurs</a></li>
+      <li><a href="/code_source_du_site">Code source du site</a></li>
+      <li><a href="/plan">Plan du site</a></li>
+    </ul>
+  </nav>
+</footer>
+
+<script src="/assets/application-a9de66849559fef9b5db5fb5df52a29b465a10fbcf69fcaff2c8f8e48f0f8a83.js"></script>
+</body>
+</html>
