@@ -673,7 +673,8 @@ class Client
     {
         try {
 
-            if ($cacheControl = $response->getHeader('Cache-Control')[0]) {
+            if ($cacheControl = $response->getHeader('Cache-Control')) {
+                $cacheControl = reset($cacheControl);
                 if (preg_match('/s-maxage=(\d+)/', $cacheControl, $matches)) {
                     return new DateTime('+' . $matches[1] . ' seconds');
                 } else if (preg_match('/max-age=(\d+)/', $cacheControl, $matches)) {
