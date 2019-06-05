@@ -682,8 +682,9 @@ class Client
                 }
             }
 
-            if ($expires = $response->getHeader('Expires')[0]) {
-                return new DateTime($expires);
+            $expires = $response->getHeader('Expires');
+            if (is_array($expires) && count($expires) > 0) {
+                return new DateTime($expires[0]);
             }
         } catch (Exception $e) {
             Logger::setMessage('Unable to parse expiration date: ' . $e->getMessage());
