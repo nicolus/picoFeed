@@ -98,6 +98,33 @@ class ClientTest extends TestCase
         $this->assertTrue($client->isModified());
     }
 
+    public function testGetExpirationDateFromMaxAge()
+    {
+        $responseMaxAge = new Response(200, [
+            'content-Type'  => 'text/plain',
+            'Cache-control' => 'max-age=3600', //expires in an hours
+        ], 'someContent');
+
+        $responseSMaxAge = new Response(200, [
+            'content-Type'  => 'text/plain',
+            'Cache-control' => 's-maxage=7200', //expires in an hours
+        ], 'someContent');
+
+        $mock = new MockHandler([$responseMaxAge, $responseSMaxAge]);
+        $handler = HandlerStack::create($mock);
+
+        $client = new Client(new \GuzzleHttp\Client(['handler' => $handler]));
+        $client->setUrl('http://php.net/robots.txt');
+        $client->execute();
+
+        $this->assertInstanceOf(\DateTime::class, $client->getExpiration());
+        $this->assertEquals(time() + 3600, $client->getExpiration()->getTimestamp(), '', 2);
+
+        $client->execute();
+        $this->assertInstanceOf(\DateTime::class, $client->getExpiration());
+        $this->assertEquals(time() + 7200, $client->getExpiration()->getTimestamp(), '', 2);
+    }
+
 
     public function testCacheEtag()
     {
