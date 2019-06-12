@@ -6,10 +6,25 @@ use GuzzleHttp\Handler\MockHandler;
 use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Psr7\Response;
 use PHPUnit\Framework\TestCase;
+use BlastCloud\Guzzler\UsesGuzzler;
 
 class ClientTest extends TestCase
 {
 
+    use UsesGuzzler;
+
+
+    /**
+     * @var Client
+     */
+    protected $client;
+
+    public function setUp(): void
+    {
+        parent::setUp();
+
+        $this->client = new Client($this->guzzler->getClient());
+    }
 
     public function testFactoryWorks()
     {
@@ -22,19 +37,14 @@ class ClientTest extends TestCase
 
     public function testDownload()
     {
+        $this->guzzler->queueResponse(
+            new Response(200, ['content-Type' => 'application/rss+xml'], 'someResponse')
+        );
 
-        $mock = new MockHandler([
-            new Response(200, ['content-Type' => 'application/rss+xml'], 'someResponse'),
-        ]);
-        $handler = HandlerStack::create($mock);
+        $this->client->execute();
 
-        $client = new Client(new \GuzzleHttp\Client(['handler' => $handler]));
-
-        $client->setUrl('http://php.net/robots.txt');
-        $client->execute();
-
-        $this->assertTrue($client->isModified());
-        $this->assertNotEmpty($client->getContent());
+        $this->assertTrue($this->client->isModified());
+        $this->assertNotEmpty($this->client->getContent());
     }
 
 
@@ -42,16 +52,12 @@ class ClientTest extends TestCase
     {
         $fileContent = file_get_contents(__DIR__ . '/../fixtures/miniflux_favicon.ico');
 
-        $mock = new MockHandler([
-            new Response(200, ['content-Type' => 'image/x-icon'], $fileContent),
-        ]);
-        $handler = HandlerStack::create($mock);
+        $this->guzzler->queueResponse(
+            new Response(200, ['content-Type' => 'image/x-icon'], $fileContent)
+        );
 
-        $client = new Client(new \GuzzleHttp\Client(['handler' => $handler]));
-
-        $client->setUrl('https://miniflux.net/favicon.ico');
-        $client->enablePassthroughMode();
-        $client->execute();
+        $this->client->enablePassthroughMode();
+        $this->client->execute();
 
         $this->expectOutputString($fileContent);
     }
@@ -63,21 +69,17 @@ class ClientTest extends TestCase
             'etag'          => '336-50d275e263080',
             'last-modified' => 'Mon, 15 Apr 2019 09:31:45 GMT',
         ], 'someContent');
-        $mock = new MockHandler([$response, $response]);
-        $handler = HandlerStack::create($mock);
+
+        $this->guzzler->queueResponse($response);
+
+        $this->client->execute();
+        $etag = $this->client->getEtag();
 
 
-        $client = new Client(new \GuzzleHttp\Client(['handler' => $handler]));
-        $client->setUrl('http://php.net/robots.txt');
-        $client->execute();
-        $etag = $client->getEtag();
+        $this->client->setEtag($etag);
+        $this->client->execute();
 
-        $client = new Client(new \GuzzleHttp\Client(['handler' => $handler]));
-        $client->setUrl('http://php.net/robots.txt');
-        $client->setEtag($etag);
-        $client->execute();
-
-        $this->assertTrue($client->isModified());
+        $this->assertTrue($this->client->isModified());
     }
 
     public function testGetExpirationDate()

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "f75da0861f0ed041aef743fdb38bd03e",
+    "content-hash": "b97553bea1c0fb0eaf418196d595fc26",
     "packages": [
         {
             "name": "guzzlehttp/guzzle",
@@ -449,6 +449,57 @@
         }
     ],
     "packages-dev": [
+        {
+            "name": "blastcloud/guzzler",
+            "version": "1.5.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/blastcloud/guzzler.git",
+                "reference": "7ee9ea3ca334ff13939bc5014b5d5dcad08b2c1f"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/blastcloud/guzzler/zipball/7ee9ea3ca334ff13939bc5014b5d5dcad08b2c1f",
+                "reference": "7ee9ea3ca334ff13939bc5014b5d5dcad08b2c1f",
+                "shasum": ""
+            },
+            "require": {
+                "ext-json": "*",
+                "guzzlehttp/guzzle": ">=6.0",
+                "php": "^7.1",
+                "phpunit/phpunit": ">=7.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "BlastCloud\\Guzzler\\": "src/",
+                    "tests\\": "tests/"
+                },
+                "files": [
+                    "src/Helpers/macros.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Adam Kelso",
+                    "email": "kelso.adam@gmail.com",
+                    "role": "lead"
+                }
+            ],
+            "description": "Supercharge your app or SDK with a testing library specifically for Guzzle.",
+            "keywords": [
+                "Guzzle",
+                "mock",
+                "php",
+                "phpunit",
+                "testing"
+            ],
+            "time": "2019-06-10T05:37:25+00:00"
+        },
         {
             "name": "doctrine/instantiator",
             "version": "1.2.0",
