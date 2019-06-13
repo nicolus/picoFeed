@@ -2,16 +2,19 @@
 
 namespace PicoFeed\Scraper;
 
+use BlastCloud\Guzzler\UsesGuzzler;
 use GuzzleHttp\Client as GuzzleClient;
 use GuzzleHttp\Handler\MockHandler;
 use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Psr7\Response;
 use PHPUnit\Framework\TestCase;
-use PicoFeed\Reader\Reader;
 use PicoFeed\Config\Config;
+use PicoFeed\Reader\Reader;
 
 class ScraperTest extends TestCase
 {
+
+    use UsesGuzzler;
 
     public function testUrlScraper()
     {
@@ -96,22 +99,20 @@ class ScraperTest extends TestCase
 
     public function testContentGrabberCallback()
     {
-        $mock = new MockHandler([
-            new Response(
-                200,
-                ['content-Type' => 'text/html',],
-                file_get_contents(__DIR__ . '/../fixtures/rss_egscomics.xml')
-            ),
-        ]);
-        $handler = HandlerStack::create($mock);
+        $this->guzzler->queueMany(new Response(
+            200,
+            ['content-Type' => 'text/html',],
+            file_get_contents(__DIR__ . '/../fixtures/rss_egscomics.xml')
+        ), 100);
 
-        $reader = new Reader(new config(), new GuzzleClient(['handler' => $handler]));
+        $reader = new Reader(new config(), $this->guzzler->getClient());
+
         $client = $reader->download('http://www.egscomics.com/rss.php');
         $parser = $reader->getParser($client->getUrl(), $client->getContent(), $client->getEncoding());
-        $that   = $this;
-        $parser->enableContentGrabber(false, function($feed, $item, $scraper) use ($that) {
+        $that = $this;
+        $parser->enableContentGrabber(false, function ($feed, $item, $scraper) use ($that) {
             $that->assertInstanceOf('PicoFeed\Scraper\Scraper', $scraper);
-        });
+        }, $this->guzzler->getClient());
         $parser->execute();
     }
 }

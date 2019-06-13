@@ -2,11 +2,9 @@
 
 namespace PicoFeed\Client;
 
-use GuzzleHttp\Handler\MockHandler;
-use GuzzleHttp\HandlerStack;
+use BlastCloud\Guzzler\UsesGuzzler;
 use GuzzleHttp\Psr7\Response;
 use PHPUnit\Framework\TestCase;
-use BlastCloud\Guzzler\UsesGuzzler;
 
 class ClientTest extends TestCase
 {
@@ -64,20 +62,18 @@ class ClientTest extends TestCase
 
     public function testCacheBothDateAndEtagHaveToMatchIfPresent()
     {
-        $response = new Response(200, [
+        $this->guzzler->queueMany(new Response(200, [
             'content-Type'  => 'text/plain',
             'etag'          => '336-50d275e263080',
             'last-modified' => 'Mon, 15 Apr 2019 09:31:45 GMT',
-        ], 'someContent');
-
-        $this->guzzler->queueResponse($response);
+        ], 'someContent'), 2);
 
         $this->client->execute();
         $etag = $this->client->getEtag();
 
-
-        $this->client->setEtag($etag);
-        $this->client->execute();
+        $client = new Client($this->guzzler->getClient());
+        $client->setEtag($etag);
+        $client->execute();
 
         $this->assertTrue($this->client->isModified());
     }
@@ -88,117 +84,93 @@ class ClientTest extends TestCase
             'content-Type'  => 'text/plain',
             'Expires'       => 'Wed, 21 Oct 2015 07:28:00 GMT',
         ], 'someContent');
-        $mock = new MockHandler([$response, $response]);
-        $handler = HandlerStack::create($mock);
 
+        $this->guzzler->queueResponse($response);
+        $this->client->execute();
 
-        $client = new Client(new \GuzzleHttp\Client(['handler' => $handler]));
-        $client->setUrl('http://php.net/robots.txt');
-        $client->execute();
-
-        $this->assertInstanceOf(\DateTime::class, $client->getExpiration());
-        $this->assertTrue($client->isModified());
+        $this->assertInstanceOf(\DateTime::class, $this->client->getExpiration());
+        $this->assertTrue($this->client->isModified());
     }
 
     public function testGetExpirationDateFromMaxAge()
     {
-        $responseMaxAge = new Response(200, [
-            'content-Type'  => 'text/plain',
-            'Cache-control' => 'max-age=3600', //expires in an hours
-        ], 'someContent');
+        $this->guzzler->queueResponse(
+            new Response(200, [
+                'content-Type'  => 'text/plain',
+                'Cache-control' => 'max-age=3600', //expires in an hours
+            ], 'someContent'),
+            new Response(200, [
+                'content-Type'  => 'text/plain',
+                'Cache-control' => 's-maxage=7200', //expires in an hours
+            ], 'someContent')
+        );
 
-        $responseSMaxAge = new Response(200, [
-            'content-Type'  => 'text/plain',
-            'Cache-control' => 's-maxage=7200', //expires in an hours
-        ], 'someContent');
+        $this->client->execute();
 
-        $mock = new MockHandler([$responseMaxAge, $responseSMaxAge]);
-        $handler = HandlerStack::create($mock);
+        $this->assertInstanceOf(\DateTime::class, $this->client->getExpiration());
+        $this->assertEquals(time() + 3600, $this->client->getExpiration()->getTimestamp(), '', 2);
 
-        $client = new Client(new \GuzzleHttp\Client(['handler' => $handler]));
-        $client->setUrl('http://php.net/robots.txt');
-        $client->execute();
-
-        $this->assertInstanceOf(\DateTime::class, $client->getExpiration());
-        $this->assertEquals(time() + 3600, $client->getExpiration()->getTimestamp(), '', 2);
-
-        $client->execute();
-        $this->assertInstanceOf(\DateTime::class, $client->getExpiration());
-        $this->assertEquals(time() + 7200, $client->getExpiration()->getTimestamp(), '', 2);
+        $this->client->execute();
+        $this->assertInstanceOf(\DateTime::class, $this->client->getExpiration());
+        $this->assertEquals(time() + 7200, $this->client->getExpiration()->getTimestamp(), '', 2);
     }
 
 
     public function testCacheEtag()
     {
-        $response = new Response(200, [
+        $this->guzzler->queueMany(new Response(200, [
             'content-Type' => 'text/plain',
             'etag'         => '336-50d275e263080',
-        ], 'someContent');
-        $mock = new MockHandler([$response, $response]);
-        $handler = HandlerStack::create($mock);
+        ], 'someContent'), 2);
 
-        $client = new Client(new \GuzzleHttp\Client(['handler' => $handler]));
-        $client->setUrl('http://php.net/robots.txt');
-        $client->execute();
-        $etag = $client->getEtag();
-        $lastModified = $client->getLastModified();
+        $this->client->execute();
+        $etag = $this->client->getEtag();
+        $lastModified = $this->client->getLastModified();
 
-        $client = new Client(new \GuzzleHttp\Client(['handler' => $handler]));
-        $client->setUrl('http://php.net/robots.txt');
-        $client->setEtag($etag);
-        $client->setLastModified($lastModified);
-        $client->execute();
+        $this->client->setEtag($etag);
+        $this->client->setLastModified($lastModified);
+        $this->client->execute();
 
-        $this->assertFalse($client->isModified());
+        $this->assertFalse($this->client->isModified());
     }
 
 
     public function testCacheLastModified()
     {
-        $response = new Response(200, [
+        $this->guzzler->queueMany(new Response(200, [
             'content-Type'  => 'text/plain',
             'last-modified' => 'Mon, 15 Apr 2019 09:31:45 GMT',
-        ], 'someContent');
-        $mock = new MockHandler([$response, $response]);
-        $handler = HandlerStack::create($mock);
+        ], 'someContent'), 2);
 
-        $client = new Client(new \GuzzleHttp\Client(['handler' => $handler]));
-        $client->setUrl('http://miniflux.net/robots.txt');
-        $client->execute();
-        $lastmod = $client->getLastModified();
 
-        $client = new Client(new \GuzzleHttp\Client(['handler' => $handler]));
-        $client->setUrl('http://miniflux.net/robots.txt');
-        $client->setLastModified($lastmod);
-        $client->execute();
+        $this->client->execute();
+        $lastmod = $this->client->getLastModified();
 
-        $this->assertFalse($client->isModified());
+        $this->client->setLastModified($lastmod);
+        $this->client->execute();
+
+        $this->assertFalse($this->client->isModified());
     }
 
 
     public function testCacheBoth()
     {
-        $response = new Response(200, [
+        $this->guzzler->queueMany(new Response(200, [
             'content-Type'  => 'text/plain',
             'etag'          => '336-50d275e263080',
             'last-modified' => 'Mon, 15 Apr 2019 09:31:45 GMT',
-        ], 'someContent');
-        $mock = new MockHandler([$response, $response]);
-        $handler = HandlerStack::create($mock);
+        ], 'someContent'), 2);
 
-        $client = new Client(new \GuzzleHttp\Client(['handler' => $handler]));
-        $client->setUrl('http://miniflux.net/robots.txt');
-        $client->execute();
-        $lastmod = $client->getLastModified();
-        $etag = $client->getEtag();
 
-        $client = new Client(new \GuzzleHttp\Client(['handler' => $handler]));
-        $client->setUrl('http://miniflux.net/robots.txt');
-        $client->setLastModified($lastmod);
-        $client->setEtag($etag);
-        $client->execute();
+        $this->client->execute();
+        $lastmod = $this->client->getLastModified();
+        $etag = $this->client->getEtag();
 
-        $this->assertFalse($client->isModified());
+        $this->client->setLastModified($lastmod);
+        $this->client->setEtag($etag);
+        $this->client->execute();
+
+        $this->assertFalse($this->client->isModified());
     }
 
     /**
@@ -219,50 +191,38 @@ class ClientTest extends TestCase
 
     public function testCharset()
     {
-        $responseWithCharset = new Response(200, [
+        $this->guzzler->queueResponse(new Response(200, [
             'content-Type' => 'text/html; charset=utf-8',
-        ], 'someContent');
-
-        $responseWithoutCharset = new Response(200, [
+        ], 'someContent'), new Response(200, [
             'content-Type' => 'text/plain',
-        ], 'someContent');
-        $mock = new MockHandler([$responseWithCharset, $responseWithoutCharset]);
-        $handler = HandlerStack::create($mock);
-
-        $client = new Client(new \GuzzleHttp\Client(['handler' => $handler]));
+        ], 'someContent'));
 
 
-        $client->setUrl('http://php.net/');
-        $client->execute();
-        $this->assertEquals('utf-8', $client->getEncoding());
+        $this->client->setUrl('http://php.net/');
+        $this->client->execute();
+        $this->assertEquals('utf-8', $this->client->getEncoding());
 
-        $client->setUrl('http://php.net/robots.txt');
-        $client->execute();
-        $this->assertEquals('', $client->getEncoding());
+        $this->client->setUrl('http://php.net/robots.txt');
+        $this->client->execute();
+        $this->assertEquals('', $this->client->getEncoding());
     }
 
 
     public function testContentType()
     {
-        $responseImage = new Response(200, [
-            'content-Type' => 'image/png',
-        ], 'someContent');
+        $this->guzzler->queueResponse(
+            new Response(200, [
+                'content-Type' => 'image/png',
+            ], 'someContent'),
+            new Response(200, [
+                'content-Type' => 'text/html; charset=utf-8',
+            ], 'someContent')
+        );
 
-        $responseHtml = new Response(200, [
-            'content-Type' => 'text/html; charset=utf-8',
-        ], 'someContent');
+        $this->client->execute();
+        $this->assertEquals('image/png', $this->client->getContentType());
 
-        $mock = new MockHandler([$responseImage, $responseHtml]);
-        $handler = HandlerStack::create($mock);
-
-        $client = new Client(new \GuzzleHttp\Client(['handler' => $handler]));
-
-        $client->setUrl('https://miniflux.app/image/favicon.png');
-        $client->execute();
-        $this->assertEquals('image/png', $client->getContentType());
-
-        $client->setUrl('https://miniflux.app/');
-        $client->execute();
-        $this->assertEquals('text/html; charset=utf-8', $client->getContentType());
+        $this->client->execute();
+        $this->assertEquals('text/html; charset=utf-8', $this->client->getContentType());
     }
 }
