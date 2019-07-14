@@ -4,7 +4,7 @@ PicoFeed - PHP Library to manage Atom and RSS Feeds
 [![Total Downloads](https://poser.pugx.org/nicolus/picofeed/downloads)](https://packagist.org/packages/nicolus/picofeed)
 [![Coverage Status](https://coveralls.io/repos/github/nicolus/picoFeed/badge.svg)](https://coveralls.io/github/nicolus/picoFeed) [![SensioLabsInsight](https://insight.sensiolabs.com/projects/d76c5af7-a39c-46e9-9657-8a23046f17e7/mini.png)](https://insight.sensiolabs.com/projects/d76c5af7-a39c-46e9-9657-8a23046f17e7)
 
-This is a fork of the original picoFeed (which has been abandonned).
+This is a fork of the original picoFeed (which has been abandoned).
 
 This fork will strive to make picofeed as simple, fast and modern as possible by stripping out everything that's not purely directly related to parsing and creating feeds, and replacing them with third party components. Most notably, all HTTP requests are now handled by Guzzle, logging is optionally handled by Monolog, and caching will be optionally handled by Guzzle Middlewares.
 
