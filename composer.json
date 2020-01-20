@@ -19,7 +19,7 @@
         "ext-xml": "*",
         "ext-libxml": "*",
         "ext-SimpleXML": "*",
-        "zendframework/zendxml": "^1.0",
+        "laminas/laminas-xml": "^1.0",
         "guzzlehttp/guzzle": "~6.0",
         "kevinrob/guzzle-cache-middleware": "^2.1",
         "psr/log": "^1.0"

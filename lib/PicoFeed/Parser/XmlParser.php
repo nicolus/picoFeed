@@ -4,8 +4,8 @@ namespace PicoFeed\Parser;
 
 use DOMDocument;
 use SimpleXMLElement;
-use ZendXml\Exception\RuntimeException;
-use ZendXml\Security;
+use Laminas\Xml\Exception\RuntimeException;
+use Laminas\Xml\Security;
 
 /**
  * XML parser class.
@@ -55,7 +55,7 @@ class XmlParser
     }
 
     /**
-     * Small wrapper around ZendXml to turn their exceptions into PicoFeed exceptions
+     * Small wrapper around LaminasXml to turn their exceptions into PicoFeed exceptions
      *
      * @static
      * @access private
