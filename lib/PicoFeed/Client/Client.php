@@ -184,7 +184,29 @@ class Client
      */
     public function doRequest()
     {
-        return $this->httpClient->get($this->url);
+        $opts = [
+            'timeout' => $this->timeout,
+            'allow_redirects' => ['max' => $this->max_redirects],
+            'headers' => ['User-Agent' => $this->user_agent],
+            'curl' => $this->additional_curl_options,
+        ];
+        if (strlen($this->username)) {
+            $opts['auth'] = ['username' => $this->username, 'password' => (string) $this->password];
+        }
+        if (strlen($this->proxy_hostname)) {
+            // Proxies are assumed to be plain HTTP proxies because this is what PicoFeed historically assumed
+            $proxy = "http://";
+            if (strlen($this->proxy_username)) {
+                $proxy .= rawurlencode($this->proxy_username);
+                if (strlen($this->proxy_password)) {
+                    $proxy .= ":" . rawurlencode($this->proxy_password);
+                }
+                $proxy .= "@";
+            }
+            $proxy .= $this->proxy_hostname . ":" . $this->proxy_port;
+            $opts['proxy'] = $proxy; 
+        }
+        return $this->httpClient->get($this->url, $opts);
     }
 
     public function __construct(ClientInterface $httpClient = null)
