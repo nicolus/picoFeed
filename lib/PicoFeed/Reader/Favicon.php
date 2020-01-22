@@ -156,15 +156,17 @@ class Favicon extends Base
 
                 if ($this->content !== '') {
                     return $icon_link;
-                } elseif ($favicon_link !== '') {
-                    return $this->find($website_link);
                 }
             } catch (RequestException $e) {
                 continue;
             }
         }
 
-        return '';
+        if ($favicon_link !== '') {
+            return $this->find($website_link);
+        } else {
+            return '';
+        }
     }
 
     /**
