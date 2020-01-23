@@ -190,6 +190,12 @@ class Client
             'headers' => ['User-Agent' => $this->user_agent],
             'curl' => $this->additional_curl_options,
         ];
+        if (strlen($this->last_modified)) {
+            $opts['headers']['If-Modified-Since'] = $this->last_modified;
+        }
+        if (strlen($this->etag)) {
+            $opts['headers']['If-None-Match'] = $this->etag;
+        }
         if (strlen($this->username)) {
             $opts['auth'] = ['username' => $this->username, 'password' => (string) $this->password];
         }
