@@ -287,8 +287,8 @@ class Client
             $this->is_modified = false;
         } elseif ($response->getStatusCode() == 200) {
             $this->is_modified = $this->hasBeenModified($response, $this->etag, $this->last_modified);
-            $this->etag = $response->getHeader('ETag')[0] ?? null;
-            $this->last_modified = $response->getHeader('Last-Modified')[0] ?? null;
+            $this->etag = $response->getHeader('ETag')[0] ?? '';
+            $this->last_modified = $response->getHeader('Last-Modified')[0] ?? '';
         }
 
         if ($this->is_modified === false) {
