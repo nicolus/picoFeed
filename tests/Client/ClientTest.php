@@ -135,6 +135,29 @@ class ClientTest extends TestCase
     }
 
 
+    public function testCacheHeadersAreSet()
+    {
+        $this->guzzler->queueResponse(new Response(200, [
+            'content-Type'  => 'text/plain'
+        ], 'someContent'));
+
+        $this->client->execute();
+        $this->assertIsString($this->client->getEtag());
+        $this->assertEmpty($this->client->getEtag());
+        $this->assertIsString($this->client->getLastModified());
+        $this->assertEmpty($this->client->getLastModified());
+
+        $this->guzzler->queueResponse(new Response(200, [
+            'content-Type'  => 'text/plain',
+            'etag'          => '336-50d275e263080',
+            'last-modified' => 'Mon, 15 Apr 2019 09:31:45 GMT',
+        ], 'someContent'));
+
+        $this->client->execute();
+        $this->assertEquals('336-50d275e263080', $this->client->getEtag());
+        $this->assertEquals('Mon, 15 Apr 2019 09:31:45 GMT', $this->client->getLastModified());
+    }
+
     public function testCacheLastModified()
     {
         $this->guzzler->queueMany(new Response(200, [
@@ -160,7 +183,6 @@ class ClientTest extends TestCase
             'etag'          => '336-50d275e263080',
             'last-modified' => 'Mon, 15 Apr 2019 09:31:45 GMT',
         ], 'someContent'), 2);
-
 
         $this->client->execute();
         $lastmod = $this->client->getLastModified();
