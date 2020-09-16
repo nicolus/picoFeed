@@ -1,0 +1,4 @@
+- maxBodySize setting does nothing
+- API type requirements are not enforced
+- Tests in the "online" group should be rewritten; one is currently broken
+- Use of cache middleware should be documented, or reference from readme removed
